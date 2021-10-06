@@ -11,8 +11,9 @@ namespace Targil0
         static /*partial*/ void wellcome6393()
         {
             Console.WriteLine("I am also here!");
-        }
+            Console.WriteLine("I hope its will work!");
 
+        }
     }  
 }
 
