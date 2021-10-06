@@ -12,6 +12,7 @@ namespace Targil0
         {
             Console.WriteLine("I am also here!");
             Console.WriteLine("I hope its will work!");
+            Console.WriteLine("We dane here");
 
         }
     }  
