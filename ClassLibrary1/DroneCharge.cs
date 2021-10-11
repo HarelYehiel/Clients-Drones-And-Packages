@@ -4,11 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL
+namespace IDAL
 {
-    public struct DroneCharge
+    namespace DO
     {
-        public int DroneId { get; set; }
-        public int staitionId { get; set; }
+        public struct DroneCharge
+        {
+            public int DroneId
+            {
+                get; set;
+            }
+            public int staitionId
+            {
+                get; set;
+            }
+        }
     }
 }

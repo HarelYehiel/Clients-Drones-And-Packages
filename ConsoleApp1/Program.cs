@@ -1,10 +1,11 @@
 ﻿using System;
 
-namespace ConsoleApp1
+namespace ConsoleUI
 {
     class Program
     {
         static void Main(string[] args)
+            
         {
             Console.WriteLine("Hello World!");
         }

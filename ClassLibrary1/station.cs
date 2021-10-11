@@ -1,12 +1,17 @@
 ﻿using System;
 
-namespace DAL
+namespace IDAL
+
 {
-    public struct station
+    namespace DO
     {
-        public int Id { get; set; }
-        public string name { get; set; }
-        public double longitude { get; set; }
-        public double latitude { get; set; }
+
+        public struct station
+        {
+            public int Id { get; set; }
+            public string name { get; set; }
+            public double longitude { get; set; }
+            public double latitude { get; set; }
+        }
     }
 }

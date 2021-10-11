@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL
+namespace IDAL
 {
-    public struct DataSource
+    namespace DO
     {
+        public struct DataSource
+        {
+        }
     }
 }
