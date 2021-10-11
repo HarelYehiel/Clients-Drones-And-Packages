@@ -21,7 +21,7 @@ namespace IDAL
                 return $"Drone ID: {Id}, model: {Model}, status: {Status}, maxWeight: {MaxWeight}, battery: {Battery}";
             }            
         }
-        public struct WeightCategories
+        public enum WeightCategories { }
         {
             //I am not sure that this is the way to do it
         }
