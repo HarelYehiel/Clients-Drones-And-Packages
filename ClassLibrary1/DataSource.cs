@@ -11,10 +11,10 @@ namespace IDAL
     {
         public class DataSource
         {
-            private DO.Drone[] droens { get; set; } = new DO.Drone[10];
-            public DO.station[] stations { get; set; } = new DO.station[5];
-            public DO.Customer[] customers { get; set; } = new DO.Customer[100];
-            public DO.Parcel[] parcels { get; set; } = new DO.Parcel[1000];
+            private static DO.Drone[] droens = new DO.Drone[10];
+            public static DO.station[] stations= new DO.station[5];
+            public static DO.Customer[] customers = new DO.Customer[100];
+            public static DO.Parcel[] parcels = new DO.Parcel[1000];
 
            
 
