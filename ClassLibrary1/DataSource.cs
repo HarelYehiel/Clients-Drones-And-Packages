@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IDAL.DO;
 
 namespace IDAL
 {
@@ -10,11 +11,13 @@ namespace IDAL
     {
         public class DataSource
         {
-            public DO.Drone[] droens = new DO.Drone[10];
-            public DO.station[] stations = new DO.station[5];
-            public DO.Customer[] customers = new DO.Customer[100];
-            public DO.Parcel[] parcels = new DO.Parcel[1000];
-            
+            private DO.Drone[] droens { get; set; } = new DO.Drone[10];
+            public DO.station[] stations { get; set; } = new DO.station[5];
+            public DO.Customer[] customers { get; set; } = new DO.Customer[100];
+            public DO.Parcel[] parcels { get; set; } = new DO.Parcel[1000];
+
+           
+
             public static void Initialize()
             {
             
@@ -22,7 +25,7 @@ namespace IDAL
         }
         public struct Cofing
             {
-                static DalObject.DataSource.
+            
         }
     }
 }

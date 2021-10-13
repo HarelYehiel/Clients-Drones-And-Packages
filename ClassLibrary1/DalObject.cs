@@ -4,13 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IDAL
+namespace DAL
 {
-    namespace DalObject
+    namespace DalObject { 
+    class DalObject
     {
-        public struct DalObject
-        {
-
-        }
     }
+
 }
