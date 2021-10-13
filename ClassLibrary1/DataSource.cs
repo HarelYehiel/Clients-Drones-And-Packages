@@ -26,8 +26,56 @@ namespace IDAL
 
             public static void Initialize()
             {
-
+                for(int i = 0; i < 5; i++)//crate 5 drones withe random data
+                {
+                    drones[i] = new Drone();
+                    var rand = new Random();
+                    drones[i].Id = rand.Next(10000, 99999);
+                    drones[i].Battery = rand.Next(1, 100);
+                    //drones[i].MaxWeight = rand.Next(WeightCategories)
+                    //drones[i].Model = 
+                    Cofing.droneIndex++;//elert the index of the free cells at drones arry
+                }
+                for (int i = 0; i < 2; i++)//crate 2 staitons with random data
+                {
+                    stations[i] = new station();
+                    var rand = new Random();
+                    stations[i].Id = rand.Next(10000,99999);
+                    stations[i].name = "sta" + rand.Next(1, 99);
+                    //stations[i].MaxWeight = 
+                    //stations[i].latitude = 
+                    //stations[i].longitude = 
+                    Cofing.stationIndex++; //elert the index of the free cells at staions arrry
+                }
+                for(int i = 0; i < 10; i++)//crate new 10 random coustomers
+                {
+                    customers[i] = new Customer();
+                    var rand = new Random();
+                    customers[i].Id = rand.Next(11111, 99999);
+                    customers[i].Name = "cust" + rand.Next(1, 99);
+                    customers[i].Phone = "05" + rand.Next(10000000, 99999999);
+                    //customers[i].latitude =
+                    //customers[i].longitude = 
+                    Cofing.customersIndex++;//elert the index of the free cell at customers array
+                }
+                for(int i=0;i<10; i++)//crate new 10  parcels with random data
+                {
+                    parcels[i] = new Parcel();
+                    var rand = new Random();
+                    parcels[i].Id = rand.Next(11111, 99999);
+                    parcels[i].SenderId = rand.Next(11111, 99999);
+                    parcels[i].TargetId = rand.Next(11111, 99999);
+                    parcels[i].DroneId = rand.Next(11111, 99999);
+                    //parcels[i].Weight =
+                    //parcels[i].Priority = 
+                    //parcels[i].Requested = 
+                    //parcels[i].Scheduled = 
+                    //parcels[i].PickedUp = 
+                    //parcels[i].Delivered = 
+                    Cofing.parcelsIndex++;//elert the index of the free cell at parcels array
+                }
             }
+
         }
 
     }
