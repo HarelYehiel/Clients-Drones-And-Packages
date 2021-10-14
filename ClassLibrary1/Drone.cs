@@ -21,14 +21,10 @@ namespace IDAL
                 return $"Drone ID: {Id}, model: {Model}, status: {Status}, maxWeight: {MaxWeight}, battery: {Battery}";
             }            
         }
-        public enum WeightCategories { }
-        {
-            //I am not sure that this is the way to do it
-        }
-        public struct DroneStatus
-        {
-            //I am not sure that this is the way to do it
-        }
+        public enum WeightCategories { Light, Medium, Heavy}
+       
+        public enum DroneStatus { Avilble, Baintenance, Delivery}
+        
 
     }
 }
