@@ -65,6 +65,47 @@ namespace IDAL
                 int parcelId = ra.Next(100, 200);
                 return parcelId;
             }
+
+            public static station[] Displays_list_of_base_stations()
+            //Copy all the station from DataSource.stations[] to new_array_stations.
+            {
+                station[] new_array_stations = new station[DataSource.Cofing.stationIndex];
+                for (int i = 0; i < DataSource.Cofing.stationIndex; i++)
+                {
+                    new_array_stations[i] = DataSource.stations[i];
+                }
+                return new_array_stations;
+            }
+            public static Customer[] Displays_list_of_custmers()
+            //Copy all the customer from DataSource.customers[] to new_array_custmers.
+            {
+                Customer[] new_array_custmers = new Customer[DataSource.Cofing.customersIndex];
+                for (int i = 0; i < DataSource.Cofing.customersIndex; i++)
+                {
+                    new_array_custmers[i] = DataSource.customers[i];
+                }
+                return new_array_custmers;
+            }
+            public static Parcel[] Displays_list_of_Parcels()
+            //Copy all the customer from DataSource.parcels[] to new_array_parcels.
+            {
+                Parcel[] new_array_Parcels = new Parcel[DataSource.Cofing.parcelsIndex];
+                for (int i = 0; i < DataSource.Cofing.parcelsIndex; i++)
+                {
+                    new_array_Parcels[i] = DataSource.parcels[i];
+                }
+                return new_array_Parcels;
+            }
+            public static Drone[] Displays_list_of_drone()
+            //Copy all the customer from DataSource.drones[] to new_array_drones.
+            {
+                Drone[] new_array_Drones = new Drone[DataSource.Cofing.droneIndex];
+                for (int i = 0; i < DataSource.Cofing.droneIndex; i++)
+                {
+                    new_array_Drones[i] = DataSource.drones[i];
+                }
+                return new_array_Drones;
+            }
         }
     }
 }
