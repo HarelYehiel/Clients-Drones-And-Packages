@@ -60,10 +60,8 @@ namespace IDAL
             }
             public static int addParcel()
             {
-                ++DataSource.Cofing.parcelsIndex;
-                Random ra = new Random();
-                int parcelId = ra.Next(100, 200);
-                return parcelId;
+                int parcelNumber = ++DataSource.Cofing.runNumber;
+                 return parcelNumber;
             }
 
             public static station[] Displays_list_of_base_stations()
@@ -87,7 +85,7 @@ namespace IDAL
                 return new_array_custmers;
             }
             public static Parcel[] Displays_list_of_Parcels()
-            //Copy all the customer from DataSource.parcels[] to new_array_parcels.
+            //Copy all the Parcel from DataSource.parcels[] to new_array_parcels.
             {
                 Parcel[] new_array_Parcels = new Parcel[DataSource.Cofing.parcelsIndex];
                 for (int i = 0; i < DataSource.Cofing.parcelsIndex; i++)
@@ -97,7 +95,7 @@ namespace IDAL
                 return new_array_Parcels;
             }
             public static Drone[] Displays_list_of_drone()
-            //Copy all the customer from DataSource.drones[] to new_array_drones.
+            //Copy all the Drone from DataSource.drones[] to new_array_drones.
             {
                 Drone[] new_array_Drones = new Drone[DataSource.Cofing.droneIndex];
                 for (int i = 0; i < DataSource.Cofing.droneIndex; i++)
