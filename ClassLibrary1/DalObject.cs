@@ -15,47 +15,47 @@ namespace IDAL
             {
                 DataSource.Initialize();
             }
-            public static station GetStation(int stationId)
+            public static ref station GetStation(int stationId)
             // Return the station with stationId
             {
                 for (int i = 0; i <DataSource.Cofing.stationIndex; i++)
                 {
                     if (DataSource.stations[i].Id == stationId)
-                        return DataSource.stations[i];
+                        return ref DataSource.stations[i];
 
                 }
                 Exception e11 = new Exception("tt");
                 throw e11;
             }
-            public static Drone GetDrone(int droneId) {
+            public static ref Drone GetDrone(int droneId) {
                 for (int i = 0; i < 5; i++)
                 {
                     if (DataSource.drones[i].Id == droneId)
-                        return DataSource.drones[i];
+                        return ref DataSource.drones[i];
 
                 }
                 Exception e11 = new Exception("tt");
                 throw e11;
             }
-            public static Customer GetCustomer(int CustomerId)
+            public static ref Customer GetCustomer(int CustomerId)
             // Return the customer with customerId
             {
                 for (int i = 0; i < DataSource.Cofing.customersIndex; i++)
                 {
                     if (DataSource.customers[i].Id == CustomerId)
-                        return DataSource.customers[i];
+                        return ref DataSource.customers[i];
 
                 }
                 Exception e11 = new Exception("tt");
                 throw e11;
             }
-            public static Parcel GetParcel(int ParcelId)
+            public static ref Parcel GetParcel(int ParcelId)
             // Return the parcel with parcelId
             {
                 for (int i = 0; i < DataSource.Cofing.parcelsIndex; i++)
                 {
                     if (DataSource.parcels[i].Id == ParcelId)
-                        return DataSource.parcels[i];
+                        return ref DataSource.parcels[i];
 
                 }
                 Exception e11 = new Exception("tt");
@@ -215,6 +215,61 @@ namespace IDAL
                 dro.Status = (IDAL.DO.Enum.DroneStatus)0;//in crate drone the status is avilble
                 IDAL.DalObject.DataSource.drones[DataSource.Cofing.droneIndex] = dro;
                 DataSource.Cofing.droneIndex++;//update the num of free cell in the array
+            }
+            public static void AffiliationDroneToParcel()
+            {
+                Console.WriteLine("enter parcel ID:\n");
+                int ID = Convert.ToInt32(Console.ReadLine());
+                ref IDAL.DO.Parcel par = ref IDAL.DalObject.DalObject.GetParcel(ID);
+                Console.WriteLine("witch drone do you want to take the parcel?(ID)\n");
+                int droneID = Convert.ToInt32(Console.ReadLine());
+                par.DroneId = droneID;
+                ref IDAL.DO.Drone drone1 = ref IDAL.DalObject.DalObject.GetDrone(droneID);//update drone status
+                drone1.Status = (IDAL.DO.Enum.DroneStatus)2;
+            }
+            public static void pickUp()
+            {
+                Console.WriteLine("which parcel is picked up?\n enter parcel ID:\n");
+                int PickId = Convert.ToInt32(Console.ReadLine());
+                IDAL.DO.Parcel PickPar = IDAL.DalObject.DalObject.GetParcel(PickId);//get the parcel from the array
+                PickPar.PickedUp = DateTime.Now;//update the time of picked up to now
+            }
+            public static void delivered()
+            {
+                Console.WriteLine("which parcel is delivered?\n enter parcel ID:\n");
+                int deliId = Convert.ToInt32(Console.ReadLine());
+                IDAL.DO.Parcel DeliPar = IDAL.DalObject.DalObject.GetParcel(deliId);//get the parcel from the array
+                DeliPar.Delivered = DateTime.Now;//update the time of delivered to now
+            }
+            public static void setFreeStation()
+            {
+
+                Console.WriteLine("enter drone ID:\n");
+                int droneId = Convert.ToInt32(Console.ReadLine());
+                IDAL.DO.Drone dro = IDAL.DalObject.DalObject.GetDrone(droneId);
+                dro.Status = IDAL.DO.Enum.DroneStatus.Baintenance;
+                Console.WriteLine("witch station do you want to set free?\n");
+                int stationId = Convert.ToInt32(Console.ReadLine());
+                IDAL.DO.station statioID = IDAL.DalObject.DalObject.GetStation(stationId);
+                if (statioID.ChargeSlots == 10)//the defolt charge slots is 10, if 10 is free so the station is empty
+                    Console.WriteLine("this station is empty, no drone is cherging here:\n");
+                else
+                    statioID.ChargeSlots++;
+            }
+            public static void droneToCharge()
+            {
+                Console.WriteLine("enter drone ID:\n");
+                int drId = Convert.ToInt32(Console.ReadLine());
+                IDAL.DO.Drone dron = IDAL.DalObject.DalObject.GetDrone(drId);
+                dron.Status = IDAL.DO.Enum.DroneStatus.Baintenance;
+                Console.WriteLine("witch station do you want?\nchoose ID from the list of available charging stations:\n");
+                IDAL.DalObject.DalObject.AvailableChargingStations();//print all the available charging stations
+                int statId = Convert.ToInt32(Console.ReadLine());
+                IDAL.DO.station statioId = IDAL.DalObject.DalObject.GetStation(statId);
+                if (statioId.ChargeSlots > 0)//if the station that the user choose is  free
+                    statioId.ChargeSlots--;
+                else
+                    Console.WriteLine("this station is not vailable:\n");
             }
         }
     }
