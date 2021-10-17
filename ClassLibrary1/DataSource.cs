@@ -33,8 +33,8 @@ namespace IDAL
                     var rand = new Random();
                     drones[i].Id = rand.Next(10000, 99999);
                     drones[i].Battery = rand.Next(1, 100);
-                    drones[i].MaxWeight = (WeightCategories)rand.Next(0, 2);
-                    drones[i].Status = (DroneStatus)rand.Next(0, 2);
+                    drones[i].MaxWeight = (IDAL.DO.Enum.WeightCategories)rand.Next(0, 2);
+                    drones[i].Status = (IDAL.DO.Enum.DroneStatus)rand.Next(0, 2);
                     Cofing.droneIndex++;//elert the index of the free cells at drones arry
                 }
                 for (int i = 0; i < 2; i++)//crate 2 staitons with random data
@@ -66,8 +66,8 @@ namespace IDAL
                     parcels[i].SenderId = rand.Next(11111, 99999);
                     parcels[i].TargetId = rand.Next(11111, 99999);
                     parcels[i].DroneId = rand.Next(11111, 99999);
-                    parcels[i].Weight = (WeightCategories)rand.Next(0, 2);
-                    parcels[i].Priority = (Parcel.Priorities)rand.Next(0, 2);
+                    parcels[i].Weight = (DO.Enum.WeightCategories)rand.Next(0, 2);
+                    parcels[i].Priority = (DO.Enum.Priorities)rand.Next(0, 2);
                     DateTime start = new DateTime(2021, rand.Next(1, 12), rand.Next(1, 31));//crate random time and colculate all the next properties
                     parcels[i].Requested = start.AddMinutes(rand.Next(1, 240));
                     parcels[i].Scheduled = parcels[i].Requested.AddMinutes(rand.Next(20, 60));
