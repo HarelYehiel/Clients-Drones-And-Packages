@@ -75,6 +75,8 @@ namespace ConsoleUI
                                         Console.WriteLine("witch drone do you want to take the parcel?(ID)\n");
                                         int droneID = Convert.ToInt32(Console.ReadLine());
                                         par.DroneId = droneID;
+                                        IDAL.DO.Drone drone1 = IDAL.DalObject.DalObject.GetDrone(droneID);//update drone status
+                                        drone1.Status = (IDAL.DO.Enum.DroneStatus)2;
                                         break;
                                     case 2://מקווה שהבנתי נכון את המשימה - עכשיו הגיע איסוף של החבילה ואנחנו שואלים איזה חבילה נאספה כדי לעדכן שעת איסוף
                                         Console.WriteLine("which parcel is picked up?\n enter parcel ID:\n");
@@ -212,3 +214,20 @@ namespace ConsoleUI
         }
     }
 };
+/*
+1
+3
+12345
+harel
+052333555
+31.456789
+34.789456
+1
+2
+11111
+88.5
+HAR
+1
+0
+
+ */
