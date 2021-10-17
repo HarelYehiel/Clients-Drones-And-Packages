@@ -16,8 +16,9 @@ namespace IDAL
                 DataSource.Initialize();
             }
             public static station GetStation(int stationId)
+            // Return the station with stationId
             {
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i <DataSource.Cofing.stationIndex; i++)
                 {
                     if(DataSource.stations[i].Id == stationId)
                         return DataSource.stations[i];
@@ -26,8 +27,10 @@ namespace IDAL
                 Exception e11 = new Exception("tt");
                 throw e11;
             }
-           public static  Drone GetDrone(int droneId) {
-                for (int i = 0; i < 5; i++)
+           public static  Drone GetDrone(int droneId)
+            // Return the drone with droneId
+            {
+                for (int i = 0; i < DataSource.Cofing.droneIndex; i++)
                 {
                     if (DataSource.drones[i].Id == droneId)
                         return DataSource.drones[i];
@@ -37,8 +40,9 @@ namespace IDAL
                 throw e11;
             }
             public static Customer GetCustomer(int CustomerId)
+            // Return the customer with customerId
             {
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < DataSource.Cofing.customersIndex; i++)
                 {
                     if (DataSource.drones[i].Id == CustomerId)
                         return DataSource.customers[i];
@@ -48,8 +52,9 @@ namespace IDAL
                 throw e11;
             }
             public static Parcel GetParcel(int ParcelId)
+            // Return the parcel with parcelId
             {
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < DataSource.Cofing.parcelsIndex; i++)
                 {
                     if (DataSource.drones[i].Id == ParcelId)
                         return DataSource.parcels[i];
@@ -64,7 +69,7 @@ namespace IDAL
                  return parcelNumber;
             }
 
-            public static station[] Displays_list_of_base_stations()
+            public static station[] Displays_list_of_stations()
             //Copy all the station from DataSource.stations[] to new_array_stations.
             {
                 station[] new_array_stations = new station[DataSource.Cofing.stationIndex];
@@ -103,6 +108,24 @@ namespace IDAL
                     new_array_Drones[i] = DataSource.drones[i];
                 }
                 return new_array_Drones;
+            }
+            public static void displaysParcelsDontHaveDrone()
+            // Print the details of all the parcels don't have An associated skimmer (Selected_drone == 0).
+            {
+                for (int i = 0; i < DataSource.parcels.Length; i++)
+                {
+                    if (DataSource.parcels[i].Selected_drone == 0)
+                        Console.WriteLine(DataSource.parcels[i].ToString() + "\n");
+                }
+            }
+            public static void AvailableChargingStations()
+            //Print the all stations that have DroneCharge available
+            {
+                for (int i = 0; i < DataSource.Cofing.stationIndex; i++)
+                {
+                    if(DataSource.stations[i].ChargeSlots != 0)
+                        Console.WriteLine(DataSource.stations[i].ToString());
+                }
             }
         }
     }
