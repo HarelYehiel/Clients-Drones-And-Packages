@@ -42,7 +42,7 @@ namespace IDAL
             {
                 for (int i = 0; i < DataSource.Cofing.customersIndex; i++)
                 {
-                    if (DataSource.drones[i].Id == CustomerId)
+                    if (DataSource.customers[i].Id == CustomerId)
                         return DataSource.customers[i];
 
                 }
@@ -182,7 +182,7 @@ namespace IDAL
                 Console.WriteLine("enter customer ID:(5 digits)");
                 int custId = Convert.ToInt32(Console.ReadLine());//user set id
                 cust.Id = custId;
-                Console.WriteLine("enter drone model:");
+                Console.WriteLine("enter customer name:");
                 string custName = Console.ReadLine();//user input name
                 cust.Name = custName;
                 Console.WriteLine("enter phone number:");
