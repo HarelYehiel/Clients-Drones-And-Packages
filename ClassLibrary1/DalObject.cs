@@ -11,7 +11,7 @@ namespace IDAL
     {
         public struct DalObject
         {
-             public DalObject(int x = 0)
+            public DalObject(int x = 0)
             {
                 DataSource.Initialize();
             }
@@ -20,17 +20,15 @@ namespace IDAL
             {
                 for (int i = 0; i <DataSource.Cofing.stationIndex; i++)
                 {
-                    if(DataSource.stations[i].Id == stationId)
+                    if (DataSource.stations[i].Id == stationId)
                         return DataSource.stations[i];
 
                 }
                 Exception e11 = new Exception("tt");
                 throw e11;
             }
-           public static  Drone GetDrone(int droneId)
-            // Return the drone with droneId
-            {
-                for (int i = 0; i < DataSource.Cofing.droneIndex; i++)
+            public static Drone GetDrone(int droneId) {
+                for (int i = 0; i < 5; i++)
                 {
                     if (DataSource.drones[i].Id == droneId)
                         return DataSource.drones[i];
@@ -56,7 +54,7 @@ namespace IDAL
             {
                 for (int i = 0; i < DataSource.Cofing.parcelsIndex; i++)
                 {
-                    if (DataSource.drones[i].Id == ParcelId)
+                    if (DataSource.parcels[i].Id == ParcelId)
                         return DataSource.parcels[i];
 
                 }
@@ -66,7 +64,7 @@ namespace IDAL
             public static int addParcel()
             {
                 int parcelNumber = ++DataSource.Cofing.runNumber;
-                 return parcelNumber;
+                return parcelNumber;
             }
 
             public static station[] Displays_list_of_stations()
@@ -123,9 +121,102 @@ namespace IDAL
             {
                 for (int i = 0; i < DataSource.Cofing.stationIndex; i++)
                 {
-                    if(DataSource.stations[i].ChargeSlots != 0)
+                    if (DataSource.stations[i].ChargeSlots != 0)
                         Console.WriteLine(DataSource.stations[i].ToString());
                 }
+            }
+
+            public static void addStation() 
+            {
+                IDAL.DO.station sta = new IDAL.DO.station();
+                Console.WriteLine("enter drone-station ID:(5 digits)\n");
+                int Id = Convert.ToInt32(Console.ReadLine());//user set id
+                sta.Id = Id;
+                Console.WriteLine("enter drone-station name:\n");
+                string name = Console.ReadLine();//user input name
+                sta.name = name;
+                Console.WriteLine("enter latitude:\n");
+                double latitude = Convert.ToDouble(Console.ReadLine());//user input latitude
+                sta.latitude = latitude;
+                Console.WriteLine("enter longitude:\n");
+                double longitude = Convert.ToDouble(Console.ReadLine());//user input longitude
+                sta.longitude = longitude;
+                sta.ChargeSlots = 10;//all station have only 10 charge slots 
+                DataSource.stations[DataSource.Cofing.stationIndex] = sta;
+                DataSource.Cofing.stationIndex++;//update the num of free cell in the array
+            }
+            public static void addParcel1()
+            {
+
+                IDAL.DO.Parcel par = new IDAL.DO.Parcel();
+                Console.WriteLine("enter parcel ID(5 digits):\n");
+                int parId = Convert.ToInt32(Console.ReadLine());//user set id
+                par.Id = parId;
+                Console.WriteLine("enter sender ID(5 digits):\n");
+                int senId = Convert.ToInt32(Console.ReadLine());//user set sendr id
+                par.SenderId = senId;
+                Console.WriteLine("enter target ID:(5 digits)\n");
+                int tarId = Convert.ToInt32(Console.ReadLine());//user set target id
+                par.TargetId = tarId;
+                Console.WriteLine("enter drone ID:(5 digits)\n");
+                int dronId = Convert.ToInt32(Console.ReadLine());//user set dron id
+                par.DroneId = dronId;
+                Console.WriteLine("enter weight:\n Light = 0, Medium = 1, Heavy = 2\n");//user set weight of parcel
+                int parWeight = Convert.ToInt32(Console.ReadLine());
+                par.Weight = (IDAL.DO.Enum.WeightCategories)parWeight;
+                Console.WriteLine("enter priority:\n Normal = 0, Fast = 1, Emergency =2");
+                int parPriority = Convert.ToInt32(Console.ReadLine());
+                par.Priority = (IDAL.DO.Enum.Priorities)parPriority;
+                par.Requested = DateTime.Now;//the requestsd time is now
+                par.Scheduled = par.Requested.AddMinutes(5);//the parcel find drone at 5 minutes
+                par.PickedUp = par.Scheduled.AddMinutes(15);
+                Random rand = new Random();
+                par.Delivered = par.PickedUp.AddMinutes(rand.Next(20, 60));//the parcl delivered to the target at 20-60 minutes
+                IDAL.DalObject.DataSource.parcels[DataSource.Cofing.parcelsIndex] = par;
+                DataSource.Cofing.parcelsIndex++;//update the num of free cell in the array
+            }
+            public static void addCustomer()
+            {
+
+                IDAL.DO.Customer cust = new IDAL.DO.Customer();
+                Console.WriteLine("enter customer ID:(5 digits)\n");
+                int custId = Convert.ToInt32(Console.ReadLine());//user set id
+                cust.Id = custId;
+                Console.WriteLine("enter drone model:\n");
+                string custName = Console.ReadLine();//user input name
+                cust.Name = custName;
+                Console.WriteLine("enter phone number:\n");
+                string phone = Console.ReadLine();//user set phone number
+                cust.Phone = phone;
+                Console.WriteLine("enter latitude:\n");
+                double cust_latitude = Convert.ToDouble(Console.ReadLine());//user input latitude
+                cust.latitude = cust_latitude;
+                Console.WriteLine("enter longitude:\n");
+                double cust_longitude = Convert.ToDouble(Console.ReadLine());//user input longitude
+                cust.longitude = cust_longitude;
+                IDAL.DalObject.DataSource.customers[DataSource.Cofing.customersIndex] = cust;
+                DataSource.Cofing.customersIndex++;//update the num of free cell in the array
+            }
+            public static void addDrone()
+            {
+                IDAL.DO.Drone dro = new IDAL.DO.Drone();
+                Console.WriteLine("enter drone ID:(5 digits)\n");
+                int droId = Convert.ToInt32(Console.ReadLine());//user set id
+                dro.Id = droId;
+                Console.WriteLine("enter drone battery status:\n");
+                double battery = Convert.ToDouble(Console.ReadLine());//user set Battery status
+                dro.Battery = battery;
+                Console.WriteLine("enter drone model:\n");
+                string model = Console.ReadLine();//user input Model
+                dro.Model = model;
+                Console.WriteLine("enter drone weight:\n Light = 0, Medium = 1, Heavy = 2\n");
+                int weightChoose = Convert.ToInt32(Console.ReadLine());//user input weight
+                dro.MaxWeight = (IDAL.DO.Enum.WeightCategories)weightChoose;//convert the choose to WeightCategories
+                Console.WriteLine("enter drone status:\n Avilble = 0, Baintenance = 1, Delivery = 2 \n");
+                int statusChoose = Convert.ToInt32(Console.ReadLine());//user input status
+                dro.Status = (IDAL.DO.Enum.DroneStatus)statusChoose;
+                IDAL.DalObject.DataSource.drones[DataSource.Cofing.droneIndex] = dro;
+                DataSource.Cofing.droneIndex++;//update the num of free cell in the array
             }
         }
     }

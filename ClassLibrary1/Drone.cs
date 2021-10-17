@@ -12,19 +12,15 @@ namespace IDAL
         {//all the properties
             public int Id { get; set; }
             public string Model { get; set; }
-            public WeightCategories MaxWeight{ get; set; }
-            public DroneStatus Status{ get; set; }
+            public Enum.WeightCategories MaxWeight{ get; set; }
+            public Enum.DroneStatus Status{ get; set; }
             public double Battery { get; set; }
 
             public override string ToString()
             {
                 return $"Drone ID: {Id}, model: {Model}, status: {Status}, maxWeight: {MaxWeight}, battery: {Battery}";
             }            
-        }
-        public enum WeightCategories { Light, Medium, Heavy}
-       
-        public enum DroneStatus { Avilble, Baintenance, Delivery}
-        
+        }        
 
     }
 }
