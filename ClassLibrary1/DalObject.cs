@@ -169,9 +169,6 @@ namespace IDAL
                 par.Priority = (IDAL.DO.Enum.Priorities)parPriority;
                 par.Requested = DateTime.Now;//the requestsd time is now
                 par.Scheduled = par.Requested.AddMinutes(5);//the parcel find drone at 5 minutes
-                par.PickedUp = par.Scheduled.AddMinutes(15);
-                Random rand = new Random();
-                par.Delivered = par.PickedUp.AddMinutes(rand.Next(20, 60));//the parcl delivered to the target at 20-60 minutes
                 IDAL.DalObject.DataSource.parcels[DataSource.Cofing.parcelsIndex] = par;
                 DataSource.Cofing.parcelsIndex++;//update the num of free cell in the array
             }
