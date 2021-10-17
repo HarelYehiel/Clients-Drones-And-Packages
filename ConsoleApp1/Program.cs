@@ -133,19 +133,19 @@ namespace ConsoleUI
                             switch (ch3) //Display
                             {
                                 case 1:
-                                    DalObject.GetStation(id).ToString();
+                                    Console.WriteLine(DalObject.GetStation(id).ToString());
                                     break;
 
                                 case 2:
-                                    DalObject.GetDrone(id).ToString();
+                                    Console.WriteLine( DalObject.GetDrone(id).ToString());
                                     break;
 
                                 case 3:
-                                    DalObject.GetCustomer(id).ToString();
+                                    Console.WriteLine(DalObject.GetCustomer(id).ToString());
                                     break;
 
                                 case 4:
-                                    DalObject.GetParcel(id).ToString();
+                                    Console.WriteLine(DalObject.GetParcel(id).ToString());
                                     break;
 
                             }
@@ -228,6 +228,22 @@ harel
 88.5
 HAR
 1
+1
+1
+22222
+Har
+34.123456
+31.321654
+1
+4
+33333
+12345
+12345
+11111
 0
+0
+3
+1
+22222
 
  */
