@@ -112,7 +112,7 @@ namespace IDAL
             {
                 for (int i = 0; i < DataSource.parcels.Length; i++)
                 {
-                    if (DataSource.parcels[i].Selected_drone == 0)
+                    if (DataSource.parcels[i].Id != 0 && DataSource.parcels[i].DroneId == 0 )
                         Console.WriteLine(DataSource.parcels[i].ToString() + "\n");
                 }
             }
