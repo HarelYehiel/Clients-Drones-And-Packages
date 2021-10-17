@@ -21,18 +21,18 @@ namespace IDAL
             {
                 return $"Station ID: {Id}, name: {name}, longitude: {longitude}, latitude: {latitude}";
             }
-          /*  public static string func()
-            {
-                Console.WriteLine("Do you want sexagesimal or deegre?\n");
-                string ans = Console.ReadLine();
-                if(ans == "sexagesimal") 
-                {
-                set
-                }
-                return
-            }
-*/            
+            /*  public static string func()
+              {
+                  Console.WriteLine("Do you want sexagesimal or deegre?\n");
+                  string ans = Console.ReadLine();
+                  if(ans == "sexagesimal") 
+                  {
+                  set
+                  }
+                  return
+              }
+  */
         }
-        
+
     }
 }
