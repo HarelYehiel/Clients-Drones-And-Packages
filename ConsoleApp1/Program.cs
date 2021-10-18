@@ -13,7 +13,7 @@ namespace ConsoleUI
 
             {
                 Console.WriteLine("Choose one of the following:");
-                int ch, ch1, ch2,ch3,ch4;
+                int ch, ch1, ch2, ch3, ch4;
                 do
                 {
                     Console.WriteLine("press 1 to add new object:");
@@ -55,34 +55,43 @@ namespace ConsoleUI
                             break;
 
                         case 2:
-                            Console.WriteLine("Choose one of the following:");
-                            Console.WriteLine("press 0 to back ");
-                            Console.WriteLine("press 1 to assign a parcel to drone ");
-                            Console.WriteLine("press 2 to update pick up time");
-                            Console.WriteLine("press 3 to update arrival time");
-                            Console.WriteLine("press 4 to send drone from charge in station ");
-                            Console.WriteLine("press 5 to send drone to charge at station");
+
                             do
                             {
+                                Console.WriteLine("Choose one of the following:");
+                                Console.WriteLine("press 0 to back ");
+                                Console.WriteLine("press 1 to assign a parcel to drone ");
+                                Console.WriteLine("press 2 to update pick up time");
+                                Console.WriteLine("press 3 to update arrival time");
+                                Console.WriteLine("press 4 to send drone from charge in station ");
+                                Console.WriteLine("press 5 to send drone to charge at station");
                                 ch2 = Convert.ToInt32(Console.ReadLine());
-                                switch (ch2)
+                                try
                                 {
-                                    case 1://update witch drone is pickUp this parcel
-                                        IDAL.DalObject.DalObject.AffiliationDroneToParcel();
-                                        break;
-                                    case 2:
-                                        IDAL.DalObject.DalObject.pickUp();
-                                        break;
-                                    case 3://update at the Parcel odbject delivered time
-                                        IDAL.DalObject.DalObject.delivered();
-                                        break;
-                                    case 4:
-                                        IDAL.DalObject.DalObject.setFreeStation();
-                                        break;
-                                    case 5:
-                                        IDAL.DalObject.DalObject.droneToCharge();
-                                        break;
+                                    switch (ch2)
+                                    {
+                                        case 1://update witch drone is pickUp this parcel
+                                            IDAL.DalObject.DalObject.AffiliationDroneToParcel();
+                                            break;
+                                        case 2:
+                                            IDAL.DalObject.DalObject.pickUp();
+                                            break;
+                                        case 3://update at the Parcel odbject delivered time
+                                            IDAL.DalObject.DalObject.delivered();
+                                            break;
+                                        case 4:
+                                            IDAL.DalObject.DalObject.setFreeStation();
+                                            break;
+                                        case 5:
+                                            IDAL.DalObject.DalObject.droneToCharge();
+                                            break;
+                                    }
                                 }
+                                catch (Exception e)
+                                {
+                                    Console.WriteLine(e);
+                                }
+
                             } while (ch2 != 0);
                             break;
 
@@ -122,7 +131,7 @@ namespace ConsoleUI
                             {
                                 Console.WriteLine(e);
                             }
-                            
+
                             break;
 
                         case 4:
