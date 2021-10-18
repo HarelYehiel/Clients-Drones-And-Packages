@@ -96,25 +96,33 @@ namespace ConsoleUI
                             ch3 = Convert.ToInt32(Console.ReadLine());
                             Console.WriteLine("Type an ID\n");
                             int id = Convert.ToInt32(Console.ReadLine());
-                            switch (ch3) //Display
+                            try
                             {
-                                case 1:
-                                    Console.WriteLine(DalObject.GetStation(id).ToString());
-                                    break;
+                                switch (ch3) //Display
+                                {
+                                    case 1:
+                                        Console.WriteLine(DalObject.GetStation(id).ToString());
+                                        break;
 
-                                case 2:
-                                    Console.WriteLine( DalObject.GetDrone(id).ToString());
-                                    break;
+                                    case 2:
+                                        Console.WriteLine(DalObject.GetDrone(id).ToString());
+                                        break;
 
-                                case 3:
-                                    Console.WriteLine(DalObject.GetCustomer(id).ToString());
-                                    break;
+                                    case 3:
+                                        Console.WriteLine(DalObject.GetCustomer(id).ToString());
+                                        break;
 
-                                case 4:
-                                    Console.WriteLine(DalObject.GetParcel(id).ToString());
-                                    break;
+                                    case 4:
+                                        Console.WriteLine(DalObject.GetParcel(id).ToString());
+                                        break;
 
+                                }
                             }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine(e);
+                            }
+                            
                             break;
 
                         case 4:
