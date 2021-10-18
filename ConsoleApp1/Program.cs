@@ -21,7 +21,6 @@ namespace ConsoleUI
                     Console.WriteLine("press 3 to see object properties:");
                     Console.WriteLine("press 4 to see lists of  objects:");
                     Console.WriteLine("press 5 to exit:");
-
                     ch = Convert.ToInt32(Console.ReadLine());
                     switch (ch)
                     {

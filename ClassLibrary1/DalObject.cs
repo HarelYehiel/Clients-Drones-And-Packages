@@ -245,23 +245,32 @@ namespace IDAL
                 int droneId = Convert.ToInt32(Console.ReadLine());
                 ref IDAL.DO.Drone dro = ref IDAL.DalObject.DalObject.GetDrone(droneId);
                 dro.Status = IDAL.DO.Enum.DroneStatus.Baintenance;
-                Console.WriteLine("witch station do you want to set free?\n");
-                int stationId = Convert.ToInt32(Console.ReadLine());
-                ref IDAL.DO.station statioID = ref IDAL.DalObject.DalObject.GetStation(stationId);
+                station statioID = new station();
+                statioID.Id = dro.stationOfCharge.staitionId;
+                statioID = GetStation(statioID.Id);
                 if (statioID.ChargeSlots == 10)//the defolt charge slots is 10, if 10 is free so the station is empty
                     Console.WriteLine("this station is empty, no drone is cherging here:\n");
                 else
+                {
                     statioID.ChargeSlots++;
+                    DroneCharge charge = new DroneCharge();
+                    charge.staitionId = 0;
+                    charge.DroneId = droneId;
+                }
             }
             public static void droneToCharge()
             {
                 Console.WriteLine("enter drone ID:\n");
                 int drId = Convert.ToInt32(Console.ReadLine());
                 ref IDAL.DO.Drone dron = ref IDAL.DalObject.DalObject.GetDrone(drId);
-                dron.Status = IDAL.DO.Enum.DroneStatus.Baintenance;
+                dron.Status = IDAL.DO.Enum.DroneStatus.Baintenance;//update the drone status for not call him for another things
                 Console.WriteLine("witch station do you want?\nchoose ID from the list of available charging stations:\n");
                 IDAL.DalObject.DalObject.AvailableChargingStations();//print all the available charging stations
                 int statId = Convert.ToInt32(Console.ReadLine());
+                IDAL.DO.DroneCharge charge = new DroneCharge();//crate new object type DroneChrge
+                charge.DroneId = drId;
+                charge.staitionId = statId;
+                dron.stationOfCharge = charge;//after update the data of DroneCharge update the informaition in the dron
                 ref IDAL.DO.station statioId = ref IDAL.DalObject.DalObject.GetStation(statId);
                 if (statioId.ChargeSlots > 0)//if the station that the user choose is  free
                     statioId.ChargeSlots--;

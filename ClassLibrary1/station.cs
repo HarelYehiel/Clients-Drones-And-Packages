@@ -13,7 +13,7 @@ namespace IDAL
             public double longitude { get; set; }
             public double latitude { get; set; }
             public int ChargeSlots { get; set; }
-            public static DO.DroneCharge[] droneCharges = new DO.DroneCharge[10];
+
             
             
 
