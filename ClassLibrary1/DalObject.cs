@@ -171,6 +171,7 @@ namespace IDAL
                 par.Scheduled = par.Requested.AddMinutes(5);//the parcel find drone at 5 minutes
                 IDAL.DalObject.DataSource.parcels[DataSource.Cofing.parcelsIndex] = par;
                 DataSource.Cofing.parcelsIndex++;//update the num of free cell in the array
+                par.runNumber = addParcel();//update the run-number serial
             }
             public static void addCustomer()
             {
