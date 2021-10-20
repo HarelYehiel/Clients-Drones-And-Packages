@@ -287,6 +287,18 @@ namespace IDAL
                 else
                     Console.WriteLine("this station is not vailable:");
             }
+            public static void chooseObjectToconvert()
+            {
+                Console.WriteLine("witch cordinate you want to convert? ");
+                IDAL.DO.Point point = new Point();
+                point.Latitude = Convert.ToDouble(Console.ReadLine());
+                point.Longitude = Convert.ToDouble(Console.ReadLine());
+                string newLat = IDAL.DO.Point.convertLatitudeToDegree(point);
+                string newLon = IDAL.DO.Point.convertLongitudeToDegree(point);
+                Console.WriteLine("the new Latitude is: " + newLat);
+                Console.WriteLine("the new Longitude is: " + newLon);
+
+            }
 
             public static void distanceFromCustomerOrStation()
             /*Receives coordinates of any point from the user and prints distance
