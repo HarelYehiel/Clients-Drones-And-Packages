@@ -18,7 +18,7 @@ namespace IDAL
             public static ref station GetStation(int stationId)
             // Return the station with stationId
             {
-                for (int i = 0; i <DataSource.Cofing.stationIndex; i++)
+                for (int i = 0; i < DataSource.Cofing.stationIndex; i++)
                 {
                     if (DataSource.stations[i].Id == stationId)
                         return ref DataSource.stations[i];
@@ -27,7 +27,8 @@ namespace IDAL
                 Exception e11 = new Exception("tt");
                 throw e11;
             }
-            public static ref Drone GetDrone(int droneId) {
+            public static ref Drone GetDrone(int droneId)
+            {
                 for (int i = 0; i < 5; i++)
                 {
                     if (DataSource.drones[i].Id == droneId)
@@ -112,7 +113,7 @@ namespace IDAL
             {
                 for (int i = 0; i < DataSource.parcels.Length; i++)
                 {
-                    if (DataSource.parcels[i].Id != 0 && DataSource.parcels[i].DroneId == 0 )
+                    if (DataSource.parcels[i].Id != 0 && DataSource.parcels[i].DroneId == 0)
                         Console.WriteLine(DataSource.parcels[i].ToString()
                             );
                 }
@@ -127,21 +128,26 @@ namespace IDAL
                 }
             }
 
-            public static void addStation() 
+            public static void addStation()
             {
                 IDAL.DO.station sta = new IDAL.DO.station();
+               
                 Console.WriteLine("enter drone-station ID:(5 digits)");
-                int Id = Convert.ToInt32(Console.ReadLine());//user set id
-                sta.Id = Id;
+                sta.Id = Convert.ToInt32(Console.ReadLine());//user set id
+                
+                
                 Console.WriteLine("enter drone-station name:");
-                string name = Console.ReadLine();//user input name
-                sta.name = name;
-                Console.WriteLine("enter latitude:");
-                double latitude = Convert.ToDouble(Console.ReadLine());//user input latitude
-                sta.latitude = latitude;
-                Console.WriteLine("enter longitude:");
-                double longitude = Convert.ToDouble(Console.ReadLine());//user input longitude
-                sta.longitude = longitude;
+                sta.name = Console.ReadLine();//user input name
+
+                Point p = new Point();
+                Console.WriteLine("enter Latitude:");
+                p.Latitude = Convert.ToDouble(Console.ReadLine());//user input Latitude
+
+                Console.WriteLine("enter Longitude:");
+                p.Longitude = Convert.ToDouble(Console.ReadLine());//user input Longitude
+
+                sta.Location = p;
+
                 sta.ChargeSlots = 10;//all station have only 10 charge slots 
                 DataSource.stations[DataSource.Cofing.stationIndex] = sta;
                 DataSource.Cofing.stationIndex++;//update the num of free cell in the array
@@ -179,20 +185,22 @@ namespace IDAL
 
                 IDAL.DO.Customer cust = new IDAL.DO.Customer();
                 Console.WriteLine("enter customer ID:(5 digits)");
-                int custId = Convert.ToInt32(Console.ReadLine());//user set id
-                cust.Id = custId;
+                cust.Id =  Convert.ToInt32(Console.ReadLine());//user set id
+
                 Console.WriteLine("enter customer name:");
-                string custName = Console.ReadLine();//user input name
-                cust.Name = custName;
+                cust.Name = Console.ReadLine();//user input name
+                
                 Console.WriteLine("enter phone number:");
-                string phone = Console.ReadLine();//user set phone number
-                cust.Phone = phone;
-                Console.WriteLine("enter latitude:");
-                double cust_latitude = Convert.ToDouble(Console.ReadLine());//user input latitude
-                cust.latitude = cust_latitude;
-                Console.WriteLine("enter longitude:");
-                double cust_longitude = Convert.ToDouble(Console.ReadLine());//user input longitude
-                cust.longitude = cust_longitude;
+                cust.Phone = Console.ReadLine();//user set phone number
+                
+                Console.WriteLine("enter Latitude:");
+                Point P = new Point();
+                P.Latitude = Convert.ToDouble(Console.ReadLine());//user input Latitude
+                Console.WriteLine("enter Longitude:");
+                P.Longitude = Convert.ToDouble(Console.ReadLine());//user input Longitude
+
+                cust.Location = P;
+
                 IDAL.DalObject.DataSource.customers[DataSource.Cofing.customersIndex] = cust;
                 DataSource.Cofing.customersIndex++;//update the num of free cell in the array
             }
@@ -278,6 +286,65 @@ namespace IDAL
                     statioId.ChargeSlots--;
                 else
                     Console.WriteLine("this station is not vailable:");
+            }
+
+            public static void distanceFromCustomerOrStation()
+            /*Receives coordinates of any point from the user and prints distance
+            from any base or client to that point.*/
+            {
+                Console.WriteLine("Type Latitude and Longitude");
+                Point p = new Point();
+                p.Latitude = Convert.ToDouble(Console.ReadLine());
+                p.Longitude = Convert.ToDouble(Console.ReadLine());
+                int choose;
+                
+                do
+                {
+                    
+                    Console.WriteLine("Choose one of the following:" +
+                                        "\n1 = distance from customer" +
+                                        "\n2 = distance from station");
+                    choose = Convert.ToInt32(Console.ReadLine());
+                    double minDistance = DataSource.customers[0].Location.distancePointToPoint(p);
+                    int saveTheI = 0;// save the index with minimum destance from the point p
+                    switch (choose)
+                    {
+                        case 1: 
+                            for (int i = 1; i < DataSource.Cofing.customersIndex; i++)
+                            {
+                                double distance = DataSource.customers[i].Location.distancePointToPoint(p);
+                                if (minDistance > distance)
+                                {
+                                    saveTheI = i;
+                                    minDistance = distance;
+                                }
+                            }
+                            Console.WriteLine("The minimum distancefrom the point is: {0}" +
+                                "\nThe id of customer is: {1}",minDistance, DataSource.customers[saveTheI].Id);
+
+                            return;
+
+                        case 2:
+                            for (int i = 0; i < DataSource.Cofing.stationIndex; i++)
+                            {
+                                double distance = DataSource.stations[i].Location.distancePointToPoint(p);
+                                if (minDistance > distance)
+                                {
+                                    saveTheI = i;
+                                    minDistance = distance;
+                                }
+                            }
+                            Console.WriteLine("The minimum distance from the point is: {0}" +
+                                "\nThe id of station is: {1}", minDistance, DataSource.stations[saveTheI].Id);
+                            return;
+
+                        default:                            
+                            break;
+                    }
+                } while (choose != 1 && choose != 2);
+                Exception e11 = new Exception("Error in function distanceFromCustomerOrStation");
+                throw e11; 
+
             }
         }
     }

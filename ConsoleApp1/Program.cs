@@ -20,7 +20,8 @@ namespace ConsoleUI
                     Console.WriteLine("press 2 to update object properties:");
                     Console.WriteLine("press 3 to see object properties:");
                     Console.WriteLine("press 4 to see lists of  objects:");
-                    Console.WriteLine("press 5 to exit:");
+                    Console.WriteLine("press 5 to more function:");
+                    Console.WriteLine("press 6 to exit");
                     ch = Convert.ToInt32(Console.ReadLine());
                     switch (ch)
                     {
@@ -187,10 +188,39 @@ namespace ConsoleUI
                                     break;
                             }
                             break;
+                        case 5:
+                            Console.WriteLine("Choose one of the following:");
+                            Console.WriteLine("press 0 to back ");
+                            Console.WriteLine("press 1 to View on 'sexagesimal' (60sex- based on 'sexagesimal') - of the coordinate point.");
+                            Console.WriteLine("Press 2 to get the distance from a client or station from point coordinates.");
+                            ch4 = Convert.ToInt32(Console.ReadLine());
+                            try
+                            {
+                                switch (ch4)
+                                {
+                                    case 0:
+                                        break;
+                                    case 1:
+
+                                        break;
+                                    case 2:
+                                        DalObject.distanceFromCustomerOrStation();
+                                        break;
+
+                                }
+
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine(e);
+                            }
+                            break;
+
+
 
 
                     }
-                } while (ch != 5);
+                } while (ch != 6);
 
             }
 
@@ -277,6 +307,25 @@ Har
 2
 3
 22222
+0
+1
+3
+11111
+1
+1
+111
+111
+1
+3
+22222
+2
+2
+333
+333
+5
+2
+222.1
+222.1
+1
 
-
- */
+*/

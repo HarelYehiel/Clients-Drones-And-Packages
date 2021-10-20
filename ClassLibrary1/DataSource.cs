@@ -43,8 +43,10 @@ namespace IDAL
                     var rand = new Random();
                     stations[i].Id = rand.Next(10000, 99999);
                     stations[i].name = "sta" + rand.Next(1, 99);
-                    stations[i].latitude = 31 + rand.Next(0, 1);
-                    stations[i].longitude = 34 + rand.Next(0, 1);
+                    Point p = new Point();
+                   p.Latitude = 31 + rand.Next(0, 1);
+                   p.Longitude = 34 + rand.Next(0, 1);
+                    stations[i].Location = p;
                     Cofing.stationIndex++; //elert the index of the free cells at staions arrry
                 }
                 for (int i = 0; i < 10; i++)//crate new 10 random coustomers
@@ -54,8 +56,10 @@ namespace IDAL
                     customers[i].Id = rand.Next(11111, 99999);
                     customers[i].Name = "cust" + rand.Next(1, 99);
                     customers[i].Phone = "05" + rand.Next(10000000, 99999999);
-                    customers[i].latitude = 31 + rand.Next(0, 1);
-                    customers[i].longitude = 34 + rand.Next(0, 1);
+                    Point p = new Point();
+                    p.Latitude = 31 + rand.Next(0, 1);
+                    p.Longitude = 34 + rand.Next(0, 1);
+                    customers[i].Location = p;
                     Cofing.customersIndex++;//elert the index of the free cell at customers array
                 }
                 for (int i = 0; i < 10; i++)//crate new 10  parcels with random data
