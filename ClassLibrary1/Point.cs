@@ -34,7 +34,6 @@ namespace IDAL
                 return sexagesimal;
             }
 
-
         }
     }
 
