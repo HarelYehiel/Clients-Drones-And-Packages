@@ -38,17 +38,17 @@ namespace ConsoleUI
                                 switch (ch1)
                                 {
                                     case 1:
-                                        IDAL.DalObject.DalObject.addStation();
+                                        functionCase1.addStation();
 
                                         break;
                                     case 2:
-                                        IDAL.DalObject.DalObject.addDrone();
+                                        functionCase1.addDrone();
                                         break;
                                     case 3:
-                                        IDAL.DalObject.DalObject.addCustomer();
+                                        functionCase1.addCustomer();
                                         break;
                                     case 4:
-                                        IDAL.DalObject.DalObject.addParcel1();
+                                        functionCase1.addParcel1();
                                         break;
                                 }
                                 break;
@@ -72,19 +72,19 @@ namespace ConsoleUI
                                     switch (ch2)
                                     {
                                         case 1://update witch drone is pickUp this parcel
-                                            IDAL.DalObject.DalObject.AffiliationDroneToParcel();
+                                            functionCase2.AffiliationDroneToParcel();
                                             break;
                                         case 2:
-                                            IDAL.DalObject.DalObject.pickUp();
+                                            functionCase2.pickUp();
                                             break;
                                         case 3://update at the Parcel odbject delivered time
-                                            IDAL.DalObject.DalObject.delivered();
+                                            functionCase2.delivered();
                                             break;
                                         case 4:
-                                            IDAL.DalObject.DalObject.setFreeStation();
+                                            functionCase2.setFreeStation();
                                             break;
                                         case 5:
-                                            IDAL.DalObject.DalObject.droneToCharge();
+                                            functionCase2.droneToCharge();
                                             break;
                                     }
                                 }
@@ -111,19 +111,19 @@ namespace ConsoleUI
                                 switch (ch3) //Display
                                 {
                                     case 1:
-                                        Console.WriteLine(DalObject.GetStation(id).ToString());
+                                        Console.WriteLine(IDAL.DalObject.DalObject.GetStation(id).ToString());
                                         break;
 
                                     case 2:
-                                        Console.WriteLine(DalObject.GetDrone(id).ToString());
+                                        Console.WriteLine(IDAL.DalObject.DalObject.GetDrone(id).ToString());
                                         break;
 
                                     case 3:
-                                        Console.WriteLine(DalObject.GetCustomer(id).ToString());
+                                        Console.WriteLine(IDAL.DalObject.DalObject.GetCustomer(id).ToString());
                                         break;
 
                                     case 4:
-                                        Console.WriteLine(DalObject.GetParcel(id).ToString());
+                                        Console.WriteLine(IDAL.DalObject.DalObject.GetParcel(id).ToString());
                                         break;
 
                                 }
@@ -148,7 +148,7 @@ namespace ConsoleUI
                             switch (ch4)
                             {
                                 case 1:
-                                    station[] s = DalObject.Displays_list_of_stations();
+                                    station[] s = IDAL.DalObject.DalObject.Displays_list_of_stations();
                                     for (int i = 0; i < s.Length; i++)
                                     {
                                         Console.WriteLine(s[i].ToString() + "\n");
@@ -156,7 +156,7 @@ namespace ConsoleUI
                                     break;
 
                                 case 2:
-                                    Drone[] d = DalObject.Displays_list_of_drone();
+                                    Drone[] d = IDAL.DalObject.DalObject.Displays_list_of_drone();
                                     for (int i = 0; i < d.Length; i++)
                                     {
                                         Console.WriteLine(d[i].ToString() + "\n");
@@ -164,7 +164,7 @@ namespace ConsoleUI
                                     break;
 
                                 case 3:
-                                    Customer[] c = DalObject.Displays_list_of_custmers();
+                                    Customer[] c = IDAL.DalObject.DalObject.Displays_list_of_custmers();
                                     for (int i = 0; i < c.Length; i++)
                                     {
                                         Console.WriteLine(c[i].ToString() + "\n");
@@ -172,7 +172,8 @@ namespace ConsoleUI
                                     break;
 
                                 case 4:
-                                    Parcel[] p = DalObject.Displays_list_of_Parcels();
+                                    Parcel[] p = IDAL.DalObject.DalObject.Displays_list_of_Parcels();
+
                                     for (int i = 0; i < p.Length; i++)
                                     {
                                         Console.WriteLine(p[i].ToString() + "\n");
@@ -180,11 +181,11 @@ namespace ConsoleUI
                                     break;
 
                                 case 5:
-                                    DalObject.displaysParcelsDontHaveDrone();
+                                    IDAL.DalObject.DalObject.displaysParcelsDontHaveDrone();
                                     break;
 
                                 case 6:
-                                    DalObject.AvailableChargingStations();
+                                    IDAL.DalObject.DalObject.AvailableChargingStations();
                                     break;
                             }
                             break;
@@ -201,10 +202,10 @@ namespace ConsoleUI
                                     case 0:
                                         break;
                                     case 1:
-                                        DalObject.chooseObjectToconvert();
+                                        functionCase5.chooseObjectToconvert();
                                         break;
                                     case 2:
-                                        DalObject.distanceFromCustomerOrStation();
+                                        functionCase5.distanceFromCustomerOrStation();
                                         break;
 
                                 }
