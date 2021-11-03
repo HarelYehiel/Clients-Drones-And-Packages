@@ -17,12 +17,11 @@ namespace IDAL
             public static DO.Parcel[] parcels = new DO.Parcel[1000];
             internal struct Cofing
             {
-                public static int runNumber = 0;
-                public static int droneIndex = 0;
-                public static int stationIndex = 0;
-                public static int customersIndex = 0;
-                public static int parcelsIndex = 0;
-
+                public static double vacant;
+                public static double lightWeight;
+                public static double mediumWeight;
+                public static double heavyWeight;
+                public static double droneLoadingRate;
             }
 
             public static void Initialize()

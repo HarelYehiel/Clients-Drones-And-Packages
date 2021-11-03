@@ -13,10 +13,10 @@ namespace IDAL
             public int Id { get; set; }
             public string Name { get; set; }
             public string Phone { get; set; }
-            public Point Location { get; set; }
+            public Point location { get; set; }
             public override string ToString()
             {
-                return $"Customer ID: {Id}, Name: {Name}, Phone: {Phone}, Longitude: {Location.Longitude}, Latitude: {Location.Latitude}";
+                return $"Customer ID: {Id}, Name: {Name}, Phone: {Phone}, Longitude: {location.Longitude}, Latitude: {location.Latitude}";
             }
 
         }
