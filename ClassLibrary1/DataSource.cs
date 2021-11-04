@@ -21,11 +21,11 @@ namespace IDAL
 
             internal struct Config
             {
-                public static double vacant;
-                public static double lightWeight;
-                public static double mediumWeight;
-                public static double heavyWeight;
-                public static double droneLoadingRate;
+                public static double vacant { get; set; }
+                public static double lightWeight { get; set; }
+                public static double mediumWeight { get; set; }
+                public static double heavyWeight { get; set; }
+                public static double droneLoadingRate { get; set; }
             }
 
             public static void Initialize()

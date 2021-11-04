@@ -154,7 +154,7 @@ namespace IDAL
                 }
                 return stat;
             }
-            public string MinmumFromCustomer(double minDistance, Point p)
+            public string MinimumFromCustomer(double minDistance, Point p)
 
             {
                 int saveTheI = 0;// save the index with minimum destance from the point p

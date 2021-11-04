@@ -11,6 +11,7 @@ namespace IDAL
     {
         public interface IDal
         {
+            
             public double[] powerConsumptionBySkimmer();
             public void addParcel(Parcel par);
 
@@ -52,7 +53,7 @@ namespace IDAL
 
 
             //Print the all stations that have DroneCharge available
-            public string MinmumFromCustomer(double minDistance, Point p);
+            public string MinimumFromCustomer(double minDistance, Point p);
 
             public string MinimumFromStation(double minDistance, Point p);
         }

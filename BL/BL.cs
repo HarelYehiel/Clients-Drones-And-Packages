@@ -7,9 +7,13 @@ using System.Threading.Tasks;
 namespace IBL
 {
 
-    class BL : IBL
+    public class BL : IBL
     {
-       public void Insert_options() { }
+        List<BO.Drone> listDrons = new List<BO.Drone>();
+        IDAL.DO.IDal temp = new  IDAL.DalObject.DalObject();
+
+
+        public void Insert_options() { }
 
         /* In function Insert_options*/
         public void Adding_a_base_station() { }

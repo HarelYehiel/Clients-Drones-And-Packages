@@ -10,7 +10,7 @@ namespace IBL
     {
 
 
-        public struct Enum
+        public class Enum
         {
 
             public enum WeightCategories { Light, Medium, Heavy }

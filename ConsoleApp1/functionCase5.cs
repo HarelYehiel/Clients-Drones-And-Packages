@@ -42,7 +42,7 @@ namespace ConsoleUI
                 switch (choose)
                 {
                     case 1:
-                        Console.WriteLine(temp.MinmumFromCustomer(minDistance,p));
+                        Console.WriteLine(temp.MinimumFromCustomer(minDistance,p));
                         return;
 
                     case 2:
