@@ -40,11 +40,11 @@ namespace ConsoleUI
                 switch (choose)
                 {
                     case 1:
-                        IDAL.DalObject.DalObject.MinmumFromCustomer(minDistance,p);
+                        Console.WriteLine(IDAL.DalObject.DalObject.MinmumFromCustomer(minDistance,p));
                         return;
 
                     case 2:
-                        IDAL.DalObject.DalObject.MinimumFromStation(minDistance,p);
+                        Console.WriteLine(IDAL.DalObject.DalObject.MinimumFromStation(minDistance,p));
                         return;
 
                     default:

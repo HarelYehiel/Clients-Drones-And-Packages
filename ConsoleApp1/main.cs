@@ -1,6 +1,7 @@
 ﻿using System;
 using IDAL.DalObject;
 using IDAL.DO;
+using System.Collections.Generic;
 namespace ConsoleUI
 {
     using System;
@@ -72,19 +73,39 @@ namespace ConsoleUI
                                     switch (ch2)
                                     {
                                         case 1://update witch drone is pickUp this parcel
-                                            functionCase2.AffiliationDroneToParcel();
+                                            Console.WriteLine("enter parcel ID:");
+                                            int parcelID = Convert.ToInt32(Console.ReadLine());
+                                            Console.WriteLine("witch drone do you want to take the parcel?(ID)");
+                                            int droneID = Convert.ToInt32(Console.ReadLine());
+                                            IDAL.DalObject.DalObject.AffiliationDroneToParcel(parcelID,droneID);
                                             break;
                                         case 2:
-                                            functionCase2.pickUp();
+                                            Console.WriteLine("which parcel is picked up?\n enter parcel ID:");
+                                            int PickId = Convert.ToInt32(Console.ReadLine());
+                                            IDAL.DalObject.DalObject.pickUp(PickId);
                                             break;
                                         case 3://update at the Parcel odbject delivered time
-                                            functionCase2.delivered();
+                                            Console.WriteLine("which parcel is delivered?\n enter parcel ID:");
+                                            int deliId = Convert.ToInt32(Console.ReadLine());
+                                            IDAL.DalObject.DalObject.delivered(deliId);
                                             break;
                                         case 4:
-                                            functionCase2.setFreeStation();
+                                            Console.WriteLine("enter drone ID:");
+                                            int droneId = Convert.ToInt32(Console.ReadLine());
+                                            IDAL.DalObject.DalObject.setFreeStation(droneId);
                                             break;
                                         case 5:
-                                            functionCase2.droneToCharge();
+                                            Console.WriteLine("enter drone ID:");
+                                            int drId = Convert.ToInt32(Console.ReadLine());
+                                            Console.WriteLine("witch station do you want?\nchoose ID from the list of available charging stations:");
+                                            List<IDAL.DO.station> newList = IDAL.DalObject.DalObject.AvailableChargingStations();//print all the available charging stations
+                                            int statId = Convert.ToInt32(Console.ReadLine());
+
+                                            foreach (IDAL.DO.station station1 in newList)
+                                            {
+                                                Console.WriteLine(station1.ToString());
+                                            }
+                                            IDAL.DalObject.DalObject.droneToCharge(drId,statId);
                                             break;
                                     }
                                 }
@@ -148,44 +169,53 @@ namespace ConsoleUI
                             switch (ch4)
                             {
                                 case 1:
-                                    station[] s = IDAL.DalObject.DalObject.Displays_list_of_stations();
-                                    for (int i = 0; i < s.Length; i++)
+                                    List<IDAL.DO.station> tempSta = IDAL.DalObject.DalObject.Displays_list_of_stations();
+                                    foreach (station station in DataSource.stations)
                                     {
-                                        Console.WriteLine(s[i].ToString() + "\n");
+                                        Console.WriteLine(station.ToString());
                                     }
                                     break;
 
                                 case 2:
-                                    Drone[] d = IDAL.DalObject.DalObject.Displays_list_of_drone();
-                                    for (int i = 0; i < d.Length; i++)
+                                    List<IDAL.DO.Drone> tempDro = IDAL.DalObject.DalObject.Displays_list_of_drone();
+                                    foreach (Drone drone in DataSource.drones)
                                     {
-                                        Console.WriteLine(d[i].ToString() + "\n");
+                                        Console.WriteLine(drone.ToString());
                                     }
                                     break;
 
                                 case 3:
-                                    Customer[] c = IDAL.DalObject.DalObject.Displays_list_of_custmers();
-                                    for (int i = 0; i < c.Length; i++)
+                                    List<IDAL.DO.Customer> tempCus = IDAL.DalObject.DalObject.Displays_list_of_custmers();
+                                    foreach (Customer customer in DataSource.customers)
                                     {
-                                        Console.WriteLine(c[i].ToString() + "\n");
+                                        Console.WriteLine(customer.ToString());
                                     }
                                     break;
+                                    
 
                                 case 4:
-                                    Parcel[] p = IDAL.DalObject.DalObject.Displays_list_of_Parcels();
-
-                                    for (int i = 0; i < p.Length; i++)
+                                    List<IDAL.DO.Parcel> tempPar = IDAL.DalObject.DalObject.Displays_list_of_Parcels();
+                                    foreach (Parcel parcel in DataSource.parcels)
                                     {
-                                        Console.WriteLine(p[i].ToString() + "\n");
+                                        Console.WriteLine(parcel.ToString());
                                     }
                                     break;
 
                                 case 5:
-                                    IDAL.DalObject.DalObject.displaysParcelsDontHaveDrone();
+                                    List<Parcel> ParcelWithoutDrone = IDAL.DalObject.DalObject.displaysParcelsDontHaveDrone();
+                                    foreach(Parcel parcel in ParcelWithoutDrone)
+                                    {
+                                        Console.WriteLine(parcel.ToString());
+                                    }
                                     break;
 
                                 case 6:
-                                    IDAL.DalObject.DalObject.AvailableChargingStations();
+                                    List<station> AvailableCH = IDAL.DalObject.DalObject.AvailableChargingStations();
+                                    foreach(station station in AvailableCH)
+                                    {
+                                        Console.WriteLine(station.ToString());
+
+                                    }
                                     break;
                             }
                             break;

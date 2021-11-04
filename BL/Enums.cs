@@ -4,14 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleUI
+namespace BL
 {
-    class functionCase2
+    class Enums
     {
-
-
-
-
-
+        public enum DroneStatus { Avilble, Baintenance, Delivery }
     }
 }

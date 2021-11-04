@@ -11,17 +11,17 @@ namespace IDAL
     {
         public struct DataSource
         {
-            public static DO.Drone[] drones = new DO.Drone[10];
-            public static DO.station[] stations = new DO.station[5];
-            public static DO.Customer[] customers = new DO.Customer[100];
-            public static DO.Parcel[] parcels = new DO.Parcel[1000];
+            public static List<Drone> drones = new List<Drone>();
+
+            public static List<station> stations = new List<station>();
+
+            public static List<Customer> customers = new List<Customer>();
+            public static List<Parcel> parcels = new List<Parcel>();
+            public interface IEnumerable { IEnumerator<DataSource> GetEnumerator(); }
+
             internal struct Cofing
             {
-                public static int runNumber = 0;
-                public static int droneIndex = 0;
-                public static int stationIndex = 0;
-                public static int customersIndex = 0;
-                public static int parcelsIndex = 0;
+                
 
             }
 
@@ -29,55 +29,49 @@ namespace IDAL
             {
                 for (int i = 0; i < 5; i++)//crate 5 drones withe random data
                 {
-                    drones[i] = new Drone();
+                    Drone drone = new Drone();
                     var rand = new Random();
-                    drones[i].Id = rand.Next(10000, 99999);
-                    drones[i].Battery = rand.Next(1, 100);
-                    drones[i].MaxWeight = (IDAL.DO.Enum.WeightCategories)rand.Next(0, 2);
-                    drones[i].Status = (IDAL.DO.Enum.DroneStatus)rand.Next(0, 2);
-                    Cofing.droneIndex++;//elert the index of the free cells at drones arry
+                    drone.Id = rand.Next(10000, 99999);
+                    drone.MaxWeight = (IDAL.DO.Enum.WeightCategories)rand.Next(0, 2);
+                    drones.Add(drone);
                 }
                 for (int i = 0; i < 2; i++)//crate 2 staitons with random data
                 {
-                    stations[i] = new station();
+                    station station  = new station();
                     var rand = new Random();
-                    stations[i].Id = rand.Next(10000, 99999);
-                    stations[i].name = "sta" + rand.Next(1, 99);
-                    Point p = new Point();
-                   p.Latitude = 31 + rand.Next(0, 1);
-                   p.Longitude = 34 + rand.Next(0, 1);
-                    stations[i].Location = p;
-                    Cofing.stationIndex++; //elert the index of the free cells at staions arrry
-                }
-                for (int i = 0; i < 10; i++)//crate new 10 random coustomers
-                {
-                    customers[i] = new Customer();
-                    var rand = new Random();
-                    customers[i].Id = rand.Next(11111, 99999);
-                    customers[i].Name = "cust" + rand.Next(1, 99);
-                    customers[i].Phone = "05" + rand.Next(10000000, 99999999);
+                    station.Id = rand.Next(10000, 99999);
+                    station.name = "sta" + rand.Next(1, 99);
                     Point p = new Point();
                     p.Latitude = 31 + rand.Next(0, 1);
                     p.Longitude = 34 + rand.Next(0, 1);
-                    customers[i].Location = p;
-                    Cofing.customersIndex++;//elert the index of the free cell at customers array
+                    station.Location = p;
+                    stations.Add(station);
+                }
+                for (int i = 0; i < 10; i++)//crate new 10 random coustomers
+                {
+                    Customer customer = new Customer();
+                    var rand = new Random();
+                    customer.Id = rand.Next(11111, 99999);
+                    customer.Name = "cust" + rand.Next(1, 99);
+                    customer.Phone = "05" + rand.Next(10000000, 99999999);
+                    Point p = new Point();
+                    p.Latitude = 31 + rand.Next(0, 1);
+                    p.Longitude = 34 + rand.Next(0, 1);
+                    customer.Location = p;
+                    customers.Add(customer);
                 }
                 for (int i = 0; i < 10; i++)//crate new 10  parcels with random data
                 {
-                    parcels[i] = new Parcel();
+                    Parcel parcel= new Parcel();
                     var rand = new Random();
-                    parcels[i].Id = rand.Next(11111, 99999);
-                    parcels[i].SenderId = rand.Next(11111, 99999);
-                    parcels[i].TargetId = rand.Next(11111, 99999);
-                    parcels[i].DroneId = rand.Next(11111, 99999);
-                    parcels[i].Weight = (DO.Enum.WeightCategories)rand.Next(0, 2);
-                    parcels[i].Priority = (DO.Enum.Priorities)rand.Next(0, 2);
+                    parcel.Id = rand.Next(11111, 99999);
+                    parcel.SenderId = rand.Next(11111, 99999);
+                    parcel.TargetId = rand.Next(11111, 99999);
+                    parcel.Weight = (DO.Enum.WeightCategories)rand.Next(0, 2);
+                    parcel.Priority = (DO.Enum.Priorities)rand.Next(0, 2);
                     DateTime start = new DateTime(2021, rand.Next(1, 12), rand.Next(1, 31));//crate random time and colculate all the next properties
-                    parcels[i].Requested = start.AddMinutes(rand.Next(1, 240));
-                    parcels[i].Scheduled = parcels[i].Requested.AddMinutes(rand.Next(20, 60));
-                    parcels[i].PickedUp = parcels[i].Requested.AddMinutes(rand.Next(5, 20));
-                    parcels[i].Delivered = parcels[i].Requested.AddMinutes(rand.Next(30, 90));
-                    Cofing.parcelsIndex++;//elert the index of the free cell at parcels array
+                    parcel.Requested = start.AddMinutes(rand.Next(1, 240));
+                    parcels.Add(parcel);
                 }
         }   
 

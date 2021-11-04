@@ -11,20 +11,19 @@ namespace ConsoleUI
 
         public static void addStation()
         {
-            IDAL.DO.station sta = new IDAL.DO.station();
-
+            IDAL.DO.station item = new IDAL.DO.station();
             Console.WriteLine("enter drone-station ID:(5 digits)");
-            sta.Id = Convert.ToInt32(Console.ReadLine());//user set id
+            item.Id = Convert.ToInt32(Console.ReadLine());//user set id
             Console.WriteLine("enter drone-station name:");
-            sta.name = Console.ReadLine();//user input name
+            item.name = Console.ReadLine();//user input name
             IDAL.DO.Point p = new IDAL.DO.Point();
             Console.WriteLine("enter Latitude:");
             p.Latitude = Convert.ToDouble(Console.ReadLine());//user input Latitude
             Console.WriteLine("enter Longitude:");
             p.Longitude = Convert.ToDouble(Console.ReadLine());//user input Longitude
-            sta.Location = p;
-            sta.ChargeSlots = 10;//all station have only 10 charge slots 
-            IDAL.DalObject.DalObject.inputTheStationToArray(sta);//this function is using at the data base so she must to be in DAL project
+            item.Location = p;
+            item.ChargeSlots = 10;//all station have only 10 charge slots 
+            IDAL.DalObject.DalObject.inputTheStationToArray(item);//this function is using at the data base so she must to be in DAL project
           
         }
         public static void addParcel1()
@@ -84,14 +83,12 @@ namespace ConsoleUI
             dro.Id = droId;
             Console.WriteLine("enter drone battery status:");
             double battery = Convert.ToDouble(Console.ReadLine());//user set Battery status
-            dro.Battery = battery;
             Console.WriteLine("enter drone model:");
             string model = Console.ReadLine();//user input Model
             dro.Model = model;
             Console.WriteLine("enter drone weight:\nLight = 0, Medium = 1, Heavy = 2");
             int weightChoose = Convert.ToInt32(Console.ReadLine());//user input weight
             dro.MaxWeight = (IDAL.DO.Enum.WeightCategories)weightChoose;//convert the choose to WeightCategories
-            dro.Status = (IDAL.DO.Enum.DroneStatus)0;//in crate drone the status is avilble
             IDAL.DalObject.DalObject.inputTheDroneToArray(dro);
             
         }

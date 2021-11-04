@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,58 +10,58 @@ namespace IDAL
 {
     namespace DalObject
     {
-        public struct DalObject
+        public class DalObject
         {
             public DalObject(int x = 0)
             {
                 DataSource.Initialize();
             }
-            public static int addParcel()
+            public static void addParcel(Parcel par)
             {
-                int parcelNumber = ++DataSource.Cofing.runNumber;
-                return parcelNumber;
+                par.runNumber++;
             }
-            public static ref IDAL.DO.station GetStation(int stationId)
+
+            public static  IDAL.DO.station GetStation(int stationId)
             // Return the station with stationId
             {
-                for (int i = 0; i < DataSource.Cofing.stationIndex; i++)
+                for (int i = 0; i < DataSource.stations.Count(); i++)
                 {
                     if (IDAL.DalObject.DataSource.stations[i].Id == stationId)
-                        return ref IDAL.DalObject.DataSource.stations[i];
+                        return  DataSource.stations[i];
 
                 }
                 Exception e11 = new Exception("tt");
                 throw e11;
             }
-            public static ref IDAL.DO.Drone GetDrone(int droneId)
+            public static  IDAL.DO.Drone GetDrone(int droneId)
             {
-                for (int i = 0; i < 5; i++)
+                for (int i = 0; i < DataSource.drones.Count(); i++)
                 {
                     if (IDAL.DalObject.DataSource.drones[i].Id == droneId)
-                        return ref IDAL.DalObject.DataSource.drones[i];
+                        return DataSource.drones[i];
 
                 }
                 Exception e11 = new Exception("tt");
                 throw e11;
             }
         
-            public static ref IDAL.DO.Customer GetCustomer(int CustomerId)
+            public static IDAL.DO.Customer GetCustomer(int CustomerId)
             {
-                for (int i = 0; i < DataSource.Cofing.customersIndex; i++)
+                for (int i = 0; i < DataSource.customers.Count(); i++)
                 {
                     if (IDAL.DalObject.DataSource.customers[i].Id == CustomerId)
-                        return ref IDAL.DalObject.DataSource.customers[i]; 
+                        return DataSource.customers[i]; 
                 }
                 Exception e11 = new Exception("tt");
                 throw e11;
             }
-            public static ref IDAL.DO.Parcel GetParcel(int ParcelId)
+            public static IDAL.DO.Parcel GetParcel(int ParcelId)
             // Return the parcel with parcelId
             {
-                for (int i = 0; i < DataSource.Cofing.parcelsIndex; i++)
+                for (int i = 0; i < DataSource.parcels.Count(); i++)
                 {
                     if (DataSource.parcels[i].Id == ParcelId)
-                        return ref IDAL.DalObject.DataSource.parcels[i];
+                        return DataSource.parcels[i];
 
                 }
                 Exception e11 = new Exception("tt");
@@ -68,117 +69,193 @@ namespace IDAL
             }
             public static void inputTheStationToArray(station station)
             {
-                IDAL.DalObject.DataSource.stations[IDAL.DalObject.DataSource.Cofing.stationIndex] = station;
-                IDAL.DalObject.DataSource.Cofing.stationIndex++;//update the num of free cell in the array
+                DataSource.stations.Add(station);
             }
             public static void inputTheParcelToArray(Parcel par)
             {
-                IDAL.DalObject.DataSource.parcels[IDAL.DalObject.DataSource.Cofing.parcelsIndex] = par;
-                DataSource.Cofing.parcelsIndex++;//update the num of free cell in the array
-                par.runNumber = IDAL.DalObject.DalObject.addParcel();//update the run-number serial
+                DataSource.parcels.Add(par);
+                addParcel(par);//update the run-number serial
             }
             public static void inputTheCustomerToArray(Customer cust)
             {
-                IDAL.DalObject.DataSource.customers[DataSource.Cofing.customersIndex] = cust;
-                DataSource.Cofing.customersIndex++;//update the num of free cell in the array
-
+                DataSource.customers.Add(cust);
             }
             public static void inputTheDroneToArray(Drone dro)
             {
-                IDAL.DalObject.DataSource.drones[DataSource.Cofing.droneIndex] = dro;
-                DataSource.Cofing.droneIndex++;//update the num of free cell in the array
+                DataSource.drones.Add(dro);
             }
-            public static IDAL.DO.station[] Displays_list_of_stations()
-            //Copy all the station from DataSource.stations[] to new_array_stations.
+            public static List<station> Displays_list_of_stations()
+            //return all the station from DataSource.stations
             {
-                IDAL.DO.station[] new_array_stations = new IDAL.DO.station[IDAL.DalObject.DataSource.Cofing.stationIndex];
-                for (int i = 0; i < IDAL.DalObject.DataSource.Cofing.stationIndex; i++)
-                {
-                    new_array_stations[i] = IDAL.DalObject.DataSource.stations[i];
-                }
-                return new_array_stations;
+                return DataSource.stations;
             }
-            public static IDAL.DO.Customer[] Displays_list_of_custmers()
-            //Copy all the customer from DataSource.customers[] to new_array_custmers.
+            public static List<Customer> Displays_list_of_custmers()
+            //return all the customer from DataSource.customers
             {
-                IDAL.DO.Customer[] new_array_custmers = new IDAL.DO.Customer[IDAL.DalObject.DataSource.Cofing.customersIndex];
-                for (int i = 0; i < IDAL.DalObject.DataSource.Cofing.customersIndex; i++)
-                {
-                    new_array_custmers[i] = IDAL.DalObject.DataSource.customers[i];
-                }
-                return new_array_custmers;
+                return DataSource.customers;
             }
-            public static IDAL.DO.Parcel[] Displays_list_of_Parcels()
-            //Copy all the Parcel from DataSource.parcels[] to new_array_parcels.
+            public static List<Parcel> Displays_list_of_Parcels()
+            //print all the Parcel from DataSource.parcels
             {
-                IDAL.DO.Parcel[] new_array_Parcels = new IDAL.DO.Parcel[IDAL.DalObject.DataSource.Cofing.parcelsIndex];
-                for (int i = 0; i < IDAL.DalObject.DataSource.Cofing.parcelsIndex; i++)
-                {
-                    new_array_Parcels[i] = IDAL.DalObject.DataSource.parcels[i];
-                }
-                return new_array_Parcels;
+                return DataSource.parcels;
             }
-            public static IDAL.DO.Drone[] Displays_list_of_drone()
-            //Copy all the Drone from DataSource.drones[] to new_array_drones.
+            public static List<Drone> Displays_list_of_drone()
+            //print all the Drone from DataSource.drones
             {
-                IDAL.DO.Drone[] new_array_Drones = new IDAL.DO.Drone[IDAL.DalObject.DataSource.Cofing.droneIndex];
-                for (int i = 0; i < IDAL.DalObject.DataSource.Cofing.droneIndex; i++)
-                {
-                    new_array_Drones[i] = IDAL.DalObject.DataSource.drones[i];
-                }
-                return new_array_Drones;
+                return DataSource.drones;
             }
-            public static void displaysParcelsDontHaveDrone()
+            public static List<Parcel> displaysParcelsDontHaveDrone()
             // Print the details of all the parcels don't have An associated skimmer (Selected_drone == 0).
             {
-                for (int i = 0; i < IDAL.DalObject.DataSource.parcels.Length; i++)
+                List<Parcel> par = new(); 
+                foreach(Parcel parcel in DataSource.parcels)
                 {
-                    if (IDAL.DalObject.DataSource.parcels[i].Id != 0 && IDAL.DalObject.DataSource.parcels[i].DroneId == 0)
-                        Console.WriteLine(IDAL.DalObject.DataSource.parcels[i].ToString()
-                            );
+                    if (parcel.Id != 0 && parcel.DroneId == 0)
+                        par.Add(parcel);
                 }
+                return par;
             }
-            public static void AvailableChargingStations()
+            public static List<station> AvailableChargingStations()
             //Print the all stations that have DroneCharge available
             {
-                for (int i = 0; i < IDAL.DalObject.DataSource.Cofing.stationIndex; i++)
-                {
-                    if (IDAL.DalObject.DataSource.stations[i].ChargeSlots != 0)
-                        Console.WriteLine(IDAL.DalObject.DataSource.stations[i].ToString());
+                List<station> stat = new();
+                IEnumerator iter = DataSource.stations.GetEnumerator();
+                foreach (station station in DataSource.stations)                {
+                    if (station.ChargeSlots != 0)
+                        stat.Add(station);
                 }
+                return stat;
             }
-            public static void MinmumFromCustomer(double minDistance,Point p)
+            public static string MinmumFromCustomer(double minDistance,Point p)
             {
                 int saveTheI = 0;// save the index with minimum destance from the point p
-                for (int i = 1; i < IDAL.DalObject.DataSource.Cofing.customersIndex; i++)
+                IEnumerator iter = DataSource.customers.GetEnumerator();
+                foreach (Customer customer in DataSource.customers)// (int i = 1; i < IDAL.DalObject.DataSource.Cofing.customersIndex; i++)
                 {
-                    double distance = IDAL.DalObject.DataSource.customers[i].Location.distancePointToPoint(p);
+                    double distance = customer.Location.distancePointToPoint(p);
                     if (minDistance > distance)
                     {
-                        saveTheI = i;
+                        saveTheI++;
                         minDistance = distance;
                     }
                 }
-                Console.WriteLine("The minimum distancefrom the point is: {0}" +
-                    "\nThe id of customer is: {1}", minDistance, DataSource.customers[saveTheI].Id);
+                return ("The minimum distancefrom the point is: " + minDistance +
+                   "\nThe id of customer is: " + DataSource.customers[saveTheI].Id);
             }
-            public static void MinimumFromStation(double minDistance,Point p)
+            public static string MinimumFromStation(double minDistance,Point p)
             {
                 int saveTheI = 0;// save the index with minimum destance from the point p
-
-                for (int i = 0; i < IDAL.DalObject.DataSource.Cofing.stationIndex; i++)
+                IEnumerator iter = DataSource.stations.GetEnumerator();
+                foreach (station station in DataSource.stations)
                 {
-                    double distance = IDAL.DalObject.DataSource.stations[i].Location.distancePointToPoint(p);
+                    double distance = station.Location.distancePointToPoint(p);
                     if (minDistance > distance)
                     {
-                        saveTheI = i;
+                        saveTheI++;
                         minDistance = distance;
                     }
                 }
-                Console.WriteLine("The minimum distance from the point is: {0}" +
-                    "\nThe id of station is: {1}", minDistance, IDAL.DalObject.DataSource.stations[saveTheI].Id);
+                return ("The minimum distance from the point is: " + minDistance +
+                    "\nThe id of station is: " + DataSource.stations[saveTheI].Id);
 
+            }
+            public static void AffiliationDroneToParcel(int parcelID, int droneID)
+            {
+
+                IDAL.DO.Parcel parcel = new IDAL.DO.Parcel();
+                for (int i = 0; i < DataSource.parcels.Count(); i++)
+                {
+                    if(DataSource.parcels[i].Id == parcelID)
+                    {
+                        parcel = DataSource.parcels[i];
+                        parcel.DroneId = droneID;
+                        DataSource.parcels[i] = parcel;
+                    }
+                }
+            }
+            public static void pickUp(int PickId)
+            {
+                IDAL.DO.Parcel parcel = new IDAL.DO.Parcel();
+                for(int i = 0; i < DataSource.parcels.Count(); i++)
+                {
+                    if (DataSource.parcels[i].Id == PickId)
+                    {
+                        parcel = DataSource.parcels[i];
+                        parcel.PickedUp = DateTime.Now;
+                        DataSource.parcels[i] = parcel;
+                    }
+
+
+                }  
+            }
+            public static void delivered(int deliId)
+            {
+
+                IDAL.DO.Parcel parcel = new IDAL.DO.Parcel();
+                for(int i =0;i< DataSource.parcels.Count(); i++)
+                {
+                    if (DataSource.parcels[i].Id == deliId)
+                    {
+                        parcel = DataSource.parcels[i];
+                        parcel.Delivered = DateTime.Now;
+                        DataSource.parcels[i] = parcel;
+                    }
+                }          
+            }
+            public static void setFreeStation(int droneId)
+            {
+                IDAL.DO.Drone drone = new IDAL.DO.Drone();
+                for(int i = 0; i < DataSource.drones.Count(); i++)
+                {
+                    if (DataSource.drones[i].Id == droneId)
+                    {
+                        drone = DataSource.drones[i];
+                        station station = new station();
+                        station.Id = drone.stationOfCharge.staitionId;
+                        for( int j=0; j<DataSource.stations.Count(); j++)
+                        {
+                            if(DataSource.stations[j].Id == station.Id)
+                            {
+                                station = DataSource.stations[i];
+                                station.ChargeSlots++;
+                                DataSource.stations[i] = station;
+                            }
+                            /////////////////לטפל בחריגה שמשחררים יותררחפנים מה שיש
+                        }
+                    }
+                }
+            }
+            public static void droneToCharge(int droneId, int stationId)
+            {
+                Drone drone = new Drone();
+                for(int i =0; i < DataSource.drones.Count(); i++)
+                {
+                    if(DataSource.drones[i].Id == droneId)
+                    {
+                        drone = DataSource.drones[i];
+                        IDAL.DO.DroneCharge charge = new IDAL.DO.DroneCharge();//crate new object type DroneChrge
+                        charge.DroneId = droneId;
+                        charge.staitionId = stationId;
+                        drone.stationOfCharge = charge;//after update the data of DroneCharge update the informaition in the dron
+                        for(int j =0; j < DataSource.stations.Count(); j++)
+                        {
+                            if(DataSource.stations[j].Id == stationId)
+                            {
+                                station station = new station();
+                                station = DataSource.stations[j];
+                                station.ChargeSlots--;
+                                DataSource.stations[j] = station;
+                            }
+                        }
+                        DataSource.drones[i] = drone;
+                    }
+                }
+                
+                
+         
             }
         }
     }
+        
+    
 }
