@@ -13,6 +13,7 @@ namespace ConsoleUI
             static void Main(string[] args)
 
             {
+                IDAL.DO.IDal temp = new IDAL.DalObject.DalObject(); 
                 Console.WriteLine("Choose one of the following:");
                 int ch, ch1, ch2, ch3, ch4;
                 do
@@ -36,20 +37,22 @@ namespace ConsoleUI
                             do
                             {
                                 ch1 = Convert.ToInt32(Console.ReadLine());
+                                functionCase1 temp1 = new functionCase1();
                                 switch (ch1)
                                 {
+                                    
                                     case 1:
-                                        functionCase1.addStation();
+                                        temp1.addStation();
 
                                         break;
                                     case 2:
-                                        functionCase1.addDrone();
+                                        temp1.addDrone();
                                         break;
                                     case 3:
-                                        functionCase1.addCustomer();
+                                        temp1.addCustomer();
                                         break;
                                     case 4:
-                                        functionCase1.addParcel1();
+                                        temp1.addParcel1();
                                         break;
                                 }
                                 break;
@@ -77,35 +80,35 @@ namespace ConsoleUI
                                             int parcelID = Convert.ToInt32(Console.ReadLine());
                                             Console.WriteLine("witch drone do you want to take the parcel?(ID)");
                                             int droneID = Convert.ToInt32(Console.ReadLine());
-                                            IDAL.DalObject.DalObject.AffiliationDroneToParcel(parcelID,droneID);
+                                            temp.AffiliationDroneToParcel(parcelID,droneID);
                                             break;
                                         case 2:
                                             Console.WriteLine("which parcel is picked up?\n enter parcel ID:");
                                             int PickId = Convert.ToInt32(Console.ReadLine());
-                                            IDAL.DalObject.DalObject.pickUp(PickId);
+                                            temp.pickUp(PickId);
                                             break;
                                         case 3://update at the Parcel odbject delivered time
                                             Console.WriteLine("which parcel is delivered?\n enter parcel ID:");
                                             int deliId = Convert.ToInt32(Console.ReadLine());
-                                            IDAL.DalObject.DalObject.delivered(deliId);
+                                            temp.delivered(deliId);
                                             break;
                                         case 4:
                                             Console.WriteLine("enter drone ID:");
                                             int droneId = Convert.ToInt32(Console.ReadLine());
-                                            IDAL.DalObject.DalObject.setFreeStation(droneId);
+                                            temp.setFreeStation(droneId);
                                             break;
                                         case 5:
                                             Console.WriteLine("enter drone ID:");
                                             int drId = Convert.ToInt32(Console.ReadLine());
                                             Console.WriteLine("witch station do you want?\nchoose ID from the list of available charging stations:");
-                                            List<IDAL.DO.station> newList = IDAL.DalObject.DalObject.AvailableChargingStations();//print all the available charging stations
+                                            List<IDAL.DO.station> newList = temp.AvailableChargingStations();//print all the available charging stations
                                             int statId = Convert.ToInt32(Console.ReadLine());
 
                                             foreach (IDAL.DO.station station1 in newList)
                                             {
                                                 Console.WriteLine(station1.ToString());
                                             }
-                                            IDAL.DalObject.DalObject.droneToCharge(drId,statId);
+                                            temp.droneToCharge(drId,statId);
                                             break;
                                     }
                                 }
@@ -132,19 +135,19 @@ namespace ConsoleUI
                                 switch (ch3) //Display
                                 {
                                     case 1:
-                                        Console.WriteLine(IDAL.DalObject.DalObject.GetStation(id).ToString());
+                                        Console.WriteLine(temp.GetStation(id).ToString());
                                         break;
 
                                     case 2:
-                                        Console.WriteLine(IDAL.DalObject.DalObject.GetDrone(id).ToString());
+                                        Console.WriteLine(temp.GetDrone(id).ToString());
                                         break;
 
                                     case 3:
-                                        Console.WriteLine(IDAL.DalObject.DalObject.GetCustomer(id).ToString());
+                                        Console.WriteLine(temp.GetCustomer(id).ToString());
                                         break;
 
                                     case 4:
-                                        Console.WriteLine(IDAL.DalObject.DalObject.GetParcel(id).ToString());
+                                        Console.WriteLine(temp.GetParcel(id).ToString());
                                         break;
 
                                 }
@@ -169,7 +172,7 @@ namespace ConsoleUI
                             switch (ch4)
                             {
                                 case 1:
-                                    List<IDAL.DO.station> tempSta = IDAL.DalObject.DalObject.Displays_list_of_stations();
+                                    List<IDAL.DO.station> tempSta = temp.Displays_list_of_stations();
                                     foreach (station station in DataSource.stations)
                                     {
                                         Console.WriteLine(station.ToString());
@@ -177,7 +180,7 @@ namespace ConsoleUI
                                     break;
 
                                 case 2:
-                                    List<IDAL.DO.Drone> tempDro = IDAL.DalObject.DalObject.Displays_list_of_drone();
+                                    List<IDAL.DO.Drone> tempDro = temp.Displays_list_of_drone();
                                     foreach (Drone drone in DataSource.drones)
                                     {
                                         Console.WriteLine(drone.ToString());
@@ -185,7 +188,7 @@ namespace ConsoleUI
                                     break;
 
                                 case 3:
-                                    List<IDAL.DO.Customer> tempCus = IDAL.DalObject.DalObject.Displays_list_of_custmers();
+                                    List<IDAL.DO.Customer> tempCus = temp.Displays_list_of_custmers();
                                     foreach (Customer customer in DataSource.customers)
                                     {
                                         Console.WriteLine(customer.ToString());
@@ -194,7 +197,7 @@ namespace ConsoleUI
                                     
 
                                 case 4:
-                                    List<IDAL.DO.Parcel> tempPar = IDAL.DalObject.DalObject.Displays_list_of_Parcels();
+                                    List<IDAL.DO.Parcel> tempPar = temp.Displays_list_of_Parcels();
                                     foreach (Parcel parcel in DataSource.parcels)
                                     {
                                         Console.WriteLine(parcel.ToString());
@@ -202,7 +205,7 @@ namespace ConsoleUI
                                     break;
 
                                 case 5:
-                                    List<Parcel> ParcelWithoutDrone = IDAL.DalObject.DalObject.displaysParcelsDontHaveDrone();
+                                    List<Parcel> ParcelWithoutDrone = temp.displaysParcelsDontHaveDrone();
                                     foreach(Parcel parcel in ParcelWithoutDrone)
                                     {
                                         Console.WriteLine(parcel.ToString());
@@ -210,7 +213,7 @@ namespace ConsoleUI
                                     break;
 
                                 case 6:
-                                    List<station> AvailableCH = IDAL.DalObject.DalObject.AvailableChargingStations();
+                                    List<station> AvailableCH = temp.AvailableChargingStations();
                                     foreach(station station in AvailableCH)
                                     {
                                         Console.WriteLine(station.ToString());
@@ -227,15 +230,17 @@ namespace ConsoleUI
                             ch4 = Convert.ToInt32(Console.ReadLine());
                             try
                             {
+                                functionCase5 temp5 = new functionCase5();
                                 switch (ch4)
                                 {
+                                   
                                     case 0:
                                         break;
                                     case 1:
-                                        functionCase5.chooseObjectToconvert();
+                                        temp5.chooseObjectToconvert();
                                         break;
                                     case 2:
-                                        functionCase5.distanceFromCustomerOrStation();
+                                        temp5.distanceFromCustomerOrStation();
                                         break;
 
                                 }

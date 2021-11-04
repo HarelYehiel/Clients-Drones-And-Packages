@@ -19,10 +19,13 @@ namespace IDAL
             public static List<Parcel> parcels = new List<Parcel>();
             public interface IEnumerable { IEnumerator<DataSource> GetEnumerator(); }
 
-            internal struct Cofing
+            internal struct Config
             {
-                
-
+                public static double vacant;
+                public static double lightWeight;
+                public static double mediumWeight;
+                public static double heavyWeight;
+                public static double droneLoadingRate;
             }
 
             public static void Initialize()
@@ -37,7 +40,7 @@ namespace IDAL
                 }
                 for (int i = 0; i < 2; i++)//crate 2 staitons with random data
                 {
-                    station station  = new station();
+                    station station = new station();
                     var rand = new Random();
                     station.Id = rand.Next(10000, 99999);
                     station.name = "sta" + rand.Next(1, 99);
@@ -57,12 +60,12 @@ namespace IDAL
                     Point p = new Point();
                     p.Latitude = 31 + rand.Next(0, 1);
                     p.Longitude = 34 + rand.Next(0, 1);
-                    customer.Location = p;
+                    customer.location = p;
                     customers.Add(customer);
                 }
                 for (int i = 0; i < 10; i++)//crate new 10  parcels with random data
                 {
-                    Parcel parcel= new Parcel();
+                    Parcel parcel = new Parcel();
                     var rand = new Random();
                     parcel.Id = rand.Next(11111, 99999);
                     parcel.SenderId = rand.Next(11111, 99999);
@@ -73,9 +76,9 @@ namespace IDAL
                     parcel.Requested = start.AddMinutes(rand.Next(1, 240));
                     parcels.Add(parcel);
                 }
-        }   
+            }
 
-    }
+        }
 
     }
 }

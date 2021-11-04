@@ -8,8 +8,8 @@ namespace ConsoleUI
 {
     class functionCase1
     {
-
-        public static void addStation()
+        IDAL.DO.IDal temp = new IDAL.DalObject.DalObject();
+        public void addStation()
         {
             IDAL.DO.station item = new IDAL.DO.station();
             Console.WriteLine("enter drone-station ID:(5 digits)");
@@ -23,10 +23,10 @@ namespace ConsoleUI
             p.Longitude = Convert.ToDouble(Console.ReadLine());//user input Longitude
             item.Location = p;
             item.ChargeSlots = 10;//all station have only 10 charge slots 
-            IDAL.DalObject.DalObject.inputTheStationToArray(item);//this function is using at the data base so she must to be in DAL project
+            temp.inputTheStationToArray(item);//this function is using at the data base so she must to be in DAL project
           
         }
-        public static void addParcel1()
+        public void addParcel1()
         {
 
             IDAL.DO.Parcel par = new IDAL.DO.Parcel();
@@ -50,10 +50,10 @@ namespace ConsoleUI
             par.Priority = (IDAL.DO.Enum.Priorities)parPriority;
             par.Requested = DateTime.Now;//the requestsd time is now
             par.Scheduled = par.Requested.AddMinutes(5);//the parcel find drone at 5 minutes
-            IDAL.DalObject.DalObject.inputTheParcelToArray(par);
+            temp.inputTheParcelToArray(par);
         }
 
-        public static void addCustomer()
+        public void addCustomer()
         {
 
             IDAL.DO.Customer cust = new IDAL.DO.Customer();
@@ -71,11 +71,11 @@ namespace ConsoleUI
             P.Latitude = Convert.ToDouble(Console.ReadLine());//user input Latitude
             Console.WriteLine("enter Longitude:");
             P.Longitude = Convert.ToDouble(Console.ReadLine());//user input Longitude
-            cust.Location = P;
-            IDAL.DalObject.DalObject.inputTheCustomerToArray(cust);
+            cust.location = P;
+            temp.inputTheCustomerToArray(cust);
         }
 
-        public static void addDrone()
+        public void addDrone()
         {
             IDAL.DO.Drone dro = new IDAL.DO.Drone();
             Console.WriteLine("enter drone ID:(5 digits)");
@@ -89,7 +89,7 @@ namespace ConsoleUI
             Console.WriteLine("enter drone weight:\nLight = 0, Medium = 1, Heavy = 2");
             int weightChoose = Convert.ToInt32(Console.ReadLine());//user input weight
             dro.MaxWeight = (IDAL.DO.Enum.WeightCategories)weightChoose;//convert the choose to WeightCategories
-            IDAL.DalObject.DalObject.inputTheDroneToArray(dro);
+            temp.inputTheDroneToArray(dro);
             
         }
     }

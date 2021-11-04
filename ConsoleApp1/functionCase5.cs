@@ -8,7 +8,9 @@ namespace ConsoleUI
 {
     class functionCase5
     {
-        public static void chooseObjectToconvert()
+        IDAL.DO.IDal temp = new IDAL.DalObject.DalObject();
+
+        public void chooseObjectToconvert()
         {
             Console.WriteLine("witch cordinate you want to convert? ");
             IDAL.DO.Point point = new IDAL.DO.Point();
@@ -21,7 +23,7 @@ namespace ConsoleUI
 
         }
 
-        public static void distanceFromCustomerOrStation()
+        public void distanceFromCustomerOrStation()
         /*Receives coordinates of any point from the user and prints distance
         from any base or client to that point.*/
         {
@@ -36,15 +38,15 @@ namespace ConsoleUI
 
                 Console.WriteLine("Choose one of the following:" + "\n1 = distance from customer" + "\n2 = distance from station");
                 choose = Convert.ToInt32(Console.ReadLine());
-                double minDistance = IDAL.DalObject.DataSource.customers[0].Location.distancePointToPoint(p);
+                double minDistance = IDAL.DalObject.DataSource.customers[0].location.distancePointToPoint(p);
                 switch (choose)
                 {
                     case 1:
-                        Console.WriteLine(IDAL.DalObject.DalObject.MinmumFromCustomer(minDistance,p));
+                        Console.WriteLine(temp.MinmumFromCustomer(minDistance,p));
                         return;
 
                     case 2:
-                        Console.WriteLine(IDAL.DalObject.DalObject.MinimumFromStation(minDistance,p));
+                        Console.WriteLine(temp.MinimumFromStation(minDistance,p));
                         return;
 
                     default:
