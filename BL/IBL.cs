@@ -43,7 +43,7 @@ namespace IBL
         public void List_view_options();
 
         /* In function List_view_options*/
-        public void Displays_a_list_of_base_stations();
+        public IDAL.DalObject.DataSource Displays_a_list_of_base_stations();
         public void Displays_the_list_of_drones();
         public void Displays_a_list_of_information();
         public void Displays_the_list_of_packages();

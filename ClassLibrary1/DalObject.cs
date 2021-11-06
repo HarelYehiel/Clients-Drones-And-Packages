@@ -39,6 +39,7 @@ namespace IDAL
             public IDAL.DO.station GetStation(int stationId)
             // Return the station with stationId
             {
+               // IEnumerable<station> stations  = DataSource.stations;
                 for (int i = 0; i < DataSource.stations.Count(); i++)
                 {
                     if (IDAL.DalObject.DataSource.stations[i].Id == stationId)

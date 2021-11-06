@@ -17,7 +17,7 @@ namespace IDAL
 
             public static List<Customer> customers = new List<Customer>();
             public static List<Parcel> parcels = new List<Parcel>();
-            public interface IEnumerable { IEnumerator<DataSource> GetEnumerator(); }
+            //public interface IEnumerable { IEnumerator<DataSource> GetEnumerator(); }
 
             internal struct Config
             {
