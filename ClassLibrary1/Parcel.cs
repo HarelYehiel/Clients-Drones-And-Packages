@@ -11,10 +11,11 @@ namespace IDAL
     {
         public struct Parcel
         {
+   
             public int Id{get; set;}
             public int SenderId{ get; set;}
             public int TargetId{get; set;}
-            public int DroneId{get; set;}
+            public int DroneId{get => DroneId; set => DroneId = 0; }
             public Enum.Priorities Priority { get; set; }
             public Enum.WeightCategories Weight { get; set; }
             public DateTime Requested { get; set; }
