@@ -16,6 +16,7 @@ namespace IDAL
 
             public DroneCharge stationOfCharge {get;set;}
 
+            public Enum.DroneStatus droneStatus { get; set; }
             public override string ToString()
             {
                 return $"Drone ID: {Id}, model: {Model}, maxWeight: {MaxWeight}";

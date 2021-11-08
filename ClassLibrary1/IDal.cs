@@ -32,15 +32,15 @@ namespace IDAL
             public void inputTheCustomerToArray(Customer cust);
 
             public void inputTheDroneToArray(Drone dro);
-            public List<station> Displays_list_of_stations();
+            public IEnumerable<station> Displays_list_of_stations();
 
-            public List<Customer> Displays_list_of_custmers();
+            public IEnumerable<Customer> Displays_list_of_custmers();
 
-            public List<Parcel> Displays_list_of_Parcels();
+            public IEnumerable<Parcel> Displays_list_of_Parcels();
             //Copy all the Parcel from DataSource.parcels[] to new_array_parcels.
-            public List<Drone> Displays_list_of_drone();
+            public IEnumerable<Drone> Displays_list_of_drone();
             //Copy all the Drone from DataSource.drones[] to new_array_drones.
-            public List<Parcel> displaysParcelsDontHaveDrone();
+            public IEnumerable<Parcel> displaysParcelsDontHaveDrone();
             // Print the details of all the parcels don't have An associated skimmer (Selected_drone == 0).
             public List<station> AvailableChargingStations();
             public void AffiliationDroneToParcel(int parcelID, int droneID);

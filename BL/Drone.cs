@@ -16,6 +16,7 @@ namespace IBL
             public Enum.WeightCategories weight { get; set; }
 
             public Enum.DroneStatus Status { get; set; }
+            public DateTime chargingTime { get; set; }
             public double Battery { get; set; }
 
             public Location location { get; set; }
