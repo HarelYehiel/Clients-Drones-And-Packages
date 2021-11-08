@@ -12,16 +12,17 @@ namespace IBL
         public void Insert_options();
 
         /* In function Insert_options*/
-        public void Adding_a_base_station();
-        public void Adding_a_drone();
-        public void Absorption_of_a_new_customer();
-        public void Receipt_of_package_for_delivery();
+        public void Adding_a_base_station(int ID, string name, double Latitude, double Longitude, int numSlots);
+        public void Adding_a_drone(int ID, string model, int maxWeight, int staId);
+        public void Absorption_of_a_new_customer(int ID, string nameCu, string phoneNumber, double Latitude, double Longitude);
+        public void Receipt_of_package_for_delivery(string senderName, string targetName, int maxWeight, int prioerity);
+
         /* Until here */
 
         public void Update_options();
 
         /* In function Update_options*/
-        public void Update_drone_data();
+        public void Update_drone_data(int ID, string newModel);
         public void Update_station_data();
         public void Update_customer_data();
         public void Sending_a_drone_for_charging();

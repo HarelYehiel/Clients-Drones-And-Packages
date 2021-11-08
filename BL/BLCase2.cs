@@ -8,7 +8,14 @@ namespace IBL
 {
     public partial class BL : IBL
     {
-        public void Update_drone_data() { }
+        IDAL.DO.IDal temp1 = new IDAL.DalObject.DalObject(); 
+        public void Update_drone_data(int ID, string newModel)
+        {
+            IDAL.DO.Drone drone = temp1.GetDrone(ID);
+            drone.Model = newModel;
+            temp1.
+        
+        }
         public void Update_station_data() { }
         public void Update_customer_data() { }
         public void Sending_a_drone_for_charging() { }

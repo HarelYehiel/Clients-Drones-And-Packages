@@ -16,7 +16,7 @@ namespace IBL
             }
             else
             {
-                return IDAL.DalObject.DataSource.stations;
+                return ;
             }
         }
         public void Displays_the_list_of_drones() { }
