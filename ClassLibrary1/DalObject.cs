@@ -40,11 +40,10 @@ namespace IDAL
             // Return the station with stationId
             {
                // IEnumerable<station> stations  = DataSource.stations;
-                for (int i = 0; i < DataSource.stations.Count(); i++)
+               foreach(station station in DataSource.stations)
                 {
-                    if (IDAL.DalObject.DataSource.stations[i].Id == stationId)
-                        return DataSource.stations[i];
-
+                    if (station.Id == stationId)
+                        return station;
                 }
                 Exception e11 = new Exception("tt");
                 throw e11;
@@ -52,11 +51,10 @@ namespace IDAL
             public IDAL.DO.Drone GetDrone(int droneId)
 
             {
-                for (int i = 0; i < DataSource.drones.Count(); i++)
+                foreach(Drone drone in DataSource.drones)
                 {
-                    if (IDAL.DalObject.DataSource.drones[i].Id == droneId)
-                        return DataSource.drones[i];
-
+                    if (drone.Id == droneId)
+                        return drone;
                 }
                 Exception e11 = new Exception("tt");
                 throw e11;
@@ -65,10 +63,10 @@ namespace IDAL
             public IDAL.DO.Customer GetCustomer(int CustomerId)
 
             {
-                for (int i = 0; i < DataSource.customers.Count(); i++)
+                foreach (Customer customer in DataSource.customers)
                 {
-                    if (IDAL.DalObject.DataSource.customers[i].Id == CustomerId)
-                        return DataSource.customers[i];
+                    if (customer.Id == CustomerId)
+                        return customer;
                 }
                 Exception e11 = new Exception("tt");
                 throw e11;
@@ -78,10 +76,10 @@ namespace IDAL
 
             // Return the parcel with parcelId
             {
-                for (int i = 0; i < DataSource.parcels.Count(); i++)
+                foreach (Parcel parcel in DataSource.parcels)
                 {
-                    if (DataSource.parcels[i].Id == ParcelId)
-                        return DataSource.parcels[i];
+                    if (parcel.Id == ParcelId)
+                        return parcel;
 
                 }
                 Exception e11 = new Exception("tt");
@@ -89,45 +87,80 @@ namespace IDAL
             }
             public void inputTheStationToArray(station station)
             {
-                DataSource.stations.Add(station);
+                List<station> stations = new List<station>();
+                foreach (station station1 in DataSource.stations)
+                {
+                    stations.Add(station1);
+                }
+                DataSource.stations = stations;
             }
             public void inputTheParcelToArray(Parcel par)
             {
-                DataSource.parcels.Add(par);
+                List<Parcel> parcels = new List<Parcel>();
+                foreach (Parcel parcel in DataSource.parcels)
+                {
+                    parcels.Add(parcel);
+                }
+                DataSource.parcels = parcels;
                 addParcel(par);//update the run-number serial
             }
             public void inputTheCustomerToArray(Customer cust)
             {
-                DataSource.customers.Add(cust);
+                List<Customer> customers = new List<Customer>();
+                foreach (Customer customer in DataSource.customers)
+                {
+                    customers.Add(customer);
+                }
+                DataSource.customers = customers;
             }
             public void inputTheDroneToArray(Drone dro)
             {
-                DataSource.drones.Add(dro);
+                List<Drone> drones = new List<Drone>();
+                foreach (Drone drone in DataSource.drones)
+                {
+                    drones.Add(drone);
+                }
+                DataSource.drones = drones;
             }
 
             public List<station> Displays_list_of_stations()
             //return all the station from DataSource.stations
 
             {
-                return DataSource.stations;
+                List<station> stations = new List<station>();
+                foreach (station station in DataSource.stations)
+                    stations.Add(station);
+                return stations;
             }
 
             public List<Customer> Displays_list_of_custmers()
             //return all the customer from DataSource.customers
             {
-                return DataSource.customers;
+                List<Customer> customers = new List<Customer>();
+                foreach (Customer customer in DataSource.customers)
+                    customers.Add(customer);
+                return customers;
             }
             public List<Parcel> Displays_list_of_Parcels()
             //print all the Parcel from DataSource.parcels
 
             {
-                return DataSource.parcels;
+                List<Parcel> parcels = new List<Parcel>();
+                foreach (Parcel parcel in DataSource.parcels)
+                {
+                    parcels.Add(parcel);
+                }
+                return parcels;
             }
             public List<Drone> Displays_list_of_drone()
             //print all the Drone from DataSource.drones
-
             {
-                return DataSource.drones;
+                List<Drone> drones = new List<Drone>();
+                foreach (Drone drone in DataSource.drones)
+                {
+                    drones.Add(drone);
+                }
+                return drones;
             }
             public List<Parcel> displaysParcelsDontHaveDrone()
 
@@ -159,7 +192,6 @@ namespace IDAL
 
             {
                 int saveTheI = 0;// save the index with minimum destance from the point p
-                IEnumerator iter = DataSource.customers.GetEnumerator();
                 foreach (Customer customer in DataSource.customers)// (int i = 1; i < IDAL.DalObject.DataSource.Config.customersIndex; i++)
                 {
                     double distance = customer.location.distancePointToPoint(p);
@@ -222,14 +254,14 @@ namespace IDAL
             public void delivered(int deliId)
             {
 
-                IDAL.DO.Parcel parcel = new IDAL.DO.Parcel();
-                for (int i = 0; i < DataSource.parcels.Count(); i++)
+                IDAL.DO.Parcel tempParcel = new IDAL.DO.Parcel();
+                foreach (Parcel parcel in DataSource.parcels)
                 {
-                    if (DataSource.parcels[i].Id == deliId)
+                    if (parcel.Id == deliId)
                     {
-                        parcel = DataSource.parcels[i];
-                        parcel.Delivered = DateTime.Now;
-                        DataSource.parcels[i] = parcel;
+                        tempParcel = parcel;
+                        tempParcel.Delivered = DateTime.Now;
+                        parcel = tempParcel;
                     }
                 }
             }

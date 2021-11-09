@@ -11,12 +11,12 @@ namespace IDAL
     {
         public struct DataSource
         {
-            public static List<Drone> drones = new List<Drone>();
+            public static IEnumerable<Drone> drones = new List<Drone>();
 
-            public static List<station> stations = new List<station>();
+            public static IEnumerable<station> stations = new List<station>();
 
-            public static List<Customer> customers = new List<Customer>();
-            public static List<Parcel> parcels = new List<Parcel>();
+            public static IEnumerable<Customer> customers = new List<Customer>();
+            public static IEnumerable<Parcel> parcels = new List<Parcel>();
             //public interface IEnumerable { IEnumerator<DataSource> GetEnumerator(); }
 
             internal struct Config
@@ -61,7 +61,9 @@ namespace IDAL
                     p.Latitude = 31 + rand.Next(0, 1);
                     p.Longitude = 34 + rand.Next(0, 1);
                     customer.location = p;
-                    customers.Add(customer);
+                    IEnumerable<Customer> list = customers.ToList<Customer>();
+                    IEnumerable<Customer> iter = list.GetEnumerator();
+                    list.(customer);
                 }
                 for (int i = 0; i < 10; i++)//crate new 10  parcels with random data
                 {

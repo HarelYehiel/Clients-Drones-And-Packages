@@ -106,6 +106,9 @@ namespace ConsuleUIBL
                                     int choise = Convert.ToInt32(Console.ReadLine());
                                     while(choise == 1 || choise ==2)
                                     {
+                                        if (choise == 1)
+                                            string nameOfStat = Console.ReadLine();
+
                                         temp.Update_station_data();
                                     }
                                     //////////////////////////לשלוח לפונקציה את הפרמטרים הרלוונטים
@@ -130,17 +133,22 @@ namespace ConsuleUIBL
                                     Console.WriteLine("how many time?(minuets)");
                                     ID = Convert.ToInt32(Console.ReadLine());
                                     int min = Convert.ToInt32(Console.ReadLine());
-                                    temp.Release_drone_from_charging();
+                                    temp.Release_drone_from_charging(ID,min);
                                     break;
                                 case 6:
                                     Console.WriteLine("witch drone you want to get the parcel?(ID)");
                                     ID = Convert.ToInt32(Console.ReadLine());
-                                    temp.Assign_a_package_to_a_drone();
+                                    temp.Assign_a_package_to_a_drone(ID);
                                     break;
                                 case 7:
+                                    Console.WriteLine("witch drone pickedUp the parcel?(ID)");
+                                    ID = Convert.ToInt32(Console.ReadLine());
+                                    temp.Collection_of_a_package_by_drone(ID);
+                                    break;
+                                case 8:
                                     Console.WriteLine("witch drone delivered the parcel?(ID)");
                                     ID = Convert.ToInt32(Console.ReadLine());
-                                    temp.Delivery_of_a_package_by_drone();
+                                    temp.Delivery_of_a_package_by_drone(ID);
                                     break;
                             }
                             break;

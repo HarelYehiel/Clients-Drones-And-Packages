@@ -34,7 +34,8 @@ namespace IBL
             Console.WriteLine("press 4 to send drone from charge in station ");
             Console.WriteLine("press 5 to send drone to charge at station");
             Console.WriteLine("press 6 to assign drone to parcel");
-            Console.WriteLine("press 7 to send drone to charge at station");
+            Console.WriteLine("press 7 to update picked up parcel by drone");
+            Console.WriteLine("press 8 to update delivered parcel by drone");
         }
         public void Entity_display_options() //case 3
         {

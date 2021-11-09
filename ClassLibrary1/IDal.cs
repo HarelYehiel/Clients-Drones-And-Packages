@@ -15,12 +15,12 @@ namespace IDAL
             public double[] powerConsumptionBySkimmer();
             public void addParcel(Parcel par);
 
-            public IDAL.DO.station GetStation(int stationId);
+            public station GetStation(int stationId);
             // Return the station with stationId
 
-            public IDAL.DO.Drone GetDrone(int droneId);
+            public Drone GetDrone(int droneId);
 
-            public IDAL.DO.Customer GetCustomer(int CustomerId);
+            public Customer GetCustomer(int CustomerId);
 
             public IDAL.DO.Parcel GetParcel(int ParcelId);
             // Return the parcel with parcelId
