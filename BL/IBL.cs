@@ -35,10 +35,10 @@ namespace IBL
         public void Entity_display_options();
 
         /* In function Entity_display_options*/
-        public void base_station_view();
-        public void drone_view();
-        public void customer_view();
-        public void package_view();
+        public void base_station_view(int ID);
+        public void drone_view(int ID);
+        public void customer_view(int ID);
+        public void package_view(int ID);
         /* Until here */
 
         public void List_view_options();

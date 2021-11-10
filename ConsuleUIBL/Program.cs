@@ -167,22 +167,22 @@ namespace ConsuleUIBL
                                 case 1:
                                     Console.WriteLine("witch station you want to view?");
                                     ID = Convert.ToInt32(Console.ReadLine());
-                                    temp.base_station_view();
+                                    temp.base_station_view(ID);
                                     break;
                                 case 2:
                                     Console.WriteLine("witch drone you want to view?");
                                     ID = Convert.ToInt32(Console.ReadLine());
-                                    temp.drone_view();
+                                    temp.drone_view(ID);
                                     break;
                                 case 3:
                                     Console.WriteLine("witch customer you want to view?");
                                     ID = Convert.ToInt32(Console.ReadLine());
-                                    temp.customer_view();
+                                    temp.customer_view(ID);
                                     break;
                                 case 4:
                                     Console.WriteLine("witch parcel you want to view?");
                                     ID = Convert.ToInt32(Console.ReadLine());
-                                    temp.package_view();
+                                    temp.package_view(ID);
                                     break;
                             }
                             break;

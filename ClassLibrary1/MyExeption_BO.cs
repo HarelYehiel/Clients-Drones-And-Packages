@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace IBL
 {
     {
-        public class MyExeption : Exception
+        public class MyExeption_BO : Exception
         {
            public static Exception There_is_no_variable_with_this_ID = new Exception( "There is no variable with this ID.");
             public static Exception An_empty_list = new Exception("An empty list.");
@@ -16,7 +16,7 @@ namespace IBL
             //public static Exception 
             //public static Exception
             //public static Exception
-            public MyExeption(Exception e) : base(e.ToString()) { }
+            public MyExeption_BO(Exception e) : base(e.ToString()) { }
 
         }
     }

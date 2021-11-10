@@ -9,9 +9,9 @@ namespace IBL
     public partial class BL
     {
      
-        public void base_station_view() { }
-        public void drone_view() { }
-        public void customer_view() { }
-        public void package_view() { }
+        public void base_station_view(int id) { }
+        public void drone_view(int id) { }
+        public void customer_view(int id) { }
+        public void package_view(int id) { }
     }
 }

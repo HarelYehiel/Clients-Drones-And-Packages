@@ -11,12 +11,12 @@ namespace IDAL
     {
         public struct DataSource
         {
-            public static IEnumerable<Drone> drones = new List<Drone>();
+            public static List<Drone> drones = new List<Drone>();
+            public static List<DroneCharge> droneCharge = new List<DroneCharge>();
+            public static List<station> stations = new List<station>();
 
-            public static IEnumerable<station> stations = new List<station>();
-
-            public static IEnumerable<Customer> customers = new List<Customer>();
-            public static IEnumerable<Parcel> parcels = new List<Parcel>();
+            public static List<Customer> customers = new List<Customer>();
+            public static List<Parcel> parcels = new List<Parcel>();
             //public interface IEnumerable { IEnumerator<DataSource> GetEnumerator(); }
 
             internal struct Config
