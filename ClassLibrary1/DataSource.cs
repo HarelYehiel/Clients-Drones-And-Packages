@@ -61,9 +61,7 @@ namespace IDAL
                     p.Latitude = 31 + rand.Next(0, 1);
                     p.Longitude = 34 + rand.Next(0, 1);
                     customer.location = p;
-                    IEnumerable<Customer> list = customers.ToList<Customer>();
-                    IEnumerable<Customer> iter = list.GetEnumerator();
-                    list.(customer);
+                    customers.Add(customer);
                 }
                 for (int i = 0; i < 10; i++)//crate new 10  parcels with random data
                 {

@@ -133,7 +133,7 @@ namespace IDAL
                 return stations;
             }
 
-            public List<Customer> Displays_list_of_custmers()
+            public IEnumerable<Customer> Displays_list_of_custmers()
             //return all the customer from DataSource.customers
             {
                 List<Customer> customers = new List<Customer>();
@@ -152,7 +152,7 @@ namespace IDAL
                 }
                 return parcels;
             }
-            public List<Drone> Displays_list_of_drone()
+            public IEnumerable<Drone> Displays_list_of_drone()
             //print all the Drone from DataSource.drones
             {
                 List<Drone> drones = new List<Drone>();
@@ -162,7 +162,7 @@ namespace IDAL
                 }
                 return drones;
             }
-            public List<Parcel> displaysParcelsDontHaveDrone()
+            public IEnumerable<Parcel> displaysParcelsDontHaveDrone()
 
             // Print the details of all the parcels don't have An associated skimmer (Selected_drone == 0).
             {
@@ -175,7 +175,7 @@ namespace IDAL
                 return par;
             }
 
-            public List<station> AvailableChargingStations()
+            public IEnumerable<station> AvailableChargingStations()
 
             //Print the all stations that have DroneCharge available
             {
