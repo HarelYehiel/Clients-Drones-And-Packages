@@ -11,9 +11,9 @@ namespace IBL
          public class Parcel
         {
             public int uniqueID { get; set; }
-            public string namrSender { get; set; }
-            public string nameTarget { get; set; }
-            public int drone { get; set; }
+            public CustomerInDelivery namrSender { get; set; }
+            public CustomerInDelivery nameTarget { get; set; }
+            public DroneInPackage droneInParcel { get; set; }
             public Enum.Priorities priority { get; set; }
             public Enum.WeightCategories weight { get; set; }
             public DateTime requested { get; set; }

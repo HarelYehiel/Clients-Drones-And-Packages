@@ -23,8 +23,12 @@ namespace IBL
             
             foreach(BO.Drone drone in listDrons)
                 if (drone.uniqueID == ID)
-
-            if(drone.)
+                    if(drone.Status != BO.Enum.DroneStatus.Baintenance)
+                        throw ""
+                    else
+                    {
+                        drone.Battery = 
+                    }
             temp.setFreeStation(ID);
         }
         public void Assign_a_package_to_a_drone(int droneId) { }

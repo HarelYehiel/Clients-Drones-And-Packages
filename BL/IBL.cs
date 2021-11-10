@@ -44,12 +44,14 @@ namespace IBL
         public void List_view_options();
 
         /* In function List_view_options*/
-        public IDAL.DalObject.DataSource Displays_a_list_of_base_stations();
-        public void Displays_the_list_of_drones();
-        public void Displays_a_list_of_information();
+        public IEnumerable<BO.StationForTheList> Displays_a_list_of_base_stations();
+            public void Displays_a_list_of_information();
+        public IEnumerable<BO.DroneToList> Displays_the_list_of_drones();
+        public IEnumerable<BO.CustomerToList> Displays_a_list_of_customers();
+        public IEnumerable<BO.ParcelToList> Displays_the_list_of_Parcels();
         public void Displays_the_list_of_packages();
-        public void Displays_a_list_of_packages_not_yet_associated_with_the_drone();
-        public void Display_of_base_stations_with_available_charging_stations();
+        public IEnumerable<BO.ParcelToList> Displays_a_list_of_Parcels_not_yet_associated_with_the_drone();
+        public IEnumerable<BO.StationForTheList> Display_of_base_stations_with_available_charging_stations();
         /* Until here */
 
     }
