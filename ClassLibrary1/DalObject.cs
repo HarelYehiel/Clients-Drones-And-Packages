@@ -123,7 +123,7 @@ namespace IDAL
                 DataSource.drones = drones;
             }
 
-            public List<station> Displays_list_of_stations()
+            public IEnumerable<station> Displays_list_of_stations()
             //return all the station from DataSource.stations
 
             {
@@ -141,7 +141,7 @@ namespace IDAL
                     customers.Add(customer);
                 return customers;
             }
-            public List<Parcel> Displays_list_of_Parcels()
+            public IEnumerable<Parcel> Displays_list_of_Parcels()
             //print all the Parcel from DataSource.parcels
 
             {
