@@ -34,12 +34,11 @@ namespace ConsuleUIBL
                                     Console.WriteLine("enter name of station:");
                                     string name = Console.ReadLine();
                                     Console.WriteLine("enter locaition:");
-                                    IDAL.DO.Point location = new IDAL.DO.Point();
-                                    location.Latitude = Console.Read();
-                                    location.Longitude = Console.Read();
+                                    double Latitude = Console.Read();
+                                    double Longitude = Console.Read();
                                     Console.WriteLine("enter number of charge slots:");
                                     int numSlots = Convert.ToInt32(Console.ReadLine());
-                                    temp.Adding_a_base_station();
+                                    temp.Adding_a_base_station(ID, name, Latitude, Longitude,numSlots);
                                     break;
 
                                 case 2:
@@ -51,7 +50,7 @@ namespace ConsuleUIBL
                                     int maxWeight = Convert.ToInt32(Console.ReadLine());
                                     Console.WriteLine("enter number of station you wnat to put the drone:");
                                     int staId = Convert.ToInt32(Console.ReadLine());
-                                    temp.Adding_a_drone();
+                                    temp.Adding_a_drone(ID,model,maxWeight,staId);
                                     break;
 
                                 case 3:
@@ -61,19 +60,22 @@ namespace ConsuleUIBL
                                     string nameCu = Console.ReadLine();
                                     Console.WriteLine("enter phone number:");
                                     string phoneNumber = Console.ReadLine();
-                                    temp.();
+                                    Console.WriteLine("enter customer location:");
+                                    Latitude = Console.Read();
+                                    Longitude = Console.Read();
+                                    temp.Absorption_of_a_new_customer(ID,nameCu,phoneNumber, Latitude, Longitude);
                                     break;
 
                                 case 4:
-                                    Console.WriteLine("enter sender ID(5 digit):");
-                                    int senderId = Convert.ToInt32(Console.ReadLine());
-                                    Console.WriteLine("enter target ID(5 digit):");
-                                    int targetId = Convert.ToInt32(Console.ReadLine());
+                                    Console.WriteLine("enter sender name:");
+                                    string senderName = Console.ReadLine();
+                                    Console.WriteLine("enter target name:");
+                                    string targetName = Console.ReadLine();
                                     Console.WriteLine("enter weight: \n1 = Light, 2 = Medium, 3 = Heavy");
                                     maxWeight = Convert.ToInt32(Console.ReadLine());
                                     Console.WriteLine("enter target ID(5 digit): \n 1 = Normal, 2 = Fast, 3 = Emergency");
                                     int prioerity = Convert.ToInt32(Console.ReadLine());
-                                    temp.();
+                                    temp.Receipt_of_package_for_delivery(senderName,targetName,maxWeight,prioerity);
                                     break;
                             }
                             break;
@@ -94,7 +96,7 @@ namespace ConsuleUIBL
                                     Console.WriteLine("what is the new name?");
                                     ID = Convert.ToInt32(Console.ReadLine());
                                     string newModel = Console.ReadLine();
-                                    temp.Update_drone_data();
+                                    temp.Update_drone_data(ID,newModel);
                                     ///////////////////temp. לעדכן את הרחפן הספציפי לשם חדש
                                     break;
                                 case 2:
@@ -104,6 +106,9 @@ namespace ConsuleUIBL
                                     int choise = Convert.ToInt32(Console.ReadLine());
                                     while(choise == 1 || choise ==2)
                                     {
+                                        if (choise == 1)
+                                            string nameOfStat = Console.ReadLine();
+
                                         temp.Update_station_data();
                                     }
                                     //////////////////////////לשלוח לפונקציה את הפרמטרים הרלוונטים
@@ -128,17 +133,22 @@ namespace ConsuleUIBL
                                     Console.WriteLine("how many time?(minuets)");
                                     ID = Convert.ToInt32(Console.ReadLine());
                                     int min = Convert.ToInt32(Console.ReadLine());
-                                    temp.Release_drone_from_charging();
+                                    temp.Release_drone_from_charging(ID,min);
                                     break;
                                 case 6:
                                     Console.WriteLine("witch drone you want to get the parcel?(ID)");
                                     ID = Convert.ToInt32(Console.ReadLine());
-                                    temp.Assign_a_package_to_a_drone();
+                                    temp.Assign_a_package_to_a_drone(ID);
                                     break;
                                 case 7:
+                                    Console.WriteLine("witch drone pickedUp the parcel?(ID)");
+                                    ID = Convert.ToInt32(Console.ReadLine());
+                                    temp.Collection_of_a_package_by_drone(ID);
+                                    break;
+                                case 8:
                                     Console.WriteLine("witch drone delivered the parcel?(ID)");
                                     ID = Convert.ToInt32(Console.ReadLine());
-                                    temp.Delivery_of_a_package_by_drone();
+                                    temp.Delivery_of_a_package_by_drone(ID);
                                     break;
                             }
                             break;
