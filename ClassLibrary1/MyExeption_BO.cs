@@ -19,5 +19,6 @@ namespace IBL
             public MyExeption_BO(Exception e) : base(e.ToString()) { }
 
         }
+    
     }
 }
