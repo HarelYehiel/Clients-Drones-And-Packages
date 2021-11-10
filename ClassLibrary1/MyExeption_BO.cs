@@ -8,8 +8,7 @@ namespace IBL
 {
     namespace BO
     { 
-    
-        public class MyExeption_BO : Exception
+            public class MyExeption_BO : Exception
         {
            public static Exception There_is_no_variable_with_this_ID = new Exception( "There is no variable with this ID.");
             public static Exception An_empty_list = new Exception("An empty list.");
