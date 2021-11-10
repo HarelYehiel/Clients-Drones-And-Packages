@@ -16,7 +16,7 @@ namespace IDAL
             public Point location { get; set; }
             public override string ToString()
             {
-                return $"Customer ID: {Id}, Name: {Name}, Phone: {Phone}, Longitude: {location.Longitude}, Latitude: {location.Latitude}";
+                return $"Customer ID: {Id}, Name: {Name}, Phone: {Phone}, Longitude: {location.longitude}, Latitude: {location.latitude}";
             }
 
         }

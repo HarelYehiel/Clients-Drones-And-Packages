@@ -21,8 +21,8 @@ namespace IBL
             station1.Id = ID; // update the drones list at BL
             station1.name = name;
             IDAL.DO.Point loc = new IDAL.DO.Point();
-            loc.Latitude = Latitude;
-            loc.Longitude = Longitude;
+            loc.latitude = Latitude;
+            loc.longitude = Longitude;
             station1.Location = loc;
             station1.ChargeSlots = numSlots;
             //איך לשלוח מBL לDL///////////////////////////////////////////////////
@@ -38,8 +38,8 @@ namespace IBL
             drone.uniqueID = ID;
             drone.Model = model;
             drone.weight = (BO.Enum.WeightCategories)maxWeight;
-            drone.location.latitude = sta.Location.Latitude;
-            drone.location.longitude = sta.Location.Longitude;
+            drone.location.latitude = sta.Location.latitude;
+            drone.location.longitude = sta.Location.longitude;
             drone.Status = BO.Enum.DroneStatus.Baintenance;
             var rand = new Random();
             drone.Battery = rand.Next(20, 40);
@@ -68,8 +68,8 @@ namespace IBL
             customer1.Name = nameCu;
             customer1.Phone = phoneNumber;
             IDAL.DO.Point point = new IDAL.DO.Point();
-            point.Latitude = Latitude;
-            point.Longitude = Longitude;
+            point.latitude = Latitude;
+            point.longitude = Longitude;
             customer1.location = point;
             temp.inputTheCustomerToArray(customer1);
         }

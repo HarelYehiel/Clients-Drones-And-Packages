@@ -38,7 +38,7 @@ namespace IBL
         public void base_station_view(int ID);
         public void drone_view(int ID);
         public void customer_view(int ID);
-        public void package_view(int ID);
+        public void parcel_view(int ID);
         /* Until here */
 
         public void List_view_options();

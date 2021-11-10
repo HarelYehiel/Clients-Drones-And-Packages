@@ -182,7 +182,7 @@ namespace ConsuleUIBL
                                 case 4:
                                     Console.WriteLine("witch parcel you want to view?");
                                     ID = Convert.ToInt32(Console.ReadLine());
-                                    temp.package_view(ID);
+                                    temp.parcel_view(ID);
                                     break;
                             }
                             break;

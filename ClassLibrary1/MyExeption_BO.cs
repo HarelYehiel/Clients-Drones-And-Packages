@@ -18,8 +18,10 @@ namespace IBL
             //public static Exception
             //public static Exception
             public MyExeption_BO(Exception e) : base(e.ToString()) { }
+            public MyExeption_BO(string s, Exception e) : base(e.ToString()) { }
+            איך זה עובד בדיוק ם המחרוזת
 
         }
-    
+
     }
 }

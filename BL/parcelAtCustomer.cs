@@ -8,7 +8,7 @@ namespace IBL
 {
     namespace BO
     {
-        public class ParcelToCustomer
+        public class parcelAtCustomer
         {
             public int uniqueID { get; set; }
             public Enum.WeightCategories weight { get; set; }

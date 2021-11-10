@@ -14,9 +14,8 @@ namespace IBL
             public string name { get; set; }
             public string phone { get; set; }
             public Location location { get; set; }
-
-            public List<ParcelToCustomer> fromTheCustome { get; set; }
-            public List<ParcelToCustomer> toTheCustome { get; set; }
+            public List<parcelAtCustomer> fromTheCustome { get; set; }
+            public List<parcelAtCustomer> toTheCustome { get; set; }
 
             public override string ToString()
             {

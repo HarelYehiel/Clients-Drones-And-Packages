@@ -18,9 +18,9 @@ namespace ConsoleUI
             item.name = Console.ReadLine();//user input name
             IDAL.DO.Point p = new IDAL.DO.Point();
             Console.WriteLine("enter Latitude:");
-            p.Latitude = Convert.ToDouble(Console.ReadLine());//user input Latitude
+            p.latitude = Convert.ToDouble(Console.ReadLine());//user input Latitude
             Console.WriteLine("enter Longitude:");
-            p.Longitude = Convert.ToDouble(Console.ReadLine());//user input Longitude
+            p.longitude = Convert.ToDouble(Console.ReadLine());//user input Longitude
             item.Location = p;
             item.ChargeSlots = 10;//all station have only 10 charge slots 
             temp.inputTheStationToArray(item);//this function is using at the data base so she must to be in DAL project
@@ -68,9 +68,9 @@ namespace ConsoleUI
 
             Console.WriteLine("enter Latitude:");
             IDAL.DO.Point P = new IDAL.DO.Point();
-            P.Latitude = Convert.ToDouble(Console.ReadLine());//user input Latitude
+            P.latitude = Convert.ToDouble(Console.ReadLine());//user input Latitude
             Console.WriteLine("enter Longitude:");
-            P.Longitude = Convert.ToDouble(Console.ReadLine());//user input Longitude
+            P.longitude = Convert.ToDouble(Console.ReadLine());//user input Longitude
             cust.location = P;
             temp.inputTheCustomerToArray(cust);
         }
