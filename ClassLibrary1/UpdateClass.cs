@@ -10,6 +10,7 @@ namespace IDAL
     {
         public class UpdateClass
         {
+            DalObject temp = new DalObject();
             public void updateDrone(DO.Drone drone)
             {
                 for(int i = 0; i < DataSource.drones.Count; i++)
@@ -46,7 +47,7 @@ namespace IDAL
                 {
                     if (DataSource.drones[i].Id == droneId)
                     {
-                        DO.Drone drone = DalObject.GetDrone(droneId);
+                        DO.Drone drone = temp.GetDrone(droneId);
                         drone.droneStatus = DO.Enum.DroneStatus.Baintenance;
                         DO.DroneCharge droneCharge = new DO.DroneCharge();
                         droneCharge.DroneId = droneId;
@@ -59,7 +60,7 @@ namespace IDAL
                 {
                     if(DataSource.stations[i].Id == stationId)
                     {
-                        DO.station station = DalObject.GetStation(stationId);
+                        DO.station station = temp.GetStation(stationId);
                         station.ChargeSlots--;
                         DataSource.stations[i] = station;
                     }
@@ -72,7 +73,7 @@ namespace IDAL
                 {
                     if (DataSource.drones[i].Id == droneId)
                     {
-                        DO.Drone drone = DalObject.GetDrone(droneId);
+                        DO.Drone drone = temp.GetDrone(droneId);
                         drone.droneStatus = DO.Enum.DroneStatus.Avilble;
                         //אי אפשר ךידכן פה מצב סוללה - זה כנראה BL
                         DataSource.drones[i] = drone;
@@ -82,7 +83,7 @@ namespace IDAL
                 {
                     if (DataSource.stations[i].Id == stationId)
                     {
-                        DO.station station = DalObject.GetStation(stationId);
+                        DO.station station = temp.GetStation(stationId);
                         station.ChargeSlots--;
                         DataSource.stations[i] = station;
                     }
@@ -93,6 +94,14 @@ namespace IDAL
                         DataSource.droneCharge.RemoveAt(i);
 
                 }
+            }
+            public double colculateBattery(DO.Point point1,DO.Point point2,int ID)
+            {
+                IDAL.DO.Drone drone = temp.GetDrone(ID);
+
+                double distance = point1.distancePointToPoint(point2);
+
+                return
             }
         }
     }

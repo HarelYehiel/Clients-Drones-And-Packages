@@ -8,13 +8,13 @@ namespace IBL
 {
     public partial class BL : IBL
     {
-        IDAL.DalObject.UpdateClass updateFun = new IDAL.DalObject.UpdateClass();
+        IDAL.DalObject.UpdateClass updateDataSourceFun = new IDAL.DalObject.UpdateClass();
 
         public void Update_drone_data(int ID, string newModel)
         {
             IDAL.DO.Drone drone = temp.GetDrone(ID);
             drone.Model = newModel;
-            updateFun.updateDrone(drone);
+            updateDataSourceFun.updateDrone(drone);
         }
         public void Update_station_data(int ID, string name, int numSlots)
         {
@@ -23,7 +23,7 @@ namespace IBL
                 station.name = name;
             if (numSlots != '\n')
                 station.ChargeSlots = numSlots;
-            updateFun.updateStation(station);
+            updateDataSourceFun.updateStation(station);
         }
         public void Update_customer_data(int ID, string name, string phoneNumber)
         {
@@ -32,20 +32,44 @@ namespace IBL
                 customer.Name = name;
             if (phoneNumber[0] != '\n')
                 customer.Phone = phoneNumber;
-            updateFun.updateCustomer(customer);
+            updateDataSourceFun.updateCustomer(customer);
         }
         public void Sending_a_drone_for_charging(int ID)
         {
             IDAL.DO.Drone drone = temp.GetDrone(ID);
+            BO.Drone drone1 = new BO.Drone();
+           //-----check drone status, only if he is free check the next condition-----
             if (drone.droneStatus == IDAL.DO.Enum.DroneStatus.Avilble)
             {
-                if (temp.)//אם הרחפן יכול להגיע עד לתחנה רלוונטית כדי להטען
+                //------gett data of this dron from BL drone list-----------
+                for (int i = 0; i < listDrons.Count; i++)
+                {
+                    if (listDrons[i].uniqueID == ID)
+                    {
+                        drone1 = listDrons[i];
+                    }
+                }
+                ///----------find the most close station---------
+                IDAL.DO.Point point1,point2 = new IDAL.DO.Point();
+                point1.latitude = drone1.location.latitude;
+                point1.longitude = drone1.location.longitude;
+                point2 = IDAL.DalObject.DataSource.stations[0].Location;
+                double min = point1.distancePointToPoint(point2);
+                foreach(var station in IDAL.DalObject.DataSource.stations)
+                {
+                   double dis = point1.distancePointToPoint(station.Location);
+                    if (dis < min)
+                    {
+                        point2 = station.Location;
+                    }
+                }
+                //--------if drone's battary can survive up to the station-------------
+                if (drone1.Battery - updateDataSourceFun.colculateBattery(point1,point2,ID)>0)
                 {
                     //צריך להשתמש בפןונקציות המרחק ךלא סגור  עליהם
                     IDAL.DO.station station = new IDAL.DO.station();
-                    //לעדכן את המיקום של התחנה והמזהה שלה למזהה נכון
-                    updateFun.updateDroneToCharge(ID, station.Id);
-                    BO.Drone drone1 = new BO.Drone;
+                    //////////////////////////////////לחשוב איך לעשכן את הנתונים לאחר הבדיקה
+                    updateDataSourceFun.updateDroneToCharge(ID, station.Id);
                     //ךלעדכן את מצב הסוללה של הרחפן בהתאמה למרחק שהוא עבר
                 }
                 else//אין לו מספיק סוללה להגיע לתחנה
@@ -61,7 +85,7 @@ namespace IBL
             {
                 IDAL.DO.station station = new IDAL.DO.station();
                 //צריך לחשוב איך למצוא את התחנה שהרחפן נמצא בה עכשיו
-                updateFun.updateRelaseDroneFromCharge(ID, station.Id, min);
+                updateDataSourceFun.updateRelaseDroneFromCharge(ID, station.Id, min);
 
             }
             else//הרחפן בכלל לא בתחזוקה

@@ -10,13 +10,13 @@ namespace IBL
     {
         public void Adding_a_base_station(int ID,string name,double Latitude,double Longitude, int numSlots)
         {
-            BO.station station = new BO.station();
+          /*  BO.station station = new BO.station();
             station.uniqueID = ID; // update the Data source
             station.name = name;
             station.location.latitude = Latitude;
             station.location.longitude = Longitude;
             station.availableChargingStations = numSlots;
-
+          */
             IDAL.DO.station station1 = new IDAL.DO.station();
             station1.Id = ID; // update the drones list at BL
             station1.name = name;
@@ -32,7 +32,7 @@ namespace IBL
         public void Adding_a_drone(int ID,string model,int maxWeight,int staId)
         {
             IDAL.DO.station sta = new IDAL.DO.station();
-            sta = IDAL.DalObject.DalObject GetStation(staId);//////////////////////////////////////////איך לגשת לקבל את הישות של התחנה הזאת
+            sta = temp.GetStation(staId);//////////////////////////////////////////איך לגשת לקבל את הישות של התחנה הזאת
 
             BO.Drone drone = new BO.Drone();
             drone.uniqueID = ID;
