@@ -13,9 +13,9 @@ namespace IBL
             public int uniqueID { get; set; }
 
             public string Model { get; set; }
-            public Enum.WeightCategories weight { get; set; }
+            public Enum_BO.WeightCategories weight { get; set; }
 
-            public Enum.DroneStatus Status { get; set; }
+            public Enum_BO.DroneStatus Status { get; set; }
             public DateTime chargingTime { get; set; }
             public double Battery { get; set; }
 
@@ -23,7 +23,8 @@ namespace IBL
 
             public override string ToString()
             {
-                return $"Drone ID = {uniqueID}, model = {Model}, status = {Status}, weight = {weight}, battery = {Battery}, location = {location}";
+                return $"Drone ID: {uniqueID}, model: {Model},  Status: {Enum.GetName(typeof(Enum_BO.Situations), Status)}, battery = {Battery}\n" +
+                    $"weight: {Enum.GetName(typeof(Enum_BO.WeightCategories),weight)}, location: {location.ToString()}, chargingTime: {chargingTime}";
             }            
         }        
 

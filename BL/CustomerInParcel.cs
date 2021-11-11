@@ -14,7 +14,7 @@ namespace IBL
             public string name { get; set; }
             public override string ToString()
             {
-                return $"Customer ID = {uniqueID}, name = {name}";
+                return $"Customer ID: {uniqueID}, name: {name}";
             }
         }
     }

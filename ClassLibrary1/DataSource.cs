@@ -12,7 +12,7 @@ namespace IDAL
         public struct DataSource
         {
             public static List<Drone> drones = new List<Drone>();
-            public static List<DroneCharge> droneCharge = new List<DroneCharge>();
+            public static List<DroneCharge> dronesCharge = new List<DroneCharge>();
             public static List<station> stations = new List<station>();
 
             public static List<Customer> customers = new List<Customer>();
@@ -55,7 +55,7 @@ namespace IDAL
                     Customer customer = new Customer();
                     var rand = new Random();
                     customer.Id = rand.Next(11111, 99999);
-                    customer.Name = "cust" + rand.Next(1, 99);
+                    customer.name = "cust" + rand.Next(1, 99);
                     customer.Phone = "05" + rand.Next(10000000, 99999999);
                     Point p = new Point();
                     p.latitude = 31 + rand.Next(0, 1);
@@ -70,8 +70,8 @@ namespace IDAL
                     parcel.Id = rand.Next(11111, 99999);
                     parcel.SenderId = rand.Next(11111, 99999);
                     parcel.TargetId = rand.Next(11111, 99999);
-                    parcel.Weight = (DO.Enum.WeightCategories)rand.Next(0, 2);
-                    parcel.Priority = (DO.Enum.Priorities)rand.Next(0, 2);
+                    parcel.weight = (DO.Enum.WeightCategories)rand.Next(0, 2);
+                    parcel.priority = (DO.Enum.Priorities)rand.Next(0, 2);
                     DateTime start = new DateTime(2021, rand.Next(1, 12), rand.Next(1, 31));//crate random time and colculate all the next properties
                     parcel.Requested = start.AddMinutes(rand.Next(1, 240));
                     parcels.Add(parcel);

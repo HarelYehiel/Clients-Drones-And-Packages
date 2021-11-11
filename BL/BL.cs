@@ -11,7 +11,17 @@ namespace IBL
     {
         List<BO.Drone> listDrons = new List<BO.Drone>();
         IDAL.DO.IDal temp = new  IDAL.DalObject.DalObject();
+ 
+        public bool IsDigitsOnly(string str)
+        {
+            foreach (char c in str)
+            {
+                if (c < '0' || c > '9')
+                    return false;
+            }
 
+            return true;
+        }
 
         public void Insert_options() //case 1
         {
@@ -48,17 +58,13 @@ namespace IBL
 
         public void List_view_options()//case 4
         {
-            Console.WriteLine("press 0 to back ");
-            Console.WriteLine("press 1 to displays a list of base stations");
-            Console.WriteLine("press 2 to displays a list of drones");
-            Console.WriteLine("press 3 to displays a list of customer");
-            Console.WriteLine("press 4 to Displays the list of parcels ");
-            Console.WriteLine("press 5 to displays a list of packages that have not yet been assigned to the glider");
-            Console.WriteLine("press 6 to base stations with available charging stations\n");
-        }
-
-        /* In function List_view_options*/
-        
-        /* Until here */
+            Console.WriteLine("press 0 to back.");
+            Console.WriteLine("press 1 to displays a list of base stations.");
+            Console.WriteLine("press 2 to displays a list of drones.");
+            Console.WriteLine("press 3 to displays a list of customer.");
+            Console.WriteLine("press 4 to Displays the list of parcels.");
+            Console.WriteLine("press 5 to displays a list of packages that have not yet been assigned to the drone.");
+            Console.WriteLine("press 6 to base stations with available charging stations.\n");
+        }       
     }
 }

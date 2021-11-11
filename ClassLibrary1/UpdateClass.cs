@@ -88,10 +88,10 @@ namespace IDAL
                         DataSource.stations[i] = station;
                     }
                 }
-                for(int i = 0; i < DataSource.droneCharge.Count; i++)
+                for(int i = 0; i < DataSource.dronesCharge.Count; i++)
                 {
-                    if (DataSource.droneCharge[i].DroneId == droneId && DataSource.droneCharge[i].staitionId == stationId)
-                        DataSource.droneCharge.RemoveAt(i);
+                    if (DataSource.dronesCharge[i].DroneId == droneId && DataSource.dronesCharge[i].staitionId == stationId)
+                        DataSource.dronesCharge.RemoveAt(i);
 
                 }
             }

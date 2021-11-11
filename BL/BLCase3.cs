@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IBL
 {
-    public partial class BL
+    public partial class BL: IBL
     {
         BO.DroneInPackage getDroneInPackage(int id)
         {
@@ -29,15 +29,26 @@ namespace IBL
         }
         BO.CustomerInDelivery getCustomerInDelivery(int id)
         {
-            IDAL.DO.Customer customer_DO = new IDAL.DO.Customer();
-            BO.CustomerInDelivery customerInDelivery_BO = new BO.CustomerInDelivery();
+            try
+            {
+                IDAL.DO.Customer customer_DO = new IDAL.DO.Customer();
+                BO.CustomerInDelivery customerInDelivery_BO = new BO.CustomerInDelivery();
 
-            customer_DO = dalO.GetCustomer(id);
+                customer_DO = dalO.GetCustomer(id);
 
-            customerInDelivery_BO.uniqueID = customer_DO.Id;
-            customerInDelivery_BO.name = customer_DO.Name;
+                if (customer_DO.Id != id) // Don't find the id in the list data.customers
 
-            return customerInDelivery_BO;
+                customerInDelivery_BO.uniqueID = customer_DO.Id;
+                customerInDelivery_BO.name = customer_DO.name;
+
+                return customerInDelivery_BO;
+            }
+            catch (Exception e)
+            {
+
+                throw new BO.MyExeption_BO("Exception from function 'getCustomerInDelivery'", e);
+            }
+
         }
         BO.parcelAtCustomer getParcelAtCustomer(int id_parcel, int id_customer)
         // 'id': the id of parcel
@@ -45,27 +56,36 @@ namespace IBL
         // If 'id_customer' = parcel.SenderId, so the id of 'customerInDelivery' is parcel.TargetId.
         // If 'id_customer' = parcel.TargetId, so the id of 'customerInDelivery' is parcel.SenderId.
         {
-            IDAL.DO.Parcel parcel_DO = new IDAL.DO.Parcel();
-            BO.parcelAtCustomer parcelToCustomer_BO = new BO.parcelAtCustomer();
+            try
+            {
+                IDAL.DO.Parcel parcel_DO = new IDAL.DO.Parcel();
+                BO.parcelAtCustomer parcelToCustomer_BO = new BO.parcelAtCustomer();
 
-            parcel_DO = dalO.GetParcel(id_parcel);
+                parcel_DO = dalO.GetParcel(id_parcel);
 
-            parcelToCustomer_BO.uniqueID = parcel_DO.Id;
-            parcelToCustomer_BO.weight = (BO.Enum.WeightCategories)parcel_DO.Weight;
-            parcelToCustomer_BO.priority = (BO.Enum.Priorities)parcel_DO.Priority;
-            parcelToCustomer_BO.situation  = (BO.Enum.Situations)fun_parcel_lsituation(parcel_DO);
+                parcelToCustomer_BO.uniqueID = parcel_DO.Id;
+                parcelToCustomer_BO.weight = (BO.Enum_BO.WeightCategories)parcel_DO.weight;
+                parcelToCustomer_BO.priority = (BO.Enum_BO.Priorities)parcel_DO.priority;
+                parcelToCustomer_BO.situation = (BO.Enum_BO.Situations)fun_parcel_lsituation(parcel_DO);
 
-            // Find the 'customer_In_Delivery' for parcelToCustomer_BO:
+                // Find the 'customer_In_Delivery' for parcelToCustomer_BO:
 
-            // If 'id_customer' = parcel.SenderId, so the id of 'customerInDelivery' is parcel.TargetId.
-            if (parcel_DO.SenderId == id_customer)
-                parcelToCustomer_BO.customer_In_Delivery = getCustomerInDelivery(parcel_DO.TargetId);
+                // If 'id_customer' = parcel.SenderId, so the id of 'customerInDelivery' is parcel.TargetId.
+                if (parcel_DO.SenderId == id_customer)
+                    parcelToCustomer_BO.customer_In_Delivery = getCustomerInDelivery(parcel_DO.TargetId);
 
-            // else 'id_customer' = parcel.TargetId, so the id of 'customerInDelivery' is parcel.SenderId.
-            else // (parcel_DO.TargetId == id_customer)
-            parcelToCustomer_BO.customer_In_Delivery = getCustomerInDelivery(parcel_DO.SenderId);
+                // else 'id_customer' = parcel.TargetId, so the id of 'customerInDelivery' is parcel.SenderId.
+                else // (parcel_DO.TargetId == id_customer)
+                    parcelToCustomer_BO.customer_In_Delivery = getCustomerInDelivery(parcel_DO.SenderId);
 
-            return parcelToCustomer_BO;
+                return parcelToCustomer_BO;
+            }
+            catch (Exception e)
+            {
+
+                throw new BO.MyExeption_BO("Exception from function 'getParcelAtCustomer'", e);
+            }
+
 
         }
         double getbatteryStatus(int id)
@@ -78,33 +98,45 @@ namespace IBL
         }
         public BO.station base_station_view(int id) 
         {
-            IDAL.DO.station station_DO = new IDAL.DO.station();
-            BO.station station_BO = new BO.station();
-
-            station_DO = dalO.GetStation(id);
-
-            station_BO.uniqueID = station_DO.Id;
-            station_BO.name = station_DO.name;
-            station_BO.availableChargingStations = station_DO.ChargeSlots;
-            station_BO.location.latitude = station_DO.Location.latitude;
-            station_BO.location.longitude = station_DO.Location.longitude;
-
-            //The all drones that charging in this station.
-            BO.DroneInCharging droneInCharging_BO = new BO.DroneInCharging();
-            foreach (IDAL.DO.DroneCharge item in IDAL.DalObject.DataSource.droneCharge)
+            try
             {
-                if (item.DroneId == id)
+                IDAL.DO.station station_DO = new IDAL.DO.station();
+                BO.station station_BO = new BO.station();
+
+                station_DO = dalO.GetStation(id);
+
+                station_BO.uniqueID = station_DO.Id;
+                station_BO.name = station_DO.name;
+                station_BO.availableChargingStations = station_DO.ChargeSlots;
+                station_BO.location.latitude = station_DO.Location.latitude;
+                station_BO.location.longitude = station_DO.Location.longitude;
+
+                //The all drones that charging in this station.
+                BO.DroneInCharging droneInCharging_BO = new BO.DroneInCharging();
+                foreach (IDAL.DO.DroneCharge item in IDAL.DalObject.DataSource.dronesCharge)
                 {
-                    droneInCharging_BO.uniqueID = item.DroneId;
-                    droneInCharging_BO.batteryStatus = getbatteryStatus(id);
+                    if (item.DroneId == id)
+                    {
+                        droneInCharging_BO.uniqueID = item.DroneId;
+                        droneInCharging_BO.batteryStatus = getbatteryStatus(id);
 
-                    station_BO.dronesInCharging.Add(droneInCharging_BO);
+                        station_BO.dronesInCharging.Add(droneInCharging_BO);
 
-                }                   
+                    }
+                }
+
+                return station_BO;
+
+            }
+            catch (Exception e)
+            {
+
+                throw new BO.MyExeption_BO("Exception from function 'getbatteryStatus'", e);
+
             }
 
-            return station_BO;
         }
+
         public BO.Drone drone_view(int id) 
         {
             foreach (BO.Drone item in listDrons)
@@ -116,51 +148,69 @@ namespace IBL
         }
         public BO.Customer customer_view(int id) 
         {
-            IDAL.DO.Customer customer_DO = new IDAL.DO.Customer();
-            BO.Customer customer_BO = new BO.Customer();
-
-            customer_DO = dalO.GetCustomer(id);
-
-            customer_BO.uniqueID = customer_DO.Id;
-            customer_BO.name = customer_DO.Name;
-            customer_BO.phone = customer_DO.Phone;
-            customer_BO.location.latitude = customer_DO.location.latitude;
-            customer_BO.location.longitude = customer_DO.location.longitude;
-
-            foreach (IDAL.DO.Parcel item in IDAL.DalObject.DataSource.parcels)
+            try
             {
-                if(item.SenderId == id)
-                {
-                    customer_BO.fromTheCustome.Add(getParcelAtCustomer(item.Id, id));
-                }
-                else if(item.TargetId == id)
-                {
-                    customer_BO.toTheCustome.Add(getParcelAtCustomer(item.Id, id));
+                IDAL.DO.Customer customer_DO = new IDAL.DO.Customer();
+                BO.Customer customer_BO = new BO.Customer();
 
+                customer_DO = dalO.GetCustomer(id);
+
+                customer_BO.uniqueID = customer_DO.Id;
+                customer_BO.name = customer_DO.name;
+                customer_BO.phone = customer_DO.Phone;
+                customer_BO.location.latitude = customer_DO.location.latitude;
+                customer_BO.location.longitude = customer_DO.location.longitude;
+
+                foreach (IDAL.DO.Parcel item in IDAL.DalObject.DataSource.parcels)
+                {
+                    if (item.SenderId == id)
+                    {
+                        customer_BO.fromTheCustomer.Add(getParcelAtCustomer(item.Id, id));
+                    }
+                    else if (item.TargetId == id)
+                    {
+                        customer_BO.toTheCustomer.Add(getParcelAtCustomer(item.Id, id));
+
+                    }
                 }
+
+                return customer_BO;
+            }
+            catch (Exception e)
+            {
+
+                throw new BO.MyExeption_BO("Exception from function 'customer_view'", e);
             }
 
-            return customer_BO;
         }
         public BO.Parcel parcel_view(int id) 
         {
-            IDAL.DO.Parcel parcel_DO = new IDAL.DO.Parcel();
-            BO.Parcel parcel_BO = new BO.Parcel();
+            try
+            {
+                IDAL.DO.Parcel parcel_DO = new IDAL.DO.Parcel();
+                BO.Parcel parcel_BO = new BO.Parcel();
 
-            parcel_DO = dalO.GetParcel(id);
+                parcel_DO = dalO.GetParcel(id);
 
-            parcel_BO.uniqueID = parcel_DO.Id;
-            parcel_BO.namrSender = getCustomerInDelivery(parcel_DO.SenderId);
-            parcel_BO.nameTarget = getCustomerInDelivery(parcel_DO.TargetId);
-            parcel_BO.droneInParcel = getDroneInPackage(parcel_DO.DroneId);
-            parcel_BO.priority = (BO.Enum.Priorities) parcel_DO.Priority;
-            parcel_BO.weight = (BO.Enum.WeightCategories)parcel_DO.Priority;
-            parcel_BO.pickedUp = parcel_DO.PickedUp;
-            parcel_BO.requested = parcel_DO.Requested;
-            parcel_BO.scheduled = parcel_DO.Scheduled;
-            parcel_BO.requested = parcel_DO.Requested;
+                parcel_BO.uniqueID = parcel_DO.Id;
+                parcel_BO.customerInDelivery_Sender = getCustomerInDelivery(parcel_DO.SenderId);
+                parcel_BO.customerInDelivery_Target = getCustomerInDelivery(parcel_DO.TargetId);
+                parcel_BO.droneInParcel = getDroneInPackage(parcel_DO.DroneId);
+                parcel_BO.priority = (BO.Enum_BO.Priorities)parcel_DO.priority;
+                parcel_BO.weight = (BO.Enum_BO.WeightCategories)parcel_DO.priority;
+                parcel_BO.pickedUp = parcel_DO.PickedUp;
+                parcel_BO.requested = parcel_DO.Requested;
+                parcel_BO.scheduled = parcel_DO.Scheduled;
+                parcel_BO.requested = parcel_DO.Requested;
 
-            return parcel_BO;
+                return parcel_BO;
+
+            }
+            catch (Exception e)
+            {
+
+                throw new BO.MyExeption_BO("Exception from function 'parcel_view'", e);
+            }
 
         }
     }
