@@ -20,7 +20,15 @@ namespace IBL
 
             public override string ToString()
             {
-                return $"Station ID = {uniqueID}, name = {name}, {location} , available Charging Stations = {availableChargingStations}";
+                string s = $"Station ID: {uniqueID}, name: {name}, location: {location.ToString()}\n";
+
+                s += "The all drone charging in this station:\n";
+                foreach (DroneInCharging item in dronesInCharging)
+                {
+                    s += item.ToString() + "\n";
+                }
+
+                return s;
             }
            
         }

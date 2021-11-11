@@ -10,7 +10,7 @@ namespace IBL
     {
 
 
-        public class Enum
+        public class Enum_BO
         {
 
             public enum WeightCategories { Light, Medium, Heavy }
@@ -20,7 +20,6 @@ namespace IBL
             public enum DeliveryStatus {waitingForCollection, onTheWay }
             public enum Situations { created, associated, collected, provided}
 
-          
         }
     }
 }

@@ -11,7 +11,7 @@ namespace IBL
 
             public override string ToString()
             {
-                return $"longitude = {longitude}, latitude = {latitude}";
+                return $"longitude: {longitude}, latitude: {latitude}";
              }
         }
     }

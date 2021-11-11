@@ -20,7 +20,9 @@ namespace IBL
 
             public override string ToString()
             {
-                return $"Customer ID = {uniqueID}, name = {Name}, phone = {Phone}, packages sent and delivered = {packagesSentAndDelivered}, packages sent and not delivered = {packagesSentAndNotDelivered}, packages he received = {packagesHeReceived}, packages on the way to the customer = {packagesOnTheWayToTheCustomer}";
+                return $"Customer ID: {uniqueID}, name: {Name}, phone: {Phone}\n" +
+                    $" packages sent and delivered: {packagesSentAndDelivered}, packages sent and not delivered: {packagesSentAndNotDelivered}\n" +
+                    $" packages he received: {packagesHeReceived}, packages on the way to the customer: {packagesOnTheWayToTheCustomer}";
             }
         }
     }

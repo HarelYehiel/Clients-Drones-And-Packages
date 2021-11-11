@@ -44,10 +44,10 @@ namespace ConsoleUI
             par.DroneId = dronId;
             Console.WriteLine("enter weight:\nLight = 0, Medium = 1, Heavy = 2");//user set weight of parcel
             int parWeight = Convert.ToInt32(Console.ReadLine());
-            par.Weight = (IDAL.DO.Enum.WeightCategories)parWeight;
+            par.weight = (IDAL.DO.Enum.WeightCategories)parWeight;
             Console.WriteLine("enter priority:\nNormal = 0, Fast = 1, Emergency =2");
             int parPriority = Convert.ToInt32(Console.ReadLine());
-            par.Priority = (IDAL.DO.Enum.Priorities)parPriority;
+            par.priority = (IDAL.DO.Enum.Priorities)parPriority;
             par.Requested = DateTime.Now;//the requestsd time is now
             par.Scheduled = par.Requested.AddMinutes(5);//the parcel find drone at 5 minutes
             temp.inputTheParcelToArray(par);
@@ -61,7 +61,7 @@ namespace ConsoleUI
             cust.Id = Convert.ToInt32(Console.ReadLine());//user set id
 
             Console.WriteLine("enter customer name:");
-            cust.Name = Console.ReadLine();//user input name
+            cust.name = Console.ReadLine();//user input name
 
             Console.WriteLine("enter phone number:");
             cust.Phone = Console.ReadLine();//user set phone number

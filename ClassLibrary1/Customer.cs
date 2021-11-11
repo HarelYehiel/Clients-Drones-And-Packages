@@ -11,12 +11,12 @@ namespace IDAL
         public struct Customer
         {
             public int Id { get; set; }
-            public string Name { get; set; }
+            public string name { get; set; }
             public string Phone { get; set; }
             public Point location { get; set; }
             public override string ToString()
             {
-                return $"Customer ID: {Id}, Name: {Name}, Phone: {Phone}, Longitude: {location.longitude}, Latitude: {location.latitude}";
+                return $"Customer ID: {Id}, Name: {name}, Phone: {Phone}, Longitude: {location.longitude}, Latitude: {location.latitude}";
             }
 
         }
