@@ -12,7 +12,7 @@ namespace IBL
        public class DroneInPackage
         {
             public int uniqueID { get; set; }
-            double batteryStatus { get; set; }
+            public double batteryStatus { get; set; }
             public Location location { get; set; }
             public override string ToString()
             {

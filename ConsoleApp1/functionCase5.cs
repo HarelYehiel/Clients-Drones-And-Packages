@@ -14,8 +14,8 @@ namespace ConsoleUI
         {
             Console.WriteLine("witch cordinate you want to convert? ");
             IDAL.DO.Point point = new IDAL.DO.Point();
-            point.Latitude = Convert.ToDouble(Console.ReadLine());
-            point.Longitude = Convert.ToDouble(Console.ReadLine());
+            point.latitude = Convert.ToDouble(Console.ReadLine());
+            point.longitude = Convert.ToDouble(Console.ReadLine());
             string newLat = IDAL.DO.Point.convertLatitudeToDegree(point);
             string newLon = IDAL.DO.Point.convertLongitudeToDegree(point);
             Console.WriteLine("the new Latitude is: " + newLat);
@@ -29,8 +29,8 @@ namespace ConsoleUI
         {
             Console.WriteLine("Type Latitude and Longitude");
             IDAL.DO.Point p = new IDAL.DO.Point();
-            p.Latitude = Convert.ToDouble(Console.ReadLine());
-            p.Longitude = Convert.ToDouble(Console.ReadLine());
+            p.latitude = Convert.ToDouble(Console.ReadLine());
+            p.longitude = Convert.ToDouble(Console.ReadLine());
             int choose;
 
             do

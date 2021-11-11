@@ -16,7 +16,7 @@ namespace IBL
         List<DroneToList> List_droneToList = new List<DroneToList>();
 
 
-        int fun_parce_lsituation(IDAL.DO.Parcel p)
+        int fun_parcel_lsituation(IDAL.DO.Parcel p)
         {
             if (p.Delivered != new DateTime()) return 3;
             else if (p.PickedUp != new DateTime()) return 2;
@@ -149,7 +149,7 @@ namespace IBL
                 ParceslToList_BO.namrSender = dalO.GetCustomer(item.SenderId).Name;
                 ParceslToList_BO.priority = (BO.Enum.Priorities)(int)item.Priority;
                 ParceslToList_BO.weight = (BO.Enum.WeightCategories)(int)item.Weight;
-                ParceslToList_BO.parcelsituation = (BO.Enum.Situations)fun_parce_lsituation(item);
+                ParceslToList_BO.parcelsituation = (BO.Enum.Situations)fun_parcel_lsituation(item);
 
                 parcels_BO.Add(ParceslToList_BO);
             }

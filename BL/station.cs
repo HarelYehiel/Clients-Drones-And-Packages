@@ -16,7 +16,7 @@ namespace IBL
             public Location location { get; set; }
             public int availableChargingStations { get; set; }
 
-            // public List<Drone> drones { get; set; }
+             public List<DroneInCharging> dronesInCharging { get; set; }
 
             public override string ToString()
             {

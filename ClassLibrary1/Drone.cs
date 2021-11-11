@@ -14,7 +14,7 @@ namespace IDAL
             public string Model { get; set; }
             public Enum.WeightCategories MaxWeight { get; set; }
 
-            public DroneCharge stationOfCharge {get;set;}
+            // public DroneCharge stationOfCharge {get;set;}
 
             public Enum.DroneStatus droneStatus { get; set; }
             public override string ToString()
