@@ -48,7 +48,6 @@ namespace IBL
             drone1.Id = ID;
             drone1.Model = model;
             drone1.MaxWeight = (IDAL.DO.Enum.WeightCategories)maxWeight;
-            //איך לשלוח מBL לDL///////////////////////////////////////////////////
             temp.inputTheDroneToArray(drone1);
             this.listDrons.Add(drone);
 
