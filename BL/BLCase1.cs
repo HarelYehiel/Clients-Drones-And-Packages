@@ -61,7 +61,7 @@ namespace IBL
             customer.phone = phoneNumber;
             customer.location.latitude = Latitude;
             customer.location.longitude = Longitude;
-            //איך לשלוח מBL לDL
+    
 
             IDAL.DO.Customer customer1 = new IDAL.DO.Customer();
             customer1.Id = ID;

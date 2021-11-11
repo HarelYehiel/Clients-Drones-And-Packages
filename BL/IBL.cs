@@ -23,9 +23,9 @@ namespace IBL
 
         /* In function Update_options*/
         public void Update_drone_data(int ID, string newModel);
-        public void Update_station_data();
-        public void Update_customer_data();
-        public void Sending_a_drone_for_charging();
+        public void Update_station_data(int ID, string name, int numSlots);
+        public void Update_customer_data(int ID, string custName, string phoneNumber);
+        public void Sending_a_drone_for_charging(int ID);
         public void Release_drone_from_charging(int ID,int min);
         public void Assign_a_package_to_a_drone(int droneId);
         public void Collection_of_a_package_by_drone(int droneId);

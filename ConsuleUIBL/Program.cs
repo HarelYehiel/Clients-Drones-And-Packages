@@ -97,36 +97,29 @@ namespace ConsuleUIBL
                                     ID = Convert.ToInt32(Console.ReadLine());
                                     string newModel = Console.ReadLine();
                                     temp.Update_drone_data(ID,newModel);
-                                    ///////////////////temp. לעדכן את הרחפן הספציפי לשם חדש
                                     break;
                                 case 2:
                                     Console.WriteLine("witch station you want to update?(ID)");
                                     ID = Convert.ToInt32(Console.ReadLine());
-                                    Console.WriteLine("what do you want to update? \n1 = name of station 2 = charge slots ");
-                                    int choise = Convert.ToInt32(Console.ReadLine());
-                                    while(choise == 1 || choise ==2)
-                                    {
-                                        if (choise == 1)
-                                            string nameOfStat = Console.ReadLine();
-
-                                        temp.Update_station_data();
-                                    }
-                                    //////////////////////////לשלוח לפונקציה את הפרמטרים הרלוונטים
+                                    Console.WriteLine("do you want to update the name of station? if not press enter");
+                                    string newName = Console.ReadLine();
+                                    Console.WriteLine("do you want to update the number of slots? if not press enter");
+                                    int numSlots = Convert.ToInt32(Console.ReadLine());                                      
+                                    temp.Update_station_data(ID,newName,numSlots);
                                     break;
                                 case 3:
                                     Console.WriteLine("witch customer you want to update?(ID)");
                                     ID = Convert.ToInt32(Console.ReadLine());
-                                    Console.WriteLine("what do you want to update? \n1 = name of station 2 = charge slots ");
-                                    int choiseC = Convert.ToInt32(Console.ReadLine());
-                                    while (choiseC == 1 || choiseC == 2)
-                                    {
-                                        temp.Update_customer_data();
-                                    }
+                                    Console.WriteLine("do you want to update customer name? if not press enter");
+                                    string custName = Console.ReadLine();
+                                    Console.WriteLine("do you want to update customer phone number? if not press enter");
+                                    string phoneNumber = Console.ReadLine();
+                                    temp.Update_customer_data(ID, custName, phoneNumber);
                                     break;
                                 case 4:
                                     Console.WriteLine("witch drone you want to charge?(ID)");
                                     ID = Convert.ToInt32(Console.ReadLine());
-                                    temp.Sending_a_drone_for_charging();
+                                    temp.Sending_a_drone_for_charging(ID);
                                     break;
                                 case 5:
                                     Console.WriteLine("witch drone you want to release from charge?(ID)");
