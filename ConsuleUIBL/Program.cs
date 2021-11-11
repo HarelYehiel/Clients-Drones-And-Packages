@@ -86,15 +86,15 @@ namespace ConsuleUIBL
                                         break;
 
                                     case 4:
-                                        Console.WriteLine("enter sender name:");
-                                        string senderName = Console.ReadLine();
-                                        Console.WriteLine("enter target name:");
-                                        string targetName = Console.ReadLine();
+                                        Console.WriteLine("enter sender name(ID - 5 digit:");
+                                        int senderID = Convert.ToInt32(Console.ReadLine());
+                                        Console.WriteLine("enter target name(ID  - 5 digit):");
+                                        int targetID = Convert.ToInt32(Console.ReadLine());
                                         Console.WriteLine("enter weight: \n1 = Light, 2 = Medium, 3 = Heavy");
                                         maxWeight = Convert.ToInt32(Console.ReadLine());
                                         Console.WriteLine("enter target ID(5 digit): \n 1 = Normal, 2 = Fast, 3 = Emergency");
                                         int prioerity = Convert.ToInt32(Console.ReadLine());
-                                        temp.Receipt_of_package_for_delivery(senderName, targetName, maxWeight, prioerity);
+                                        temp.Receipt_of_package_for_delivery(senderID, targetID, maxWeight, prioerity);
                                         break;
                                 }
                                 break;
