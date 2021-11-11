@@ -47,6 +47,7 @@ namespace ConsuleUIBL
                                     case 1:
                                         Console.WriteLine("enter station ID(5 digit):");
                                         ID = Convert.ToInt32(Console.ReadLine());
+                                        ID = giveNumber();
                                         Console.WriteLine("enter name of station:");
                                         string name = Console.ReadLine();
                                         Console.WriteLine("enter locaition:");
@@ -60,6 +61,7 @@ namespace ConsuleUIBL
                                     case 2:
                                         Console.WriteLine("enter drone ID(5 digit):");
                                         ID = Convert.ToInt32(Console.ReadLine());
+                                        ID = giveNumber();
                                         Console.WriteLine("enter model of drone:");
                                         string model = Console.ReadLine();
                                         Console.WriteLine("enter weight: \n1 = Light, 2 = Medium, 3 = Heavy");
@@ -72,6 +74,7 @@ namespace ConsuleUIBL
                                     case 3:
                                         Console.WriteLine("enter customer ID(5 digit):");
                                         ID = Convert.ToInt32(Console.ReadLine());
+                                        ID = giveNumber();
                                         Console.WriteLine("enter name of customer:");
                                         string nameCu = Console.ReadLine();
                                         Console.WriteLine("enter phone number:");
@@ -111,6 +114,7 @@ namespace ConsuleUIBL
                                         Console.WriteLine("witch drone you want to update?(ID)");
                                         Console.WriteLine("what is the new name?");
                                         ID = Convert.ToInt32(Console.ReadLine());
+                                        ID = giveNumber();
                                         string newModel = Console.ReadLine();
                                         temp.Update_drone_data(ID, newModel);
                                         break;
@@ -126,6 +130,7 @@ namespace ConsuleUIBL
                                     case 3:
                                         Console.WriteLine("witch customer you want to update?(ID)");
                                         ID = Convert.ToInt32(Console.ReadLine());
+                                        ID = giveNumber();
                                         Console.WriteLine("do you want to update customer name? if not press enter");
                                         string custName = Console.ReadLine();
                                         Console.WriteLine("do you want to update customer phone number? if not press enter");
@@ -135,28 +140,33 @@ namespace ConsuleUIBL
                                     case 4:
                                         Console.WriteLine("witch drone you want to charge?(ID)");
                                         ID = Convert.ToInt32(Console.ReadLine());
+                                        ID = giveNumber();
                                         temp.Sending_a_drone_for_charging(ID);
                                         break;
                                     case 5:
                                         Console.WriteLine("witch drone you want to release from charge?(ID)");
                                         Console.WriteLine("how many time?(minuets)");
                                         ID = Convert.ToInt32(Console.ReadLine());
+                                        ID = giveNumber();
                                         int min = Convert.ToInt32(Console.ReadLine());
                                         temp.Release_drone_from_charging(ID, min);
                                         break;
                                     case 6:
                                         Console.WriteLine("witch drone you want to get the parcel?(ID)");
                                         ID = Convert.ToInt32(Console.ReadLine());
+                                        ID = giveNumber();
                                         temp.Assign_a_package_to_a_drone(ID);
                                         break;
                                     case 7:
                                         Console.WriteLine("witch drone pickedUp the parcel?(ID)");
                                         ID = Convert.ToInt32(Console.ReadLine());
+                                        ID = giveNumber();
                                         temp.Collection_of_a_package_by_drone(ID);
                                         break;
                                     case 8:
                                         Console.WriteLine("witch drone delivered the parcel?(ID)");
                                         ID = Convert.ToInt32(Console.ReadLine());
+                                        ID = giveNumber();
                                         temp.Delivery_of_a_package_by_drone(ID);
                                         break;
                                 }
