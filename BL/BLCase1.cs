@@ -18,7 +18,7 @@ namespace IBL
             station.availableChargingStations = numSlots;
           */
             IDAL.DO.station station1 = new IDAL.DO.station();
-            station1.Id = ID; // update the drones list at BL
+            station1.id = ID; // update the drones list at BL
             station1.name = name;
             IDAL.DO.Point loc = new IDAL.DO.Point();
             loc.latitude = Latitude;

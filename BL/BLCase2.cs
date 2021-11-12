@@ -69,7 +69,7 @@ namespace IBL
                     //צריך להשתמש בפןונקציות המרחק ךלא סגור  עליהם
                     IDAL.DO.station station = new IDAL.DO.station();
                     //////////////////////////////////לחשוב איך לעשכן את הנתונים לאחר הבדיקה
-                    updateDataSourceFun.updateDroneToCharge(ID, station.Id);
+                    updateDataSourceFun.updateDroneToCharge(ID, station.id);
                     //ךלעדכן את מצב הסוללה של הרחפן בהתאמה למרחק שהוא עבר
                 }
                 else//אין לו מספיק סוללה להגיע לתחנה
@@ -85,7 +85,7 @@ namespace IBL
             {
                 IDAL.DO.station station = new IDAL.DO.station();
                 //צריך לחשוב איך למצוא את התחנה שהרחפן נמצא בה עכשיו
-                updateDataSourceFun.updateRelaseDroneFromCharge(ID, station.Id, min);
+                updateDataSourceFun.updateRelaseDroneFromCharge(ID, station.id, min);
 
             }
             else//הרחפן בכלל לא בתחזוקה

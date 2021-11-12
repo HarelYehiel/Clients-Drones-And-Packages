@@ -13,7 +13,7 @@ namespace ConsoleUI
         {
             IDAL.DO.station item = new IDAL.DO.station();
             Console.WriteLine("enter drone-station ID:(5 digits)");
-            item.Id = Convert.ToInt32(Console.ReadLine());//user set id
+            item.id = Convert.ToInt32(Console.ReadLine());//user set id
             Console.WriteLine("enter drone-station name:");
             item.name = Console.ReadLine();//user input name
             IDAL.DO.Point p = new IDAL.DO.Point();

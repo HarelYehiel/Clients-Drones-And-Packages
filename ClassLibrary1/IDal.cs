@@ -42,7 +42,7 @@ namespace IDAL
             //Copy all the Drone from DataSource.drones[] to new_array_drones.
             public IEnumerable<Parcel> displaysParcelsDontHaveDrone();
             // Print the details of all the parcels don't have An associated skimmer (Selected_drone == 0).
-            public List<station> AvailableChargingStations();
+            public IEnumerable<station> AvailableChargingStations();
             public void AffiliationDroneToParcel(int parcelID, int droneID);
             public void pickUp(int PickId);
 

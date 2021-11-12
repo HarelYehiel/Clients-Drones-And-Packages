@@ -15,7 +15,7 @@ namespace IBL
         DalObject dalO = new DalObject();
         List<DroneToList> List_droneToList = new List<DroneToList>();
 
-        int fun_parcel_lsituation(IDAL.DO.Parcel p)
+        int fun_parcel_situation(IDAL.DO.Parcel p)
         {
             if (p.Delivered != new DateTime()) return 3;
             else if (p.PickedUp != new DateTime()) return 2;
@@ -40,14 +40,14 @@ namespace IBL
 
             foreach (IDAL.DO.station station_DO in DataSource.stations)
             {
-                stationForTheList.uniqueID = station_DO.Id;
+                stationForTheList.uniqueID = station_DO.id;
                 stationForTheList.name = station_DO.name;
                 stationForTheList.availableChargingStations = station_DO.ChargeSlots;
 
                 // Counter the unavailable charging stations.
                 foreach (DroneCharge item_DroneCharge in DataSource.dronesCharge)
                 {
-                    if (item_DroneCharge.staitionId == station_DO.Id)
+                    if (item_DroneCharge.staitionId == station_DO.id)
                         stationForTheList.unAvailableChargingStations++;
                 }
 
@@ -62,33 +62,7 @@ namespace IBL
                 throw new MyExeption_BO(MyExeption_BO.An_empty_list);
 
             return List_droneToList;
-
-            /* //List<IDAL.DO.Drone> drones_DO = new List<IDAL.DO.Drone>();
-            //List<DroneToList> DronesToList_BO = new List<DroneToList>();
-            //drones_DO = DataSource.drones.ToList<IDAL.DO.Drone>();
-            //DroneToList droneToList = new DroneToList();
-            //foreach (IDAL.DO.Drone item in drones_DO) 
-            //{
-            //    droneToList.uniqueID = item.Id;
-            //    droneToList.Model = item.Model;
-            //    droneToList.weight = (BO.Enum.WeightCategories)(int)item.MaxWeight;
-            //    droneToList.status = (BO.Enum.DroneStatus)(int)item.droneStatus;
-            //    foreach (DroneToList item_droneToList in List_droneToList)
-            //    {
-            //        if(item_droneToList.uniqueID == droneToList.uniqueID)
-            //        // Can take this informtion just from the list in IBL.BL
-            //        {
-            //            droneToList.location.latitude = item_droneToList.location.latitude;
-            //            droneToList.location.longitude = item_droneToList.location.longitude;
-            //            droneToList.packageDelivered = item_droneToList.packageDelivered;
-            //            droneToList.Battery = item_droneToList.Battery;
-            //        }
-            //    }
-            //    DronesToList_BO.Add(droneToList);
-            //}
-            //return DronesToList_BO; 
-            */
-        }
+        }   
         public IEnumerable<CustomerToList> Displays_a_list_of_customers()
         {
             if (DataSource.customers.Count == 0)
@@ -142,7 +116,7 @@ namespace IBL
                     ParcelToList_BO.namrSender = dalO.GetCustomer(item.SenderId).name;
                     ParcelToList_BO.priority = (BO.Enum_BO.Priorities)(int)item.priority;
                     ParcelToList_BO.weight = (BO.Enum_BO.WeightCategories)(int)item.weight;
-                    ParcelToList_BO.parcelsituation = (BO.Enum_BO.Situations)fun_parcel_lsituation(item);
+                    ParcelToList_BO.parcelsituation = (BO.Enum_BO.Situations)fun_parcel_situation(item);
 
                     ParcelsToList_BO.Add(ParcelToList_BO);
                 }
@@ -206,13 +180,13 @@ namespace IBL
             {
                 if (station_DO.ChargeSlots > 0)
                 {
-                    stationForTheList.uniqueID = station_DO.Id;
+                    stationForTheList.uniqueID = station_DO.id;
                     stationForTheList.name = station_DO.name;
                     stationForTheList.availableChargingStations = station_DO.ChargeSlots;
 
                     foreach (IDAL.DO.DroneCharge droneCarge_DO in IDAL.DalObject.DataSource.dronesCharge)
                     {
-                        if (droneCarge_DO.staitionId == station_DO.Id)
+                        if (droneCarge_DO.staitionId == station_DO.id)
                             stationForTheList.unAvailableChargingStations++;
                     }
 

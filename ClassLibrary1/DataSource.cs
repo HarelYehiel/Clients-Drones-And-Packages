@@ -42,7 +42,7 @@ namespace IDAL
                 {
                     station station = new station();
                     var rand = new Random();
-                    station.Id = rand.Next(10000, 99999);
+                    station.id = rand.Next(10000, 99999);
                     station.name = "sta" + rand.Next(1, 99);
                     Point p = new Point();
                     p.latitude = 31 + rand.Next(0, 1);

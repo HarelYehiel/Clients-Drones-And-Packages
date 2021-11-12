@@ -25,7 +25,7 @@ namespace IDAL
             {
                 for (int i = 0; i < DataSource.stations.Count; i++)
                 {
-                    if (DataSource.stations[i].Id == station.Id)
+                    if (DataSource.stations[i].id == station.id)
                     {
                         DataSource.stations[i] = station;
                     }
@@ -58,7 +58,7 @@ namespace IDAL
                 }
                 for(int i =0;i< DataSource.stations.Count; i++)
                 {
-                    if(DataSource.stations[i].Id == stationId)
+                    if(DataSource.stations[i].id == stationId)
                     {
                         DO.station station = temp.GetStation(stationId);
                         station.ChargeSlots--;
@@ -81,7 +81,7 @@ namespace IDAL
                 }
                 for (int i = 0; i < DataSource.stations.Count; i++)
                 {
-                    if (DataSource.stations[i].Id == stationId)
+                    if (DataSource.stations[i].id == stationId)
                     {
                         DO.station station = temp.GetStation(stationId);
                         station.ChargeSlots--;

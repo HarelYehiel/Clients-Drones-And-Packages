@@ -8,7 +8,7 @@ namespace IDAL
 
         public struct station
         {
-            public int Id { get; set; }
+            public int id { get; set; }
             public string name { get; set; }
             public Point Location { get; set; }
             public int ChargeSlots { get; set; }
@@ -18,7 +18,7 @@ namespace IDAL
 
             public override string ToString()
             {
-                return $"Station ID: {Id}, name: {name}, Longitude: {Location.longitude}, Latitude: {Location.latitude}";
+                return $"Station ID: {id}, name: {name}, Longitude: {Location.longitude}, Latitude: {Location.latitude}";
             }
             
 

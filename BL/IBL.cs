@@ -35,21 +35,19 @@ namespace IBL
         public void Entity_display_options();
 
         /* In function Entity_display_options*/
-        public void base_station_view(int ID);
-        public void drone_view(int ID);
-        public void customer_view(int ID);
-        public void parcel_view(int ID);
+        public BO.station base_station_view(int ID);
+        public BO.Drone drone_view(int ID);
+        public BO.Customer customer_view(int ID);
+        public BO.Parcel parcel_view(int ID);
         /* Until here */
 
         public void List_view_options();
 
         /* In function List_view_options*/
         public IEnumerable<BO.StationForTheList> Displays_a_list_of_base_stations();
-            public void Displays_a_list_of_information();
         public IEnumerable<BO.DroneToList> Displays_the_list_of_drones();
         public IEnumerable<BO.CustomerToList> Displays_a_list_of_customers();
         public IEnumerable<BO.ParcelToList> Displays_the_list_of_Parcels();
-        public void Displays_the_list_of_packages();
         public IEnumerable<BO.ParcelToList> Displays_a_list_of_Parcels_not_yet_associated_with_the_drone();
         public IEnumerable<BO.StationForTheList> Display_of_base_stations_with_available_charging_stations();
         /* Until here */
