@@ -18,6 +18,7 @@ namespace IBL
             public Enum_BO.DroneStatus Status { get; set; }
             public DateTime chargingTime { get; set; }
             public double Battery { get; set; }
+            public ParcelByTransfer parcelByTransfer { get; set; }
 
             public Location location { get; set; }
 

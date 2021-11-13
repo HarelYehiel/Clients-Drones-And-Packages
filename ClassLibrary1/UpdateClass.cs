@@ -25,7 +25,7 @@ namespace IDAL
             {
                 for (int i = 0; i < DataSource.stations.Count; i++)
                 {
-                    if (DataSource.stations[i].Id == station.Id)
+                    if (DataSource.stations[i].id == station.id)
                     {
                         DataSource.stations[i] = station;
                     }

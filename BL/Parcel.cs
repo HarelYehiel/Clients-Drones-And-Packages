@@ -11,8 +11,8 @@ namespace IBL
          public class Parcel
         {
             public int uniqueID { get; set; }
-            public CustomerInParcel customerInDelivery_Sender { get; set; }
-            public CustomerInParcel customerInDelivery_Target { get; set; }
+            public CustomerInParcel customerInParcel_Sender { get; set; }
+            public CustomerInParcel customerInParcel_Target { get; set; }
             public DroneInPackage droneInParcel { get; set; }
             public Enum_BO.Priorities priority { get; set; }
             public Enum_BO.WeightCategories weight { get; set; }
@@ -22,8 +22,8 @@ namespace IBL
             public DateTime delivered { get; set; }
             public override string ToString()
             {
-                return $"Parcel ID: {uniqueID}\n sender: {customerInDelivery_Sender.ToString()}\n" +
-                    $" target: {customerInDelivery_Target.ToString()}\ndrone: {droneInParcel.ToString()}\n" +
+                return $"Parcel ID: {uniqueID}\n sender: {customerInParcel_Sender.ToString()}\n" +
+                    $" target: {customerInParcel_Target.ToString()}\ndrone: {droneInParcel.ToString()}\n" +
                     $"priority: {Enum.GetName(typeof( Enum_BO.Priorities),priority)}, weight: {Enum.GetName(typeof(Enum_BO.WeightCategories),weight)}\n" +
                     $" requested: {requested}, scheduled = {scheduled}, picked up = {pickedUp}, delivered = {delivered}";
             }
