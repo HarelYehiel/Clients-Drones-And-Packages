@@ -84,40 +84,20 @@ namespace IDAL
             }
             public void inputTheStationToArray(station station)
             {
-                List<station> new_stations = new List<station>();
-                foreach (station station1 in DataSource.stations)
-                {
-                    new_stations.Add(station1);
-                }
-                DataSource.stations = new_stations;
+                DataSource.stations.Add(station);
             }
             public void inputTheParcelToArray(Parcel par)
             {
-                List<Parcel> parcels = new List<Parcel>();
-                foreach (Parcel parcel in DataSource.parcels)
-                {
-                    parcels.Add(parcel);
-                }
-                DataSource.parcels = parcels;
+                DataSource.parcels.Add(par);
                 addParcel(par);//update the run-number serial
             }
             public void inputTheCustomerToArray(Customer cust)
             {
-                List<Customer> customers = new List<Customer>();
-                foreach (Customer customer in DataSource.customers)
-                {
-                    customers.Add(customer);
-                }
-                DataSource.customers = customers;
+                DataSource.customers.Add(cust);
             }
-            public void inputTheDroneToArray(Drone dro)
-            {
-                List<Drone> drones = new List<Drone>();
-                foreach (Drone drone in DataSource.drones)
-                {
-                    drones.Add(drone);
-                }
-                DataSource.drones = drones;
+            public void inputTheDroneToArray(Drone drone)
+            {             
+                DataSource.drones.Add(drone);
             }
 
             public IEnumerable<station> Displays_list_of_stations()
@@ -307,36 +287,30 @@ namespace IDAL
                 if (DataSource.drones.Count == 0)
                     throw new myException_DO("Exception from function setFreeStation", myException_DO.Dont_have_any_drone_in_the_list);
 
-                IDAL.DO.Drone drone = new IDAL.DO.Drone();
-                for (int i = 0; i < DataSource.drones.Count(); i++)
+                for (int i = 0; i < DataSource.dronesCharge.Count(); i++)
                 {
-                    if (DataSource.drones[i].Id == droneId)
+                    if (DataSource.dronesCharge[i].DroneId == droneId)
                     {
-                        drone = DataSource.drones[i];
-                        station station = new station();
-                        station.id = drone.stationOfCharge.staitionId;
-                        for (int j = 0; j < DataSource.stations.Count(); j++)
-                        {
-                            if (DataSource.stations[j].id == station.id)
+                       
+                        for (int j = 0; j < DataSource.stations.Count; j++)
+                        { 
+                            if (DataSource.stations[j].id == DataSource.dronesCharge[i].staitionId)
                             {
-                                station = DataSource.stations[i];
+                                station station = new station();
+                                station = DataSource.stations[j];
                                 station.ChargeSlots++;
-                                DataSource.stations[i] = station;
-                                break;
+                                DataSource.stations[j] = station;
                             }
-
-                            //We get to the end of list and don't find the station
-                            else if (j == DataSource.stations.Count())
-                                throw new myException_DO("Exception from function setFreeStation", myException_DO.Dont_have_any_station_in_the_list);
-
-                            /////////////////לטפל בחריגה שמשחררים יותררחפנים מה שיש
+                            else if (j == DataSource.stations.Count() - 1)
+                                throw new myException_DO(myException_DO.We_ge_to_the_end_of_list_and_dont_find_the_station);
                         }
+
+                        DataSource.dronesCharge.RemoveAt(i); 
 
                         break;
                     }
-                    else if (i == DataSource.drones.Count())
-                                throw new myException_DO("Exception from function setFreeStation", myException_DO.Dont_have_any_drone_in_the_list);
-
+                    else if (i == DataSource.drones.Count() - 1)
+                           throw new myException_DO("Exception from function setFreeStation", myException_DO.We_ge_to_the_end_of_list_and_dont_find_the_drone);
                 }
             }
             public void droneToCharge(int droneId, int stationId)
@@ -346,37 +320,30 @@ namespace IDAL
                 if (DataSource.drones.Count == 0)
                     throw new myException_DO("Exception from function droneToCharge", myException_DO.Dont_have_any_drone_in_the_list);
 
-                Drone drone = new Drone();
-                for (int i = 0; i < DataSource.drones.Count(); i++)
+                foreach (var droneCharging in DataSource.dronesCharge) // Check if The drone already is in charge  
                 {
-                    if (DataSource.drones[i].Id == droneId)
+                    if(droneCharging.DroneId == droneId)
                     {
-                        drone = DataSource.drones[i];
-                        IDAL.DO.DroneCharge charge = new IDAL.DO.DroneCharge();//crate new object type DroneChrge
-                        charge.DroneId = droneId;
-                        charge.staitionId = stationId;
-                        drone.stationOfCharge = charge;//after update the data of DroneCharge update the informaition in the dron
-                        for (int j = 0; j < DataSource.stations.Count(); j++)
-                        {
-                            if (DataSource.stations[j].id == stationId)
-                            {
-                                station station = new station();
-                                station = DataSource.stations[j];
-                                station.ChargeSlots--;
-                                DataSource.stations[j] = station;
-                                break;
-                            }
-                            else if (j == DataSource.stations.Count())
-                                throw new myException_DO("Exception from function droneToCharge", myException_DO.Dont_have_any_station_in_the_list);
-                        }
-                        DataSource.drones[i] = drone;
-                        break;
+                        throw new myException_DO("The drone already is in charge.");
                     }
-                    else if (i == DataSource.drones.Count())
-                                throw new myException_DO("Exception from function droneToCharge", myException_DO.Dont_have_any_drone_in_the_list);
                 }
 
+                for (int i = 0; i < DataSource.stations.Count; i++) // Find if the station exists
+                {
+                    if(DataSource.stations[i].id == stationId)
+                    {
+                        IDAL.DO.DroneCharge droneCharge = new DroneCharge();
+                        droneCharge.DroneId = droneId;
+                        droneCharge.staitionId = stationId;
+                        DataSource.dronesCharge.Add(droneCharge);
 
+                        IDAL.DO.station station = new station();
+                        station = DataSource.stations[i];
+                        station.ChargeSlots--;
+                        DataSource.stations[i] = station;
+
+                    }
+                }
 
             }
         }

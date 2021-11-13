@@ -20,8 +20,8 @@ namespace ConsuleUIBL
         static void Main(string[] args)
         {
             IBL.BL temp = new IBL.BL();
-            int ch, ch1, ch2, ch3, ch4;
-
+            int ch = 0, ch1, ch2, ch3, ch4;
+            IDAL.DalObject.DataSource.Initialize();
             do
             {
                 try
@@ -32,7 +32,7 @@ namespace ConsuleUIBL
                     Console.WriteLine("press 4 to see lists of  objects:");
                     Console.WriteLine("press 5 to more function:");//the bonus part
                     Console.WriteLine("press 6 to exit");
-                    ch = Convert.ToInt32(Console.ReadLine());
+                    ch = giveNumber();
                     switch (ch)
                     {
                         case 1:
@@ -46,7 +46,6 @@ namespace ConsuleUIBL
                                 {
                                     case 1:
                                         Console.WriteLine("enter station ID(5 digit):");
-                                        ID = Convert.ToInt32(Console.ReadLine());
                                         ID = giveNumber();
                                         Console.WriteLine("enter name of station:");
                                         string name = Console.ReadLine();
@@ -60,7 +59,6 @@ namespace ConsuleUIBL
 
                                     case 2:
                                         Console.WriteLine("enter drone ID(5 digit):");
-                                        ID = Convert.ToInt32(Console.ReadLine());
                                         ID = giveNumber();
                                         Console.WriteLine("enter model of drone:");
                                         string model = Console.ReadLine();
@@ -73,7 +71,6 @@ namespace ConsuleUIBL
 
                                     case 3:
                                         Console.WriteLine("enter customer ID(5 digit):");
-                                        ID = Convert.ToInt32(Console.ReadLine());
                                         ID = giveNumber();
                                         Console.WriteLine("enter name of customer:");
                                         string nameCu = Console.ReadLine();
@@ -86,15 +83,15 @@ namespace ConsuleUIBL
                                         break;
 
                                     case 4:
-                                        Console.WriteLine("enter sender name:");
-                                        string senderName = Console.ReadLine();
-                                        Console.WriteLine("enter target name:");
-                                        string targetName = Console.ReadLine();
+                                        Console.WriteLine("enter sender name(ID - 5 digit:");
+                                        int senderID = giveNumber();
+                                        Console.WriteLine("enter target name(ID  - 5 digit):");
+                                        int targetID = giveNumber();
                                         Console.WriteLine("enter weight: \n1 = Light, 2 = Medium, 3 = Heavy");
                                         maxWeight = Convert.ToInt32(Console.ReadLine());
                                         Console.WriteLine("enter target ID(5 digit): \n 1 = Normal, 2 = Fast, 3 = Emergency");
                                         int prioerity = Convert.ToInt32(Console.ReadLine());
-                                        temp.Receipt_of_package_for_delivery(senderName, targetName, maxWeight, prioerity);
+                                        temp.Receipt_of_package_for_delivery(senderID, targetID, maxWeight, prioerity);
                                         break;
                                 }
                                 break;
@@ -113,14 +110,13 @@ namespace ConsuleUIBL
                                     case 1:
                                         Console.WriteLine("witch drone you want to update?(ID)");
                                         Console.WriteLine("what is the new name?");
-                                        ID = Convert.ToInt32(Console.ReadLine());
                                         ID = giveNumber();
                                         string newModel = Console.ReadLine();
                                         temp.Update_drone_data(ID, newModel);
                                         break;
                                     case 2:
                                         Console.WriteLine("witch station you want to update?(ID)");
-                                        ID = Convert.ToInt32(Console.ReadLine());
+                                        ID = giveNumber();
                                         Console.WriteLine("do you want to update the name of station? if not press enter");
                                         string newName = Console.ReadLine();
                                         Console.WriteLine("do you want to update the number of slots? if not press enter");
@@ -129,7 +125,6 @@ namespace ConsuleUIBL
                                         break;
                                     case 3:
                                         Console.WriteLine("witch customer you want to update?(ID)");
-                                        ID = Convert.ToInt32(Console.ReadLine());
                                         ID = giveNumber();
                                         Console.WriteLine("do you want to update customer name? if not press enter");
                                         string custName = Console.ReadLine();
@@ -146,7 +141,6 @@ namespace ConsuleUIBL
                                     case 5:
                                         Console.WriteLine("witch drone you want to release from charge?(ID)");
                                         Console.WriteLine("how many time?(minuets)");
-                                        ID = Convert.ToInt32(Console.ReadLine());
                                         ID = giveNumber();
                                         int min = Convert.ToInt32(Console.ReadLine());
                                         temp.Release_drone_from_charging(ID, min);
@@ -159,13 +153,11 @@ namespace ConsuleUIBL
                                         break;
                                     case 7:
                                         Console.WriteLine("witch drone pickedUp the parcel?(ID)");
-                                        ID = Convert.ToInt32(Console.ReadLine());
                                         ID = giveNumber();
                                         temp.Collection_of_a_package_by_drone(ID);
                                         break;
                                     case 8:
                                         Console.WriteLine("witch drone delivered the parcel?(ID)");
-                                        ID = Convert.ToInt32(Console.ReadLine());
                                         ID = giveNumber();
                                         temp.Delivery_of_a_package_by_drone(ID);
                                         break;
@@ -235,31 +227,31 @@ namespace ConsuleUIBL
                                     case 2:
                                         foreach (IBL.BO.DroneToList item in temp.Displays_the_list_of_drones())
                                     {
-                                            Console.WriteLine(temp.ToString());
+                                            Console.WriteLine(item.ToString());
                                         }
                                         break;
                                     case 3:
                                         foreach (IBL.BO.CustomerToList item in temp.Displays_a_list_of_customers())
                                         {
-                                            Console.WriteLine(temp.ToString());
+                                            Console.WriteLine(item.ToString());
                                         }
                                         break;
                                     case 4:
                                         foreach (IBL.BO.ParcelToList item in temp.Displays_the_list_of_Parcels())
                                         {
-                                            Console.WriteLine(temp.ToString());
+                                            Console.WriteLine(item.ToString());
                                         }
                                         break;
                                     case 5:
                                         foreach (IBL.BO.ParcelToList item in temp.Displays_a_list_of_Parcels_not_yet_associated_with_the_drone())
                                         {
-                                            Console.WriteLine(temp.ToString());
+                                            Console.WriteLine(item.ToString());
                                         }
                                         break;
                                     case 6:
                                         foreach (IBL.BO.StationForTheList item in temp.Display_of_base_stations_with_available_charging_stations())
                                         {
-                                            Console.WriteLine(temp.ToString());
+                                            Console.WriteLine(item.ToString());
                                         }
                                         break;
                                     default:

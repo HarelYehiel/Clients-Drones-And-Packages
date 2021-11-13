@@ -74,8 +74,8 @@ namespace IBL
             foreach (IDAL.DO.Customer item in DataSource.customers)
             {
                 customerToList.uniqueID = item.Id;
-                customerToList.Name = item.name;
-                customerToList.Phone = item.Phone;
+                customerToList.name = item.name;
+                customerToList.phone = item.phone;
 
                 foreach (IDAL.DO.Parcel parcel_fromTheList in DataSource.parcels)
                 // Run on the list parcel and find the parcels the related him (the customer).

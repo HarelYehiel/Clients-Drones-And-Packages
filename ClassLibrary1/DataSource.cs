@@ -35,6 +35,7 @@ namespace IDAL
                     Drone drone = new Drone();
                     var rand = new Random();
                     drone.Id = rand.Next(10000, 99999);
+                    drone.Model = "dro" + rand.Next(1, 10);
                     drone.MaxWeight = (IDAL.DO.Enum.WeightCategories)rand.Next(0, 2);
                     drones.Add(drone);
                 }
@@ -48,6 +49,7 @@ namespace IDAL
                     p.latitude = 31 + rand.Next(0, 1);
                     p.longitude = 34 + rand.Next(0, 1);
                     station.Location = p;
+                    station.ChargeSlots = rand.Next(5, 10);
                     stations.Add(station);
                 }
                 for (int i = 0; i < 10; i++)//crate new 10 random coustomers
@@ -56,7 +58,7 @@ namespace IDAL
                     var rand = new Random();
                     customer.Id = rand.Next(11111, 99999);
                     customer.name = "cust" + rand.Next(1, 99);
-                    customer.Phone = "05" + rand.Next(10000000, 99999999);
+                    customer.phone = "05" + rand.Next(10000000, 99999999);
                     Point p = new Point();
                     p.latitude = 31 + rand.Next(0, 1);
                     p.longitude = 34 + rand.Next(0, 1);
@@ -68,12 +70,12 @@ namespace IDAL
                     Parcel parcel = new Parcel();
                     var rand = new Random();
                     parcel.Id = rand.Next(11111, 99999);
-                    parcel.SenderId = rand.Next(11111, 99999);
-                    parcel.TargetId = rand.Next(11111, 99999);
+                    parcel.SenderId = customers[ rand.Next(0, customers.Count)].Id;
+                    parcel.TargetId = customers[rand.Next(0, customers.Count)].Id;
                     parcel.weight = (DO.Enum.WeightCategories)rand.Next(0, 2);
                     parcel.priority = (DO.Enum.Priorities)rand.Next(0, 2);
                     DateTime start = new DateTime(2021, rand.Next(1, 12), rand.Next(1, 31));//crate random time and colculate all the next properties
-                    parcel.Requested = start.AddMinutes(rand.Next(1, 240));
+                    parcel.Requested = start.AddMinutes(rand.Next(1, 240));                   
                     parcels.Add(parcel);
                 }
             }

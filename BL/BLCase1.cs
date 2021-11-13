@@ -37,10 +37,10 @@ namespace IBL
             BO.Drone drone = new BO.Drone();
             drone.uniqueID = ID;
             drone.Model = model;
-            drone.weight = (BO.Enum.WeightCategories)maxWeight;
+            drone.weight = (BO.Enum_BO.WeightCategories)maxWeight;
             drone.location.latitude = sta.Location.latitude;
             drone.location.longitude = sta.Location.longitude;
-            drone.Status = BO.Enum.DroneStatus.Baintenance;
+            drone.Status = BO.Enum_BO.DroneStatus.Baintenance;
             var rand = new Random();
             drone.Battery = rand.Next(20, 40);
 
@@ -48,49 +48,52 @@ namespace IBL
             drone1.Id = ID;
             drone1.Model = model;
             drone1.MaxWeight = (IDAL.DO.Enum.WeightCategories)maxWeight;
-            //איך לשלוח מBL לDL///////////////////////////////////////////////////
             temp.inputTheDroneToArray(drone1);
             this.listDrons.Add(drone);
 
         }
         public void Absorption_of_a_new_customer(int ID, string nameCu, string phoneNumber, double Latitude, double Longitude)
         {
-            BO.Customer customer = new BO.Customer();
+            /*BO.Customer customer = new BO.Customer();
             customer.uniqueID = ID;
             customer.name = nameCu;
             customer.phone = phoneNumber;
             customer.location.latitude = Latitude;
-            customer.location.longitude = Longitude;
+            customer.location.longitude = Longitude0;*/
     
 
             IDAL.DO.Customer customer1 = new IDAL.DO.Customer();
             customer1.Id = ID;
-            customer1.Name = nameCu;
-            customer1.Phone = phoneNumber;
+            customer1.name = nameCu;
+            customer1.phone = phoneNumber;
             IDAL.DO.Point point = new IDAL.DO.Point();
             point.latitude = Latitude;
             point.longitude = Longitude;
             customer1.location = point;
             temp.inputTheCustomerToArray(customer1);
         }
-        public void Receipt_of_package_for_delivery(string senderName, string targetName, int maxWeight, int prioerity)
+        public void Receipt_of_package_for_delivery(int senderName, int targetName, int maxWeight, int prioerity)
         {
-            BO.Parcel parcel = new BO.Parcel();
-            parcel.namrSender = senderName;
-            parcel.nameTarget = targetName;
-            parcel.weight = (BO.Enum.WeightCategories)maxWeight;
-            parcel.priority = (BO.Enum.Priorities)prioerity;
+           /* BO.Parcel parcel = new BO.Parcel();
+            parcel.customerInDelivery_Sender.name = senderName;
+            parcel.customerInDelivery_Target.name = targetName;
+            parcel.weight = (BO.Enum_BO.WeightCategories)maxWeight;
+            parcel.priority = (BO.Enum_BO.Priorities)prioerity;
             parcel.requested = DateTime.Now;
-            parcel.drone = 0;
+            parcel.droneInParcel.uniqueID = 0;
             //איך לשלוח מBL לDL
-
+            */
             IDAL.DO.Parcel parcel1 = new IDAL.DO.Parcel();
-            parcel1.SenderId = (int)senderName;
-            parcel1.TargetId = (int)targetName;
-            parcel1.Weight = (IDAL.DO.Enum.WeightCategories)maxWeight;
-            parcel1.Priority = (IDAL.DO.Enum.Priorities)prioerity;
+            parcel1.SenderId = senderName;
+            parcel1.TargetId = targetName;
+            parcel1.weight = (IDAL.DO.Enum.WeightCategories)maxWeight;
+            parcel1.priority = (IDAL.DO.Enum.Priorities)prioerity;
             parcel1.Requested = DateTime.Now;
             parcel1.DroneId = 0;
+            DateTime def = new DateTime();
+            parcel1.PickedUp = def;
+            parcel1.Scheduled = def;
+            parcel1.Delivered = def;
 
             temp.inputTheParcelToArray(parcel1);
         }

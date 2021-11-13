@@ -64,7 +64,7 @@ namespace ConsoleUI
             cust.name = Console.ReadLine();//user input name
 
             Console.WriteLine("enter phone number:");
-            cust.Phone = Console.ReadLine();//user set phone number
+            cust.phone = Console.ReadLine();//user set phone number
 
             Console.WriteLine("enter Latitude:");
             IDAL.DO.Point P = new IDAL.DO.Point();

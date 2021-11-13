@@ -154,7 +154,7 @@ namespace IBL
 
                 customer_BO.uniqueID = customer_DO.Id;
                 customer_BO.name = customer_DO.name;
-                customer_BO.phone = customer_DO.Phone;
+                customer_BO.phone = customer_DO.phone;
                 customer_BO.location.latitude = customer_DO.location.latitude;
                 customer_BO.location.longitude = customer_DO.location.longitude;
 

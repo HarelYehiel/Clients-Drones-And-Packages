@@ -15,7 +15,7 @@ namespace IBL
         public void Adding_a_base_station(int ID, string name, double Latitude, double Longitude, int numSlots);
         public void Adding_a_drone(int ID, string model, int maxWeight, int staId);
         public void Absorption_of_a_new_customer(int ID, string nameCu, string phoneNumber, double Latitude, double Longitude);
-        public void Receipt_of_package_for_delivery(string senderName, string targetName, int maxWeight, int prioerity);
+        public void Receipt_of_package_for_delivery(int senderName, int targetName, int maxWeight, int prioerity);
 
         /* Until here */
 

@@ -49,25 +49,24 @@ namespace IDAL
                     {
                         DO.Drone drone = temp.GetDrone(droneId);
                         drone.droneStatus = DO.Enum.DroneStatus.Baintenance;
-                        DO.DroneCharge droneCharge = new DO.DroneCharge();
-                        droneCharge.DroneId = droneId;
-                        droneCharge.staitionId = stationId;
-                        drone.stationOfCharge = droneCharge;
                         DataSource.drones[i] = drone;
                     }
                 }
-                for(int i =0;i< DataSource.stations.Count; i++)
-                {
-                    if(DataSource.stations[i].id == stationId)
-                    {
-                        DO.station station = temp.GetStation(stationId);
-                        station.ChargeSlots--;
-                        DataSource.stations[i] = station;
-                    }
-                }
                 
+                for (int i = 0; i < DataSource.dronesCharge.Count; i++)
+                {
+                    if (DataSource.dronesCharge[i].DroneId == droneId)
+                    {
+                        DO.DroneCharge droneCharge = new DO.DroneCharge();
+                        droneCharge.DroneId = droneId;
+                        droneCharge.staitionId = stationId;
+                        DataSource.dronesCharge.Add(droneCharge);
+                    }
+
+                }
+
             }
-            public void updateRelaseDroneFromCharge(int droneId, int stationId, int min)
+            public void updateRelaseDroneFromCharge(int droneId, DO.Point stationLocation, int min)
             {
                 for (int i = 0; i < DataSource.drones.Count; i++)
                 {
@@ -75,34 +74,53 @@ namespace IDAL
                     {
                         DO.Drone drone = temp.GetDrone(droneId);
                         drone.droneStatus = DO.Enum.DroneStatus.Avilble;
-                        //אי אפשר ךידכן פה מצב סוללה - זה כנראה BL
                         DataSource.drones[i] = drone;
                     }
                 }
                 for (int i = 0; i < DataSource.stations.Count; i++)
                 {
-                    if (DataSource.stations[i].id == stationId)
+                    if (DataSource.stations[i].Location.latitude == stationLocation.latitude && DataSource.stations[i].Location.longitude == stationLocation.longitude)
                     {
-                        DO.station station = temp.GetStation(stationId);
-                        station.ChargeSlots--;
+                        DO.station station = DataSource.stations[i];
+                        station.ChargeSlots++;
                         DataSource.stations[i] = station;
                     }
                 }
                 for(int i = 0; i < DataSource.dronesCharge.Count; i++)
                 {
-                    if (DataSource.dronesCharge[i].DroneId == droneId && DataSource.dronesCharge[i].staitionId == stationId)
+                    if (DataSource.dronesCharge[i].DroneId == droneId)
                         DataSource.dronesCharge.RemoveAt(i);
 
                 }
             }
+            
+            public void updateDeliveryParcelByDrone(int ID)
+            {
+            
+            }
             public double colculateBattery(DO.Point point1,DO.Point point2,int ID)
             {
                 IDAL.DO.Drone drone = temp.GetDrone(ID);
-
+                double minus = 0;
                 double distance = point1.distancePointToPoint(point2);
-
-                return
+                if(drone.MaxWeight == DO.Enum.WeightCategories.Light)
+                {
+                    //all 1500 meters is minus 1% battery
+                    minus = distance / 1500;
+                }
+                if (drone.MaxWeight == DO.Enum.WeightCategories.Medium)
+                {
+                    //all 1000 meters is minus 1% battery
+                    minus = distance / 1000;
+                }
+                if (drone.MaxWeight == DO.Enum.WeightCategories.Heavy)
+                {
+                    //all 850 meters is minus 1% battery
+                    minus = distance / 850;
+                }
+                return minus;
             }
+            
         }
     }
 }

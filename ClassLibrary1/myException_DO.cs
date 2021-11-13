@@ -18,9 +18,12 @@ namespace IDAL
             public static Exception Dont_have_any_station_in_the_list = new Exception("Don't have any station in the list.");
             public static Exception Dont_have_any_parcel_in_the_list = new Exception("Don't have any parcel in the list.");
             public static Exception Dont_have_any_drone_in_the_list = new Exception("Don't have any drone in the list.");
+            public static Exception We_ge_to_the_end_of_list_and_dont_find_the_station = new Exception("We get to the end of list and don't find the station");
+            public static Exception We_ge_to_the_end_of_list_and_dont_find_the_drone = new Exception("We get to the end of list and don't find the drone");
             
             public myException_DO(Exception e) : base(e.ToString()) { }
             public myException_DO(string s, Exception e) : base(s, e) { }
+            public myException_DO(string s) : base(s) { }
 
 
         }
