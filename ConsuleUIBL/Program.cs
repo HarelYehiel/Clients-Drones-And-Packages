@@ -50,8 +50,8 @@ namespace ConsuleUIBL
                                         Console.WriteLine("enter name of station:");
                                         string name = Console.ReadLine();
                                         Console.WriteLine("enter locaition:");
-                                        double Latitude = Console.Read();
-                                        double Longitude = Console.Read();
+                                        double Latitude = Convert.ToDouble(Console.ReadLine());
+                                        double Longitude = Convert.ToDouble(Console.ReadLine());
                                         Console.WriteLine("enter number of charge slots:");
                                         int numSlots = Convert.ToInt32(Console.ReadLine());
                                         temp.Adding_a_base_station(ID, name, Latitude, Longitude, numSlots);
@@ -77,8 +77,8 @@ namespace ConsuleUIBL
                                         Console.WriteLine("enter phone number:");
                                         string phoneNumber = Console.ReadLine();
                                         Console.WriteLine("enter customer location:");
-                                        Latitude = Console.Read();
-                                        Longitude = Console.Read();
+                                        Latitude = Convert.ToDouble(Console.ReadLine());
+                                        Longitude = Convert.ToDouble(Console.ReadLine());
                                         temp.Absorption_of_a_new_customer(ID, nameCu, phoneNumber, Latitude, Longitude);
                                         break;
 
