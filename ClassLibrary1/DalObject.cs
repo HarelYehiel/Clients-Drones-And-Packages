@@ -84,40 +84,20 @@ namespace IDAL
             }
             public void inputTheStationToArray(station station)
             {
-                List<station> new_stations = new List<station>();
-                foreach (station station1 in DataSource.stations)
-                {
-                    new_stations.Add(station1);
-                }
-                DataSource.stations = new_stations;
+                DataSource.stations.Add(station);
             }
             public void inputTheParcelToArray(Parcel par)
-            {
-                List<Parcel> parcels = new List<Parcel>();
-                foreach (Parcel parcel in DataSource.parcels)
-                {
-                    parcels.Add(parcel);
-                }
-                DataSource.parcels = parcels;
+            {              
+                DataSource.parcels.Add(par)
                 addParcel(par);//update the run-number serial
             }
             public void inputTheCustomerToArray(Customer cust)
             {
-                List<Customer> customers = new List<Customer>();
-                foreach (Customer customer in DataSource.customers)
-                {
-                    customers.Add(customer);
-                }
-                DataSource.customers = customers;
+                DataSource.customers.Add(cust);
             }
-            public void inputTheDroneToArray(Drone dro)
-            {
-                List<Drone> drones = new List<Drone>();
-                foreach (Drone drone in DataSource.drones)
-                {
-                    drones.Add(drone);
-                }
-                DataSource.drones = drones;
+            public void inputTheDroneToArray(Drone drone)
+            {             
+                DataSource.drones.Add(drone);
             }
 
             public IEnumerable<station> Displays_list_of_stations()
