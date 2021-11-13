@@ -12,137 +12,190 @@ namespace IBL
 
         public void Update_drone_data(int ID, string newModel)
         {
-            IDAL.DO.Drone drone = temp.GetDrone(ID);
-            drone.Model = newModel;
-            updateDataSourceFun.updateDrone(drone);
+            try
+            {
+                IDAL.DO.Drone drone = temp.GetDrone(ID);
+                drone.Model = newModel;
+                updateDataSourceFun.updateDrone(drone);
+            }
+            catch (Exception e)
+            {
+
+                throw new BO.MyExeption_BO("Exception from function 'Update_drone_data", e);
+            }
+
         }
         public void Update_station_data(int ID, string name, int numSlots)
         {
-            IDAL.DO.station station = temp.GetStation(ID);
-            if (name[0] != '\n')
-                station.name = name;
-            if (numSlots != '\n')
-                station.ChargeSlots = numSlots;
-            updateDataSourceFun.updateStation(station);
+            try
+            {
+                IDAL.DO.station station = temp.GetStation(ID);
+                if (name[0] != '\n')
+                    station.name = name;
+                if (numSlots != '\n')
+                    station.ChargeSlots = numSlots;
+                updateDataSourceFun.updateStation(station);
+            }
+            catch (Exception e)
+            {
+
+                throw new BO.MyExeption_BO("Exception from function 'Update_station_data", e);
+            }
+
         }
         public void Update_customer_data(int ID, string name, string phoneNumber)
         {
-            IDAL.DO.Customer customer = temp.GetCustomer(ID);
-            if (name[0] != '\n')
-                customer.Name = name;
-            if (phoneNumber[0] != '\n')
-                customer.Phone = phoneNumber;
-            updateDataSourceFun.updateCustomer(customer);
+            try
+            {
+                IDAL.DO.Customer customer = temp.GetCustomer(ID);
+                if (name[0] != '\n')
+                    customer.name = name;
+                if (phoneNumber[0] != '\n')
+                    customer.Phone = phoneNumber;
+                updateDataSourceFun.updateCustomer(customer);
+            }
+            catch (Exception e)
+            {
+
+                throw new BO.MyExeption_BO("Exception from function 'Update_customer_data", e);
+            }
+
         }
         public void Sending_a_drone_for_charging(int ID)
         {
-            IDAL.DO.Drone drone = temp.GetDrone(ID);
-            BO.Drone drone1 = new BO.Drone();
-           //-----check drone status, only if he is free check the next condition-----
-            if (drone.droneStatus == IDAL.DO.Enum.DroneStatus.Avilble)
+            try
             {
-                //------gett data of this dron from BL drone list-----------
-                for (int i = 0; i < listDrons.Count; i++)
+                IDAL.DO.Drone drone = temp.GetDrone(ID);
+                BO.Drone drone1 = new BO.Drone();
+                //-----check drone status, only if he is free check the next condition-----
+                if (drone.droneStatus == IDAL.DO.Enum.DroneStatus.Avilble)
                 {
-                    if (listDrons[i].uniqueID == ID)
+                    //------gett data of this dron from BL drone list-----------
+                    for (int i = 0; i < listDrons.Count; i++)
                     {
-                        drone1 = listDrons[i];
+                        if (listDrons[i].uniqueID == ID)
+                        {
+                            drone1 = listDrons[i];
+                        }
                     }
-                }
-                ///----------find the most close station---------
-                IDAL.DO.Point point1,point2 = new IDAL.DO.Point();
-                point1.latitude = drone1.location.latitude;
-                point1.longitude = drone1.location.longitude;
-                point2 = IDAL.DalObject.DataSource.stations[0].Location;
-                double min = point1.distancePointToPoint(point2);
-                foreach(var station in IDAL.DalObject.DataSource.stations)
-                {
-                   double dis = point1.distancePointToPoint(station.Location);
-                    if (dis < min)
+                    ///----------find the most close station---------
+                    IDAL.DO.Point point1, point2 = new IDAL.DO.Point();
+                    point1.latitude = drone1.location.latitude;
+                    point1.longitude = drone1.location.longitude;
+                    point2 = IDAL.DalObject.DataSource.stations[0].Location;
+                    double min = point1.distancePointToPoint(point2);
+                    foreach (var station in IDAL.DalObject.DataSource.stations)
                     {
-                        point2 = station.Location;
+                        double dis = point1.distancePointToPoint(station.Location);
+                        if (dis < min)
+                        {
+                            point2 = station.Location;
+                        }
                     }
+                    //--------if drone's battary can survive up to the station-------------
+                    if (drone1.Battery - updateDataSourceFun.colculateBattery(point1, point2, ID) > 0)
+                    {
+                        //צריך להשתמש בפןונקציות המרחק ךלא סגור  עליהם
+                        IDAL.DO.station station = new IDAL.DO.station();
+                        //////////////////////////////////לחשוב איך לעשכן את הנתונים לאחר הבדיקה
+                        updateDataSourceFun.updateDroneToCharge(ID, station.id);
+                        //ךלעדכן את מצב הסוללה של הרחפן בהתאמה למרחק שהוא עבר
+                    }
+                    else//אין לו מספיק סוללה להגיע לתחנה
+                        throw new BO.MyExeption_BO("It does not have enough battery to get to the station");
                 }
-                //--------if drone's battary can survive up to the station-------------
-                if (drone1.Battery - updateDataSourceFun.colculateBattery(point1,point2,ID)>0)
-                {
-                    //צריך להשתמש בפןונקציות המרחק ךלא סגור  עליהם
-                    IDAL.DO.station station = new IDAL.DO.station();
-                    //////////////////////////////////לחשוב איך לעשכן את הנתונים לאחר הבדיקה
-                    updateDataSourceFun.updateDroneToCharge(ID, station.id);
-                    //ךלעדכן את מצב הסוללה של הרחפן בהתאמה למרחק שהוא עבר
-                }
-                else//אין לו מספיק סוללה להגיע לתחנה
-                    throw ""
+                else//הרחפן בכלל לא פנוי אז אי אפשר לשלוח אותו
+                    throw new BO.MyExeption_BO("The skimmer is not available at all so it is not possible to send it");
             }
-            else//הרחפן בכלל לא פנוי אז אי אפשר לשלוח אותו
-                throw ""
+            catch (Exception e)
+            {
+                throw new BO.MyExeption_BO("Exception from function 'Sending_a_drone_for_charging", e);
+            }
+
         }
         public void Release_drone_from_charging(int ID, int min)
         {
-            IDAL.DO.Drone drone = temp.GetDrone(ID);
-            if (drone.droneStatus == IDAL.DO.Enum.DroneStatus.Baintenance)
+            try
             {
-                IDAL.DO.station station = new IDAL.DO.station();
-                //צריך לחשוב איך למצוא את התחנה שהרחפן נמצא בה עכשיו
-                updateDataSourceFun.updateRelaseDroneFromCharge(ID, station.id, min);
+                IDAL.DO.Drone drone = temp.GetDrone(ID);
+                if (drone.droneStatus == IDAL.DO.Enum.DroneStatus.Baintenance) // רושמים Maintenance עם m
+                {
+                    IDAL.DO.station station = new IDAL.DO.station();
+                    //צריך לחשוב איך למצוא את התחנה שהרחפן נמצא בה עכשיו
+                    updateDataSourceFun.updateRelaseDroneFromCharge(ID, station.id, min);
 
+                }
+                else//הרחפן בכלל לא בתחזוקה
+                    throw new BO.MyExeption_BO("The skimmer is not maintained at all");
             }
-            else//הרחפן בכלל לא בתחזוקה
-                throw ""
-        }
-    
-        public void Assign_a_package_to_a_drone(int droneId) 
-        {
-            IDAL.DO.Drone drone = temp.GetDrone(droneId);
-            if (drone.droneStatus == IDAL.DO.Enum.DroneStatus.Avilble)
+            catch (Exception e)
             {
-                if () {//רק אם הרחפן יכול להגיע מבחינת בטריה עד לחבילה שצריכה איסוף
-                    List<IDAL.DO.Parcel> parcels = new List<IDAL.DO.Parcel>();
-                    ////////////////////////////////////////////////////////////////צור רשימה חדשה עם הדחופים ביותר
-                    for (int i = 0; i < IDAL.DalObject.DataSource.parcels.Count; i++)
-                    {
-                        if (IDAL.DalObject.DataSource.parcels[i].Priority == IDAL.DO.Enum.Priorities.Emergency)
-                            parcels.Add(IDAL.DalObject.DataSource.parcels[i]);
-                    }
-                    if (parcels.Count == 0)//if no parcel is emergency
-                    {
+                throw new BO.MyExeption_BO("Exception from function 'Release_drone_from_charging", e);
+            }
+
+        }
+
+        public void Assign_a_package_to_a_drone(int droneId)
+        {
+            try
+            {
+                IDAL.DO.Drone drone = temp.GetDrone(droneId);
+                if (drone.droneStatus == IDAL.DO.Enum.DroneStatus.Avilble)
+                {
+                    if ()
+                    {//רק אם הרחפן יכול להגיע מבחינת בטריה עד לחבילה שצריכה איסוף
+                        List<IDAL.DO.Parcel> parcels = new List<IDAL.DO.Parcel>();
+                        ////////////////////////////////////////////////////////////////צור רשימה חדשה עם הדחופים ביותר
                         for (int i = 0; i < IDAL.DalObject.DataSource.parcels.Count; i++)
                         {
-                            if (IDAL.DalObject.DataSource.parcels[i].Priority == IDAL.DO.Enum.Priorities.Fast)
+                            if (IDAL.DalObject.DataSource.parcels[i].priority == IDAL.DO.Enum.Priorities.Emergency)
                                 parcels.Add(IDAL.DalObject.DataSource.parcels[i]);
                         }
-                    }
-                    if (parcels.Count == 0)//if no parcel is emergency or fast priority
-                    {
-                        for (int i = 0; i < IDAL.DalObject.DataSource.parcels.Count; i++)
+                        if (parcels.Count == 0)//if no parcel is emergency
                         {
-                            parcels.Add(IDAL.DalObject.DataSource.parcels[i]);
+                            for (int i = 0; i < IDAL.DalObject.DataSource.parcels.Count; i++)
+                            {
+                                if (IDAL.DalObject.DataSource.parcels[i].priority == IDAL.DO.Enum.Priorities.Fast)
+                                    parcels.Add(IDAL.DalObject.DataSource.parcels[i]);
+                            }
                         }
-                    }
-                    List<IDAL.DO.Parcel> filterParcels = new List<IDAL.DO.Parcel>();
-                    //////////////////////////////////////////////////////////////////נסנן עוד קצת - המשקל הגבוה ביותר הרלוונטי
-                    foreach (var parcel in parcels)
-                    {
-                        if (drone.MaxWeight == parcel.Weight)
-                            filterParcels.Add(parcel);
-                    }
-                    if (filterParcels.Count == 0)
-                    {
-
+                        if (parcels.Count == 0)//if no parcel is emergency or fast priority
+                        {
+                            for (int i = 0; i < IDAL.DalObject.DataSource.parcels.Count; i++)
+                            {
+                                parcels.Add(IDAL.DalObject.DataSource.parcels[i]);
+                            }
+                        }
+                        List<IDAL.DO.Parcel> filterParcels = new List<IDAL.DO.Parcel>();
+                        //////////////////////////////////////////////////////////////////נסנן עוד קצת - המשקל הגבוה ביותר הרלוונטי
                         foreach (var parcel in parcels)
                         {
-                            if (drone.MaxWeight > parcel.Weight)
+                            if (drone.MaxWeight == parcel.weight)
                                 filterParcels.Add(parcel);
                         }
+                        if (filterParcels.Count == 0)
+                        {
+
+                            foreach (var parcel in parcels)
+                            {
+                                if (drone.MaxWeight > parcel.weight)
+                                    filterParcels.Add(parcel);
+                            }
+                        }
+                        ////////////////////////////////צריך להוסיף עוד סינון עם הבטריה אבל לא מבין איך משתמשים הבזה
                     }
-                    ////////////////////////////////צריך להוסיף עוד סינון עם הבטריה אבל לא מבין איך משתמשים הבזה
+                    else//אין לרחפן מספיק סוללה להגיע לחבילה
+                        throw new BO.MyExeption_BO("The drone does not have enough battery to reach the package");
                 }
-                else//אין לרחפן מספיק סוללה להגיע לחבילה
-                    throw ""
+                else//הרחפן לא פנוי ואי אפשר לקרוא לו עכשיו למשהו אחר
+                    throw new BO.MyExeption_BO("The drone is not available and can not be called anything else right now");
             }
-            else//הרחפן לא פנוי ואי אפשר לקרוא לו עכשיו למשהו אחר
-                throw ""
+            catch (Exception e)
+            {
+
+                throw new BO.MyExeption_BO("Exception from function 'Assign_a_package_to_a_drone", e);
+            }
+
         }
         public void Collection_of_a_package_by_drone(int droneId)
         {

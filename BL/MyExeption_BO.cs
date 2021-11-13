@@ -16,6 +16,7 @@ namespace IBL
           
             public MyExeption_BO(Exception e) : base(e.ToString()) { }
             public MyExeption_BO(string s, Exception e) : base(s , e) { }
+            public MyExeption_BO(string s) : base(s ) { }
 
         }
 
