@@ -181,7 +181,7 @@ namespace ConsuleUIBL
                                     case 1:
                                         Console.WriteLine("witch station you want to view?");
                                         ID = giveNumber();
-                                        temp.base_station_view(ID);
+                                        Console.WriteLine(temp.base_station_view(ID).ToString());
                                         ch3 = 0;
                                         break;
                                     case 2:

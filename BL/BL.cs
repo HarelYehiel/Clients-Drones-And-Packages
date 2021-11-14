@@ -34,8 +34,8 @@ namespace IBL
                 droneToList_BO.status = (BO.Enum_BO.DroneStatus)item.droneStatus;
 
                 BO.Location l = new BO.Location();
-                l.latitude = 31 + rand.Next(0, 1);
-                l.longitude = 34 + rand.Next(0, 1);
+                l.latitude = 31 + (double)rand.Next(0, 1);
+                l.longitude = 34 + (double) rand.Next(0, 1);
                 droneToList_BO.location = l;
                 droneToList_BO.packageDelivered = 0;
 

@@ -106,11 +106,15 @@ namespace IBL
                 station_BO.uniqueID = station_DO.id;
                 station_BO.name = station_DO.name;
                 station_BO.availableChargingStations = station_DO.ChargeSlots;
-                station_BO.location.latitude = station_DO.Location.latitude;
-                station_BO.location.longitude = station_DO.Location.longitude;
+
+                BO.Location location = new BO.Location();
+                location.latitude = station_DO.Location.latitude;
+                location.longitude = station_DO.Location.longitude;
+                station_BO.location = location;
 
                 //The all drones that charging in this station.
                 BO.DroneInCharging droneInCharging_BO = new BO.DroneInCharging();
+                station_BO.dronesInCharging = new List<BO.DroneInCharging>();
                 foreach (IDAL.DO.DroneCharge item in IDAL.DalObject.DataSource.dronesCharge)
                 {
                     if (item.DroneId == id)

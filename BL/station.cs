@@ -22,10 +22,13 @@ namespace IBL
             {
                 string s = $"Station ID: {uniqueID}, name: {name}, location: {location.ToString()}\n";
 
-                s += "The all drone charging in this station:\n";
-                foreach (DroneInCharging item in dronesInCharging)
+                if (dronesInCharging.Count > 0)
                 {
-                    s += item.ToString() + "\n";
+                    s += "The all drone charging in this station:\n";
+                    foreach (DroneInCharging item in dronesInCharging)
+                    {
+                        s += item.ToString() + "\n";
+                    }
                 }
 
                 return s;
@@ -35,3 +38,12 @@ namespace IBL
 
     }
 }
+/*
+4
+1
+0
+3
+1
+
+
+ */
