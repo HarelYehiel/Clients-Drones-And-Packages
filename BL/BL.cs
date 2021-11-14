@@ -45,6 +45,8 @@ namespace IBL
         }
         public bool IsDigitsOnly(string str)
         {
+            if (str == "") return false;
+                
             foreach (char c in str)
             {
                 if (c < '0' || c > '9')

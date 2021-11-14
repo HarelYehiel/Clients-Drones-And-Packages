@@ -20,7 +20,7 @@ namespace IBL
 
             public override string ToString()
             {
-                string s = $"Station ID: {uniqueID}, name: {name}, location: {location.ToString()}\n";
+                string s = $"Station ID: {uniqueID}, name: {name}, available charging stations: {availableChargingStations}, location: {location.ToString()}\n";
 
                 if (dronesInCharging.Count > 0)
                 {

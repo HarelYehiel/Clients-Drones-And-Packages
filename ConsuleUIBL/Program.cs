@@ -14,7 +14,7 @@ namespace ConsuleUIBL
                 s = Console.ReadLine();
                 if (temp.IsDigitsOnly(s))
                     return Convert.ToInt32(s);
-                Console.WriteLine(IBL.BO.MyExeption_BO.Only_numbers_should_be_type_to);
+                Console.WriteLine(IBL.BO.MyExeption_BO.Only_numbers_should_be_type_to + "\nGive number");
             } while (true);
         }
         static void Main(string[] args)
@@ -22,7 +22,7 @@ namespace ConsuleUIBL
             IBL.BL temp = new IBL.BL();
             int ch = 0, ch1, ch2, ch3, ch4;
             temp.Initialize_and_update_the_list_in_IBL(); // Do initialize if data sourse and update the list listDrons of IBL.
-    
+
             do
             {
                 try
@@ -110,8 +110,8 @@ namespace ConsuleUIBL
                                 {
                                     case 1:
                                         Console.WriteLine("witch drone you want to update?(ID)");
-                                        Console.WriteLine("what is the new name?");
                                         ID = giveNumber();
+                                        Console.WriteLine("what is the new name?");
                                         string newModel = Console.ReadLine();
                                         temp.Update_drone_data(ID, newModel);
                                         break;
@@ -120,8 +120,8 @@ namespace ConsuleUIBL
                                         ID = giveNumber();
                                         Console.WriteLine("do you want to update the name of station? if not press enter");
                                         string newName = Console.ReadLine();
-                                        Console.WriteLine("do you want to update the number of slots? if not press enter");
-                                        int numSlots = Convert.ToInt32(Console.ReadLine());
+                                        Console.WriteLine("do you want to update the number of slots? if not press 0");
+                                        int numSlots = giveNumber();
                                         temp.Update_station_data(ID, newName, numSlots);
                                         break;
                                     case 3:
@@ -187,19 +187,19 @@ namespace ConsuleUIBL
                                     case 2:
                                         Console.WriteLine("witch drone you want to view?");
                                         ID = giveNumber();
-                                        temp.drone_view(ID);
+                                        Console.WriteLine(temp.drone_view(ID).ToString());
                                         ch3 = 0;
                                         break;
                                     case 3:
                                         Console.WriteLine("witch customer you want to view?");
                                         ID = giveNumber();
-                                        temp.customer_view(ID);
+                                        Console.WriteLine(temp.customer_view(ID).ToString());
                                         ch3 = 0;
                                         break;
                                     case 4:
                                         Console.WriteLine("witch parcel you want to view?");
                                         ID = giveNumber();
-                                        temp.parcel_view(ID);
+                                        Console.WriteLine(temp.parcel_view(ID).ToString());
                                         ch3 = 0;
                                         break;
                                     default:
@@ -275,3 +275,11 @@ namespace ConsuleUIBL
         }
     }
 }
+/*
+4
+1
+0
+2
+2
+
+ */

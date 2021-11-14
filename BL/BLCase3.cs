@@ -36,9 +36,7 @@ namespace IBL
 
                 customer_DO = dalO.GetCustomer(id);
 
-                if (customer_DO.Id != id) // Don't find the id in the list data.customers
-
-                    customerInParcel_BO.uniqueID = customer_DO.Id;
+                customerInParcel_BO.uniqueID = customer_DO.Id;
                 customerInParcel_BO.name = customer_DO.name;
 
                 return customerInParcel_BO;
@@ -223,9 +221,14 @@ namespace IBL
                 customer_BO.uniqueID = customer_DO.Id;
                 customer_BO.name = customer_DO.name;
                 customer_BO.phone = customer_DO.phone;
-                customer_BO.location.latitude = customer_DO.location.latitude;
-                customer_BO.location.longitude = customer_DO.location.longitude;
 
+                BO.Location location = new BO.Location();
+                location.latitude =  customer_DO.location.latitude;
+                location.latitude =  customer_DO.location.longitude;
+                customer_BO.location = location;
+
+                customer_BO.fromTheCustomer = new List<BO.parcelAtCustomer>();
+                customer_BO.toTheCustomer = new List<BO.parcelAtCustomer>();
                 foreach (IDAL.DO.Parcel item in IDAL.DalObject.DataSource.parcels)
                 {
                     if (item.SenderId == id)
@@ -260,7 +263,8 @@ namespace IBL
                 parcel_BO.uniqueID = parcel_DO.Id;
                 parcel_BO.customerInParcel_Sender = getCustomerInParcel(parcel_DO.SenderId);
                 parcel_BO.customerInParcel_Target = getCustomerInParcel(parcel_DO.TargetId);
-                parcel_BO.droneInParcel = getDroneInPackage(parcel_DO.DroneId);
+                if (parcel_DO.DroneId != 0)
+                    parcel_BO.droneInParcel = getDroneInPackage(parcel_DO.DroneId);
                 parcel_BO.priority = (BO.Enum_BO.Priorities)parcel_DO.priority;
                 parcel_BO.weight = (BO.Enum_BO.WeightCategories)parcel_DO.priority;
                 parcel_BO.pickedUp = parcel_DO.PickedUp;

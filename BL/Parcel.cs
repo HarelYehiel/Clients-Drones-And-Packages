@@ -22,10 +22,18 @@ namespace IBL
             public DateTime delivered { get; set; }
             public override string ToString()
             {
-                return $"Parcel ID: {uniqueID}\n sender: {customerInParcel_Sender.ToString()}\n" +
-                    $" target: {customerInParcel_Target.ToString()}\ndrone: {droneInParcel.ToString()}\n" +
-                    $"priority: {Enum.GetName(typeof( Enum_BO.Priorities),priority)}, weight: {Enum.GetName(typeof(Enum_BO.WeightCategories),weight)}\n" +
+                string s = $"Parcel ID: {uniqueID}\n sender: {customerInParcel_Sender.ToString()}\n" +
+                    $" target: {customerInParcel_Target.ToString()}\n";
+
+                if (droneInParcel != null)
+                    s += $"drone: {droneInParcel.ToString()}\n";
+                else 
+                    s += $"drone: NULL\n";
+
+                s +=  $"priority: {Enum.GetName(typeof( Enum_BO.Priorities),priority)}, weight: {Enum.GetName(typeof(Enum_BO.WeightCategories),weight)}\n" +
                     $" requested: {requested}, scheduled = {scheduled}, picked up = {pickedUp}, delivered = {delivered}";
+
+                return s;
             }
         }
     }

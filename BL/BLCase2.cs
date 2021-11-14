@@ -16,6 +16,9 @@ namespace IBL
                 IDAL.DO.Drone drone = temp.GetDrone(ID);
                 drone.Model = newModel;
                 updateDataSourceFun.updateDrone(drone);
+                BO.DroneToList droneToList_BO;
+                droneToList_BO = getDrone_BO(ID);
+                droneToList_BO.Model = newModel;
             }
             catch (Exception e)
             {
@@ -28,12 +31,15 @@ namespace IBL
         {
             try
             {
+                if (name == "" && numSlots == 0)
+                    return; // Don't do nathing.
+
                 IDAL.DO.station station = temp.GetStation(ID);
-                if (name[0] != '\n')
+                if (name != "")
                     station.name = name;
-                if (numSlots != '\n')
+                if (numSlots != 0)
                     station.ChargeSlots = numSlots;
-                updateDataSourceFun.updateStation(station);
+                    updateDataSourceFun.updateStation(station);
             }
             catch (Exception e)
             {
@@ -47,9 +53,9 @@ namespace IBL
             try
             {
                 IDAL.DO.Customer customer = temp.GetCustomer(ID);
-                if (name[0] != '\n')
+                if (name != "")
                     customer.name = name;
-                if (phoneNumber[0] != '\n')
+                if (phoneNumber != "")
                     customer.phone = phoneNumber;
                 updateDataSourceFun.updateCustomer(customer);
             }
@@ -398,5 +404,14 @@ namespace IBL
             }
 
         }
+        private BO.DroneToList getDrone_BO(int id)
+        {
+            for (int i = 0; i < List_droneToList.Count; i++)
+            {
+                if (List_droneToList[i].uniqueID == id) return List_droneToList[i];
+            }
+            throw new BO.MyExeption_BO(BO.MyExeption_BO.There_is_no_variable_with_this_ID);
+        }
     }
+    
 }
