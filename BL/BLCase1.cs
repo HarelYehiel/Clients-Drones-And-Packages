@@ -34,13 +34,13 @@ namespace IBL
             IDAL.DO.station sta = new IDAL.DO.station();
             sta = temp.GetStation(staId);//////////////////////////////////////////איך לגשת לקבל את הישות של התחנה הזאת
 
-            BO.Drone drone = new BO.Drone();
+            BO.DroneToList drone = new BO.DroneToList();
             drone.uniqueID = ID;
             drone.Model = model;
             drone.weight = (BO.Enum_BO.WeightCategories)maxWeight;
             drone.location.latitude = sta.Location.latitude;
             drone.location.longitude = sta.Location.longitude;
-            drone.Status = BO.Enum_BO.DroneStatus.Baintenance;
+            drone.status = BO.Enum_BO.DroneStatus.Baintenance;
             var rand = new Random();
             drone.Battery = rand.Next(20, 40);
 
@@ -49,7 +49,7 @@ namespace IBL
             drone1.Model = model;
             drone1.MaxWeight = (IDAL.DO.Enum.WeightCategories)maxWeight;
             temp.inputTheDroneToArray(drone1);
-            this.listDrons.Add(drone);
+            this.List_droneToList.Add(drone);
 
         }
         public void Absorption_of_a_new_customer(int ID, string nameCu, string phoneNumber, double Latitude, double Longitude)

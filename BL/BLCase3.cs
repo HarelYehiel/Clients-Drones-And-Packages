@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace IBL
 {
-    public partial class BL: IBL
+    public partial class BL : IBL
     {
         BO.DroneInPackage getDroneInPackage(int id)
         {
             BO.DroneInPackage droneInPackage_BO = new BO.DroneInPackage();
 
-            foreach (BO.Drone item in listDrons)
+            foreach (BO.DroneToList item in List_droneToList)
             {
-                if(item.uniqueID == id)
+                if (item.uniqueID == id)
                 {
                     droneInPackage_BO.uniqueID = item.uniqueID;
                     droneInPackage_BO.batteryStatus = item.Battery;
@@ -25,7 +25,7 @@ namespace IBL
 
             throw new BO.MyExeption_BO("Exception from function 'getDroneInPackage'", BO.MyExeption_BO.There_is_no_variable_with_this_ID);
 
-          
+
         }
         BO.CustomerInParcel getCustomerInParcel(int id)
         {
@@ -38,7 +38,7 @@ namespace IBL
 
                 if (customer_DO.Id != id) // Don't find the id in the list data.customers
 
-                customerInParcel_BO.uniqueID = customer_DO.Id;
+                    customerInParcel_BO.uniqueID = customer_DO.Id;
                 customerInParcel_BO.name = customer_DO.name;
 
                 return customerInParcel_BO;
@@ -88,13 +88,13 @@ namespace IBL
         }
         double getbatteryStatus(int id)
         {
-            foreach (BO.Drone item in listDrons)
+            foreach (BO.DroneToList item in List_droneToList)
             {
                 if (item.uniqueID == id) return item.Battery;
             }
             throw new BO.MyExeption_BO("Exception from function 'getbatteryStatus'", BO.MyExeption_BO.There_is_no_variable_with_this_ID);
         }
-        public BO.station base_station_view(int id) 
+        public BO.station base_station_view(int id)
         {
             try
             {
@@ -134,16 +134,80 @@ namespace IBL
             }
 
         }
-        public BO.Drone drone_view(int id) 
+        BO.ParcelByTransfer getParcelByTransfer(int id)
         {
-            foreach (BO.Drone item in listDrons)
+
+            try
             {
-                if (item.uniqueID == id) return item;
+                BO.ParcelByTransfer parcelByTransfer = new BO.ParcelByTransfer();
+
+                foreach (var item in IDAL.DalObject.DataSource.parcels)
+                {
+                    if (item.Id == id)
+                    {
+                        parcelByTransfer.uniqueID = item.Id;
+                        parcelByTransfer.priority = (BO.Enum_BO.Priorities)item.priority;
+                        parcelByTransfer.weight = (BO.Enum_BO.WeightCategories)item.weight;
+
+                        IDAL.DO.Customer customer_DO = dalO.GetCustomer(item.SenderId);
+                        parcelByTransfer.collectionLocation.latitude = customer_DO.location.latitude;
+                        parcelByTransfer.collectionLocation.longitude = customer_DO.location.longitude;
+
+                        customer_DO = dalO.GetCustomer(item.TargetId);
+                        parcelByTransfer.destinationLocation.latitude = customer_DO.location.latitude;
+                        parcelByTransfer.destinationLocation.longitude = customer_DO.location.longitude;
+
+                        parcelByTransfer.theSander = getCustomerInParcel(item.SenderId);
+                        parcelByTransfer.theTarget = getCustomerInParcel(item.TargetId);
+
+                        // Transport distance from sender to target.
+                        parcelByTransfer.transportDistance = parcelByTransfer.collectionLocation.distancePointToPoint(parcelByTransfer.destinationLocation);
+
+
+                        // Is wait for collection ?
+                        if (dalO.GetParcel(id).PickedUp != new DateTime()) // The parcel PickedUp
+                            parcelByTransfer.isWaitForCollection = false; // The parcel don't wait to PickedUp, it in transfer
+                        else
+                            parcelByTransfer.isWaitForCollection = true; // The parcel wait to PickedUp
+
+                        return parcelByTransfer;
+                    }
+                }
+                throw new BO.MyExeption_BO(BO.MyExeption_BO.There_is_no_variable_with_this_ID);
+            }
+            catch (Exception e)
+            {
+
+                throw new BO.MyExeption_BO("Exception from function 'getParcelByTransfer'", e);
+            }
+
+        }
+        public BO.Drone drone_view(int id)
+        {
+            foreach (BO.DroneToList item in List_droneToList)
+            {
+                if (item.uniqueID == id)
+                {
+                    BO.Drone drone_BO = new BO.Drone();
+
+                    drone_BO.uniqueID = item.uniqueID;
+                    drone_BO.Model = item.Model;
+                    drone_BO.Battery = item.Battery;
+                    drone_BO.Status = item.status;
+                    drone_BO.weight = item.weight;
+                    drone_BO.location = item.location;
+
+                    if (drone_BO.Status == BO.Enum_BO.DroneStatus.Delivery)
+                        drone_BO.parcelByTransfer = getParcelByTransfer(item.packageDelivered);
+
+
+                    return drone_BO;
+                }
             }
 
             throw new BO.MyExeption_BO("Exception from function 'drone_view'", BO.MyExeption_BO.There_is_no_variable_with_this_ID);
         }
-        public BO.Customer customer_view(int id) 
+        public BO.Customer customer_view(int id)
         {
             try
             {
@@ -180,7 +244,7 @@ namespace IBL
             }
 
         }
-        public BO.Parcel parcel_view(int id) 
+        public BO.Parcel parcel_view(int id)
         {
             try
             {

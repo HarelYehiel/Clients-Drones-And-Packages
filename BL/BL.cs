@@ -3,15 +3,46 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IDAL.DO;
+using IBL.BO;
+using IBL;
 
 namespace IBL
 {
 
     public partial class BL : IBL
     {
-        List<BO.Drone> listDrons = new List<BO.Drone>();
-        IDAL.DO.IDal temp = new  IDAL.DalObject.DalObject();
- 
+        // List<BO.Drone> listDrons = new List<BO.Drone>();
+        IDAL.DO.IDal temp = new IDAL.DalObject.DalObject();
+        List<DroneToList> List_droneToList = new List<DroneToList>();
+
+        public void Initialize_and_update_the_list_in_IBL() 
+         // Do initialize if data sourse and update the list listDrons of IBL.
+        {
+            IDAL.DalObject.DataSource.Initialize();
+            BO.DroneToList droneToList_BO;
+
+            foreach (var item in IDAL.DalObject.DataSource.drones) // Update the list in listDrons of IBL
+            {
+                var rand = new Random();
+                droneToList_BO = new BO.DroneToList();
+
+                droneToList_BO.uniqueID = item.Id;
+                droneToList_BO.Model = item.Model;
+                droneToList_BO.Battery = rand.Next(20, 80);
+                droneToList_BO.weight = (BO.Enum_BO.WeightCategories)item.MaxWeight;
+                droneToList_BO.status = (BO.Enum_BO.DroneStatus)item.droneStatus;
+
+                BO.Location l = new BO.Location();
+                l.latitude = 31 + rand.Next(0, 1);
+                l.longitude = 34 + rand.Next(0, 1);
+                droneToList_BO.location = l;
+                droneToList_BO.packageDelivered = 0;
+
+                List_droneToList.Add(droneToList_BO);
+
+            }
+        }
         public bool IsDigitsOnly(string str)
         {
             foreach (char c in str)
@@ -33,7 +64,7 @@ namespace IBL
             Console.WriteLine("Choose one of the following:");
         }
 
-   
+
         public void Update_options() //case 2
         {
             Console.WriteLine("Choose one of the following:");
@@ -65,6 +96,6 @@ namespace IBL
             Console.WriteLine("press 4 to Displays the list of parcels.");
             Console.WriteLine("press 5 to displays a list of packages that have not yet been assigned to the drone.");
             Console.WriteLine("press 6 to base stations with available charging stations.\n");
-        }       
+        }
     }
 }

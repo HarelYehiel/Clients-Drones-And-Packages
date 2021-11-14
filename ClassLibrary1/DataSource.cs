@@ -38,6 +38,7 @@ namespace IDAL
                     drone.Model = "dro" + rand.Next(1, 10);
                     drone.MaxWeight = (IDAL.DO.Enum.WeightCategories)rand.Next(0, 2);
                     drones.Add(drone);
+                    
                 }
                 for (int i = 0; i < 2; i++)//crate 2 staitons with random data
                 {
@@ -70,12 +71,20 @@ namespace IDAL
                     Parcel parcel = new Parcel();
                     var rand = new Random();
                     parcel.Id = rand.Next(11111, 99999);
-                    parcel.SenderId = customers[ rand.Next(0, customers.Count)].Id;
-                    parcel.TargetId = customers[rand.Next(0, customers.Count)].Id;
+                    parcel.SenderId = customers[rand.Next(0, customers.Count)].Id;
+                    do
+                    {
+                        parcel.TargetId = customers[rand.Next(0, customers.Count)].Id;
+
+                        // Ckeck that sender don't send to himself parcel.
+                        if (parcel.SenderId != parcel.TargetId) break;
+
+                    } while (true);
+
                     parcel.weight = (DO.Enum.WeightCategories)rand.Next(0, 2);
                     parcel.priority = (DO.Enum.Priorities)rand.Next(0, 2);
                     DateTime start = new DateTime(2021, rand.Next(1, 12), rand.Next(1, 31));//crate random time and colculate all the next properties
-                    parcel.Requested = start.AddMinutes(rand.Next(1, 240));                   
+                    parcel.Requested = start.AddMinutes(rand.Next(1, 240));
                     parcels.Add(parcel);
                 }
             }

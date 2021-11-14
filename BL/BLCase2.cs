@@ -65,22 +65,22 @@ namespace IBL
             try
             {
                 IDAL.DO.Drone drone = temp.GetDrone(ID);
-                BO.Drone droneBo = new BO.Drone();
+                BO.DroneToList droneToList_Bo = new BO.DroneToList();
                 //-----check drone status, only if he is free check the next condition-----
                 if (drone.droneStatus == IDAL.DO.Enum.DroneStatus.Avilble)
                 {
                     //------gett data of this dron from BL drone list-----------
-                    for (int i = 0; i < listDrons.Count; i++)
+                    for (int i = 0; i < List_droneToList.Count; i++)
                     {
-                        if (listDrons[i].uniqueID == ID)
+                        if (List_droneToList[i].uniqueID == ID)
                         {
-                            droneBo = listDrons[i];
+                            droneToList_Bo = List_droneToList[i];
                         }
                     }
                     ///----------find the most close station---------
                     IDAL.DO.Point point1, point2 = new IDAL.DO.Point();
-                    point1.latitude = droneBo.location.latitude;
-                    point1.longitude = droneBo.location.longitude;
+                    point1.latitude = droneToList_Bo.location.latitude;
+                    point1.longitude = droneToList_Bo.location.longitude;
                     point2 = IDAL.DalObject.DataSource.stations[0].Location;
                     double min = point1.distancePointToPoint(point2);
                     foreach (var station in IDAL.DalObject.DataSource.stations)
@@ -92,13 +92,13 @@ namespace IBL
                         }
                     }
                     //--------if drone's battary can survive up to the station-------------
-                    if (droneBo.Battery - updateDataSourceFun.colculateBattery(point1, point2, ID) > 0)
+                    if (droneToList_Bo.Battery - updateDataSourceFun.colculateBattery(point1, point2, ID) > 0)
                     {
                         //update drone data in BO
-                        droneBo.Battery -= updateDataSourceFun.colculateBattery(point1, point2, ID);
-                        droneBo.location.latitude = point2.latitude;
-                        droneBo.location.longitude = point2.longitude;
-                        droneBo.Status = BO.Enum_BO.DroneStatus.Baintenance;
+                        droneToList_Bo.Battery -= updateDataSourceFun.colculateBattery(point1, point2, ID);
+                        droneToList_Bo.location.latitude = point2.latitude;
+                        droneToList_Bo.location.longitude = point2.longitude;
+                        droneToList_Bo.status = BO.Enum_BO.DroneStatus.Baintenance;
 
 
                         //update station data
@@ -137,24 +137,24 @@ namespace IBL
                 if (drone.droneStatus == IDAL.DO.Enum.DroneStatus.Baintenance)
                 {
                     //------gett data of this dron from BL drone list-----------
-                    BO.Drone droneBo = new BO.Drone();
-                    for (int i = 0; i < listDrons.Count; i++)
+                    BO.DroneToList droneBo = new BO.DroneToList();
+                    for (int i = 0; i < List_droneToList.Count; i++)
                     {
-                        if (listDrons[i].uniqueID == ID)
+                        if (List_droneToList[i].uniqueID == ID)
                         {
-                            droneBo = listDrons[i];
+                            droneBo = List_droneToList[i];
                         }
                     }
                     //update drone in BL list
                     droneBo.Battery = droneBo.Battery + (min);//every minute in charge is 1% more
                     if (droneBo.Battery > 100)
                         droneBo.Battery = 100;
-                    droneBo.Status = BO.Enum_BO.DroneStatus.Avilble;
-                    for (int i = 0; i < listDrons.Count; i++)
+                    droneBo.status = BO.Enum_BO.DroneStatus.Avilble;
+                    for (int i = 0; i < List_droneToList.Count; i++)
                     {
-                        if (listDrons[i].uniqueID == ID)
+                        if (List_droneToList[i].uniqueID == ID)
                         {
-                            listDrons[i] = droneBo;
+                            List_droneToList[i] = droneBo;
                         }
                     }
                     //update data in dataSource
@@ -176,7 +176,7 @@ namespace IBL
         }
         public void Assign_a_package_to_a_drone(int droneId)
         {
-            bool serchForRelevantParcel(IDAL.DO.Parcel parcel,IDAL.DO.Drone drone, BO.Drone droneBo)
+            bool serchForRelevantParcel(IDAL.DO.Parcel parcel,IDAL.DO.Drone drone, BO.DroneToList droneBo)
             {
                 IDAL.DO.Point point1, point2, point3 = new IDAL.DO.Point();
                 IDAL.DO.Customer sender, target = new IDAL.DO.Customer();
@@ -196,7 +196,7 @@ namespace IBL
                 {
                     //we found a parcel! change accordingly
                     drone.droneStatus = IDAL.DO.Enum.DroneStatus.Delivery;
-                    droneBo.Status = BO.Enum_BO.DroneStatus.Delivery;
+                    droneBo.status = BO.Enum_BO.DroneStatus.Delivery;
                     IDAL.DO.Parcel par = parcel;
                     par.Scheduled = DateTime.Now;
                     //update to data source
@@ -211,11 +211,11 @@ namespace IBL
                 //get the data of the specific drone from DAL(data source)
                 IDAL.DO.Drone drone = temp.GetDrone(droneId);
                 //get the data of the specific drone at BO
-                BO.Drone droneBo = new BO.Drone();
-                foreach(var tempDroneOfBL in listDrons)
+                BO.DroneToList droneBo = new BO.DroneToList();
+                foreach(var droneToList_BL in List_droneToList)
                 {
-                    if (tempDroneOfBL.uniqueID == droneId)
-                        droneBo = tempDroneOfBL;
+                    if (droneToList_BL.uniqueID == droneId)
+                        droneBo = droneToList_BL;
                 }
                
                 bool flag = true;
@@ -294,11 +294,11 @@ namespace IBL
                             //if the parcel not picked up yet the PickUp time will be defult
                             if (IDAL.DalObject.DataSource.parcels[i].PickedUp == def)
                             {
-                                BO.Drone droneBo = new BO.Drone();
-                                foreach (var dro in listDrons)
+                                BO.DroneToList droneToListeBo = new BO.DroneToList();
+                                foreach (var dro in List_droneToList)
                                 {
                                     if (dro.uniqueID == ID)
-                                        droneBo = dro;
+                                        droneToListeBo = dro;
                                 }
                                 //find sender location
                                 senderId = IDAL.DalObject.DataSource.parcels[i].SenderId;
@@ -308,18 +308,18 @@ namespace IBL
                                 point1.longitude = sender.location.longitude;
 
                                 //find drone location
-                                point2.latitude = droneBo.location.latitude;
-                                point2.longitude = droneBo.location.longitude;
+                                point2.latitude = droneToListeBo.location.latitude;
+                                point2.longitude = droneToListeBo.location.longitude;
                                 double minus = updateDataSourceFun.colculateBattery(point1, point2, ID);
                                 //update list drone in BL, no parametrs to update in IDAL
-                                droneBo.Battery -= minus;
-                                droneBo.location.latitude = sender.location.latitude;
-                                droneBo.location.longitude = sender.location.longitude;
+                                droneToListeBo.Battery -= minus;
+                                droneToListeBo.location.latitude = sender.location.latitude;
+                                droneToListeBo.location.longitude = sender.location.longitude;
 
-                                for (int j = 0; j < listDrons.Count; j++)
+                                for (int j = 0; j < List_droneToList.Count; j++)
                                 {
-                                    if (listDrons[j].uniqueID == ID)
-                                        listDrons[j] = droneBo;
+                                    if (List_droneToList[j].uniqueID == ID)
+                                        List_droneToList[j] = droneToListeBo;
                                 }
 
                             }
@@ -352,11 +352,11 @@ namespace IBL
                             if (IDAL.DalObject.DataSource.parcels[i].PickedUp != def && IDAL.DalObject.DataSource.parcels[i].Delivered == def)
                             {
                                 int targetId;
-                                BO.Drone droneBo = new BO.Drone();
-                                foreach (var dro in listDrons)
+                                BO.DroneToList droneToList_Bo = new BO.DroneToList();
+                                foreach (var dro in List_droneToList)
                                 {
                                     if (dro.uniqueID == ID)
-                                        droneBo = dro;
+                                        droneToList_Bo = dro;
                                 }
                                 //find target location
                                 targetId = IDAL.DalObject.DataSource.parcels[i].TargetId;
@@ -366,19 +366,20 @@ namespace IBL
                                 point1.longitude = target.location.longitude;
 
                                 //find drone location
-                                point2.latitude = droneBo.location.latitude;
-                                point2.longitude = droneBo.location.longitude;
+                                point2.latitude = droneToList_Bo.location.latitude;
+                                point2.longitude = droneToList_Bo.location.longitude;
 
                                 //update list drone in BL
                                 double minus = updateDataSourceFun.colculateBattery(point1, point2, ID);
-                                droneBo.Battery -= minus;
-                                droneBo.location.latitude = target.location.latitude;
-                                droneBo.location.longitude = target.location.longitude;
-                                droneBo.Status = BO.Enum_BO.DroneStatus.Avilble;
-                                for (int j = 0; j < listDrons.Count; j++)
+                                droneToList_Bo.Battery -= minus;
+                                droneToList_Bo.location.latitude = target.location.latitude;
+                                droneToList_Bo.location.longitude = target.location.longitude;
+                                droneToList_Bo.status = BO.Enum_BO.DroneStatus.Avilble;
+                                droneToList_Bo.packageDelivered = 0;
+                                for (int j = 0; j < List_droneToList.Count; j++)
                                 {
-                                    if (listDrons[j].uniqueID == ID)
-                                        listDrons[j] = droneBo;
+                                    if (List_droneToList[j].uniqueID == ID)
+                                        List_droneToList[j] = droneToList_Bo;
                                 }
 
                                 drone.droneStatus = IDAL.DO.Enum.DroneStatus.Avilble;

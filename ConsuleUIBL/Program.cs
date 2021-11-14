@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Collections.Generic;
 namespace ConsuleUIBL
 {
     class Program
@@ -21,7 +21,8 @@ namespace ConsuleUIBL
         {
             IBL.BL temp = new IBL.BL();
             int ch = 0, ch1, ch2, ch3, ch4;
-            IDAL.DalObject.DataSource.Initialize();
+            temp.Initialize_and_update_the_list_in_IBL(); // Do initialize if data sourse and update the list listDrons of IBL.
+    
             do
             {
                 try
@@ -231,7 +232,9 @@ namespace ConsuleUIBL
                                         }
                                         break;
                                     case 3:
-                                        foreach (IBL.BO.CustomerToList item in temp.Displays_a_list_of_customers())
+                                        IEnumerable<IBL.BO.CustomerToList> customersToList = new List<IBL.BO.CustomerToList>();
+                                        customersToList = temp.Displays_a_list_of_customers();
+                                        foreach (IBL.BO.CustomerToList item in customersToList)
                                         {
                                             Console.WriteLine(item.ToString());
                                         }
