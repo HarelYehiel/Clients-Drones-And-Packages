@@ -116,10 +116,10 @@ namespace IBL
                         updateDataSourceFun.updateStation(sta);
                         updateDataSourceFun.updateDroneToCharge(ID, sta.id);
                     }
-                    else//אין לו מספיק סוללה להגיע לתחנה
+                    else
                         throw new BO.MyExeption_BO("He does not have enough battery to get to the station");
                 }
-                else//הרחפן בכלל לא פנוי אז אי אפשר לשלוח אותו
+                else
                     throw new BO.MyExeption_BO("The skimmer is not available at all so it is not possible to send it");
             }
             catch (Exception e)
@@ -176,57 +176,98 @@ namespace IBL
         }
         public void Assign_a_package_to_a_drone(int droneId)
         {
+            bool serchForRelevantParcel(IDAL.DO.Parcel parcel,IDAL.DO.Drone drone, BO.Drone droneBo)
+            {
+                IDAL.DO.Point point1, point2, point3 = new IDAL.DO.Point();
+                IDAL.DO.Customer sender, target = new IDAL.DO.Customer();
+                //get the location of the parcel sender
+                sender = temp.GetCustomer(parcel.SenderId);
+                point1.latitude = sender.location.latitude;
+                point1.longitude = sender.location.longitude;
+                //get the location of our drone
+                point2.latitude = droneBo.location.latitude;
+                point2.longitude = droneBo.location.longitude;
+                //get the location of the parcel tgrget
+                target = temp.GetCustomer(parcel.TargetId);
+                point3.latitude = target.location.latitude;
+                point3.longitude = target.location.longitude;
+                //check if drone have enough battery to get up to the sender and than go up to target with the parcel
+                if (droneBo.Battery - updateDataSourceFun.colculateBattery(point1, point2, droneId) - updateDataSourceFun.colculateBattery(point1, point3, droneId) > 0)
+                {
+                    //we found a parcel! change accordingly
+                    drone.droneStatus = IDAL.DO.Enum.DroneStatus.Delivery;
+                    droneBo.Status = BO.Enum_BO.DroneStatus.Delivery;
+                    IDAL.DO.Parcel par = parcel;
+                    par.Scheduled = DateTime.Now;
+                    //update to data source
+                    Update_drone_data(droneId, drone.Model);
+                    updateDataSourceFun.updateParcel(par);
+                    return false;
+                }
+                return true;
+            }
             try
             {
+                //get the data of the specific drone from DAL(data source)
                 IDAL.DO.Drone drone = temp.GetDrone(droneId);
+                //get the data of the specific drone at BO
+                BO.Drone droneBo = new BO.Drone();
+                foreach(var tempDroneOfBL in listDrons)
+                {
+                    if (tempDroneOfBL.uniqueID == droneId)
+                        droneBo = tempDroneOfBL;
+                }
+               
+                bool flag = true;
+                //---------------first of all - check if the drone is avilble----------------------
                 if (drone.droneStatus == IDAL.DO.Enum.DroneStatus.Avilble)
                 {
-                    if (false) // ssasdasddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddssssssssssssssssssssssss
-                    {//רק אם הרחפן יכול להגיע מבחינת בטריה עד לחבילה שצריכה איסוף
-                        List<IDAL.DO.Parcel> parcels = new List<IDAL.DO.Parcel>();
-                        ////////////////////////////////////////////////////////////////צור רשימה חדשה עם הדחופים ביותר
-                        for (int i = 0; i < IDAL.DalObject.DataSource.parcels.Count; i++)
+                    foreach (var parcel in IDAL.DalObject.DataSource.parcels)
+                    {
+                        //-----------we always prefere to take care by priority order---------------
+                        if (parcel.priority == IDAL.DO.Enum.Priorities.Emergency)
                         {
-                            if (IDAL.DalObject.DataSource.parcels[i].priority == IDAL.DO.Enum.Priorities.Emergency)
-                                parcels.Add(IDAL.DalObject.DataSource.parcels[i]);
-                        }
-                        if (parcels.Count == 0)//if no parcel is emergency
-                        {
-                            for (int i = 0; i < IDAL.DalObject.DataSource.parcels.Count; i++)
+                            if (parcel.weight <= drone.MaxWeight)
                             {
-                                if (IDAL.DalObject.DataSource.parcels[i].priority == IDAL.DO.Enum.Priorities.Fast)
-                                    parcels.Add(IDAL.DalObject.DataSource.parcels[i]);
+                                flag = serchForRelevantParcel(parcel, drone, droneBo);
                             }
                         }
-                        if (parcels.Count == 0)//if no parcel is emergency or fast priority
-                        {
-                            for (int i = 0; i < IDAL.DalObject.DataSource.parcels.Count; i++)
-                            {
-                                parcels.Add(IDAL.DalObject.DataSource.parcels[i]);
-                            }
-                        }
-                        List<IDAL.DO.Parcel> filterParcels = new List<IDAL.DO.Parcel>();
-                        //////////////////////////////////////////////////////////////////נסנן עוד קצת - המשקל הגבוה ביותר הרלוונטי
-                        foreach (var parcel in parcels)
-                        {
-                            if (drone.MaxWeight == parcel.weight)
-                                filterParcels.Add(parcel);
-                        }
-                        if (filterParcels.Count == 0)
-                        {
-
-                            foreach (var parcel in parcels)
-                            {
-                                if (drone.MaxWeight > parcel.weight)
-                                    filterParcels.Add(parcel);
-                            }
-                        }
-                        ////////////////////////////////צריך להוסיף עוד סינון עם הבטריה אבל לא מבין איך משתמשים הבזה
                     }
-                    else//אין לרחפן מספיק סוללה להגיע לחבילה
-                        throw new BO.MyExeption_BO("The drone does not have enough battery to reach the package");
+                    if (flag)//if we not found no emergecncy parcel that the drone can take
+                        {
+                        foreach (var parcel2 in IDAL.DalObject.DataSource.parcels)
+                        {
+                            //-----------we always prefere to take care by priority order---------------
+                            if (parcel2.priority == IDAL.DO.Enum.Priorities.Fast)
+                            {
+                                if (parcel2.weight <= drone.MaxWeight)
+                                {
+                                    flag = serchForRelevantParcel(parcel2, drone, droneBo);
+
+                                }
+                            }
+                        }
+                    }
+                    if (flag)//if we not found no emergecncy parcel that the drone can take
+                    {
+                        foreach (var parcel3 in IDAL.DalObject.DataSource.parcels)
+                        {
+                            //-----------we always prefere to take care by priority order---------------
+                            if (parcel3.priority == IDAL.DO.Enum.Priorities.Fast)
+                            {
+                                if (parcel3.weight <= drone.MaxWeight)
+                                {
+                                    flag = serchForRelevantParcel(parcel3, drone, droneBo);
+
+                                }
+                            }
+                        }
+                    }
+
+                    if(flag)//after all the search, this drone cant take any parecl
+                        throw new BO.MyExeption_BO("This drone cant take any parecl");
                 }
-                else//הרחפן לא פנוי ואי אפשר לקרוא לו עכשיו למשהו אחר
+                else
                     throw new BO.MyExeption_BO("The drone is not available and can not be called anything else right now");
             }
 
