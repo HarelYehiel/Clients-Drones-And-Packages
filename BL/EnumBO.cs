@@ -10,7 +10,7 @@ namespace IBL
     {
 
 
-        public class Enum_BO
+        public class EnumBO
         {
 
             public enum WeightCategories { Light, Medium, Heavy }

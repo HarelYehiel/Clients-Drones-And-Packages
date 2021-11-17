@@ -8,7 +8,7 @@ namespace IDAL
 {
     namespace DO
     {
-        public class myException_DO : Exception
+        public class myExceptionDO : Exception
         {
 
             public static Exception There_is_no_variable_with_this_ID = new Exception("There is no variable with this ID.");
@@ -21,9 +21,9 @@ namespace IDAL
             public static Exception We_ge_to_the_end_of_list_and_dont_find_the_station = new Exception("We get to the end of list and don't find the station");
             public static Exception We_ge_to_the_end_of_list_and_dont_find_the_drone = new Exception("We get to the end of list and don't find the drone");
             
-            public myException_DO(Exception e) : base(e.ToString()) { }
-            public myException_DO(string s, Exception e) : base(s, e) { }
-            public myException_DO(string s) : base(s) { }
+            public myExceptionDO(Exception e) : base(e.ToString()) { }
+            public myExceptionDO(string s, Exception e) : base(s, e) { }
+            public myExceptionDO(string s) : base(s) { }
 
 
         }

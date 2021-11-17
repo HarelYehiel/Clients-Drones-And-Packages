@@ -9,47 +9,47 @@ namespace IBL
     
     public interface IBL
     {
-        public void Insert_options();
+        public void InsertOptions();
 
         /* In function Insert_options*/
-        public void Adding_a_base_station(int ID, string name, double Latitude, double Longitude, int numSlots);
-        public void Adding_a_drone(int ID, string model, int maxWeight, int staId);
-        public void Absorption_of_a_new_customer(int ID, string nameCu, string phoneNumber, double Latitude, double Longitude);
-        public void Receipt_of_package_for_delivery(int parcelID, int senderName, int targetName, int maxWeight, int prioerity);
+        public void AddingBaseStation(int ID, string name, double Latitude, double Longitude, int numSlots);
+        public void AddingDrone(int ID, string model, int maxWeight, int staId);
+        public void AbsorptionNewCustomer(int ID, string nameCu, string phoneNumber, double Latitude, double Longitude);
+        public void ReceiptOfPackageForDelivery(int parcelID, int senderName, int targetName, int maxWeight, int prioerity);
 
         /* Until here */
 
-        public void Update_options();
+        public void UpdateOptions();
 
         /* In function Update_options*/
-        public void Update_drone_data(int ID, string newModel);
-        public void Update_station_data(int ID, string name, int numSlots);
-        public void Update_customer_data(int ID, string custName, string phoneNumber);
-        public void Sending_a_drone_to_charging(int ID);
-        public void Release_drone_from_charging(int ID,int min);
-        public void Assign_a_package_to_a_drone(int droneId);
-        public void Collection_of_a_package_by_drone(int droneId);
-        public void Delivery_of_a_package_by_drone(int droneId);
+        public void UpdateDroneData(int ID, string newModel);
+        public void UpdateStationData(int ID, string name, int numSlots);
+        public void UpdateCustomerData(int ID, string custName, string phoneNumber);
+        public void SendingDroneToCharging(int ID);
+        public void ReleaseDroneFromCharging(int ID,int min);
+        public void AssignPackageToDrone(int droneId);
+        public void CollectionOfPackageByDrone(int droneId);
+        public void DeliveryOfPackageByDrone(int droneId);
         /* Until here */
 
-        public void Entity_display_options();
+        public void EntityDisplayOptions();
 
         /* In function Entity_display_options*/
-        public BO.station base_station_view(int ID);
-        public BO.Drone drone_view(int ID);
-        public BO.Customer customer_view(int ID);
-        public BO.Parcel parcel_view(int ID);
+        public BO.station BaseStationView(int ID);
+        public BO.Drone DroneView(int ID);
+        public BO.Customer CustomerView(int ID);
+        public BO.Parcel ParcelView(int ID);
         /* Until here */
 
-        public void List_view_options();
+        public void ListViewOptions();
 
         /* In function List_view_options*/
-        public IEnumerable<BO.StationForTheList> Displays_a_list_of_base_stations();
-        public IEnumerable<BO.DroneToList> Displays_the_list_of_drones();
-        public IEnumerable<BO.CustomerToList> Displays_a_list_of_customers();
-        public IEnumerable<BO.ParcelToList> Displays_the_list_of_Parcels();
-        public IEnumerable<BO.ParcelToList> Displays_a_list_of_Parcels_not_yet_associated_with_the_drone();
-        public IEnumerable<BO.StationForTheList> Display_of_base_stations_with_available_charging_stations();
+        public IEnumerable<BO.StationForTheList> DisplaysListOfBaseStations();
+        public IEnumerable<BO.DroneToList> DisplaysTheListOfDrones();
+        public IEnumerable<BO.CustomerToList> DisplaysListOfCustomers();
+        public IEnumerable<BO.ParcelToList> DisplaysTheListOfParcels();
+        public IEnumerable<BO.ParcelToList> DisplaysListOfParcelsNotYetAssociatedWithDrone();
+        public IEnumerable<BO.StationForTheList> DisplayBaseStationsWithAvailableChargingStations();
         /* Until here */
 
     }

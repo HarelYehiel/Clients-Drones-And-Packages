@@ -8,7 +8,7 @@ namespace IBL
 {
     public partial class BL : IBL
     {
-        public void Adding_a_base_station(int ID,string name,double Latitude,double Longitude, int numSlots)
+        public void AddingBaseStation(int ID,string name,double Latitude,double Longitude, int numSlots)
         {
           /*  BO.station station = new BO.station();
             station.uniqueID = ID; // update the Data source
@@ -17,7 +17,7 @@ namespace IBL
             station.location.longitude = Longitude;
             station.availableChargingStations = numSlots;
           */
-            IDAL.DO.station station1 = new IDAL.DO.station();
+            IDAL.DO.Station station1 = new IDAL.DO.Station();
             station1.id = ID; // update the drones list at BL
             station1.name = name;
             IDAL.DO.Point loc = new IDAL.DO.Point();
@@ -25,26 +25,25 @@ namespace IBL
             loc.longitude = Longitude;
             station1.Location = loc;
             station1.ChargeSlots = numSlots;
-            //איך לשלוח מBL לDL///////////////////////////////////////////////////
 
-            temp.inputTheStationToArray(station1);
+            temp.InputTheStationToArray(station1);
         }
-        public void Adding_a_drone(int ID,string model,int maxWeight,int staId)
+        public void AddingDrone(int ID,string model,int maxWeight,int staId)
         {
-            IDAL.DO.station sta = new IDAL.DO.station();
-            sta = temp.GetStation(staId);//////////////////////////////////////////איך לגשת לקבל את הישות של התחנה הזאת
+            IDAL.DO.Station sta = new IDAL.DO.Station();
+            sta = temp.GetStation(staId);
 
             BO.DroneToList drone = new BO.DroneToList();
             drone.uniqueID = ID;
             drone.Model = model;
-            drone.weight = (BO.Enum_BO.WeightCategories)maxWeight;
+            drone.weight = (BO.EnumBO.WeightCategories)maxWeight;
 
             BO.Location locationBO = new BO.Location();
             locationBO.latitude = sta.Location.latitude;
             locationBO.longitude = sta.Location.longitude;
             drone.location = locationBO;
             
-            drone.status = BO.Enum_BO.DroneStatus.Baintenance;
+            drone.status = BO.EnumBO.DroneStatus.Baintenance;
             var rand = new Random();
             drone.Battery = rand.Next(20, 40);
 
@@ -52,11 +51,11 @@ namespace IBL
             drone1.Id = ID;
             drone1.Model = model;
             drone1.MaxWeight = (IDAL.DO.Enum.WeightCategories)maxWeight;
-            temp.inputTheDroneToArray(drone1);
-            this.List_droneToList.Add(drone);
+            temp.InputTheDroneToArray(drone1);
+            this.ListDroneToList.Add(drone);
 
         }
-        public void Absorption_of_a_new_customer(int ID, string nameCu, string phoneNumber, double Latitude, double Longitude)
+        public void AbsorptionNewCustomer(int ID, string nameCu, string phoneNumber, double Latitude, double Longitude)
         {
             /*BO.Customer customer = new BO.Customer();
             customer.uniqueID = ID;
@@ -75,9 +74,9 @@ namespace IBL
             point.latitude = Latitude;
             point.longitude = Longitude;
             customer1.location = point;
-            temp.inputTheCustomerToArray(customer1);
+            temp.InputTheCustomerToArray(customer1);
         }
-        public void Receipt_of_package_for_delivery(int parcelID, int senderName, int targetName, int maxWeight, int prioerity)
+        public void ReceiptOfPackageForDelivery(int parcelID, int senderName, int targetName, int maxWeight, int prioerity)
         {
            /* BO.Parcel parcel = new BO.Parcel();
             parcel.customerInDelivery_Sender.name = senderName;
@@ -86,7 +85,6 @@ namespace IBL
             parcel.priority = (BO.Enum_BO.Priorities)prioerity;
             parcel.requested = DateTime.Now;
             parcel.droneInParcel.uniqueID = 0;
-            //איך לשלוח מBL לDL
             */
             IDAL.DO.Parcel parcel1 = new IDAL.DO.Parcel();
             parcel1.Id = parcelID;
@@ -101,7 +99,7 @@ namespace IBL
             parcel1.Scheduled = def;
             parcel1.Delivered = def;
 
-            temp.inputTheParcelToArray(parcel1);
+            temp.InputTheParcelToArray(parcel1);
         }
     }
 }

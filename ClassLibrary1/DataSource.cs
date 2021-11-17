@@ -13,7 +13,7 @@ namespace IDAL
         {
             public static List<Drone> drones = new List<Drone>();
             public static List<DroneCharge> dronesCharge = new List<DroneCharge>();
-            public static List<station> stations = new List<station>();
+            public static List<Station> stations = new List<Station>();
 
             public static List<Customer> customers = new List<Customer>();
             public static List<Parcel> parcels = new List<Parcel>();
@@ -42,7 +42,7 @@ namespace IDAL
                 }
                 for (int i = 0; i < 2; i++)//crate 2 staitons with random data
                 {
-                    station station = new station();
+                    Station station = new Station();
                     var rand = new Random();
                     station.id = rand.Next(10000, 99999);
                     station.name = "sta" + rand.Next(1, 99);

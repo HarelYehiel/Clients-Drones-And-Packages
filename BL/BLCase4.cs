@@ -14,7 +14,7 @@ namespace IBL
     {
         DalObject dalO = new DalObject();
 
-        int fun_parcel_situation(IDAL.DO.Parcel p)
+        int FunParcelSituation(IDAL.DO.Parcel p)
         {
             if (p.Delivered != new DateTime()) return 3;
             else if (p.PickedUp != new DateTime()) return 2;
@@ -22,17 +22,17 @@ namespace IBL
             return 0;
 
         }
-        public IEnumerable<StationForTheList> Displays_a_list_of_base_stations()
+        public IEnumerable<StationForTheList> DisplaysListOfBaseStations()
         {
             if (DataSource.stations.Count == 0)
                 throw new MyExeption_BO("Exception from function 'Displays_a_list_of_base_stations'", MyExeption_BO.An_empty_list);
 
-            List<IDAL.DO.station> stations_DO = new List<IDAL.DO.station>();
-            List<StationForTheList> stationsForTheList_BO = new List<StationForTheList>();
+            List<IDAL.DO.Station> stationsDO = new List<IDAL.DO.Station>();
+            List<StationForTheList> stationsForTheListBO = new List<StationForTheList>();
             StationForTheList stationForTheList;
             List<DroneCharge> dronesCharges_DataS = new List<DroneCharge>();
 
-            foreach (IDAL.DO.station station_DO in DataSource.stations)
+            foreach (IDAL.DO.Station station_DO in DataSource.stations)
             {
                 stationForTheList = new StationForTheList();
                 stationForTheList.uniqueID = station_DO.id;
@@ -46,19 +46,19 @@ namespace IBL
                         stationForTheList.unAvailableChargingStations++;
                 }
 
-                stationsForTheList_BO.Add(stationForTheList);
+                stationsForTheListBO.Add(stationForTheList);
             }
 
-            return stationsForTheList_BO;
+            return stationsForTheListBO;
         }
-        public IEnumerable<DroneToList> Displays_the_list_of_drones()
+        public IEnumerable<DroneToList> DisplaysTheListOfDrones()
         {
             try
             {
-                if (List_droneToList.Count == 0)
+                if (ListDroneToList.Count == 0)
                     throw new MyExeption_BO( MyExeption_BO.An_empty_list);
 
-                return List_droneToList;
+                return ListDroneToList;
             }
             catch (Exception e)
             {
@@ -67,12 +67,12 @@ namespace IBL
             }
 
         }
-        public IEnumerable<CustomerToList> Displays_a_list_of_customers()
+        public IEnumerable<CustomerToList> DisplaysListOfCustomers()
         {
             if (DataSource.customers.Count == 0)
                 throw new MyExeption_BO("Exception from function 'Displays_a_list_of_customers'", MyExeption_BO.An_empty_list);
 
-            List<CustomerToList> CustomersToList_BO = new List<CustomerToList>();
+            List<CustomerToList> CustomersToListBO = new List<CustomerToList>();
 
             foreach (IDAL.DO.Customer item in DataSource.customers)
             {
@@ -82,49 +82,49 @@ namespace IBL
                 customerToList.name = item.name;
                 customerToList.phone = item.phone;
 
-                foreach (IDAL.DO.Parcel parcel_fromTheList in DataSource.parcels)
+                foreach (IDAL.DO.Parcel parcelFromTheList in DataSource.parcels)
                 // Run on the list parcel and find the parcels the related him (the customer).
                 {
                     // packages sent and delivered
-                    if (parcel_fromTheList.SenderId == item.Id && parcel_fromTheList.Delivered != new DateTime())
+                    if (parcelFromTheList.SenderId == item.Id && parcelFromTheList.Delivered != new DateTime())
                         customerToList.packagesSentAndDelivered++;
                     // packages sent and not delivered
-                    if (parcel_fromTheList.SenderId == item.Id && parcel_fromTheList.Scheduled != new DateTime() && parcel_fromTheList.Delivered == new DateTime())
+                    if (parcelFromTheList.SenderId == item.Id && parcelFromTheList.Scheduled != new DateTime() && parcelFromTheList.Delivered == new DateTime())
                         customerToList.packagesSentAndNotDelivered++;
                     // packages he received
-                    if (parcel_fromTheList.TargetId == item.Id && parcel_fromTheList.Delivered != new DateTime())
+                    if (parcelFromTheList.TargetId == item.Id && parcelFromTheList.Delivered != new DateTime())
                         customerToList.packagesHeReceived++;
                     // packages on the way to the customer
-                    if (parcel_fromTheList.TargetId == item.Id && parcel_fromTheList.Scheduled != new DateTime() && parcel_fromTheList.Delivered == new DateTime())
+                    if (parcelFromTheList.TargetId == item.Id && parcelFromTheList.Scheduled != new DateTime() && parcelFromTheList.Delivered == new DateTime())
                         customerToList.packagesOnTheWayToTheCustomer++;
                 }
 
-                CustomersToList_BO.Add(customerToList);
+                CustomersToListBO.Add(customerToList);
             }
 
-            return CustomersToList_BO;
+            return CustomersToListBO;
         }
-        public IEnumerable<ParcelToList> Displays_the_list_of_Parcels()
+        public IEnumerable<ParcelToList> DisplaysTheListOfParcels()
         {
             if (DataSource.parcels.Count == 0)
                 throw new MyExeption_BO("Exception from function 'Displays_the_list_of_Parcels'", MyExeption_BO.An_empty_list);
 
-            ParcelToList parcelToList_BO;
+            ParcelToList parcelToListBO;
             List<ParcelToList> ParcelsToList_BO = new List<ParcelToList>();
 
             try
             {
                 foreach (IDAL.DO.Parcel item in DataSource.parcels)
                 {
-                    parcelToList_BO = new ParcelToList();
-                    parcelToList_BO.uniqueID = item.Id;
-                    parcelToList_BO.nameTarget = dalO.GetCustomer(item.TargetId).name;
-                    parcelToList_BO.namrSender = dalO.GetCustomer(item.SenderId).name;
-                    parcelToList_BO.priority = (BO.Enum_BO.Priorities)(int)item.priority;
-                    parcelToList_BO.weight = (BO.Enum_BO.WeightCategories)(int)item.weight;
-                    parcelToList_BO.parcelsituation = (BO.Enum_BO.Situations)fun_parcel_situation(item);
+                    parcelToListBO = new ParcelToList();
+                    parcelToListBO.uniqueID = item.Id;
+                    parcelToListBO.nameTarget = dalO.GetCustomer(item.TargetId).name;
+                    parcelToListBO.namrSender = dalO.GetCustomer(item.SenderId).name;
+                    parcelToListBO.priority = (BO.EnumBO.Priorities)(int)item.priority;
+                    parcelToListBO.weight = (BO.EnumBO.WeightCategories)(int)item.weight;
+                    parcelToListBO.parcelsituation = (BO.EnumBO.Situations)FunParcelSituation(item);
 
-                    ParcelsToList_BO.Add(parcelToList_BO);
+                    ParcelsToList_BO.Add(parcelToListBO);
                 }
 
                 return ParcelsToList_BO;
@@ -136,13 +136,13 @@ namespace IBL
             }
 
         }
-        public IEnumerable<ParcelToList> Displays_a_list_of_Parcels_not_yet_associated_with_the_drone()
+        public IEnumerable<ParcelToList> DisplaysListOfParcelsNotYetAssociatedWithDrone()
         {
             if (DataSource.parcels.Count == 0)
                 throw new MyExeption_BO("Exception from function 'Displays_a_list_of_Parcels_not_yet_associated_with_the_drone'", MyExeption_BO.An_empty_list);
 
-            ParcelToList ParceslToList_BO;
-            List<ParcelToList> ParcelsToList_BO = new List<ParcelToList>();
+            ParcelToList ParceslToListBO;
+            List<ParcelToList> ParcelsToListBO = new List<ParcelToList>();
 
             try
             {
@@ -152,20 +152,20 @@ namespace IBL
                 {
                     if (item.DroneId == 0)
                     {
-                        ParceslToList_BO = new ParcelToList();
-                        ParceslToList_BO.uniqueID = item.Id;
-                        ParceslToList_BO.nameTarget = dalO.GetCustomer(item.TargetId).name;
-                        ParceslToList_BO.namrSender = dalO.GetCustomer(item.SenderId).name;
-                        ParceslToList_BO.priority = (BO.Enum_BO.Priorities)(int)item.priority;
-                        ParceslToList_BO.weight = (BO.Enum_BO.WeightCategories)(int)item.weight;
-                        ParceslToList_BO.parcelsituation = BO.Enum_BO.Situations.created;
+                        ParceslToListBO = new ParcelToList();
+                        ParceslToListBO.uniqueID = item.Id;
+                        ParceslToListBO.nameTarget = dalO.GetCustomer(item.TargetId).name;
+                        ParceslToListBO.namrSender = dalO.GetCustomer(item.SenderId).name;
+                        ParceslToListBO.priority = (BO.EnumBO.Priorities)(int)item.priority;
+                        ParceslToListBO.weight = (BO.EnumBO.WeightCategories)(int)item.weight;
+                        ParceslToListBO.parcelsituation = BO.EnumBO.Situations.created;
 
-                        ParcelsToList_BO.Add(ParceslToList_BO);
+                        ParcelsToListBO.Add(ParceslToListBO);
                     }
 
                 }
 
-                return ParcelsToList_BO;
+                return ParcelsToListBO;
             }
             catch (Exception e)
             {
@@ -173,16 +173,16 @@ namespace IBL
                 throw new BO.MyExeption_BO("Exception from function 'Displays_a_list_of_Parcels_not_yet_associated_with_the_drone'", e);
             }
         }
-        public IEnumerable<StationForTheList> Display_of_base_stations_with_available_charging_stations()
+        public IEnumerable<StationForTheList> DisplayBaseStationsWithAvailableChargingStations()
         {
 
             if (DataSource.stations.Count == 0)
                 throw new MyExeption_BO("Exception from function 'Display_of_base_stations_with_available_charging_stations'", MyExeption_BO.An_empty_list);
 
-            List<StationForTheList> stationsForTheList_BO = new List<StationForTheList>();
+            List<StationForTheList> stationsForTheListBO = new List<StationForTheList>();
             StationForTheList stationForTheList;
 
-            foreach (IDAL.DO.station station_DO in DataSource.stations)
+            foreach (IDAL.DO.Station station_DO in DataSource.stations)
             {
                 if (station_DO.ChargeSlots > 0)
                 {
@@ -197,11 +197,11 @@ namespace IBL
                             stationForTheList.unAvailableChargingStations++;
                     }
 
-                    stationsForTheList_BO.Add(stationForTheList);
+                    stationsForTheListBO.Add(stationForTheList);
                 }
             }
 
-            return stationsForTheList_BO;
+            return stationsForTheListBO;
         }
     }
 }

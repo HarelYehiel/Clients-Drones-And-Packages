@@ -21,7 +21,7 @@ namespace IDAL
                     }
                 }
             }
-            public void updateStation(DO.station station)
+            public void updateStation(DO.Station station)
             {
                 for (int i = 0; i < DataSource.stations.Count; i++)
                 {
@@ -55,7 +55,7 @@ namespace IDAL
                 
                 for (int i = 0; i < DataSource.drones.Count; i++)
                 {
-                    if (DataSource.drones[i].DId == droneId)
+                    if (DataSource.drones[i].Id == droneId)
                     {
                         DO.DroneCharge droneCharge = new DO.DroneCharge();
                         droneCharge.DroneId = droneId;
@@ -81,7 +81,7 @@ namespace IDAL
                 {
                     if (DataSource.stations[i].Location.latitude == stationLocation.latitude && DataSource.stations[i].Location.longitude == stationLocation.longitude)
                     {
-                        DO.station station = DataSource.stations[i];
+                        DO.Station station = DataSource.stations[i];
                         station.ChargeSlots++;
                         DataSource.stations[i] = station;
                     }

@@ -12,10 +12,10 @@ namespace IDAL
         public interface IDal
         {
             
-            public double[] powerConsumptionBySkimmer();
-            public void addParcel(Parcel par);
+            public double[] PowerConsumptionBySkimmer();
+            public void AddParcel(Parcel par);
 
-            public station GetStation(int stationId);
+            public Station GetStation(int stationId);
             // Return the station with stationId
 
             public Drone GetDrone(int droneId);
@@ -25,30 +25,30 @@ namespace IDAL
             public IDAL.DO.Parcel GetParcel(int ParcelId);
             // Return the parcel with parcelId
 
-            public void inputTheStationToArray(station station);
+            public void InputTheStationToArray(Station station);
 
-            public void inputTheParcelToArray(Parcel par);
+            public void InputTheParcelToArray(Parcel par);
 
-            public void inputTheCustomerToArray(Customer cust);
+            public void InputTheCustomerToArray(Customer cust);
 
-            public void inputTheDroneToArray(Drone dro);
-            public IEnumerable<station> Displays_list_of_stations();
+            public void InputTheDroneToArray(Drone dro);
+            public IEnumerable<Station> Displays_list_of_stations();
 
-            public IEnumerable<Customer> Displays_list_of_custmers();
+            public IEnumerable<Customer> DisplaysListOfCustmers();
 
-            public IEnumerable<Parcel> Displays_list_of_Parcels();
+            public IEnumerable<Parcel> DisplaysListOfParcels();
             //Copy all the Parcel from DataSource.parcels[] to new_array_parcels.
-            public IEnumerable<Drone> Displays_list_of_drone();
+            public IEnumerable<Drone> DisplaysListOfDrones();
             //Copy all the Drone from DataSource.drones[] to new_array_drones.
-            public IEnumerable<Parcel> displaysParcelsDontHaveDrone();
+            public IEnumerable<Parcel> DisplaysParcelsDontHaveDrone();
             // Print the details of all the parcels don't have An associated skimmer (Selected_drone == 0).
-            public IEnumerable<station> AvailableChargingStations();
+            public IEnumerable<Station> AvailableChargingStations();
             public void AffiliationDroneToParcel(int parcelID, int droneID);
-            public void pickUp(int PickId);
+            public void PickUp(int PickId);
 
-            public void delivered(int deliId);
-            public void setFreeStation(int droneId);
-            public void droneToCharge(int droneId, int stationId);
+            public void Delivered(int deliId);
+            public void SetFreeStation(int droneId);
+            public void DroneToCharge(int droneId, int stationId);
 
 
 

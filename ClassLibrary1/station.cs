@@ -6,7 +6,7 @@ namespace IDAL
     namespace DO
     {
 
-        public struct station
+        public struct Station
         {
             public int id { get; set; }
             public string name { get; set; }

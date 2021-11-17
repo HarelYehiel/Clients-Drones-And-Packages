@@ -85,30 +85,30 @@ namespace ConsoleUI
                                         case 2:
                                             Console.WriteLine("which parcel is picked up?\n enter parcel ID:");
                                             int PickId = Convert.ToInt32(Console.ReadLine());
-                                            temp.pickUp(PickId);
+                                            temp.PickUp(PickId);
                                             break;
                                         case 3://update at the Parcel odbject delivered time
                                             Console.WriteLine("which parcel is delivered?\n enter parcel ID:");
                                             int deliId = Convert.ToInt32(Console.ReadLine());
-                                            temp.delivered(deliId);
+                                            temp.Delivered(deliId);
                                             break;
                                         case 4:
                                             Console.WriteLine("enter drone ID:");
                                             int droneId = Convert.ToInt32(Console.ReadLine());
-                                            temp.setFreeStation(droneId);
+                                            temp.SetFreeStation(droneId);
                                             break;
                                         case 5:
                                             Console.WriteLine("enter drone ID:");
                                             int drId = Convert.ToInt32(Console.ReadLine());
                                             Console.WriteLine("witch station do you want?\nchoose ID from the list of available charging stations:");
-                                            List<IDAL.DO.station> newList = temp.AvailableChargingStations();//print all the available charging stations
+                                            List<IDAL.DO.Station> newList = temp.AvailableChargingStations();//print all the available charging stations
                                             int statId = Convert.ToInt32(Console.ReadLine());
 
-                                            foreach (IDAL.DO.station station1 in newList)
+                                            foreach (IDAL.DO.Station station1 in newList)
                                             {
                                                 Console.WriteLine(station1.ToString());
                                             }
-                                            temp.droneToCharge(drId,statId);
+                                            temp.DroneToCharge(drId,statId);
                                             break;
                                     }
                                 }
@@ -172,15 +172,15 @@ namespace ConsoleUI
                             switch (ch4)
                             {
                                 case 1:
-                                    List<IDAL.DO.station> tempSta = temp.Displays_list_of_stations();
-                                    foreach (station station in DataSource.stations)
+                                    List<IDAL.DO.Station> tempSta = temp.Displays_list_of_stations();
+                                    foreach (Station station in DataSource.stations)
                                     {
                                         Console.WriteLine(station.ToString());
                                     }
                                     break;
 
                                 case 2:
-                                    List<IDAL.DO.Drone> tempDro = temp.Displays_list_of_drone();
+                                    List<IDAL.DO.Drone> tempDro = temp.DisplaysListOfDrones();
                                     foreach (Drone drone in DataSource.drones)
                                     {
                                         Console.WriteLine(drone.ToString());
@@ -188,7 +188,7 @@ namespace ConsoleUI
                                     break;
 
                                 case 3:
-                                    List<IDAL.DO.Customer> tempCus = temp.Displays_list_of_custmers();
+                                    List<IDAL.DO.Customer> tempCus = temp.DisplaysListOfCustmers();
                                     foreach (Customer customer in DataSource.customers)
                                     {
                                         Console.WriteLine(customer.ToString());
@@ -197,7 +197,7 @@ namespace ConsoleUI
                                     
 
                                 case 4:
-                                    List<IDAL.DO.Parcel> tempPar = temp.Displays_list_of_Parcels();
+                                    List<IDAL.DO.Parcel> tempPar = temp.DisplaysListOfParcels();
                                     foreach (Parcel parcel in DataSource.parcels)
                                     {
                                         Console.WriteLine(parcel.ToString());
@@ -205,7 +205,7 @@ namespace ConsoleUI
                                     break;
 
                                 case 5:
-                                    List<Parcel> ParcelWithoutDrone = temp.displaysParcelsDontHaveDrone();
+                                    List<Parcel> ParcelWithoutDrone = temp.DisplaysParcelsDontHaveDrone();
                                     foreach(Parcel parcel in ParcelWithoutDrone)
                                     {
                                         Console.WriteLine(parcel.ToString());
@@ -213,8 +213,8 @@ namespace ConsoleUI
                                     break;
 
                                 case 6:
-                                    List<station> AvailableCH = temp.AvailableChargingStations();
-                                    foreach(station station in AvailableCH)
+                                    List<Station> AvailableCH = temp.AvailableChargingStations();
+                                    foreach(Station station in AvailableCH)
                                     {
                                         Console.WriteLine(station.ToString());
 

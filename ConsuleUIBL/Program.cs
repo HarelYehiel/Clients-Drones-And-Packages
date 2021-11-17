@@ -33,7 +33,7 @@ namespace ConsuleUIBL
         {
             IBL.BL temp = new IBL.BL();
             int ch = 0, ch1, ch2, ch3, ch4;
-            temp.Initialize_and_update_the_list_in_IBL(); // Do initialize if data sourse and update the list listDrons of IBL.
+            temp.InitializeAndUpdateTheListsInIBL(); // Do initialize if data sourse and update the list listDrons of IBL.
 
             do
             {
@@ -52,7 +52,7 @@ namespace ConsuleUIBL
                             Console.WriteLine("Choose one of the following:");
                             do
                             {
-                                temp.Insert_options();
+                                temp.InsertOptions();
                                 ch1 = Convert.ToInt32(Console.ReadLine());
                                 int ID = 0;
                                 switch (ch1)
@@ -67,7 +67,7 @@ namespace ConsuleUIBL
                                         double Longitude = Convert.ToDouble(Console.ReadLine());
                                         Console.WriteLine("enter number of charge slots:");
                                         int numSlots = Convert.ToInt32(Console.ReadLine());
-                                        temp.Adding_a_base_station(ID, name, Latitude, Longitude, numSlots);
+                                        temp.AddingBaseStation(ID, name, Latitude, Longitude, numSlots);
                                         break;
 
                                     case 2:
@@ -79,7 +79,7 @@ namespace ConsuleUIBL
                                         int maxWeight = Convert.ToInt32(Console.ReadLine());
                                         Console.WriteLine("enter number of station you wnat to put the drone:");
                                         int staId = Convert.ToInt32(Console.ReadLine());
-                                        temp.Adding_a_drone(ID, model, maxWeight, staId);
+                                        temp.AddingDrone(ID, model, maxWeight, staId);
                                         break;
 
                                     case 3:
@@ -92,7 +92,7 @@ namespace ConsuleUIBL
                                         Console.WriteLine("enter customer location:");
                                         Latitude = Convert.ToDouble(Console.ReadLine());
                                         Longitude = Convert.ToDouble(Console.ReadLine());
-                                        temp.Absorption_of_a_new_customer(ID, nameCu, phoneNumber, Latitude, Longitude);
+                                        temp.AbsorptionNewCustomer(ID, nameCu, phoneNumber, Latitude, Longitude);
                                         break;
 
                                     case 4:
@@ -106,7 +106,7 @@ namespace ConsuleUIBL
                                         maxWeight = giveNumberRang();
                                         Console.WriteLine("enter prioerity: \n 0 = Normal, 1 = Fast, 2 = Emergency");
                                         int prioerity = giveNumberRang();
-                                        temp.Receipt_of_package_for_delivery(parcelID,senderID, targetID, maxWeight, prioerity);
+                                        temp.ReceiptOfPackageForDelivery(parcelID,senderID, targetID, maxWeight, prioerity);
                                         break;
                                 }
                                 break;
@@ -117,7 +117,7 @@ namespace ConsuleUIBL
 
                             do
                             {
-                                temp.Update_options();
+                                temp.UpdateOptions();
                                 ch2 = Convert.ToInt32(Console.ReadLine());
                                 int ID = 0;
                                 switch (ch2)
@@ -127,7 +127,7 @@ namespace ConsuleUIBL
                                         ID = giveNumber();
                                         Console.WriteLine("what is the new name?");
                                         string newModel = Console.ReadLine();
-                                        temp.Update_drone_data(ID, newModel);
+                                        temp.UpdateDroneData(ID, newModel);
                                         break;
                                     case 2:
                                         Console.WriteLine("witch station you want to update?(ID)");
@@ -136,7 +136,7 @@ namespace ConsuleUIBL
                                         string newName = Console.ReadLine();
                                         Console.WriteLine("do you want to update the number of slots? if not press 0");
                                         int numSlots = giveNumber();
-                                        temp.Update_station_data(ID, newName, numSlots);
+                                        temp.UpdateStationData(ID, newName, numSlots);
                                         break;
                                     case 3:
                                         Console.WriteLine("witch customer you want to update?(ID)");
@@ -145,34 +145,34 @@ namespace ConsuleUIBL
                                         string custName = Console.ReadLine();
                                         Console.WriteLine("do you want to update customer phone number? if not press enter");
                                         string phoneNumber = Console.ReadLine();
-                                        temp.Update_customer_data(ID, custName, phoneNumber);
+                                        temp.UpdateCustomerData(ID, custName, phoneNumber);
                                         break;
                                     case 4:
                                         Console.WriteLine("witch drone you want to charge?(ID)");
                                         ID = giveNumber();
-                                        temp.Sending_a_drone_to_charging(ID);
+                                        temp.SendingDroneToCharging(ID);
                                         break;
                                     case 5:
                                         Console.WriteLine("witch drone you want to release from charge?(ID)");
                                         Console.WriteLine("how many time?(minuets)");
                                         ID = giveNumber();
                                         int min = Convert.ToInt32(Console.ReadLine());
-                                        temp.Release_drone_from_charging(ID, min);
+                                        temp.ReleaseDroneFromCharging(ID, min);
                                         break;
                                     case 6:
                                         Console.WriteLine("witch drone you want to get the parcel?(ID)");
                                         ID = giveNumber();
-                                        temp.Assign_a_package_to_a_drone(ID);
+                                        temp.AssignPackageToDrone(ID);
                                         break;
                                     case 7:
                                         Console.WriteLine("witch drone pickedUp the parcel?(ID)");
                                         ID = giveNumber();
-                                        temp.Collection_of_a_package_by_drone(ID);
+                                        temp.CollectionOfPackageByDrone(ID);
                                         break;
                                     case 8:
                                         Console.WriteLine("witch drone delivered the parcel?(ID)");
                                         ID = giveNumber();
-                                        temp.Delivery_of_a_package_by_drone(ID);
+                                        temp.DeliveryOfPackageByDrone(ID);
                                         break;
                                 }
                                 break;
@@ -182,7 +182,7 @@ namespace ConsuleUIBL
                             Console.WriteLine("Choose one of the following:");
                             do
                             {
-                                temp.Entity_display_options();
+                                temp.EntityDisplayOptions();
                                 ch3 = giveNumber();
                                 int ID = 0;
 
@@ -193,25 +193,25 @@ namespace ConsuleUIBL
                                     case 1:
                                         Console.WriteLine("witch station you want to view?");
                                         ID = giveNumber();
-                                        Console.WriteLine(temp.base_station_view(ID).ToString());
+                                        Console.WriteLine(temp.BaseStationView(ID).ToString());
                                         ch3 = 0;
                                         break;
                                     case 2:
                                         Console.WriteLine("witch drone you want to view?");
                                         ID = giveNumber();
-                                        Console.WriteLine(temp.drone_view(ID).ToString());
+                                        Console.WriteLine(temp.DroneView(ID).ToString());
                                         ch3 = 0;
                                         break;
                                     case 3:
                                         Console.WriteLine("witch customer you want to view?");
                                         ID = giveNumber();
-                                        Console.WriteLine(temp.customer_view(ID).ToString());
+                                        Console.WriteLine(temp.CustomerView(ID).ToString());
                                         ch3 = 0;
                                         break;
                                     case 4:
                                         Console.WriteLine("witch parcel you want to view?");
                                         ID = giveNumber();
-                                        Console.WriteLine(temp.parcel_view(ID).ToString());
+                                        Console.WriteLine(temp.ParcelView(ID).ToString());
                                         ch3 = 0;
                                         break;
                                     default:
@@ -224,7 +224,7 @@ namespace ConsuleUIBL
                             Console.WriteLine("Choose one of the following:");
                             do
                             {
-                                temp.List_view_options();
+                                temp.ListViewOptions();
 
                                 ch4 = giveNumber();
                                 switch (ch4)
@@ -232,39 +232,39 @@ namespace ConsuleUIBL
                                     case 0:
                                         break;
                                     case 1:
-                                        foreach (IBL.BO.StationForTheList item in temp.Displays_a_list_of_base_stations())
+                                        foreach (IBL.BO.StationForTheList item in temp.DisplaysListOfBaseStations())
                                         {
                                             Console.WriteLine(item.ToString());
                                         }
                                         break;
                                     case 2:
-                                        foreach (IBL.BO.DroneToList item in temp.Displays_the_list_of_drones())
+                                        foreach (IBL.BO.DroneToList item in temp.DisplaysTheListOfDrones())
                                     {
                                             Console.WriteLine(item.ToString());
                                         }
                                         break;
                                     case 3:
                                         IEnumerable<IBL.BO.CustomerToList> customersToList = new List<IBL.BO.CustomerToList>();
-                                        customersToList = temp.Displays_a_list_of_customers();
+                                        customersToList = temp.DisplaysListOfCustomers();
                                         foreach (IBL.BO.CustomerToList item in customersToList)
                                         {
                                             Console.WriteLine(item.ToString());
                                         }
                                         break;
                                     case 4:
-                                        foreach (IBL.BO.ParcelToList item in temp.Displays_the_list_of_Parcels())
+                                        foreach (IBL.BO.ParcelToList item in temp.DisplaysTheListOfParcels())
                                         {
                                             Console.WriteLine(item.ToString());
                                         }
                                         break;
                                     case 5:
-                                        foreach (IBL.BO.ParcelToList item in temp.Displays_a_list_of_Parcels_not_yet_associated_with_the_drone())
+                                        foreach (IBL.BO.ParcelToList item in temp.DisplaysListOfParcelsNotYetAssociatedWithDrone())
                                         {
                                             Console.WriteLine(item.ToString());
                                         }
                                         break;
                                     case 6:
-                                        foreach (IBL.BO.StationForTheList item in temp.Display_of_base_stations_with_available_charging_stations())
+                                        foreach (IBL.BO.StationForTheList item in temp.DisplayBaseStationsWithAvailableChargingStations())
                                         {
                                             Console.WriteLine(item.ToString());
                                         }

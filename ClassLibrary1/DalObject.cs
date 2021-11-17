@@ -13,7 +13,7 @@ namespace IDAL
 
         public struct DalObject : IDal
         {
-            public double[] powerConsumptionBySkimmer()
+            public double[] PowerConsumptionBySkimmer()
             {
                 double[] d = new double[5];
                 d[0] = DataSource.Config.vacant;
@@ -30,22 +30,22 @@ namespace IDAL
             {
                 DataSource.Initialize();
             }
-            public void addParcel(Parcel par)
+            public void AddParcel(Parcel par)
 
             {
                 par.runNumber++;
             }
 
-            public IDAL.DO.station GetStation(int stationId)
+            public IDAL.DO.Station GetStation(int stationId)
             // Return the station with stationId
             {
                // IEnumerable<station> stations  = DataSource.stations;
-               foreach(station station in DataSource.stations)
+               foreach(Station station in DataSource.stations)
                 {
                     if (station.id == stationId)
                         return station;
                 }
-                throw new myException_DO("Exception from function GetStation", myException_DO.There_is_no_variable_with_this_ID);
+                throw new myExceptionDO("Exception from function GetStation", myExceptionDO.There_is_no_variable_with_this_ID);
             }
             public IDAL.DO.Drone GetDrone(int droneId)
 
@@ -55,7 +55,7 @@ namespace IDAL
                     if (drone.Id == droneId)
                         return drone;
                 }
-                throw new myException_DO("Exception from function GetDrone", myException_DO.There_is_no_variable_with_this_ID);
+                throw new myExceptionDO("Exception from function GetDrone", myExceptionDO.There_is_no_variable_with_this_ID);
             }
 
             public IDAL.DO.Customer GetCustomer(int CustomerId)
@@ -66,7 +66,7 @@ namespace IDAL
                     if (customer.Id == CustomerId)
                         return customer;
                 }
-                throw new myException_DO("Exception from function GetCustomer", myException_DO.There_is_no_variable_with_this_ID);
+                throw new myExceptionDO("Exception from function GetCustomer", myExceptionDO.There_is_no_variable_with_this_ID);
 
             }
 
@@ -80,56 +80,56 @@ namespace IDAL
                         return parcel;
 
                 }
-                throw new myException_DO("Exception from function GetParcel", myException_DO.There_is_no_variable_with_this_ID);
+                throw new myExceptionDO("Exception from function GetParcel", myExceptionDO.There_is_no_variable_with_this_ID);
             }
-            public void inputTheStationToArray(station station)
+            public void InputTheStationToArray(Station station)
             {
                 DataSource.stations.Add(station);
             }
-            public void inputTheParcelToArray(Parcel par)
+            public void InputTheParcelToArray(Parcel par)
             {
                 DataSource.parcels.Add(par);
-                addParcel(par);//update the run-number serial
+                AddParcel(par);//update the run-number serial
             }
-            public void inputTheCustomerToArray(Customer cust)
+            public void InputTheCustomerToArray(Customer cust)
             {
                 DataSource.customers.Add(cust);
             }
-            public void inputTheDroneToArray(Drone drone)
+            public void InputTheDroneToArray(Drone drone)
             {             
                 DataSource.drones.Add(drone);
             }
 
-            public IEnumerable<station> Displays_list_of_stations()
+            public IEnumerable<Station> Displays_list_of_stations()
             //return all the station from DataSource.stations
 
             {
                 if (DataSource.parcels.Count == 0)
-                    throw new myException_DO("Exception from function Displays_list_of_stations", myException_DO.Dont_have_any_station_in_the_list);
+                    throw new myExceptionDO("Exception from function Displays_list_of_stations", myExceptionDO.Dont_have_any_station_in_the_list);
 
-                List<station> stations = new List<station>();
-                foreach (station station in DataSource.stations)
+                List<Station> stations = new List<Station>();
+                foreach (Station station in DataSource.stations)
                     stations.Add(station);
                 return stations;
             }
 
-            public IEnumerable<Customer> Displays_list_of_custmers()
+            public IEnumerable<Customer> DisplaysListOfCustmers()
             //return all the customer from DataSource.customers
             {
                 if (DataSource.parcels.Count == 0)
-                    throw new myException_DO("Exception from function Displays_list_of_custmers", myException_DO.Dont_have_any_customer_in_the_list);
+                    throw new myExceptionDO("Exception from function Displays_list_of_custmers", myExceptionDO.Dont_have_any_customer_in_the_list);
 
                 List<Customer> customers = new List<Customer>();
                 foreach (Customer customer in DataSource.customers)
                     customers.Add(customer);
                 return customers;
             }
-            public IEnumerable<Parcel> Displays_list_of_Parcels()
+            public IEnumerable<Parcel> DisplaysListOfParcels()
             //print all the Parcel from DataSource.parcels
 
             {
                 if (DataSource.parcels.Count == 0)
-                    throw new myException_DO("Exception from function Displays_list_of_Parcels", myException_DO.Dont_have_any_parcel_in_the_list);
+                    throw new myExceptionDO("Exception from function Displays_list_of_Parcels", myExceptionDO.Dont_have_any_parcel_in_the_list);
 
                 List<Parcel> parcels = new List<Parcel>();
                 foreach (Parcel parcel in DataSource.parcels)
@@ -138,11 +138,11 @@ namespace IDAL
                 }
                 return parcels;
             }
-            public IEnumerable<Drone> Displays_list_of_drone()
+            public IEnumerable<Drone> DisplaysListOfDrones()
             //print all the Drone from DataSource.drones
             {
                 if (DataSource.parcels.Count == 0)
-                    throw new myException_DO("Exception from function Displays_list_of_drone", myException_DO.Dont_have_any_drone_in_the_list);
+                    throw new myExceptionDO("Exception from function Displays_list_of_drone", myExceptionDO.Dont_have_any_drone_in_the_list);
 
                 List<Drone> drones = new List<Drone>();
                 foreach (Drone drone in DataSource.drones)
@@ -151,12 +151,12 @@ namespace IDAL
                 }
                 return drones;
             }
-            public IEnumerable<Parcel> displaysParcelsDontHaveDrone()
+            public IEnumerable<Parcel> DisplaysParcelsDontHaveDrone()
 
             // Print the details of all the parcels don't have An associated skimmer (Selected_drone == 0).
             {
                 if (DataSource.parcels.Count == 0)
-                    throw new myException_DO("Exception from function displaysParcelsDontHaveDrone", myException_DO.Dont_have_any_parcel_in_the_list);
+                    throw new myExceptionDO("Exception from function displaysParcelsDontHaveDrone", myExceptionDO.Dont_have_any_parcel_in_the_list);
 
                 List<Parcel> par = new();
                 foreach (Parcel parcel in DataSource.parcels)
@@ -167,16 +167,16 @@ namespace IDAL
                 return par;
             }
 
-            public IEnumerable<station> AvailableChargingStations()
+            public IEnumerable<Station> AvailableChargingStations()
 
             //Print the all stations that have DroneCharge available
             {
                 if (DataSource.stations.Count == 0)
-                    throw new myException_DO("Exception from function AvailableChargingStations", myException_DO.Dont_have_any_station_in_the_list);
+                    throw new myExceptionDO("Exception from function AvailableChargingStations", myExceptionDO.Dont_have_any_station_in_the_list);
 
-                List<station> stat = new();
+                List<Station> stat = new();
                 IEnumerator iter = DataSource.stations.GetEnumerator();
-                foreach (station station in DataSource.stations)
+                foreach (Station station in DataSource.stations)
                 {
                     if (station.ChargeSlots != 0)
                         stat.Add(station);
@@ -187,7 +187,7 @@ namespace IDAL
 
             {
                 if(DataSource.customers.Count == 0)
-                    throw new myException_DO("Exception from function MinimumFromCustomer", myException_DO.Dont_have_any_customer_in_the_list);
+                    throw new myExceptionDO("Exception from function MinimumFromCustomer", myExceptionDO.Dont_have_any_customer_in_the_list);
 
                 int saveTheI = 0;// save the index with minimum destance from the point p
                 foreach (Customer customer in DataSource.customers)// (int i = 1; i < IDAL.DalObject.DataSource.Config.customersIndex; i++)
@@ -205,11 +205,11 @@ namespace IDAL
             public string MinimumFromStation(double minDistance, Point p){
                 
                   if(DataSource.customers.Count == 0) 
-                    throw new myException_DO("Exception from function MinimumFromStation", myException_DO.Dont_have_any_station_in_the_list);
+                    throw new myExceptionDO("Exception from function MinimumFromStation", myExceptionDO.Dont_have_any_station_in_the_list);
 
             int saveTheI = 0;// save the index with minimum destance from the point p
                 IEnumerator iter = DataSource.stations.GetEnumerator();
-                foreach (station station in DataSource.stations)
+                foreach (Station station in DataSource.stations)
                 {
                     double distance = station.Location.distancePointToPoint(p);
                     if (minDistance > distance)
@@ -225,7 +225,7 @@ namespace IDAL
             public void AffiliationDroneToParcel(int parcelID, int droneID)
             {
                 if (DataSource.parcels.Count == 0)
-                    throw new myException_DO("Exception from function AffiliationDroneToParcel", myException_DO.Dont_have_any_parcel_in_the_list);
+                    throw new myExceptionDO("Exception from function AffiliationDroneToParcel", myExceptionDO.Dont_have_any_parcel_in_the_list);
 
                 IDAL.DO.Parcel parcel = new IDAL.DO.Parcel();
                 for (int i = 0; i < DataSource.parcels.Count(); i++)
@@ -239,12 +239,12 @@ namespace IDAL
                     }
                 }
 
-                throw new myException_DO("Exception from function AffiliationDroneToParcel", myException_DO.There_is_no_variable_with_this_ID);
+                throw new myExceptionDO("Exception from function AffiliationDroneToParcel", myExceptionDO.There_is_no_variable_with_this_ID);
             }
-            public void pickUp(int parcelId)
+            public void PickUp(int parcelId)
             {
                 if (DataSource.parcels.Count == 0)
-                    throw new myException_DO("Exception from function pickUp", myException_DO.Dont_have_any_parcel_in_the_list);
+                    throw new myExceptionDO("Exception from function pickUp", myExceptionDO.Dont_have_any_parcel_in_the_list);
 
                 IDAL.DO.Parcel parcel = new IDAL.DO.Parcel();
                 for (int i = 0; i < DataSource.parcels.Count(); i++)
@@ -258,12 +258,12 @@ namespace IDAL
                     }
                 }
 
-                throw new myException_DO("Exception from function pickUp", myException_DO.There_is_no_variable_with_this_ID);;
+                throw new myExceptionDO("Exception from function pickUp", myExceptionDO.There_is_no_variable_with_this_ID);;
             }
-            public void delivered(int deliId)
+            public void Delivered(int deliId)
             {
                 if (DataSource.parcels.Count == 0)
-                    throw new myException_DO("Exception from function delivered", myException_DO.Dont_have_any_parcel_in_the_list);
+                    throw new myExceptionDO("Exception from function delivered", myExceptionDO.Dont_have_any_parcel_in_the_list);
 
                 IDAL.DO.Parcel tempParcel = new IDAL.DO.Parcel();
                 for (int i = 0; i < DataSource.parcels.Count(); i++)
@@ -277,15 +277,15 @@ namespace IDAL
                     }
                 }
 
-                throw new myException_DO("Exception from function delivered", myException_DO.There_is_no_variable_with_this_ID);
+                throw new myExceptionDO("Exception from function delivered", myExceptionDO.There_is_no_variable_with_this_ID);
 
             }
-            public void setFreeStation(int droneId)
+            public void SetFreeStation(int droneId)
             {
                 if (DataSource.stations.Count == 0)
-                    throw new myException_DO("Exception from function setFreeStation", myException_DO.Dont_have_any_station_in_the_list);
+                    throw new myExceptionDO("Exception from function setFreeStation", myExceptionDO.Dont_have_any_station_in_the_list);
                 if (DataSource.drones.Count == 0)
-                    throw new myException_DO("Exception from function setFreeStation", myException_DO.Dont_have_any_drone_in_the_list);
+                    throw new myExceptionDO("Exception from function setFreeStation", myExceptionDO.Dont_have_any_drone_in_the_list);
 
                 for (int i = 0; i < DataSource.dronesCharge.Count(); i++)
                 {
@@ -296,13 +296,13 @@ namespace IDAL
                         { 
                             if (DataSource.stations[j].id == DataSource.dronesCharge[i].staitionId)
                             {
-                                station station = new station();
+                                Station station = new Station();
                                 station = DataSource.stations[j];
                                 station.ChargeSlots++;
                                 DataSource.stations[j] = station;
                             }
                             else if (j == DataSource.stations.Count() - 1)
-                                throw new myException_DO(myException_DO.We_ge_to_the_end_of_list_and_dont_find_the_station);
+                                throw new myExceptionDO(myExceptionDO.We_ge_to_the_end_of_list_and_dont_find_the_station);
                         }
 
                         DataSource.dronesCharge.RemoveAt(i); 
@@ -310,21 +310,21 @@ namespace IDAL
                         break;
                     }
                     else if (i == DataSource.drones.Count() - 1)
-                           throw new myException_DO("Exception from function setFreeStation", myException_DO.We_ge_to_the_end_of_list_and_dont_find_the_drone);
+                           throw new myExceptionDO("Exception from function setFreeStation", myExceptionDO.We_ge_to_the_end_of_list_and_dont_find_the_drone);
                 }
             }
-            public void droneToCharge(int droneId, int stationId)
+            public void DroneToCharge(int droneId, int stationId)
             {
                 if (DataSource.stations.Count == 0)
-                    throw new myException_DO("Exception from function droneToCharge", myException_DO.Dont_have_any_station_in_the_list);
+                    throw new myExceptionDO("Exception from function droneToCharge", myExceptionDO.Dont_have_any_station_in_the_list);
                 if (DataSource.drones.Count == 0)
-                    throw new myException_DO("Exception from function droneToCharge", myException_DO.Dont_have_any_drone_in_the_list);
+                    throw new myExceptionDO("Exception from function droneToCharge", myExceptionDO.Dont_have_any_drone_in_the_list);
 
                 foreach (var droneCharging in DataSource.dronesCharge) // Check if The drone already is in charge  
                 {
                     if(droneCharging.DroneId == droneId)
                     {
-                        throw new myException_DO("The drone already is in charge.");
+                        throw new myExceptionDO("The drone already is in charge.");
                     }
                 }
 
@@ -337,7 +337,7 @@ namespace IDAL
                         droneCharge.staitionId = stationId;
                         DataSource.dronesCharge.Add(droneCharge);
 
-                        IDAL.DO.station station = new station();
+                        IDAL.DO.Station station = new Station();
                         station = DataSource.stations[i];
                         station.ChargeSlots--;
                         DataSource.stations[i] = station;

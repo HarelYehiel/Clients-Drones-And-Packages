@@ -11,7 +11,7 @@ namespace ConsoleUI
         IDAL.DO.IDal temp = new IDAL.DalObject.DalObject();
         public void addStation()
         {
-            IDAL.DO.station item = new IDAL.DO.station();
+            IDAL.DO.Station item = new IDAL.DO.Station();
             Console.WriteLine("enter drone-station ID:(5 digits)");
             item.id = Convert.ToInt32(Console.ReadLine());//user set id
             Console.WriteLine("enter drone-station name:");
@@ -23,7 +23,7 @@ namespace ConsoleUI
             p.longitude = Convert.ToDouble(Console.ReadLine());//user input Longitude
             item.Location = p;
             item.ChargeSlots = 10;//all station have only 10 charge slots 
-            temp.inputTheStationToArray(item);//this function is using at the data base so she must to be in DAL project
+            temp.InputTheStationToArray(item);//this function is using at the data base so she must to be in DAL project
           
         }
         public void addParcel1()
@@ -50,7 +50,7 @@ namespace ConsoleUI
             par.priority = (IDAL.DO.Enum.Priorities)parPriority;
             par.Requested = DateTime.Now;//the requestsd time is now
             par.Scheduled = par.Requested.AddMinutes(5);//the parcel find drone at 5 minutes
-            temp.inputTheParcelToArray(par);
+            temp.InputTheParcelToArray(par);
         }
 
         public void addCustomer()
@@ -72,7 +72,7 @@ namespace ConsoleUI
             Console.WriteLine("enter Longitude:");
             P.longitude = Convert.ToDouble(Console.ReadLine());//user input Longitude
             cust.location = P;
-            temp.inputTheCustomerToArray(cust);
+            temp.InputTheCustomerToArray(cust);
         }
 
         public void addDrone()
@@ -89,7 +89,7 @@ namespace ConsoleUI
             Console.WriteLine("enter drone weight:\nLight = 0, Medium = 1, Heavy = 2");
             int weightChoose = Convert.ToInt32(Console.ReadLine());//user input weight
             dro.MaxWeight = (IDAL.DO.Enum.WeightCategories)weightChoose;//convert the choose to WeightCategories
-            temp.inputTheDroneToArray(dro);
+            temp.InputTheDroneToArray(dro);
             
         }
     }

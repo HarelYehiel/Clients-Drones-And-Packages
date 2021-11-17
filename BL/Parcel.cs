@@ -14,8 +14,8 @@ namespace IBL
             public CustomerInParcel customerInParcelSender { get; set; }
             public CustomerInParcel customerInParcel_Target { get; set; }
             public DroneInPackage droneInParcel { get; set; }
-            public Enum_BO.Priorities priority { get; set; }
-            public Enum_BO.WeightCategories weight { get; set; }
+            public EnumBO.Priorities priority { get; set; }
+            public EnumBO.WeightCategories weight { get; set; }
             public DateTime requested { get; set; }
             public DateTime scheduled { get; set; }
             public DateTime pickedUp { get; set; }
@@ -30,7 +30,7 @@ namespace IBL
                 else 
                     s += $"drone: NULL\n";
 
-                s +=  $"priority: {Enum.GetName(typeof( Enum_BO.Priorities),priority)}, weight: {Enum.GetName(typeof(Enum_BO.WeightCategories),weight)}\n" +
+                s +=  $"priority: {Enum.GetName(typeof( EnumBO.Priorities),priority)}, weight: {Enum.GetName(typeof(EnumBO.WeightCategories),weight)}\n" +
                     $" requested: {requested}, scheduled = {scheduled}, picked up = {pickedUp}, delivered = {delivered}";
 
                 return s;

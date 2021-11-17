@@ -13,16 +13,16 @@ namespace IBL
             public int uniqueID { get; set; }
 
             public string Model { get; set; }
-            public Enum_BO.WeightCategories weight { get; set; }
-            public Enum_BO.DroneStatus status { get; set; }
+            public EnumBO.WeightCategories weight { get; set; }
+            public EnumBO.DroneStatus status { get; set; }
             public double Battery { get; set; }
             public Location location { get; set; }
             public int packageDelivered { get; set; }
 
             public override string ToString()
             {
-                return $"Drone ID: {uniqueID}, model: {Model}, weight: {Enum.GetName(typeof(Enum_BO.WeightCategories),weight)}\n," +
-                    $" status: {Enum.GetName(typeof( Enum_BO.DroneStatus),status)}, Battery: {Battery}, location:  {location.ToString()}," +
+                return $"Drone ID: {uniqueID}, model: {Model}, weight: {Enum.GetName(typeof(EnumBO.WeightCategories),weight)}\n," +
+                    $" status: {Enum.GetName(typeof( EnumBO.DroneStatus),status)}, Battery: {Battery}, location:  {location.ToString()}," +
                     $" package delivered: {packageDelivered}";
             }
 

@@ -14,32 +14,32 @@ namespace IBL
     {
         // List<BO.Drone> listDrons = new List<BO.Drone>();
         IDAL.DO.IDal temp = new IDAL.DalObject.DalObject();
-        List<DroneToList> List_droneToList = new List<DroneToList>();
+        List<DroneToList> ListDroneToList = new List<DroneToList>();
 
-        public void Initialize_and_update_the_list_in_IBL() 
+        public void InitializeAndUpdateTheListsInIBL() 
          // Do initialize if data sourse and update the list listDrons of IBL.
         {
             IDAL.DalObject.DataSource.Initialize();
-            BO.DroneToList droneToList_BO;
+            BO.DroneToList droneToListBO;
 
             foreach (var item in IDAL.DalObject.DataSource.drones) // Update the list in listDrons of IBL
             {
                 var rand = new Random();
-                droneToList_BO = new BO.DroneToList();
+                droneToListBO = new BO.DroneToList();
 
-                droneToList_BO.uniqueID = item.Id;
-                droneToList_BO.Model = item.Model;
-                droneToList_BO.Battery = rand.Next(20, 80);
-                droneToList_BO.weight = (BO.Enum_BO.WeightCategories)item.MaxWeight;
-                droneToList_BO.status = (BO.Enum_BO.DroneStatus)item.droneStatus;
+                droneToListBO.uniqueID = item.Id;
+                droneToListBO.Model = item.Model;
+                droneToListBO.Battery = rand.Next(20, 80);
+                droneToListBO.weight = (BO.EnumBO.WeightCategories)item.MaxWeight;
+                droneToListBO.status = (BO.EnumBO.DroneStatus)item.droneStatus;
 
                 BO.Location l = new BO.Location();
                 l.latitude = 31 + (double)rand.Next(0, 1);
                 l.longitude = 34 + (double) rand.Next(0, 1);
-                droneToList_BO.location = l;
-                droneToList_BO.packageDelivered = 0;
+                droneToListBO.location = l;
+                droneToListBO.packageDelivered = 0;
 
-                List_droneToList.Add(droneToList_BO);
+                ListDroneToList.Add(droneToListBO);
 
             }
         }
@@ -56,7 +56,7 @@ namespace IBL
             return true;
         }
 
-        public void Insert_options() //case 1
+        public void InsertOptions() //case 1
         {
             Console.WriteLine("press 0 to back ");
             Console.WriteLine("press 1 to add a new drone-staition");
@@ -67,7 +67,7 @@ namespace IBL
         }
 
 
-        public void Update_options() //case 2
+        public void UpdateOptions() //case 2
         {
             Console.WriteLine("Choose one of the following:");
             Console.WriteLine("press 0 to back ");
@@ -80,7 +80,7 @@ namespace IBL
             Console.WriteLine("press 7 to update picked up parcel by drone");
             Console.WriteLine("press 8 to update delivered parcel by drone");
         }
-        public void Entity_display_options() //case 3
+        public void EntityDisplayOptions() //case 3
         {
             Console.WriteLine("press 0 to back ");
             Console.WriteLine("press 1 to Station View");
@@ -89,7 +89,7 @@ namespace IBL
             Console.WriteLine("press 4 to parcel View ");
         }
 
-        public void List_view_options()//case 4
+        public void ListViewOptions()//case 4
         {
             Console.WriteLine("press 0 to back.");
             Console.WriteLine("press 1 to displays a list of base stations.");
