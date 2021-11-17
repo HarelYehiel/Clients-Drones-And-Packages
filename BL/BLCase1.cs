@@ -38,8 +38,12 @@ namespace IBL
             drone.uniqueID = ID;
             drone.Model = model;
             drone.weight = (BO.Enum_BO.WeightCategories)maxWeight;
-            drone.location.latitude = sta.Location.latitude;
-            drone.location.longitude = sta.Location.longitude;
+
+            BO.Location locationBO = new BO.Location();
+            locationBO.latitude = sta.Location.latitude;
+            locationBO.longitude = sta.Location.longitude;
+            drone.location = locationBO;
+            
             drone.status = BO.Enum_BO.DroneStatus.Baintenance;
             var rand = new Random();
             drone.Battery = rand.Next(20, 40);
@@ -63,6 +67,7 @@ namespace IBL
     
 
             IDAL.DO.Customer customer1 = new IDAL.DO.Customer();
+
             customer1.Id = ID;
             customer1.name = nameCu;
             customer1.phone = phoneNumber;
@@ -72,7 +77,7 @@ namespace IBL
             customer1.location = point;
             temp.inputTheCustomerToArray(customer1);
         }
-        public void Receipt_of_package_for_delivery(int senderName, int targetName, int maxWeight, int prioerity)
+        public void Receipt_of_package_for_delivery(int parcelID, int senderName, int targetName, int maxWeight, int prioerity)
         {
            /* BO.Parcel parcel = new BO.Parcel();
             parcel.customerInDelivery_Sender.name = senderName;
@@ -84,6 +89,7 @@ namespace IBL
             //איך לשלוח מBL לDL
             */
             IDAL.DO.Parcel parcel1 = new IDAL.DO.Parcel();
+            parcel1.Id = parcelID;
             parcel1.SenderId = senderName;
             parcel1.TargetId = targetName;
             parcel1.weight = (IDAL.DO.Enum.WeightCategories)maxWeight;

@@ -15,7 +15,7 @@ namespace IBL
         public void Adding_a_base_station(int ID, string name, double Latitude, double Longitude, int numSlots);
         public void Adding_a_drone(int ID, string model, int maxWeight, int staId);
         public void Absorption_of_a_new_customer(int ID, string nameCu, string phoneNumber, double Latitude, double Longitude);
-        public void Receipt_of_package_for_delivery(int senderName, int targetName, int maxWeight, int prioerity);
+        public void Receipt_of_package_for_delivery(int parcelID, int senderName, int targetName, int maxWeight, int prioerity);
 
         /* Until here */
 
@@ -25,7 +25,7 @@ namespace IBL
         public void Update_drone_data(int ID, string newModel);
         public void Update_station_data(int ID, string name, int numSlots);
         public void Update_customer_data(int ID, string custName, string phoneNumber);
-        public void Sending_a_drone_for_charging(int ID);
+        public void Sending_a_drone_to_charging(int ID);
         public void Release_drone_from_charging(int ID,int min);
         public void Assign_a_package_to_a_drone(int droneId);
         public void Collection_of_a_package_by_drone(int droneId);

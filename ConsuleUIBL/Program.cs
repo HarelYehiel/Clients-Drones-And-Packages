@@ -16,6 +16,18 @@ namespace ConsuleUIBL
                     return Convert.ToInt32(s);
                 Console.WriteLine(IBL.BO.MyExeption_BO.Only_numbers_should_be_type_to + "\nGive number");
             } while (true);
+        }public static int giveNumberRang()
+        {
+            string s;
+            IBL.BL temp = new IBL.BL();
+
+            do
+            {
+                s = Console.ReadLine();
+                if (temp.IsDigitsOnly(s) && (s == "0" || s == "1" || s == "2"))
+                    return Convert.ToInt32(s);
+                Console.WriteLine(IBL.BO.MyExeption_BO.Only_numbers_should_be_type_to + "\nGive number");
+            } while (true);
         }
         static void Main(string[] args)
         {
@@ -84,15 +96,17 @@ namespace ConsuleUIBL
                                         break;
 
                                     case 4:
-                                        Console.WriteLine("enter sender name(ID - 5 digit:");
+                                        Console.WriteLine("enter parcel id(ID - 5 digit):");
+                                        int parcelID = giveNumber();
+                                        Console.WriteLine("enter sender id(ID - 5 digit):");
                                         int senderID = giveNumber();
-                                        Console.WriteLine("enter target name(ID  - 5 digit):");
+                                        Console.WriteLine("enter target id(ID  - 5 digit):");
                                         int targetID = giveNumber();
-                                        Console.WriteLine("enter weight: \n1 = Light, 2 = Medium, 3 = Heavy");
-                                        maxWeight = Convert.ToInt32(Console.ReadLine());
-                                        Console.WriteLine("enter target ID(5 digit): \n 1 = Normal, 2 = Fast, 3 = Emergency");
-                                        int prioerity = Convert.ToInt32(Console.ReadLine());
-                                        temp.Receipt_of_package_for_delivery(senderID, targetID, maxWeight, prioerity);
+                                        Console.WriteLine("enter weight: \n0 = Light, 1 = Medium, 2 = Heavy");
+                                        maxWeight = giveNumberRang();
+                                        Console.WriteLine("enter prioerity: \n 0 = Normal, 1 = Fast, 2 = Emergency");
+                                        int prioerity = giveNumberRang();
+                                        temp.Receipt_of_package_for_delivery(parcelID,senderID, targetID, maxWeight, prioerity);
                                         break;
                                 }
                                 break;
@@ -135,9 +149,8 @@ namespace ConsuleUIBL
                                         break;
                                     case 4:
                                         Console.WriteLine("witch drone you want to charge?(ID)");
-                                        ID = Convert.ToInt32(Console.ReadLine());
                                         ID = giveNumber();
-                                        temp.Sending_a_drone_for_charging(ID);
+                                        temp.Sending_a_drone_to_charging(ID);
                                         break;
                                     case 5:
                                         Console.WriteLine("witch drone you want to release from charge?(ID)");
@@ -148,7 +161,6 @@ namespace ConsuleUIBL
                                         break;
                                     case 6:
                                         Console.WriteLine("witch drone you want to get the parcel?(ID)");
-                                        ID = Convert.ToInt32(Console.ReadLine());
                                         ID = giveNumber();
                                         temp.Assign_a_package_to_a_drone(ID);
                                         break;
@@ -276,10 +288,6 @@ namespace ConsuleUIBL
     }
 }
 /*
-4
-1
-0
-2
-2
+
 
  */

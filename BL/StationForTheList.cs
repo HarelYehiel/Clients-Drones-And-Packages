@@ -19,7 +19,7 @@ namespace IBL
             {
                 return $"Station ID: {uniqueID},  station name: {name}," +
                     $" available charging stations: {availableChargingStations}," +
-                    $" available charging stations: {unAvailableChargingStations}";
+                    $" unavailable charging stations: {unAvailableChargingStations}";
              }
 
         }

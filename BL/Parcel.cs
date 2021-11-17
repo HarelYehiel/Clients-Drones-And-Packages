@@ -11,7 +11,7 @@ namespace IBL
          public class Parcel
         {
             public int uniqueID { get; set; }
-            public CustomerInParcel customerInParcel_Sender { get; set; }
+            public CustomerInParcel customerInParcelSender { get; set; }
             public CustomerInParcel customerInParcel_Target { get; set; }
             public DroneInPackage droneInParcel { get; set; }
             public Enum_BO.Priorities priority { get; set; }
@@ -22,7 +22,7 @@ namespace IBL
             public DateTime delivered { get; set; }
             public override string ToString()
             {
-                string s = $"Parcel ID: {uniqueID}\n sender: {customerInParcel_Sender.ToString()}\n" +
+                string s = $"Parcel ID: {uniqueID}\n sender: {customerInParcelSender.ToString()}\n" +
                     $" target: {customerInParcel_Target.ToString()}\n";
 
                 if (droneInParcel != null)

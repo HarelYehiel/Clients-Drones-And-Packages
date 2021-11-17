@@ -53,9 +53,9 @@ namespace IDAL
                     }
                 }
                 
-                for (int i = 0; i < DataSource.dronesCharge.Count; i++)
+                for (int i = 0; i < DataSource.drones.Count; i++)
                 {
-                    if (DataSource.dronesCharge[i].DroneId == droneId)
+                    if (DataSource.drones[i].DId == droneId)
                     {
                         DO.DroneCharge droneCharge = new DO.DroneCharge();
                         droneCharge.DroneId = droneId;

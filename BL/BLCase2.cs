@@ -66,7 +66,7 @@ namespace IBL
             }
 
         }
-        public void Sending_a_drone_for_charging(int ID)
+        public void Sending_a_drone_to_charging(int ID)
         {
             try
             {
@@ -171,7 +171,7 @@ namespace IBL
 
                 }
                 else//הרחפן בכלל לא בתחזוקה
-                    throw new BO.MyExeption_BO("The skimmer is not maintained at all");
+                    throw new BO.MyExeption_BO("The drone is not maintained at all");
             }
 
             catch (Exception e)

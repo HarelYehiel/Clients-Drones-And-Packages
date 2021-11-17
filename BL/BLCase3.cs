@@ -224,7 +224,7 @@ namespace IBL
 
                 BO.Location location = new BO.Location();
                 location.latitude =  customer_DO.location.latitude;
-                location.latitude =  customer_DO.location.longitude;
+                location.longitude =  customer_DO.location.longitude;
                 customer_BO.location = location;
 
                 customer_BO.fromTheCustomer = new List<BO.parcelAtCustomer>();
@@ -261,7 +261,7 @@ namespace IBL
                 parcel_DO = dalO.GetParcel(id);
 
                 parcel_BO.uniqueID = parcel_DO.Id;
-                parcel_BO.customerInParcel_Sender = getCustomerInParcel(parcel_DO.SenderId);
+                parcel_BO.customerInParcelSender = getCustomerInParcel(parcel_DO.SenderId);
                 parcel_BO.customerInParcel_Target = getCustomerInParcel(parcel_DO.TargetId);
                 if (parcel_DO.DroneId != 0)
                     parcel_BO.droneInParcel = getDroneInPackage(parcel_DO.DroneId);
