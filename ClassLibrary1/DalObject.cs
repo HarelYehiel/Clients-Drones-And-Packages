@@ -13,16 +13,16 @@ namespace IDAL
 
         public struct DalObject : IDal
         {
-            public double[] PowerConsumptionBySkimmer()
+            public List<double> PowerConsumptionBySkimmer()
             {
-                double[] d = new double[5];
-                d[0] = DataSource.Config.vacant;
-                d[1] = DataSource.Config.lightWeight;
-                d[2] = DataSource.Config.mediumWeight;
-                d[3] = DataSource.Config.heavyWeight;
-                d[4] = DataSource.Config.droneLoadingRate;
+                List<double> dou = new List<double>();
 
-                return d;
+                dou.Add( DataSource.Config.vacant);
+                dou.Add(DataSource.Config.lightWeight);
+                dou.Add(DataSource.Config.mediumWeight);
+                dou.Add(DataSource.Config.heavyWeight);
+                dou.Add(DataSource.Config.droneLoadingRate);
+                return dou;
 
 
             }

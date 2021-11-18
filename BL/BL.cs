@@ -13,7 +13,7 @@ namespace IBL
     public partial class BL : IBL
     {
         // List<BO.Drone> listDrons = new List<BO.Drone>();
-        IDAL.DO.IDal temp = new IDAL.DalObject.DalObject();
+        IDAL.DO.IDal accessIdal = new IDAL.DalObject.DalObject();
         List<DroneToList> ListDroneToList = new List<DroneToList>();
 
         public void InitializeAndUpdateTheListsInIBL() 

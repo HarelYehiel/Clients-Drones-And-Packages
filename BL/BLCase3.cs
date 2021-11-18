@@ -35,7 +35,7 @@ namespace IBL
                 IDAL.DO.Customer customerDO = new IDAL.DO.Customer();
                 BO.CustomerInParcel customerInParcelBO = new BO.CustomerInParcel();
 
-                customerDO = dalO.GetCustomer(id);
+                customerDO = accessIdal.GetCustomer(id);
 
                 customerInParcelBO.uniqueID = customerDO.Id;
                 customerInParcelBO.name = customerDO.name;
@@ -60,7 +60,7 @@ namespace IBL
                 IDAL.DO.Parcel parcelDO = new IDAL.DO.Parcel();
                 BO.parcelAtCustomer parcelToCustomerBO = new BO.parcelAtCustomer();
 
-                parcelDO = dalO.GetParcel(id_parcel);
+                parcelDO = accessIdal.GetParcel(id_parcel);
 
                 parcelToCustomerBO.uniqueID = parcelDO.Id;
                 parcelToCustomerBO.weight = (BO.EnumBO.WeightCategories)parcelDO.weight;
@@ -100,7 +100,7 @@ namespace IBL
                 IDAL.DO.Station stationDO = new IDAL.DO.Station();
                 BO.station stationBO = new BO.station();
 
-                stationDO = dalO.GetStation(id);
+                stationDO = accessIdal.GetStation(id);
 
                 stationBO.uniqueID = stationDO.id;
                 stationBO.name = stationDO.name;
@@ -152,13 +152,13 @@ namespace IBL
                         parcelByTransfer.priority = (BO.EnumBO.Priorities)item.priority;
                         parcelByTransfer.weight = (BO.EnumBO.WeightCategories)item.weight;
                         
-                        IDAL.DO.Customer customer_DO = dalO.GetCustomer(item.SenderId);
+                        IDAL.DO.Customer customer_DO = accessIdal.GetCustomer(item.SenderId);
                         BO.Location l = new BO.Location();
                         l.latitude = customer_DO.location.latitude;
                         l.longitude = customer_DO.location.longitude;
                         parcelByTransfer.collectionLocation = l;
 
-                        customer_DO = dalO.GetCustomer(item.TargetId);
+                        customer_DO = accessIdal.GetCustomer(item.TargetId);
                         l = new BO.Location();
                         l.latitude = customer_DO.location.latitude;
                         l.longitude = customer_DO.location.longitude;
@@ -172,7 +172,7 @@ namespace IBL
 
 
                         // Is wait for collection ?
-                        if (dalO.GetParcel(id).PickedUp != new DateTime()) // The parcel PickedUp
+                        if (accessIdal.GetParcel(id).PickedUp != new DateTime()) // The parcel PickedUp
                             parcelByTransfer.isWaitForCollection = false; // The parcel don't wait to PickedUp, it in transfer
                         else
                             parcelByTransfer.isWaitForCollection = true; // The parcel wait to PickedUp
@@ -222,7 +222,7 @@ namespace IBL
                 IDAL.DO.Customer customerDO = new IDAL.DO.Customer();
                 BO.Customer customerBO = new BO.Customer();
 
-                customerDO = dalO.GetCustomer(id);
+                customerDO = accessIdal.GetCustomer(id);
 
                 customerBO.uniqueID = customerDO.Id;
                 customerBO.name = customerDO.name;
@@ -264,7 +264,7 @@ namespace IBL
                 IDAL.DO.Parcel parcelDO = new IDAL.DO.Parcel();
                 BO.Parcel parcelBO = new BO.Parcel();
 
-                parcelDO = dalO.GetParcel(id);
+                parcelDO = accessIdal.GetParcel(id);
 
                 parcelBO.uniqueID = parcelDO.Id;
                 parcelBO.customerInParcelSender = GetCustomerInParcel(parcelDO.SenderId);

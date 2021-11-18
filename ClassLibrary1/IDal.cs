@@ -12,7 +12,7 @@ namespace IDAL
         public interface IDal
         {
             
-            public double[] PowerConsumptionBySkimmer();
+            public List<double> PowerConsumptionBySkimmer();
             public void AddParcel(Parcel par);
 
             public Station GetStation(int stationId);

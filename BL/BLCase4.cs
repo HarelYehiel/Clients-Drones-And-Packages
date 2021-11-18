@@ -12,8 +12,6 @@ namespace IBL
 {
     public partial class BL : IBL
     {
-        DalObject dalO = new DalObject();
-
         int FunParcelSituation(IDAL.DO.Parcel p)
         {
             if (p.Delivered != new DateTime()) return 3;
@@ -118,8 +116,8 @@ namespace IBL
                 {
                     parcelToListBO = new ParcelToList();
                     parcelToListBO.uniqueID = item.Id;
-                    parcelToListBO.nameTarget = dalO.GetCustomer(item.TargetId).name;
-                    parcelToListBO.namrSender = dalO.GetCustomer(item.SenderId).name;
+                    parcelToListBO.nameTarget = accessIdal.GetCustomer(item.TargetId).name;
+                    parcelToListBO.namrSender = accessIdal.GetCustomer(item.SenderId).name;
                     parcelToListBO.priority = (BO.EnumBO.Priorities)(int)item.priority;
                     parcelToListBO.weight = (BO.EnumBO.WeightCategories)(int)item.weight;
                     parcelToListBO.parcelsituation = (BO.EnumBO.Situations)FunParcelSituation(item);
@@ -154,8 +152,8 @@ namespace IBL
                     {
                         ParceslToListBO = new ParcelToList();
                         ParceslToListBO.uniqueID = item.Id;
-                        ParceslToListBO.nameTarget = dalO.GetCustomer(item.TargetId).name;
-                        ParceslToListBO.namrSender = dalO.GetCustomer(item.SenderId).name;
+                        ParceslToListBO.nameTarget = accessIdal.GetCustomer(item.TargetId).name;
+                        ParceslToListBO.namrSender = accessIdal.GetCustomer(item.SenderId).name;
                         ParceslToListBO.priority = (BO.EnumBO.Priorities)(int)item.priority;
                         ParceslToListBO.weight = (BO.EnumBO.WeightCategories)(int)item.weight;
                         ParceslToListBO.parcelsituation = BO.EnumBO.Situations.created;

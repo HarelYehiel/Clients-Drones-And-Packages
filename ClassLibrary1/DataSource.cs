@@ -37,10 +37,11 @@ namespace IDAL
                     drone.Id = rand.Next(10000, 99999);
                     drone.Model = "dro" + rand.Next(1, 10);
                     drone.MaxWeight = (IDAL.DO.Enum.WeightCategories)rand.Next(0, 2);
+                    drone.droneStatus = DO.Enum.DroneStatus.Avilble;
                     drones.Add(drone);
                     
                 }
-                for (int i = 0; i < 2; i++)//crate 2 staitons with random data
+                for (int i = 0; i < 5; i++)//crate 5 staitons with random data
                 {
                     Station station = new Station();
                     var rand = new Random();

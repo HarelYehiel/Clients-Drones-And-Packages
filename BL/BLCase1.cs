@@ -26,12 +26,12 @@ namespace IBL
             station1.Location = loc;
             station1.ChargeSlots = numSlots;
 
-            temp.InputTheStationToArray(station1);
+            accessIdal.InputTheStationToArray(station1);
         }
         public void AddingDrone(int ID,string model,int maxWeight,int staId)
         {
             IDAL.DO.Station sta = new IDAL.DO.Station();
-            sta = temp.GetStation(staId);
+            sta = accessIdal.GetStation(staId);
 
             BO.DroneToList drone = new BO.DroneToList();
             drone.uniqueID = ID;
@@ -52,7 +52,7 @@ namespace IBL
             drone1.Id = ID;
             drone1.Model = model;
             drone1.MaxWeight = (IDAL.DO.Enum.WeightCategories)maxWeight;
-            temp.InputTheDroneToArray(drone1);
+            accessIdal.InputTheDroneToArray(drone1);
             this.ListDroneToList.Add(drone);
 
         }
@@ -75,7 +75,7 @@ namespace IBL
             point.latitude = Latitude;
             point.longitude = Longitude;
             customer1.location = point;
-            temp.InputTheCustomerToArray(customer1);
+            accessIdal.InputTheCustomerToArray(customer1);
         }
         public void ReceiptOfPackageForDelivery(int parcelID, int senderName, int targetName, int maxWeight, int prioerity)
         {
@@ -100,7 +100,7 @@ namespace IBL
             parcel1.Scheduled = def;
             parcel1.Delivered = def;
 
-            temp.InputTheParcelToArray(parcel1);
+            accessIdal.InputTheParcelToArray(parcel1);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace IBL
         {
             try
             {
-                IDAL.DO.Drone drone = temp.GetDrone(ID);
+                IDAL.DO.Drone drone = accessIdal.GetDrone(ID);
                 drone.Model = newModel;
                 updateDataSourceFun.updateDrone(drone);
                 BO.DroneToList droneToList_BO;
@@ -34,7 +34,7 @@ namespace IBL
                 if (name == "" && numSlots == 0)
                     return; // Don't do nathing.
 
-                IDAL.DO.Station station = temp.GetStation(ID);
+                IDAL.DO.Station station = accessIdal.GetStation(ID);
                 if (name != "")
                     station.name = name;
                 if (numSlots != 0)
@@ -52,7 +52,7 @@ namespace IBL
         {
             try
             {
-                IDAL.DO.Customer customer = temp.GetCustomer(ID);
+                IDAL.DO.Customer customer = accessIdal.GetCustomer(ID);
                 if (name != "")
                     customer.name = name;
                 if (phoneNumber != "")
@@ -70,7 +70,7 @@ namespace IBL
         {
             try
             {
-                IDAL.DO.Drone drone = temp.GetDrone(ID);
+                IDAL.DO.Drone drone = accessIdal.GetDrone(ID);
                 BO.DroneToList droneToList_Bo = new BO.DroneToList();
                 //-----check drone status, only if he is free check the next condition-----
                 if (drone.droneStatus == IDAL.DO.Enum.DroneStatus.Avilble)
@@ -139,7 +139,7 @@ namespace IBL
         {
             try
             {
-                IDAL.DO.Drone drone = temp.GetDrone(ID);
+                IDAL.DO.Drone drone = accessIdal.GetDrone(ID);
                 if (drone.droneStatus == IDAL.DO.Enum.DroneStatus.Baintenance)
                 {
                     //------gett data of this dron from BL drone list-----------
@@ -186,7 +186,7 @@ namespace IBL
             try
             {
                 //get the data of the specific drone from DAL(data source)
-                IDAL.DO.Drone drone = temp.GetDrone(droneId);
+                IDAL.DO.Drone drone = accessIdal.GetDrone(droneId);
                 //get the data of the specific drone at BO
                 BO.DroneToList droneBo = GetDroneBO(droneId);
                 IDAL.DO.Parcel parcelDO = new IDAL.DO.Parcel();
@@ -280,7 +280,7 @@ namespace IBL
         {
             try
             {
-                IDAL.DO.Drone drone = temp.GetDrone(ID);
+                IDAL.DO.Drone drone = accessIdal.GetDrone(ID);
                 IDAL.DO.Parcel parcel = new IDAL.DO.Parcel();
                 if (drone.droneStatus == IDAL.DO.Enum.DroneStatus.Delivery)
                 {
@@ -299,13 +299,13 @@ namespace IBL
                                     if (ListDroneToList[j].uniqueID == ID)
                                     {
                                         droneToListeBo = ListDroneToList[j];
-                                        parcel = temp.GetParcel(IDAL.DalObject.DataSource.parcels[i].Id);
+                                        parcel = accessIdal.GetParcel(IDAL.DalObject.DataSource.parcels[i].Id);
                                     }
                                 }
                                 //find sender location
                                 senderId = IDAL.DalObject.DataSource.parcels[i].SenderId;
                                 IDAL.DO.Point point1, point2 = new IDAL.DO.Point();
-                                IDAL.DO.Customer sender = temp.GetCustomer(senderId);
+                                IDAL.DO.Customer sender = accessIdal.GetCustomer(senderId);
                                 point1.latitude = sender.location.latitude;
                                 point1.longitude = sender.location.longitude;
 
@@ -344,7 +344,7 @@ namespace IBL
         {
             try
             {
-                IDAL.DO.Drone drone = temp.GetDrone(ID);
+                IDAL.DO.Drone drone = accessIdal.GetDrone(ID);
                 IDAL.DO.Parcel parcel = new IDAL.DO.Parcel();
                 if (drone.droneStatus == IDAL.DO.Enum.DroneStatus.Delivery)
                 {
@@ -366,7 +366,7 @@ namespace IBL
                                 //find target location
                                 targetId = IDAL.DalObject.DataSource.parcels[i].TargetId;
                                 IDAL.DO.Point point1, point2 = new IDAL.DO.Point();
-                                IDAL.DO.Customer target = temp.GetCustomer(targetId);
+                                IDAL.DO.Customer target = accessIdal.GetCustomer(targetId);
                                 point1.latitude = target.location.latitude;
                                 point1.longitude = target.location.longitude;
 
@@ -427,14 +427,14 @@ namespace IBL
                 IDAL.DO.Point point1, point2, point3 = new IDAL.DO.Point();
                 IDAL.DO.Customer sender, target = new IDAL.DO.Customer();
                 //get the location of the parcel sender
-                sender = temp.GetCustomer(parcel.SenderId);
+                sender = accessIdal.GetCustomer(parcel.SenderId);
                 point1.latitude = sender.location.latitude;
                 point1.longitude = sender.location.longitude;
                 //get the location of our drone
                 point2.latitude = droneBo.location.latitude;
                 point2.longitude = droneBo.location.longitude;
                 //get the location of the parcel tgrget
-                target = temp.GetCustomer(parcel.TargetId);
+                target = accessIdal.GetCustomer(parcel.TargetId);
                 point3.latitude = target.location.latitude;
                 point3.longitude = target.location.longitude;
                 //check if drone have enough battery to get up to the sender and than go up to target with the parcel
