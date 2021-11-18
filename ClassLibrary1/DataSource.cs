@@ -47,8 +47,8 @@ namespace IDAL
                     station.id = rand.Next(10000, 99999);
                     station.name = "sta" + rand.Next(1, 99);
                     Point p = new Point();
-                    p.latitude = 31 + rand.Next(0, 1);
-                    p.longitude = 34 + rand.Next(0, 1);
+                    p.latitude = 31 + rand.NextDouble();
+                    p.longitude = 34 + rand.NextDouble();
                     station.Location = p;
                     station.ChargeSlots = rand.Next(5, 10);
                     stations.Add(station);
@@ -61,8 +61,8 @@ namespace IDAL
                     customer.name = "cust" + rand.Next(1, 99);
                     customer.phone = "05" + rand.Next(10000000, 99999999);
                     Point p = new Point();
-                    p.latitude = 31 + rand.Next(0, 1);
-                    p.longitude = 34 + rand.Next(0, 1);
+                    p.latitude = 31 + rand.NextDouble();
+                    p.longitude = 34 + rand.NextDouble();
                     customer.location = p;
                     customers.Add(customer);
                 }

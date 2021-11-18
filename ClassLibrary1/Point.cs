@@ -15,7 +15,7 @@ namespace IDAL
 
             public double distancePointToPoint(Point p)
             {
-               return Math.Sqrt((Math.Pow(p.latitude - latitude , 2) + Math.Pow(p.longitude - longitude, 2)));
+               return 1000 * Math.Sqrt((Math.Pow(p.latitude - latitude , 2) + Math.Pow(p.longitude - longitude, 2)));
             }
             public static string convertLongitudeToDegree(Point p)
             {

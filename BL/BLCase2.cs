@@ -170,7 +170,7 @@ namespace IBL
                     updateDataSourceFun.updateRelaseDroneFromCharge(ID, point, min);
 
                 }
-                else//הרחפן בכלל לא בתחזוקה
+                else
                     throw new BO.MyExeption_BO("The drone is not maintained at all");
             }
 
