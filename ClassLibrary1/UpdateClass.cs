@@ -102,21 +102,22 @@ namespace IDAL
             {
                 IDAL.DO.Drone drone = temp.GetDrone(ID);
                 double minus = 0;
+                List<double> configStatus = temp.PowerConsumptionBySkimmer();
                 double distance = point1.distancePointToPoint(point2);
                 if(drone.MaxWeight == DO.Enum.WeightCategories.Light)
                 {
                     //all 1500 meters is minus 1% battery
-                    minus = distance / 1500;
+                    minus = distance / configStatus[1];
                 }
                 if (drone.MaxWeight == DO.Enum.WeightCategories.Medium)
                 {
                     //all 1000 meters is minus 1% battery
-                    minus = distance / 1000;
+                    minus = distance / configStatus[2];
                 }
                 if (drone.MaxWeight == DO.Enum.WeightCategories.Heavy)
                 {
                     //all 850 meters is minus 1% battery
-                    minus = distance / 850;
+                    minus = distance / configStatus[3];
                 }
                 return minus;
             }

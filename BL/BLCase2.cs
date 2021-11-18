@@ -151,8 +151,9 @@ namespace IBL
                             droneBo = ListDroneToList[i];
                         }
                     }
+                    List<double> getConfig = accessIdal.PowerConsumptionBySkimmer();
                     //update drone in BL list
-                    droneBo.Battery = droneBo.Battery + (min);//every minute in charge is 1% more
+                    droneBo.Battery = droneBo.Battery + (min*getConfig[4]);//every minute in charge is 1% more
                     if (droneBo.Battery > 100)
                         droneBo.Battery = 100;
                     droneBo.status = BO.EnumBO.DroneStatus.Avilble;
@@ -206,7 +207,7 @@ namespace IBL
                                 flag = serchForRelevantParcel(parcel, drone, droneBo, droneId);
                                 if (!flag)
                                 {
-                                    parcelDO = dalO.GetParcel(parcel.Id);
+                                    parcelDO = accessIdal.GetParcel(parcel.Id);
                                     break;
                                 }
                             }
@@ -224,7 +225,7 @@ namespace IBL
                                     flag = serchForRelevantParcel(parcel2, drone, droneBo, droneId);
                                     if (!flag)
                                     {
-                                        parcelDO = dalO.GetParcel(parcel2.Id);
+                                        parcelDO = accessIdal.GetParcel(parcel2.Id);
                                         break;
                                     }
                                 }
@@ -243,7 +244,7 @@ namespace IBL
                                     flag = serchForRelevantParcel(parcel3, drone, droneBo, droneId);
                                     if (!flag)
                                     {
-                                        parcelDO = dalO.GetParcel(parcel3.Id);
+                                        parcelDO = accessIdal.GetParcel(parcel3.Id);
                                         break;
                                     }
                                 }
