@@ -10,6 +10,7 @@ namespace IBL
     {
         BO.DroneInPackage GetDroneInPackage(int id)
         {
+            
             BO.DroneInPackage droneInPackageBO = new BO.DroneInPackage();
 
             foreach (BO.DroneToList item in ListDroneToList)
@@ -275,7 +276,7 @@ namespace IBL
                 parcelBO.pickedUp = parcelDO.PickedUp;
                 parcelBO.requested = parcelDO.Requested;
                 parcelBO.scheduled = parcelDO.Scheduled;
-                parcelBO.requested = parcelDO.Requested;
+                parcelBO.delivered = parcelDO.Delivered;
                 
                 return parcelBO;
 

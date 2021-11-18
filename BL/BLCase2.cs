@@ -190,7 +190,7 @@ namespace IBL
                 //get the data of the specific drone at BO
                 BO.DroneToList droneBo = GetDroneBO(droneId);
                 IDAL.DO.Parcel parcelDO = new IDAL.DO.Parcel();
-               
+
 
                 bool flag = true;
                 //---------------first of all - check if the drone is avilble----------------------
@@ -294,7 +294,7 @@ namespace IBL
                             if (IDAL.DalObject.DataSource.parcels[i].PickedUp == def)
                             {
                                 BO.DroneToList droneToListeBo = new BO.DroneToList();
-                                for(int j=0;j<ListDroneToList.Count;j++)
+                                for (int j = 0; j < ListDroneToList.Count; j++)
                                 {
                                     if (ListDroneToList[j].uniqueID == ID)
                                     {
@@ -345,7 +345,7 @@ namespace IBL
             try
             {
                 IDAL.DO.Drone drone = temp.GetDrone(ID);
-                IDAL.DO.Parcel parcel = new IDAL.DO.Parcel(); 
+                IDAL.DO.Parcel parcel = new IDAL.DO.Parcel();
                 if (drone.droneStatus == IDAL.DO.Enum.DroneStatus.Delivery)
                 {
                     for (int i = 0; i < IDAL.DalObject.DataSource.parcels.Count; i++)
@@ -386,14 +386,18 @@ namespace IBL
                                     if (ListDroneToList[j].uniqueID == ID)
                                     {
                                         ListDroneToList[j] = droneToList_Bo;
-                                        parcel = temp.GetParcel(IDAL.DalObject.DataSource.parcels[i].Id);
                                     }
                                 }
-                                //update the new change at data source
+
+                                parcel = IDAL.DalObject.DataSource.parcels[i];
+                                parcel.Delivered = DateTime.Now;
+                                //IDAL.DalObject.DataSource.parcels[i] = parcel;
+
                                 drone.droneStatus = IDAL.DO.Enum.DroneStatus.Avilble;
                                 updateDataSourceFun.updateDrone(drone);
-                                parcel.Delivered = DateTime.Now;
+
                                 updateDataSourceFun.updateParcel(parcel);
+                                break;
                             }
                         }
                     }
