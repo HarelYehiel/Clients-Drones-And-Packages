@@ -39,7 +39,7 @@ namespace IBL
                     station.name = name;
                 if (numSlots != 0)
                     station.ChargeSlots = numSlots;
-                    updateDataSourceFun.updateStation(station);
+                updateDataSourceFun.updateStation(station);
             }
             catch (Exception e)
             {
@@ -182,48 +182,16 @@ namespace IBL
         }
         public void AssignPackageToDrone(int droneId)
         {
-            bool serchForRelevantParcel(IDAL.DO.Parcel parcel,IDAL.DO.Drone drone, BO.DroneToList droneBo)
-            {
-                IDAL.DO.Point point1, point2, point3 = new IDAL.DO.Point();
-                IDAL.DO.Customer sender, target = new IDAL.DO.Customer();
-                //get the location of the parcel sender
-                sender = temp.GetCustomer(parcel.SenderId);
-                point1.latitude = sender.location.latitude;
-                point1.longitude = sender.location.longitude;
-                //get the location of our drone
-                point2.latitude = droneBo.location.latitude;
-                point2.longitude = droneBo.location.longitude;
-                //get the location of the parcel tgrget
-                target = temp.GetCustomer(parcel.TargetId);
-                point3.latitude = target.location.latitude;
-                point3.longitude = target.location.longitude;
-                //check if drone have enough battery to get up to the sender and than go up to target with the parcel
-                if (droneBo.Battery - updateDataSourceFun.colculateBattery(point1, point2, droneId) - updateDataSourceFun.colculateBattery(point1, point3, droneId) > 0)
-                {
-                    //we found a parcel! change accordingly
-                    drone.droneStatus = IDAL.DO.Enum.DroneStatus.Delivery;
-                    droneBo.status = BO.EnumBO.DroneStatus.Delivery;
-                    IDAL.DO.Parcel par = parcel;
-                    par.Scheduled = DateTime.Now;
-                    //update to data source
-                    UpdateDroneData(droneId, drone.Model);
-                    updateDataSourceFun.updateParcel(par);
-                    return false;
-                }
-                return true;
-            }
+
             try
             {
                 //get the data of the specific drone from DAL(data source)
                 IDAL.DO.Drone drone = temp.GetDrone(droneId);
                 //get the data of the specific drone at BO
-                BO.DroneToList droneBo = new BO.DroneToList();
-                foreach(var droneToList_BL in ListDroneToList)
-                {
-                    if (droneToList_BL.uniqueID == droneId)
-                        droneBo = droneToList_BL;
-                }
+                BO.DroneToList droneBo = GetDroneBO(droneId);
+                IDAL.DO.Parcel parcelDO = new IDAL.DO.Parcel();
                
+
                 bool flag = true;
                 //---------------first of all - check if the drone is avilble----------------------
                 if (drone.droneStatus == IDAL.DO.Enum.DroneStatus.Avilble)
@@ -235,12 +203,17 @@ namespace IBL
                         {
                             if (parcel.weight <= drone.MaxWeight)
                             {
-                                flag = serchForRelevantParcel(parcel, drone, droneBo);
+                                flag = serchForRelevantParcel(parcel, drone, droneBo, droneId);
+                                if (!flag)
+                                {
+                                    parcelDO = dalO.GetParcel(parcel.Id);
+                                    break;
+                                }
                             }
                         }
                     }
                     if (flag)//if we not found no emergecncy parcel that the drone can take
-                        {
+                    {
                         foreach (var parcel2 in IDAL.DalObject.DataSource.parcels)
                         {
                             //-----------we always prefere to take care by priority order---------------
@@ -248,8 +221,12 @@ namespace IBL
                             {
                                 if (parcel2.weight <= drone.MaxWeight)
                                 {
-                                    flag = serchForRelevantParcel(parcel2, drone, droneBo);
-
+                                    flag = serchForRelevantParcel(parcel2, drone, droneBo, droneId);
+                                    if (!flag)
+                                    {
+                                        parcelDO = dalO.GetParcel(parcel2.Id);
+                                        break;
+                                    }
                                 }
                             }
                         }
@@ -263,15 +240,31 @@ namespace IBL
                             {
                                 if (parcel3.weight <= drone.MaxWeight)
                                 {
-                                    flag = serchForRelevantParcel(parcel3, drone, droneBo);
-
+                                    flag = serchForRelevantParcel(parcel3, drone, droneBo, droneId);
+                                    if (!flag)
+                                    {
+                                        parcelDO = dalO.GetParcel(parcel3.Id);
+                                        break;
+                                    }
                                 }
                             }
                         }
                     }
 
-                    if(flag)//after all the search, this drone cant take any parecl
-                        throw new BO.MyExeption_BO("This drone cant take any parecl");
+                    if (flag)//After all the search, this drone cant take any parecl
+                        throw new BO.MyExeption_BO("This drone can't take any parecl");
+                    else // We found a relavante parcel! update the data. 
+                    {
+                        parcelDO.Scheduled = DateTime.Now;
+                        parcelDO.DroneId = drone.Id;
+                        updateDataSourceFun.updateParcel(parcelDO);
+
+                        drone.droneStatus = IDAL.DO.Enum.DroneStatus.Delivery;
+                        updateDataSourceFun.updateDrone(drone);
+
+                        droneBo.status = BO.EnumBO.DroneStatus.Delivery;
+                        droneBo.packageDelivered = parcelDO.Id;
+                    }
                 }
                 else
                     throw new BO.MyExeption_BO("The drone is not available and can not be called anything else right now");
@@ -279,8 +272,7 @@ namespace IBL
 
             catch (Exception e)
             {
-
-                throw new BO.MyExeption_BO("Exception from function 'Assign_a_package_to_a_drone", e);
+                throw new BO.MyExeption_BO("Exception from function 'AssignPackageToDrone", e);
             }
 
         }
@@ -289,6 +281,7 @@ namespace IBL
             try
             {
                 IDAL.DO.Drone drone = temp.GetDrone(ID);
+                IDAL.DO.Parcel parcel = new IDAL.DO.Parcel();
                 if (drone.droneStatus == IDAL.DO.Enum.DroneStatus.Delivery)
                 {
                     for (int i = 0; i < IDAL.DalObject.DataSource.parcels.Count; i++)
@@ -301,10 +294,13 @@ namespace IBL
                             if (IDAL.DalObject.DataSource.parcels[i].PickedUp == def)
                             {
                                 BO.DroneToList droneToListeBo = new BO.DroneToList();
-                                foreach (var dro in ListDroneToList)
+                                for(int j=0;j<ListDroneToList.Count;j++)
                                 {
-                                    if (dro.uniqueID == ID)
-                                        droneToListeBo = dro;
+                                    if (ListDroneToList[j].uniqueID == ID)
+                                    {
+                                        droneToListeBo = ListDroneToList[j];
+                                        parcel = temp.GetParcel(IDAL.DalObject.DataSource.parcels[i].Id);
+                                    }
                                 }
                                 //find sender location
                                 senderId = IDAL.DalObject.DataSource.parcels[i].SenderId;
@@ -317,10 +313,12 @@ namespace IBL
                                 point2.latitude = droneToListeBo.location.latitude;
                                 point2.longitude = droneToListeBo.location.longitude;
                                 double minus = updateDataSourceFun.colculateBattery(point1, point2, ID);
-                                //update list drone in BL, no parametrs to update in IDAL
+                                //update list drone in BL, and time of picked up at parcel
                                 droneToListeBo.Battery -= minus;
                                 droneToListeBo.location.latitude = sender.location.latitude;
                                 droneToListeBo.location.longitude = sender.location.longitude;
+                                parcel.PickedUp = DateTime.Now;
+                                updateDataSourceFun.updateParcel(parcel);
 
                                 for (int j = 0; j < ListDroneToList.Count; j++)
                                 {
@@ -347,6 +345,7 @@ namespace IBL
             try
             {
                 IDAL.DO.Drone drone = temp.GetDrone(ID);
+                IDAL.DO.Parcel parcel = new IDAL.DO.Parcel(); 
                 if (drone.droneStatus == IDAL.DO.Enum.DroneStatus.Delivery)
                 {
                     for (int i = 0; i < IDAL.DalObject.DataSource.parcels.Count; i++)
@@ -385,11 +384,16 @@ namespace IBL
                                 for (int j = 0; j < ListDroneToList.Count; j++)
                                 {
                                     if (ListDroneToList[j].uniqueID == ID)
+                                    {
                                         ListDroneToList[j] = droneToList_Bo;
+                                        parcel = temp.GetParcel(IDAL.DalObject.DataSource.parcels[i].Id);
+                                    }
                                 }
-
+                                //update the new change at data source
                                 drone.droneStatus = IDAL.DO.Enum.DroneStatus.Avilble;
                                 updateDataSourceFun.updateDrone(drone);
+                                parcel.Delivered = DateTime.Now;
+                                updateDataSourceFun.updateParcel(parcel);
                             }
                         }
                     }
@@ -410,8 +414,46 @@ namespace IBL
             {
                 if (ListDroneToList[i].uniqueID == id) return ListDroneToList[i];
             }
-            throw new BO.MyExeption_BO(BO.MyExeption_BO.There_is_no_variable_with_this_ID);
+            throw new BO.MyExeption_BO("Exception from function 'GetDroneBO", BO.MyExeption_BO.There_is_no_variable_with_this_ID);
+        }
+        bool serchForRelevantParcel(IDAL.DO.Parcel parcel, IDAL.DO.Drone drone, BO.DroneToList droneBo, int droneId)
+        {
+            try
+            {
+                IDAL.DO.Point point1, point2, point3 = new IDAL.DO.Point();
+                IDAL.DO.Customer sender, target = new IDAL.DO.Customer();
+                //get the location of the parcel sender
+                sender = temp.GetCustomer(parcel.SenderId);
+                point1.latitude = sender.location.latitude;
+                point1.longitude = sender.location.longitude;
+                //get the location of our drone
+                point2.latitude = droneBo.location.latitude;
+                point2.longitude = droneBo.location.longitude;
+                //get the location of the parcel tgrget
+                target = temp.GetCustomer(parcel.TargetId);
+                point3.latitude = target.location.latitude;
+                point3.longitude = target.location.longitude;
+                //check if drone have enough battery to get up to the sender and than go up to target with the parcel
+                if (droneBo.Battery - updateDataSourceFun.colculateBattery(point1, point2, droneId) - updateDataSourceFun.colculateBattery(point1, point3, droneId) > 0)
+                {
+                    //we found a parcel! change accordingly
+                    drone.droneStatus = IDAL.DO.Enum.DroneStatus.Delivery;
+                    droneBo.status = BO.EnumBO.DroneStatus.Delivery;
+                    IDAL.DO.Parcel par = parcel;
+                    par.Scheduled = DateTime.Now;
+                    //update to data source
+                    UpdateDroneData(droneId, drone.Model);
+                    updateDataSourceFun.updateParcel(par);
+                    return false;
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                throw new BO.MyExeption_BO("Exception from function 'serchForRelevantParcel", e);
+            }
+
         }
     }
-    
+
 }

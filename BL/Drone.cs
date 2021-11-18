@@ -16,7 +16,7 @@ namespace IBL
             public EnumBO.WeightCategories weight { get; set; }
 
             public EnumBO.DroneStatus Status { get; set; }
-            public DateTime chargingTime { get; set; }
+            // public DateTime chargingTime { get; set; }
             public double Battery { get; set; }
             public ParcelByTransfer parcelByTransfer { get; set; }
 
@@ -24,8 +24,13 @@ namespace IBL
 
             public override string ToString()
             {
-                return $"Drone ID: {uniqueID}, model: {Model},  Status: {Enum.GetName(typeof(EnumBO.Situations), Status)}, battery = {Battery}\n" +
-                    $"weight: {Enum.GetName(typeof(EnumBO.WeightCategories),weight)}, location: {location.ToString()}, chargingTime: {chargingTime}";
+                string s = $"Drone ID: {uniqueID}, model: {Model},  Status: {Enum.GetName(typeof(EnumBO.DroneStatus), Status)}, battery = {Battery}\n" +
+                    $"weight: {Enum.GetName(typeof(EnumBO.WeightCategories),weight)}, location: {location.ToString()}";
+
+                if (Status == EnumBO.DroneStatus.Delivery)
+                    s += $", parcelId: {parcelByTransfer.uniqueID}";
+
+                return s;
             }            
         }        
 

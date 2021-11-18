@@ -25,8 +25,8 @@ namespace IBL
                 string s = $"Parcel ID: {uniqueID}\n sender: {customerInParcelSender.ToString()}\n" +
                     $" target: {customerInParcel_Target.ToString()}\n";
 
-                if (droneInParcel != null)
-                    s += $"drone: {droneInParcel.ToString()}\n";
+                if (scheduled != new DateTime())
+                    s += $"drone: {droneInParcel.uniqueID}\n";
                 else 
                     s += $"drone: NULL\n";
 

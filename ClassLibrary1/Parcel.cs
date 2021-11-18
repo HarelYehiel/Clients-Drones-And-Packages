@@ -15,7 +15,7 @@ namespace IDAL
             public int Id{get; set;}
             public int SenderId{ get; set;}
             public int TargetId{get; set;}
-            public int DroneId{get; set ; }
+            public int DroneId{get; set; }
             public Enum.Priorities priority { get; set; }
             public Enum.WeightCategories weight { get; set; }
             public DateTime Requested { get; set; }

@@ -74,10 +74,10 @@ namespace IDAL
 
             // Return the parcel with parcelId
             {
-                foreach (Parcel parcel in DataSource.parcels)
+                for (int i = 0; i < DataSource.parcels.Count; i++)
                 {
-                    if (parcel.Id == ParcelId)
-                        return parcel;
+                    if (DataSource.parcels[i].Id == ParcelId)
+                        return DataSource.parcels[i];
 
                 }
                 throw new myExceptionDO("Exception from function GetParcel", myExceptionDO.There_is_no_variable_with_this_ID);

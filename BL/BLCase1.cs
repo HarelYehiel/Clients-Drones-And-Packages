@@ -42,6 +42,7 @@ namespace IBL
             locationBO.latitude = sta.Location.latitude;
             locationBO.longitude = sta.Location.longitude;
             drone.location = locationBO;
+            drone.packageDelivered = 0;
             
             drone.status = BO.EnumBO.DroneStatus.Baintenance;
             var rand = new Random();

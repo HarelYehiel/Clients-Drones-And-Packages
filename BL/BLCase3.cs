@@ -150,14 +150,18 @@ namespace IBL
                         parcelByTransfer.uniqueID = item.Id;
                         parcelByTransfer.priority = (BO.EnumBO.Priorities)item.priority;
                         parcelByTransfer.weight = (BO.EnumBO.WeightCategories)item.weight;
-
+                        
                         IDAL.DO.Customer customer_DO = dalO.GetCustomer(item.SenderId);
-                        parcelByTransfer.collectionLocation.latitude = customer_DO.location.latitude;
-                        parcelByTransfer.collectionLocation.longitude = customer_DO.location.longitude;
+                        BO.Location l = new BO.Location();
+                        l.latitude = customer_DO.location.latitude;
+                        l.longitude = customer_DO.location.longitude;
+                        parcelByTransfer.collectionLocation = l;
 
                         customer_DO = dalO.GetCustomer(item.TargetId);
-                        parcelByTransfer.destinationLocation.latitude = customer_DO.location.latitude;
-                        parcelByTransfer.destinationLocation.longitude = customer_DO.location.longitude;
+                        l = new BO.Location();
+                        l.latitude = customer_DO.location.latitude;
+                        l.longitude = customer_DO.location.longitude;
+                        parcelByTransfer.destinationLocation = l;
 
                         parcelByTransfer.theSander = GetCustomerInParcel(item.SenderId);
                         parcelByTransfer.theTarget = GetCustomerInParcel(item.TargetId);
@@ -198,6 +202,7 @@ namespace IBL
                     droneBO.Status = item.status;
                     droneBO.weight = item.weight;
                     droneBO.location = item.location;
+
 
                     if (droneBO.Status == BO.EnumBO.DroneStatus.Delivery)
                         droneBO.parcelByTransfer = GetParcelByTransfer(item.packageDelivered);
@@ -271,7 +276,7 @@ namespace IBL
                 parcelBO.requested = parcelDO.Requested;
                 parcelBO.scheduled = parcelDO.Scheduled;
                 parcelBO.requested = parcelDO.Requested;
-
+                
                 return parcelBO;
 
             }
