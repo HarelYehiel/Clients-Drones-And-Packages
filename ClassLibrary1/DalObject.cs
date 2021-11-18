@@ -82,6 +82,41 @@ namespace IDAL
                 }
                 throw new myExceptionDO("Exception from function GetParcel", myExceptionDO.There_is_no_variable_with_this_ID);
             }
+            public void DelParcel(int ID) 
+            {
+            foreach(var par in DataSource.parcels)
+                {
+                    if (par.Id == ID)
+                        DataSource.parcels.Remove(par);
+                }
+            }
+
+            public void DelStation(int ID)
+            {
+            foreach(var station in DataSource.stations)
+                {
+                    if (station.id == ID)
+                        DataSource.stations.Remove(station);
+                }
+            }
+
+            public void DelCustomer(int ID) 
+            {
+            foreach(var customer in DataSource.customers)
+                {
+                    if (customer.Id == ID)
+                        DataSource.customers.Remove(customer);
+                }
+            }
+
+            public void DelDrone(int ID)
+            {
+            foreach(var drone in DataSource.drones)
+                {
+                    if (drone.Id == ID)
+                        DataSource.drones.Remove(drone);
+                }
+            }
             public void InputTheStationToArray(Station station)
             {
                 DataSource.stations.Add(station);
