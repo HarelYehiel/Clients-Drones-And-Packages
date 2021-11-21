@@ -38,7 +38,14 @@ namespace IBL
                 if (name != "")
                     station.name = name;
                 if (numSlots != 0)
-                    station.ChargeSlots = numSlots;
+                {
+                    BO.station tempStation = new BO.station();      
+                    tempStation = BaseStationView(ID);
+                    if (numSlots < tempStation.dronesInCharging.Count)
+                        throw new BO.MyExeption_BO("There are more drones in the station than the number you have chosen");
+                    else
+                      station.ChargeSlots = numSlots;
+                }
                 updateDataSourceFun.updateStation(station);
             }
             catch (Exception e)
@@ -111,9 +118,12 @@ namespace IBL
                         IDAL.DO.Station sta = new IDAL.DO.Station();
                         foreach (var station in IDAL.DalObject.DataSource.stations)
                         {
-                            if (station.Location.latitude == point2.latitude && station.Location.longitude == point2.longitude)
+                            if (station.Location.latitude == point2.latitude && station.Location.longitude == point2.longitude )
                             {
-                                sta = station;
+                                if (station.ChargeSlots > 0)
+                                    sta = station;
+                                else
+                                    throw new BO.MyExeption_BO("There is no free slot for this drone!");
                             }
                         }
                         sta.ChargeSlots--;
@@ -169,6 +179,19 @@ namespace IBL
                     point.latitude = droneBo.location.latitude;
                     point.longitude = droneBo.location.longitude;
                     updateDataSourceFun.updateRelaseDroneFromCharge(ID, point, min);
+
+                    IDAL.DO.Station sta = new IDAL.DO.Station();
+                    foreach (var station in IDAL.DalObject.DataSource.stations)
+                    {
+                        if (station.Location.latitude == point.latitude && station.Location.longitude == point.longitude)
+                        {
+                            sta = station;
+                        }
+                    }
+                    sta.ChargeSlots++;
+
+                    //update all the changes data at the stations list
+                    updateDataSourceFun.updateStation(sta);
 
                 }
                 else
