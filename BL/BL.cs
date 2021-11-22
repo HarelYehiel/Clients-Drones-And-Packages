@@ -16,8 +16,8 @@ namespace IBL
         IDAL.DO.IDal accessIdal = new IDAL.DalObject.DalObject();
         List<DroneToList> ListDroneToList = new List<DroneToList>();
 
-        public void InitializeAndUpdateTheListsInIBL() 
-         // Do initialize if data sourse and update the list listDrons of IBL.
+        public void InitializeAndUpdateTheListsInIBL()
+        // Do initialize if data sourse and update the list listDrons of IBL.
         {
             IDAL.DalObject.DataSource.Initialize();
             BO.DroneToList droneToListBO;
@@ -34,19 +34,33 @@ namespace IBL
                 droneToListBO.status = (BO.EnumBO.DroneStatus)item.droneStatus;
 
                 BO.Location l = new BO.Location();
-                l.latitude = 31 + (double)rand.Next(0, 1);
-                l.longitude = 34 + (double) rand.Next(0, 1);
+                l.latitude = 31 + rand.NextDouble();
+                l.longitude = 34 + (double)rand.NextDouble();
                 droneToListBO.location = l;
                 droneToListBO.packageDelivered = 0;
 
                 ListDroneToList.Add(droneToListBO);
 
             }
+
+
+            foreach (var item in ListDroneToList)
+            {
+                try
+                {
+                    AssignPackageToDrone(item.uniqueID);
+
+                }
+                catch (Exception e)
+                {
+                    // don't do nothing, just contiune to next. 
+                }
+            }
         }
         public bool IsDigitsOnly(string str)
         {
             if (str == "") return false;
-                
+
             foreach (char c in str)
             {
                 if (c < '0' || c > '9')

@@ -18,9 +18,10 @@ namespace IDAL
             public static List<Customer> customers = new List<Customer>();
             public static List<Parcel> parcels = new List<Parcel>();
             //public interface IEnumerable { IEnumerator<DataSource> GetEnumerator(); }
-
+            static  DalObject dalO{ get; set; }
             internal struct Config
             {
+                
                 public static double vacant { get; set; }
                 public static double lightWeight { get; set; }
                 public static double mediumWeight { get; set; }
@@ -35,7 +36,7 @@ namespace IDAL
                 Config.mediumWeight = 1000;
                 Config.heavyWeight = 850;
                 Config.droneLoadingRate = 1/60;//all minute is charge the drone at 1%
-                for (int i = 0; i < 5; i++)//crate 5 drones withe random data
+                for (int i = 0; i < 5; i++)//create 5 drones withe random data
                 {
                     Drone drone = new Drone();
                     var rand = new Random();
@@ -46,7 +47,7 @@ namespace IDAL
                     drones.Add(drone);
                     
                 }
-                for (int i = 0; i < 5; i++)//crate 5 staitons with random data
+                for (int i = 0; i < 5; i++)//create 5 staitons with random data
                 {
                     Station station = new Station();
                     var rand = new Random();
@@ -59,7 +60,7 @@ namespace IDAL
                     station.ChargeSlots = rand.Next(5, 10);
                     stations.Add(station);
                 }
-                for (int i = 0; i < 10; i++)//crate new 10 random coustomers
+                for (int i = 0; i < 10; i++)//create new 10 random coustomers
                 {
                     Customer customer = new Customer();
                     var rand = new Random();
@@ -72,7 +73,7 @@ namespace IDAL
                     customer.location = p;
                     customers.Add(customer);
                 }
-                for (int i = 0; i < 10; i++)//crate new 10  parcels with random data
+                for (int i = 0; i < 10; i++)//create new 10  parcels with random data
                 {
                     Parcel parcel = new Parcel();
                     var rand = new Random();

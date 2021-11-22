@@ -23,7 +23,7 @@ namespace IBL
             catch (Exception e)
             {
 
-                throw new BO.MyExeption_BO("Exception from function 'Update_drone_data", e);
+                throw new BO.MyExeption_BO("Exception from function 'UpdateDroneData", e);
             }
 
         }
@@ -38,7 +38,14 @@ namespace IBL
                 if (name != "")
                     station.name = name;
                 if (numSlots != 0)
-                    station.ChargeSlots = numSlots;
+                {
+                    BO.station tempStation = new BO.station();
+                    tempStation = BaseStationView(ID);
+                    if (numSlots < tempStation.dronesInCharging.Count)
+                        throw new BO.MyExeption_BO("There are more drones in the station than the number you have chosen");
+                    else
+                        station.ChargeSlots = numSlots;
+                }
                 updateDataSourceFun.updateStation(station);
             }
             catch (Exception e)
@@ -62,7 +69,7 @@ namespace IBL
             catch (Exception e)
             {
 
-                throw new BO.MyExeption_BO("Exception from function 'Update_customer_data", e);
+                throw new BO.MyExeption_BO("Exception from function 'UpdateCustomerData", e);
             }
 
         }
@@ -113,7 +120,10 @@ namespace IBL
                         {
                             if (station.Location.latitude == point2.latitude && station.Location.longitude == point2.longitude)
                             {
-                                sta = station;
+                                if (station.ChargeSlots > 0)
+                                    sta = station;
+                                else
+                                    throw new BO.MyExeption_BO("There is no free slot for this drone!");
                             }
                         }
                         sta.ChargeSlots--;
@@ -131,7 +141,7 @@ namespace IBL
             catch (Exception e)
             {
 
-                throw new BO.MyExeption_BO("Exception from function 'Sending_a_drone_for_charging", e);
+                throw new BO.MyExeption_BO("Exception from function 'SendingDroneToCharging", e);
             }
 
         }
@@ -170,6 +180,18 @@ namespace IBL
                     point.longitude = droneBo.location.longitude;
                     updateDataSourceFun.updateRelaseDroneFromCharge(ID, point, min);
 
+                    //update all the changes data at the stations list
+                    IDAL.DO.Station sta = new IDAL.DO.Station();
+                    foreach (var station in IDAL.DalObject.DataSource.stations)
+                    {
+                        if (station.Location.latitude == point.latitude && station.Location.longitude == point.longitude)
+                        {
+                            sta = station;
+                        }
+                    }
+                    sta.ChargeSlots++;
+
+                    updateDataSourceFun.updateStation(sta);
                 }
                 else
                     throw new BO.MyExeption_BO("The drone is not maintained at all");
@@ -177,7 +199,7 @@ namespace IBL
 
             catch (Exception e)
             {
-                throw new BO.MyExeption_BO("Exception from function 'Release_drone_from_charging", e);
+                throw new BO.MyExeption_BO("Exception from function 'ReleaseDroneFromCharging", e);
             }
 
         }
@@ -191,6 +213,7 @@ namespace IBL
                 //get the data of the specific drone at BO
                 BO.DroneToList droneBo = GetDroneBO(droneId);
                 IDAL.DO.Parcel parcelDO = new IDAL.DO.Parcel();
+                DateTime def = new DateTime();
 
 
                 bool flag = true;
@@ -200,7 +223,7 @@ namespace IBL
                     foreach (var parcel in IDAL.DalObject.DataSource.parcels)
                     {
                         //-----------we always prefere to take care by priority order---------------
-                        if (parcel.priority == IDAL.DO.Enum.Priorities.Emergency)
+                        if (parcel.Scheduled == def && parcel.priority == IDAL.DO.Enum.Priorities.Emergency)
                         {
                             if (parcel.weight <= drone.MaxWeight)
                             {
@@ -218,7 +241,7 @@ namespace IBL
                         foreach (var parcel2 in IDAL.DalObject.DataSource.parcels)
                         {
                             //-----------we always prefere to take care by priority order---------------
-                            if (parcel2.priority == IDAL.DO.Enum.Priorities.Fast)
+                            if (parcel2.Scheduled == def && parcel2.priority == IDAL.DO.Enum.Priorities.Fast)
                             {
                                 if (parcel2.weight <= drone.MaxWeight)
                                 {
@@ -237,7 +260,7 @@ namespace IBL
                         foreach (var parcel3 in IDAL.DalObject.DataSource.parcels)
                         {
                             //-----------we always prefere to take care by priority order---------------
-                            if (parcel3.priority == IDAL.DO.Enum.Priorities.Fast)
+                            if (parcel3.Scheduled == def && parcel3.priority == IDAL.DO.Enum.Priorities.Fast)
                             {
                                 if (parcel3.weight <= drone.MaxWeight)
                                 {
@@ -273,7 +296,9 @@ namespace IBL
 
             catch (Exception e)
             {
+                //throw new BO.MyExeption_BO("Exception from function 'AssignPackageToDrone'", e);
                 throw new BO.MyExeption_BO("Exception from function 'AssignPackageToDrone", e);
+
             }
 
         }
@@ -337,7 +362,7 @@ namespace IBL
             catch (Exception e)
             {
 
-                throw new BO.MyExeption_BO("Exception from function 'Release_drone_from_charging", e);
+                throw new BO.MyExeption_BO("Exception from function 'CollectionOfPackageByDrone", e);
             }
 
         }
@@ -409,7 +434,7 @@ namespace IBL
             catch (Exception e)
             {
 
-                throw new BO.MyExeption_BO("Exception from function 'Delivery_of_a_package_by_drone", e);
+                throw new BO.MyExeption_BO("Exception from function 'DeliveryOfPackageByDrone", e);
             }
 
         }

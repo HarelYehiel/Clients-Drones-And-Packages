@@ -14,9 +14,11 @@ namespace IBL
     {
         int FunParcelSituation(IDAL.DO.Parcel p)
         {
-            if (p.Delivered != new DateTime()) return 3;
-            else if (p.PickedUp != new DateTime()) return 2;
-            else if (p.Scheduled != new DateTime()) return 1;
+            DateTime def = new DateTime();
+
+            if (p.Delivered != def) return 3;
+            else if (p.PickedUp != def) return 2;
+            else if (p.Scheduled != def) return 1;
             return 0;
 
         }
@@ -70,6 +72,7 @@ namespace IBL
             if (DataSource.customers.Count == 0)
                 throw new MyExeption_BO("Exception from function 'Displays_a_list_of_customers'", MyExeption_BO.An_empty_list);
 
+            DateTime def = new DateTime();
             List<CustomerToList> CustomersToListBO = new List<CustomerToList>();
 
             foreach (IDAL.DO.Customer item in DataSource.customers)
@@ -84,16 +87,16 @@ namespace IBL
                 // Run on the list parcel and find the parcels the related him (the customer).
                 {
                     // packages sent and delivered
-                    if (parcelFromTheList.SenderId == item.Id && parcelFromTheList.Delivered != new DateTime())
+                    if (parcelFromTheList.SenderId == item.Id && parcelFromTheList.Delivered != def)
                         customerToList.packagesSentAndDelivered++;
                     // packages sent and not delivered
-                    if (parcelFromTheList.SenderId == item.Id && parcelFromTheList.Scheduled != new DateTime() && parcelFromTheList.Delivered == new DateTime())
+                    if (parcelFromTheList.SenderId == item.Id && parcelFromTheList.PickedUp != def && parcelFromTheList.Delivered == def)
                         customerToList.packagesSentAndNotDelivered++;
                     // packages he received
-                    if (parcelFromTheList.TargetId == item.Id && parcelFromTheList.Delivered != new DateTime())
+                    if (parcelFromTheList.TargetId == item.Id && parcelFromTheList.Delivered != def)
                         customerToList.packagesHeReceived++;
                     // packages on the way to the customer
-                    if (parcelFromTheList.TargetId == item.Id && parcelFromTheList.Scheduled != new DateTime() && parcelFromTheList.Delivered == new DateTime())
+                    if (parcelFromTheList.TargetId == item.Id && parcelFromTheList.PickedUp != def && parcelFromTheList.Delivered == def)
                         customerToList.packagesOnTheWayToTheCustomer++;
                 }
 
