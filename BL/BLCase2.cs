@@ -118,7 +118,7 @@ namespace IBL
                         IDAL.DO.Station sta = new IDAL.DO.Station();
                         foreach (var station in IDAL.DalObject.DataSource.stations)
                         {
-                            if (station.Location.latitude == point2.latitude && station.Location.longitude == point2.longitude)
+                            if (station.Location.latitude == point2.latitude && station.Location.longitude == point2.longitude )
                             {
                                 if (station.ChargeSlots > 0)
                                     sta = station;
@@ -296,9 +296,7 @@ namespace IBL
 
             catch (Exception e)
             {
-                //throw new BO.MyExeption_BO("Exception from function 'AssignPackageToDrone'", e);
-                throw new BO.MyExeption_BO("Exception from function 'AssignPackageToDrone", e);
-
+                throw new BO.MyExeption_BO("Exception from function 'AssignPackageToDrone'", e);
             }
 
         }
