@@ -101,13 +101,13 @@ namespace ConsoleUI
                                             Console.WriteLine("enter drone ID:");
                                             int drId = Convert.ToInt32(Console.ReadLine());
                                             Console.WriteLine("witch station do you want?\nchoose ID from the list of available charging stations:");
-                                            List<IDAL.DO.Station> newList = temp.AvailableChargingStations();//print all the available charging stations
+                                           // List<IDAL.DO.Station> newList = temp.AvailableChargingStations();//print all the available charging stations
                                             int statId = Convert.ToInt32(Console.ReadLine());
 
-                                            foreach (IDAL.DO.Station station1 in newList)
-                                            {
-                                                Console.WriteLine(station1.ToString());
-                                            }
+                                            //foreach (IDAL.DO.Station station1 in newList)
+                                            //{
+                                            //    Console.WriteLine(station1.ToString());
+                                            //}
                                             temp.DroneToCharge(drId,statId);
                                             break;
                                     }
@@ -172,7 +172,7 @@ namespace ConsoleUI
                             switch (ch4)
                             {
                                 case 1:
-                                    List<IDAL.DO.Station> tempSta = temp.Displays_list_of_stations();
+                                   // List<IDAL.DO.Station> tempSta = temp.Displays_list_of_stations();
                                     foreach (Station station in DataSource.stations)
                                     {
                                         Console.WriteLine(station.ToString());
@@ -180,7 +180,7 @@ namespace ConsoleUI
                                     break;
 
                                 case 2:
-                                    List<IDAL.DO.Drone> tempDro = temp.DisplaysListOfDrones();
+                                    //List<IDAL.DO.Drone> tempDro = temp.DisplaysListOfDrones();
                                     foreach (Drone drone in DataSource.drones)
                                     {
                                         Console.WriteLine(drone.ToString());
@@ -188,7 +188,7 @@ namespace ConsoleUI
                                     break;
 
                                 case 3:
-                                    List<IDAL.DO.Customer> tempCus = temp.DisplaysListOfCustmers();
+                                   // List<IDAL.DO.Customer> tempCus = temp.DisplaysListOfCustmers();
                                     foreach (Customer customer in DataSource.customers)
                                     {
                                         Console.WriteLine(customer.ToString());
@@ -197,7 +197,7 @@ namespace ConsoleUI
                                     
 
                                 case 4:
-                                    List<IDAL.DO.Parcel> tempPar = temp.DisplaysListOfParcels();
+                                   // List<IDAL.DO.Parcel> tempPar = temp.DisplaysListOfParcels();
                                     foreach (Parcel parcel in DataSource.parcels)
                                     {
                                         Console.WriteLine(parcel.ToString());
@@ -205,20 +205,20 @@ namespace ConsoleUI
                                     break;
 
                                 case 5:
-                                    List<Parcel> ParcelWithoutDrone = temp.DisplaysParcelsDontHaveDrone();
-                                    foreach(Parcel parcel in ParcelWithoutDrone)
-                                    {
-                                        Console.WriteLine(parcel.ToString());
-                                    }
+                                   // List<Parcel> ParcelWithoutDrone = temp.DisplaysParcelsDontHaveDrone();
+                                    //foreach(Parcel parcel in ParcelWithoutDrone)
+                                    //{
+                                    //    Console.WriteLine(parcel.ToString());
+                                    //}
                                     break;
 
                                 case 6:
-                                    List<Station> AvailableCH = temp.AvailableChargingStations();
-                                    foreach(Station station in AvailableCH)
-                                    {
-                                        Console.WriteLine(station.ToString());
+                                    //List<Station> AvailableCH = temp.AvailableChargingStations();
+                                    //foreach(Station station in AvailableCH)
+                                    //{
+                                    //    Console.WriteLine(station.ToString());
 
-                                    }
+                                    //}
                                     break;
                             }
                             break;

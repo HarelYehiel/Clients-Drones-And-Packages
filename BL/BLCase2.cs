@@ -24,6 +24,14 @@ namespace IBL
                 BO.DroneToList droneToList_BO;
                 droneToList_BO = GetDroneBO(ID);
                 droneToList_BO.Model = newModel;
+                for (int i = 0; i < ListDroneToList.Count; i++)
+                {
+                    if (ListDroneToList[i].uniqueID == ID)
+                    {
+                        ListDroneToList[i] = droneToList_BO;
+                    }
+                }
+
             }
             catch (Exception e)
             {
@@ -83,18 +91,11 @@ namespace IBL
             try
             {
                 IDAL.DO.Drone drone = accessIdal.GetDrone(ID);
-                BO.DroneToList droneToList_Bo = new BO.DroneToList();
+                BO.DroneToList droneToList_Bo = GetDroneBO(ID);
                 //-----check drone status, only if he is free check the next condition-----
                 if (drone.droneStatus == IDAL.DO.Enum.DroneStatus.Avilble)
                 {
-                    //------gett data of this dron from BL drone list-----------
-                    for (int i = 0; i < ListDroneToList.Count; i++)
-                    {
-                        if (ListDroneToList[i].uniqueID == ID)
-                        {
-                            droneToList_Bo = ListDroneToList[i];
-                        }
-                    }
+                 
                     ///----------find the most close station---------
                     IDAL.DO.Point point1, point2 = new IDAL.DO.Point();
                     point1.latitude = droneToList_Bo.location.latitude;
@@ -117,7 +118,7 @@ namespace IBL
                         droneToList_Bo.location.latitude = point2.latitude;
                         droneToList_Bo.location.longitude = point2.longitude;
                         droneToList_Bo.status = BO.EnumBO.DroneStatus.Baintenance;
-
+    
 
                         //update station data
                         IDAL.DO.Station sta = new IDAL.DO.Station();
@@ -220,10 +221,14 @@ namespace IBL
                 if (drone.droneStatus == IDAL.DO.Enum.DroneStatus.Avilble)
                 {  
                     //-----------we always prefere to take care by priority order---------------
-                    List<IDAL.DO.Parcel> tempEmergency = IDAL.DalObject.DataSource.parcels.FindAll(findEmergency);
-                    foreach (var parcel in tempEmergency)
+                    List<IDAL.DO.Parcel> newList = IDAL.DalObject.DataSource.parcels.FindAll(findEmergency);
+                    newList.AddRange(IDAL.DalObject.DataSource.parcels.FindAll(findFast));
+                    newList.AddRange(IDAL.DalObject.DataSource.parcels.FindAll(findNormal));
+                  
+                    foreach (var parcel in newList)
                         if (parcel.weight <= drone.MaxWeight)
                         {
+                            //newList now have all the aviable and unScheluled drones by priority order 
                             flag = serchForRelevantParcel(parcel, drone, droneBo, droneId);
                             if (!flag)
                             {
@@ -231,47 +236,6 @@ namespace IBL
                                 break;
                             }
                         }                        
-                    
-                    if (flag)//if we not found no emergecncy parcel that the drone can take
-                    {
-
-                        //-----------we always prefere to take care by priority order---------------
-                        List<IDAL.DO.Parcel> tempFast = IDAL.DalObject.DataSource.parcels.FindAll(findFast);
-                        {
-                            foreach (var parcel2 in tempFast)
-                            {
-                                if (parcel2.weight <= drone.MaxWeight)
-                                {
-                                    flag = serchForRelevantParcel(parcel2, drone, droneBo, droneId);
-                                    if (!flag)
-                                    {
-                                        parcelDO = accessIdal.GetParcel(parcel2.Id);
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    if (flag)//if we not found no emergecncy parcel that the drone can take
-                    {
-                        //-----------we always prefere to take care by priority order---------------
-                        List<IDAL.DO.Parcel> tempNormal = IDAL.DalObject.DataSource.parcels.FindAll(findNormal);
-                        {
-                            foreach (var parcel3 in tempNormal)
-                            {
-                                if (parcel3.weight <= drone.MaxWeight)
-                                {
-                                    flag = serchForRelevantParcel(parcel3, drone, droneBo, droneId);
-                                    if (!flag)
-                                    {
-                                        parcelDO = accessIdal.GetParcel(parcel3.Id);
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
                     if (flag)//After all the search, this drone cant take any parecl
                         throw new BO.MyExeption_BO("This drone can't take any parecl");
                     else // We found a relavante parcel! update the data. 
