@@ -49,7 +49,7 @@ namespace ConsoleUI
             int parPriority = Convert.ToInt32(Console.ReadLine());
             par.priority = (IDAL.DO.Enum.Priorities)parPriority;
             par.Requested = DateTime.Now;//the requestsd time is now
-            par.Scheduled = par.Requested.AddMinutes(5);//the parcel find drone at 5 minutes
+            //par.Scheduled = par.Requested.AddMinutes(5);//the parcel find drone at 5 minutes
             temp.InputTheParcelToArray(par);
         }
 

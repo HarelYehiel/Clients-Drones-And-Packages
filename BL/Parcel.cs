@@ -16,10 +16,10 @@ namespace IBL
             public DroneInPackage droneInParcel { get; set; }
             public EnumBO.Priorities priority { get; set; }
             public EnumBO.WeightCategories weight { get; set; }
-            public DateTime requested { get; set; }
-            public DateTime scheduled { get; set; }
-            public DateTime pickedUp { get; set; }
-            public DateTime delivered { get; set; }
+            public DateTime? requested { get; set; }
+            public DateTime? scheduled { get; set; }
+            public DateTime? pickedUp { get; set; }
+            public DateTime? delivered { get; set; }
             public override string ToString()
             {
                 string s = $"Parcel ID: {uniqueID}\n sender: {customerInParcelSender.ToString()}\n" +

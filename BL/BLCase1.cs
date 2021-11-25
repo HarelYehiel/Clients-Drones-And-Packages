@@ -8,6 +8,8 @@ namespace IBL
 {
     public partial class BL : IBL
     {
+        public delegate DroneToList Converter<in TInput, out DroneToList>(TInput input);
+    
         public void AddingBaseStation(int ID,string name,double Latitude,double Longitude, int numSlots)
         {
           /*  BO.station station = new BO.station();

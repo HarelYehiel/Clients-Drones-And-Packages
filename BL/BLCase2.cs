@@ -9,6 +9,11 @@ namespace IBL
     public partial class BL : IBL
     {
         IDAL.DalObject.UpdateClass updateDataSourceFun = new IDAL.DalObject.UpdateClass();
+        public delegate bool Predicate<in T>(T obj);
+        public static bool findEmergency(IDAL.DO.Parcel parcel) { return (parcel.Scheduled == null && parcel.priority == IDAL.DO.Enum.Priorities.Emergency); }
+        public static bool findFast(IDAL.DO.Parcel parcel) { return (parcel.Scheduled == null && parcel.priority == IDAL.DO.Enum.Priorities.Fast); }
+        public static bool findNormal(IDAL.DO.Parcel parcel) { return (parcel.Scheduled == null && parcel.priority == IDAL.DO.Enum.Priorities.Normal); }
+
         public void UpdateDroneData(int ID, string newModel)
         {
             try
@@ -153,20 +158,15 @@ namespace IBL
                 if (drone.droneStatus == IDAL.DO.Enum.DroneStatus.Baintenance)
                 {
                     //------gett data of this dron from BL drone list-----------
-                    BO.DroneToList droneBo = new BO.DroneToList();
-                    for (int i = 0; i < ListDroneToList.Count; i++)
-                    {
-                        if (ListDroneToList[i].uniqueID == ID)
-                        {
-                            droneBo = ListDroneToList[i];
-                        }
-                    }
+                    BO.DroneToList droneBo = GetDroneBO(ID);// new BO.DroneToList();
                     List<double> getConfig = accessIdal.PowerConsumptionBySkimmer();
                     //update drone in BL list
                     droneBo.Battery = droneBo.Battery + (min*getConfig[4]);//every minute in charge is 1% more
                     if (droneBo.Battery > 100)
                         droneBo.Battery = 100;
                     droneBo.status = BO.EnumBO.DroneStatus.Avilble;
+
+                    //update list - Drone to list
                     for (int i = 0; i < ListDroneToList.Count; i++)
                     {
                         if (ListDroneToList[i].uniqueID == ID)
@@ -213,35 +213,32 @@ namespace IBL
                 //get the data of the specific drone at BO
                 BO.DroneToList droneBo = GetDroneBO(droneId);
                 IDAL.DO.Parcel parcelDO = new IDAL.DO.Parcel();
-                DateTime def = new DateTime();
 
 
                 bool flag = true;
                 //---------------first of all - check if the drone is avilble----------------------
                 if (drone.droneStatus == IDAL.DO.Enum.DroneStatus.Avilble)
-                {
-                    foreach (var parcel in IDAL.DalObject.DataSource.parcels)
-                    {
-                        //-----------we always prefere to take care by priority order---------------
-                        if (parcel.Scheduled == def && parcel.priority == IDAL.DO.Enum.Priorities.Emergency)
+                {  
+                    //-----------we always prefere to take care by priority order---------------
+                    List<IDAL.DO.Parcel> tempEmergency = IDAL.DalObject.DataSource.parcels.FindAll(findEmergency);
+                    foreach (var parcel in tempEmergency)
+                        if (parcel.weight <= drone.MaxWeight)
                         {
-                            if (parcel.weight <= drone.MaxWeight)
+                            flag = serchForRelevantParcel(parcel, drone, droneBo, droneId);
+                            if (!flag)
                             {
-                                flag = serchForRelevantParcel(parcel, drone, droneBo, droneId);
-                                if (!flag)
-                                {
-                                    parcelDO = accessIdal.GetParcel(parcel.Id);
-                                    break;
-                                }
+                                parcelDO = accessIdal.GetParcel(parcel.Id);
+                                break;
                             }
-                        }
-                    }
+                        }                        
+                    
                     if (flag)//if we not found no emergecncy parcel that the drone can take
                     {
-                        foreach (var parcel2 in IDAL.DalObject.DataSource.parcels)
+
+                        //-----------we always prefere to take care by priority order---------------
+                        List<IDAL.DO.Parcel> tempFast = IDAL.DalObject.DataSource.parcels.FindAll(findFast);
                         {
-                            //-----------we always prefere to take care by priority order---------------
-                            if (parcel2.Scheduled == def && parcel2.priority == IDAL.DO.Enum.Priorities.Fast)
+                            foreach (var parcel2 in tempFast)
                             {
                                 if (parcel2.weight <= drone.MaxWeight)
                                 {
@@ -257,10 +254,10 @@ namespace IBL
                     }
                     if (flag)//if we not found no emergecncy parcel that the drone can take
                     {
-                        foreach (var parcel3 in IDAL.DalObject.DataSource.parcels)
+                        //-----------we always prefere to take care by priority order---------------
+                        List<IDAL.DO.Parcel> tempNormal = IDAL.DalObject.DataSource.parcels.FindAll(findNormal);
                         {
-                            //-----------we always prefere to take care by priority order---------------
-                            if (parcel3.Scheduled == def && parcel3.priority == IDAL.DO.Enum.Priorities.Fast)
+                            foreach (var parcel3 in tempNormal)
                             {
                                 if (parcel3.weight <= drone.MaxWeight)
                                 {
@@ -313,19 +310,12 @@ namespace IBL
                         if (IDAL.DalObject.DataSource.parcels[i].DroneId == ID)
                         {
                             int senderId;
-                            DateTime def = new DateTime();
                             //if the parcel not picked up yet the PickUp time will be defult
-                            if (IDAL.DalObject.DataSource.parcels[i].PickedUp == def)
+                            if (IDAL.DalObject.DataSource.parcels[i].PickedUp == null)
                             {
-                                BO.DroneToList droneToListeBo = new BO.DroneToList();
-                                for (int j = 0; j < ListDroneToList.Count; j++)
-                                {
-                                    if (ListDroneToList[j].uniqueID == ID)
-                                    {
-                                        droneToListeBo = ListDroneToList[j];
-                                        parcel = accessIdal.GetParcel(IDAL.DalObject.DataSource.parcels[i].Id);
-                                    }
-                                }
+                                BO.DroneToList droneToListeBo = GetDroneBO(ID);//new BO.DroneToList();                               
+                                parcel = accessIdal.GetParcel(IDAL.DalObject.DataSource.parcels[i].Id);
+                                
                                 //find sender location
                                 senderId = IDAL.DalObject.DataSource.parcels[i].SenderId;
                                 IDAL.DO.Point point1, point2 = new IDAL.DO.Point();
@@ -376,17 +366,12 @@ namespace IBL
                     {
                         if (IDAL.DalObject.DataSource.parcels[i].DroneId == ID)
                         {
-                            DateTime def = new DateTime();
                             //if this drone is picked up so the pickedUp time isn't defult and not yet deliverd
-                            if (IDAL.DalObject.DataSource.parcels[i].PickedUp != def && IDAL.DalObject.DataSource.parcels[i].Delivered == def)
+                            if (IDAL.DalObject.DataSource.parcels[i].PickedUp != null && IDAL.DalObject.DataSource.parcels[i].Delivered == null)
                             {
                                 int targetId;
-                                BO.DroneToList droneToList_Bo = new BO.DroneToList();
-                                foreach (var dro in ListDroneToList)
-                                {
-                                    if (dro.uniqueID == ID)
-                                        droneToList_Bo = dro;
-                                }
+                                BO.DroneToList droneToList_Bo = GetDroneBO(ID);
+                               
                                 //find target location
                                 targetId = IDAL.DalObject.DataSource.parcels[i].TargetId;
                                 IDAL.DO.Point point1, point2 = new IDAL.DO.Point();
@@ -482,6 +467,7 @@ namespace IBL
             }
 
         }
+       
     }
 
 }
