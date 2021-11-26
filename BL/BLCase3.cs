@@ -114,7 +114,7 @@ namespace IBL
                 //The all drones that charging in this station.
                 BO.DroneInCharging droneInCharging_BO = new BO.DroneInCharging();
                 stationBO.dronesInCharging = new List<BO.DroneInCharging>();
-                foreach (IDAL.DO.DroneCharge item in IDAL.DalObject.DataSource.dronesCharge)
+                foreach (IDAL.DO.DroneCharge item in accessIdal.GetListOfDroneCharge()) // IDAL.DalObject.DataSource.dronesCharge
                 {
                     if (item.DroneId == id)
                     {
@@ -144,7 +144,7 @@ namespace IBL
             {
                 BO.ParcelByTransfer parcelByTransfer = new BO.ParcelByTransfer();
 
-                foreach (var item in IDAL.DalObject.DataSource.parcels)
+                foreach (var item in accessIdal.GetListOfParcels())
                 {
                     if (item.Id == id)
                     {
@@ -235,7 +235,7 @@ namespace IBL
 
                 customerBO.fromTheCustomer = new List<BO.parcelAtCustomer>();
                 customerBO.toTheCustomer = new List<BO.parcelAtCustomer>();
-                foreach (IDAL.DO.Parcel item in IDAL.DalObject.DataSource.parcels)
+                foreach (IDAL.DO.Parcel item in accessIdal.GetListOfParcels())
                 {
                     if (item.SenderId == id)
                     {

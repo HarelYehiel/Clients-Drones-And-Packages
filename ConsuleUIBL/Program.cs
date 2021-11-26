@@ -263,7 +263,7 @@ namespace ConsuleUIBL
                                         }
                                         break;
                                     case 6:
-                                        foreach (IBL.BO.StationToTheList item in temp.DisplayBaseStationsWithAvailableChargingStations())
+                                        foreach (IBL.BO.StationToTheList item in temp.GetAllStaionsBy(station_DO => station_DO.ChargeSlots > 0))
                                         {
                                             Console.WriteLine(item.ToString());
                                         }

@@ -24,10 +24,10 @@ namespace IBL
         }
         public IEnumerable<StationToTheList> GetListOfBaseStations()
         {
-            List<BO.StationToTheList> stations = accessIdal.GetListOfStations().ToList().ConvertAll(convertStaionDoToStaionBo);
+            List<BO.StationToTheList> stations = GetAllStaionsBy(p => true).ToList();
+
             if (stations.Count == 0)
                 throw new MyExeption_BO("Exception from function 'Displays_a_list_of_base_stations'", MyExeption_BO.An_empty_list);
-
 
             return stations;
         }
@@ -51,149 +51,67 @@ namespace IBL
         }
         public IEnumerable<CustomerToList> GetListOfCustomers()
         {
-            
-            if (accessIdal.DisplaysListOfCustmers().ToList().Count == 0)
+
+            List<BO.CustomerToList> customersToList = GetAllCustomersBy(p => true).ToList();
+
+            if (customersToList.Count == 0)
                 throw new MyExeption_BO("Exception from function 'Displays_a_list_of_customers'", MyExeption_BO.An_empty_list);
 
-            List<CustomerToList> CustomersToListBO = new List<CustomerToList>();
+            return customersToList;
 
-            CustomersToListBO = accessIdal.DisplaysListOfCustmers().ToList().FindAll()
-            foreach (IDAL.DO.Customer item in DataSource.customers)
-            {
-                CustomerToList customerToList = new CustomerToList();
-
-                customerToList.uniqueID = item.Id;
-                customerToList.name = item.name;
-                customerToList.phone = item.phone;
-
-                foreach (IDAL.DO.Parcel parcelFromTheList in DataSource.parcels)
-                // Run on the list parcel and find the parcels the related him (the customer).
-                {
-                    // packages sent and delivered
-                    if (parcelFromTheList.SenderId == item.Id && parcelFromTheList.Delivered != null)
-                        customerToList.packagesSentAndDelivered++;
-                    // packages sent and not delivered
-                    if (parcelFromTheList.SenderId == item.Id && parcelFromTheList.PickedUp != null && parcelFromTheList.Delivered == null)
-                        customerToList.packagesSentAndNotDelivered++;
-                    // packages he received
-                    if (parcelFromTheList.TargetId == item.Id && parcelFromTheList.Delivered != null)
-                        customerToList.packagesHeReceived++;
-                    // packages on the way to the customer
-                    if (parcelFromTheList.TargetId == item.Id && parcelFromTheList.PickedUp != null && parcelFromTheList.Delivered == null)
-                        customerToList.packagesOnTheWayToTheCustomer++;
-                }
-
-                CustomersToListBO.Add(customerToList);
-            }
-
-            return CustomersToListBO;
         }
         public IEnumerable<ParcelToList> DisplaysTheListOfParcels()
         {
-            if (DataSource.parcels.Count == 0)
+            List<BO.ParcelToList> customersToList = GetAllParcelsBy(p => true).ToList();
+
+            if (customersToList.Count == 0)
                 throw new MyExeption_BO("Exception from function 'Displays_the_list_of_Parcels'", MyExeption_BO.An_empty_list);
 
-            ParcelToList parcelToListBO;
-            List<ParcelToList> ParcelsToList_BO = new List<ParcelToList>();
-
-            try
-            {
-                foreach (IDAL.DO.Parcel item in DataSource.parcels)
-                {
-                    parcelToListBO = new ParcelToList();
-                    parcelToListBO.uniqueID = item.Id;
-                    parcelToListBO.nameTarget = accessIdal.GetCustomer(item.TargetId).name;
-                    parcelToListBO.namrSender = accessIdal.GetCustomer(item.SenderId).name;
-                    parcelToListBO.priority = (BO.EnumBO.Priorities)(int)item.priority;
-                    parcelToListBO.weight = (BO.EnumBO.WeightCategories)(int)item.weight;
-                    parcelToListBO.parcelsituation = (BO.EnumBO.Situations)FunParcelSituation(item);
-
-                    ParcelsToList_BO.Add(parcelToListBO);
-                }
-
-                return ParcelsToList_BO;
-            }
-            catch (Exception e)
-            {
-
-                throw new BO.MyExeption_BO("Exception from function 'Displays_the_list_of_Parcels'", e);
-            }
-
+            return customersToList;
         }
 
-        public IEnumerable<ParcelToList> GetAllParcelsBy(System.Predicate<IDAL.DO.Parcel> P)
+        public IEnumerable<ParcelToList> GetAllParcelsBy(System.Predicate<IDAL.DO.Parcel> filter)
         {
             List<ParcelToList> parcelsToLists = new List<ParcelToList>();
-            List<IDAL.DO.Parcel> parcels = new List<IDAL.DO.Parcel>();
 
-            parcels = accessIdal.DisplaysListOfParcels().ToList();
-            parcelsToLists.AddRange(parcels.FindAll(P)
-                .ConvertAll(convertParcelDoToParcelBo));// convert parcel_do to parcel_bo
+            parcelsToLists.AddRange(accessIdal.GetListOfParcels() // Get IEnumerable of all parcels.
+                .ToList() // Comvert from IEnumerable to list.
+                .FindAll(filter) // Filter the list by the filter.
+                .ConvertAll(convertParcelDoToParcelBo));// Convert parcel_do to parcel_bo
 
             return parcelsToLists;
         }
-        public IEnumerable<StationToTheList> GetAllStaionsBy(System.Predicate<IDAL.DO.Station> P)
+        public IEnumerable<StationToTheList> GetAllStaionsBy(System.Predicate<IDAL.DO.Station> filter)
         {
             List<StationToTheList> StationsToTheList = new List<StationToTheList>();
 
-            StationsToTheList.AddRange(accessIdal.GetListOfStations().ToList()
-                .FindAll(P) // Get the list of stations from DO.
-                .ConvertAll(convertStaionDoToStaionBo));// convert parcel_do to parcel_bo
+            StationsToTheList.AddRange(accessIdal.GetListOfStations() // Get IEnumerable of all stations.
+                .ToList() // Comvert from IEnumerable to list.
+                .FindAll(filter) // Filter the list by the 'filter'.
+                .ConvertAll(convertStaionDoToStaionBo));// convert station_do to station_bo
+
 
             return StationsToTheList;
         }
-        public IEnumerable<CustomerToList> GetAllCustomersBy(System.Predicate<IDAL.DO.Customer> P)
+        public IEnumerable<CustomerToList> GetAllCustomersBy(System.Predicate<IDAL.DO.Customer> filter)
         {
-            List<CustomerToList> StationsToTheList = new List<CustomerToList>();
+            List<CustomerToList> customersToList = new List<CustomerToList>();
 
-            StationsToTheList.AddRange(accessIdal.DisplaysListOfCustmers().ToList()
-                .FindAll(P) // Get the list of stations from DO.
-                .ConvertAll(convertCustomerDoToCustomerBo));// convert parcel_do to parcel_bo
+            customersToList.AddRange(accessIdal.DisplaysListOfCustmers() // Get IEnumerable of all customers.
+                     .ToList() // Comvert from IEnumerable to list.
+                .FindAll(filter) // Filter the list by the 'filter'.
+                .ConvertAll(convertCustomerDoToCustomerBo));// convert customer_do to customer_bo
 
-            return StationsToTheList;
+            return customersToList;
         }
-        public IEnumerable<DroneToList> GetAllDronesBy(System.Predicate<IDAL.DO.Drone> P)
+        public IEnumerable<DroneToList> GetAllDronesBy(System.Predicate<BO.DroneToList> filter)
         {
             List<DroneToList> DronesToList = new List<DroneToList>();
 
-            DronesToList.AddRange(accessIdal.DisplaysListOfDrones().ToList()
-                .FindAll(P) // Get the list of stations from DO.
-                .ConvertAll(convertDroneDoToDroneBo));// convert parcel_do to parcel_bo
+            DronesToList.AddRange(ListDroneToList // List of all drones in BO.
+                .FindAll(filter)); // Filter the list by the 'filter'.
 
             return DronesToList;
-        }
-
-        public IEnumerable<ParcelToList> DisplaysListOfParcelsNotYetAssociatedWithDrone()
-        {
-            if (DataSource.parcels.Count == 0)
-                throw new MyExeption_BO("Exception from function 'DisplaysListOfParcelsNotYetAssociatedWithDrone'", MyExeption_BO.An_empty_list);
-
-            List<ParcelToList> ParcelsToListBO = new List<ParcelToList>();
-            try
-            {
-                ParcelsToListBO.AddRange(DataSource.parcels.FindAll(parcel => parcel.DroneId == 0)
-                    .ConvertAll(convertParcelDoToParcelBo));// convert parcel_do to parcel_bo
-
-                return ParcelsToListBO;
-            }
-            catch (Exception e)
-            {
-                throw new BO.MyExeption_BO("Exception from function 'Displays_a_list_of_Parcels_not_yet_associated_with_the_drone'", e);
-            }
-        }
-        public IEnumerable<StationToTheList> DisplayBaseStationsWithAvailableChargingStations()
-        {
-
-            if (DataSource.stations.Count == 0)
-                throw new MyExeption_BO("Exception from function 'Display_of_base_stations_with_available_charging_stations'", MyExeption_BO.An_empty_list);
-
-            List<StationToTheList> stationsForTheListBO = DataSource.stations.
-                // Return list with all the station_DO.ChargeSlots > 0.
-                FindAll(station_DO => station_DO.ChargeSlots > 0).
-                // Retuen list with StaionBo.
-                ConvertAll(convertStaionDoToStaionBo);
-
-            return stationsForTheListBO;
         }
         ParcelToList convertParcelDoToParcelBo(IDAL.DO.Parcel item)
         {
@@ -228,11 +146,11 @@ namespace IBL
             stationForTheList.name = staion.name;
             stationForTheList.availableChargingStations = staion.ChargeSlots;
 
-            stationForTheList.unAvailableChargingStations = DataSource.dronesCharge.
-                // Return list with all the droneCarge_DO == staion.id 
-                FindAll(droneCarge_DO => droneCarge_DO.staitionId == staion.id).
-                // Return count of item in the list.
-                Count();
+            stationForTheList.unAvailableChargingStations = accessIdal.GetListOfStations()
+                .ToList() // Comvert from IEnumerable to list.
+               .FindAll(droneCarge_DO => droneCarge_DO.id == staion.id) // Return list with all the droneCarge_DO == staion.id 
+                .Count(); // Return count of item in the list.
+
 
             return stationForTheList;
         }
@@ -253,8 +171,9 @@ namespace IBL
             customerToList.phone = customer.phone;
 
 
-             // Run on the list parcel and find the parcels the related him (the customer).
-            accessIdal.DisplaysListOfParcels().ToList().ForEach(delegate (IDAL.DO.Parcel parcel) {
+            // Run on the list parcel and find the parcels the related him (the customer).
+            accessIdal.GetListOfParcels().ToList().ForEach(delegate (IDAL.DO.Parcel parcel)
+            {
 
                 // packages sent and delivered
                 if (parcel.SenderId == customerToList.uniqueID && parcel.Delivered != null)
@@ -273,4 +192,5 @@ namespace IBL
 
             return customerToList;
         }
+    }
 }

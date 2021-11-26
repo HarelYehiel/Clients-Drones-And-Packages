@@ -22,7 +22,7 @@ namespace IBL
             IDAL.DalObject.DataSource.Initialize();
             BO.DroneToList droneToListBO;
 
-            foreach (var item in IDAL.DalObject.DataSource.drones) // Update the list in listDrons of IBL
+            foreach (var item in accessIdal.GetListOfDrones()) // Update the list in listDrons of IBL
             {
                 var rand = new Random();
                 droneToListBO = new BO.DroneToList();
@@ -51,7 +51,7 @@ namespace IBL
                     AssignPackageToDrone(item.uniqueID);
 
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     // don't do nothing, just contiune to next. 
                 }

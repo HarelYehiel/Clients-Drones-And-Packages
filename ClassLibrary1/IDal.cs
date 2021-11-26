@@ -21,7 +21,7 @@ namespace IDAL
             public Drone GetDrone(int droneId);
 
             public Customer GetCustomer(int CustomerId);
-
+            public IEnumerable<DroneCharge> GetListOfDroneCharge();
             public IDAL.DO.Parcel GetParcel(int ParcelId);
             // Return the parcel with parcelId
 
@@ -36,9 +36,9 @@ namespace IDAL
 
             public IEnumerable<Customer> DisplaysListOfCustmers();
 
-            public IEnumerable<Parcel> DisplaysListOfParcels();
+            public IEnumerable<Parcel> GetListOfParcels();
             //Copy all the Parcel from DataSource.parcels[] to new_array_parcels.
-            public IEnumerable<Drone> DisplaysListOfDrones();
+            public IEnumerable<Drone> GetListOfDrones();
             //Copy all the Drone from DataSource.drones[] to new_array_drones.
             public IEnumerable<Parcel> DisplaysParcelsDontHaveDrone();
             // Print the details of all the parcels don't have An associated skimmer (Selected_drone == 0).

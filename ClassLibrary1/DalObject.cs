@@ -135,6 +135,17 @@ namespace IDAL
                 DataSource.drones.Add(drone);
             }
 
+            public IEnumerable<DroneCharge> GetListOfDroneCharge()
+            {
+                List<DroneCharge> droneCharges = new List<DroneCharge>();
+                
+                foreach (var item in DataSource.dronesCharge)
+                {
+                    droneCharges.Add(item);
+                }
+                return droneCharges;
+            }
+
             public IEnumerable<Station> GetListOfStations()
             //return all the station from DataSource.stations
 
@@ -159,7 +170,7 @@ namespace IDAL
                     customers.Add(customer);
                 return customers;
             }
-            public IEnumerable<Parcel> DisplaysListOfParcels()
+            public IEnumerable<Parcel> GetListOfParcels()
             //print all the Parcel from DataSource.parcels
 
             {
@@ -173,7 +184,7 @@ namespace IDAL
                 }
                 return parcels;
             }
-            public IEnumerable<Drone> DisplaysListOfDrones()
+            public IEnumerable<Drone> GetListOfDrones()
             //print all the Drone from DataSource.drones
             {
                 if (DataSource.parcels.Count == 0)
