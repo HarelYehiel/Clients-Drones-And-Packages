@@ -93,7 +93,7 @@ namespace IBL
             }
             throw new BO.MyExeption_BO("Exception from function 'getbatteryStatus'", BO.MyExeption_BO.There_is_no_variable_with_this_ID);
         }
-        public BO.station BaseStationView(int id)
+        public BO.station getBaseStation(int id)
         {
             try
             {
@@ -137,7 +137,7 @@ namespace IBL
             }
 
         }
-        BO.ParcelByTransfer GetParcelByTransfer(int id)
+        BO.ParcelByTransfer getParcelByTransfer(int id)
         {
 
             try
@@ -189,7 +189,7 @@ namespace IBL
             }
 
         }
-        public BO.Drone DroneView(int id)
+        public BO.Drone GetDrone(int id)
         {
             foreach (BO.DroneToList item in ListDroneToList)
             {
@@ -206,7 +206,7 @@ namespace IBL
 
 
                     if (droneBO.Status == BO.EnumBO.DroneStatus.Delivery)
-                        droneBO.parcelByTransfer = GetParcelByTransfer(item.packageDelivered);
+                        droneBO.parcelByTransfer = getParcelByTransfer(item.packageDelivered);
 
 
                     return droneBO;
@@ -215,7 +215,7 @@ namespace IBL
 
             throw new BO.MyExeption_BO("Exception from function 'drone_view'", BO.MyExeption_BO.There_is_no_variable_with_this_ID);
         }
-        public BO.Customer CustomerView(int id)
+        public BO.Customer GetCustomer(int id)
         {
             try
             {
@@ -257,7 +257,7 @@ namespace IBL
             }
 
         }
-        public BO.Parcel ParcelView(int id)
+        public BO.Parcel GetParcel(int id)
         {
             try
             {

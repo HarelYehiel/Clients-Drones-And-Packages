@@ -35,10 +35,10 @@ namespace IBL
         public void EntityDisplayOptions();
 
         /* In function Entity_display_options*/
-        public BO.station BaseStationView(int ID);
-        public BO.Drone DroneView(int ID);
-        public BO.Customer CustomerView(int ID);
-        public BO.Parcel ParcelView(int ID);
+        public BO.station getBaseStation(int ID);
+        public BO.Drone GetDrone(int ID);
+        public BO.Customer GetCustomer(int ID);
+        public BO.Parcel GetParcel(int ID);
         /* Until here */
 
         public void ListViewOptions();

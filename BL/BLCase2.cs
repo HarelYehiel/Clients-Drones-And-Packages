@@ -53,7 +53,7 @@ namespace IBL
                 if (numSlots != 0)
                 {
                     BO.station tempStation = new BO.station();
-                    tempStation = BaseStationView(ID);
+                    tempStation = getBaseStation(ID);
                     if (numSlots < tempStation.dronesInCharging.Count)
                         throw new BO.MyExeption_BO("There are more drones in the station than the number you have chosen");
                     else

@@ -192,25 +192,25 @@ namespace ConsuleUIBL
                                     case 1:
                                         Console.WriteLine("witch station you want to view?");
                                         ID = giveNumber();
-                                        Console.WriteLine(temp.BaseStationView(ID).ToString());
+                                        Console.WriteLine(temp.getBaseStation(ID).ToString());
                                         ch3 = 0;
                                         break;
                                     case 2:
                                         Console.WriteLine("witch drone you want to view?");
                                         ID = giveNumber();
-                                        Console.WriteLine(temp.DroneView(ID).ToString());
+                                        Console.WriteLine(temp.GetDrone(ID).ToString());
                                         ch3 = 0;
                                         break;
                                     case 3:
                                         Console.WriteLine("witch customer you want to view?");
                                         ID = giveNumber();
-                                        Console.WriteLine(temp.CustomerView(ID).ToString());
+                                        Console.WriteLine(temp.GetCustomer(ID).ToString());
                                         ch3 = 0;
                                         break;
                                     case 4:
                                         Console.WriteLine("witch parcel you want to view?");
                                         ID = giveNumber();
-                                        Console.WriteLine(temp.ParcelView(ID).ToString());
+                                        Console.WriteLine(temp.GetParcel(ID).ToString());
                                         ch3 = 0;
                                         break;
                                     default:
