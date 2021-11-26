@@ -231,20 +231,20 @@ namespace ConsuleUIBL
                                     case 0:
                                         break;
                                     case 1:
-                                        foreach (IBL.BO.StationForTheList item in temp.DisplaysListOfBaseStations())
+                                        foreach (IBL.BO.StationToTheList item in temp.GetListOfBaseStations())
                                         {
                                             Console.WriteLine(item.ToString());
                                         }
                                         break;
                                     case 2:
-                                        foreach (IBL.BO.DroneToList item in temp.DisplaysTheListOfDrones())
+                                        foreach (IBL.BO.DroneToList item in temp.GetTheListOfDrones())
                                     {
                                             Console.WriteLine(item.ToString());
                                         }
                                         break;
                                     case 3:
                                         IEnumerable<IBL.BO.CustomerToList> customersToList = new List<IBL.BO.CustomerToList>();
-                                        customersToList = temp.DisplaysListOfCustomers();
+                                        customersToList = temp.GetListOfCustomers();
                                         foreach (IBL.BO.CustomerToList item in customersToList)
                                         {
                                             Console.WriteLine(item.ToString());
@@ -257,13 +257,13 @@ namespace ConsuleUIBL
                                         }
                                         break;
                                     case 5:
-                                        foreach (IBL.BO.ParcelToList item in temp.DisplaysListOfParcelsNotYetAssociatedWithDrone())
+                                        foreach (IBL.BO.ParcelToList item in temp.GetAllParcelsBy(parcel => parcel.DroneId == 0))
                                         {
                                             Console.WriteLine(item.ToString());
                                         }
                                         break;
                                     case 6:
-                                        foreach (IBL.BO.StationForTheList item in temp.DisplayBaseStationsWithAvailableChargingStations())
+                                        foreach (IBL.BO.StationToTheList item in temp.DisplayBaseStationsWithAvailableChargingStations())
                                         {
                                             Console.WriteLine(item.ToString());
                                         }

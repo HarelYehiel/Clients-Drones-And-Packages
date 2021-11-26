@@ -143,7 +143,6 @@ namespace IBL
             try
             {
                 BO.ParcelByTransfer parcelByTransfer = new BO.ParcelByTransfer();
-                DateTime def = new DateTime();
 
                 foreach (var item in IDAL.DalObject.DataSource.parcels)
                 {
@@ -173,7 +172,7 @@ namespace IBL
 
 
                         // Is wait for collection ?
-                        if (accessIdal.GetParcel(id).PickedUp != def) // The parcel PickedUp
+                        if (accessIdal.GetParcel(id).PickedUp != null) // The parcel PickedUp
                             parcelByTransfer.isWaitForCollection = false; // The parcel don't wait to PickedUp, it in transfer
                         else
                             parcelByTransfer.isWaitForCollection = true; // The parcel wait to PickedUp

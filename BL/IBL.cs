@@ -44,12 +44,12 @@ namespace IBL
         public void ListViewOptions();
 
         /* In function List_view_options*/
-        public IEnumerable<BO.StationForTheList> DisplaysListOfBaseStations();
-        public IEnumerable<BO.DroneToList> DisplaysTheListOfDrones();
-        public IEnumerable<BO.CustomerToList> DisplaysListOfCustomers();
+        public IEnumerable<BO.StationToTheList> GetListOfBaseStations();
+        public IEnumerable<BO.DroneToList> GetTheListOfDrones();
+        public IEnumerable<BO.CustomerToList> GetListOfCustomers();
         public IEnumerable<BO.ParcelToList> DisplaysTheListOfParcels();
         public IEnumerable<BO.ParcelToList> DisplaysListOfParcelsNotYetAssociatedWithDrone();
-        public IEnumerable<BO.StationForTheList> DisplayBaseStationsWithAvailableChargingStations();
+        public IEnumerable<BO.StationToTheList> DisplayBaseStationsWithAvailableChargingStations();
         /* Until here */
 
     }

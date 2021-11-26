@@ -32,7 +32,7 @@ namespace IDAL
             public void InputTheCustomerToArray(Customer cust);
 
             public void InputTheDroneToArray(Drone dro);
-            public IEnumerable<Station> Displays_list_of_stations();
+            public IEnumerable<Station> GetListOfStations();
 
             public IEnumerable<Customer> DisplaysListOfCustmers();
 

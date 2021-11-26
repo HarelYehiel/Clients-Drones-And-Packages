@@ -135,7 +135,7 @@ namespace IDAL
                 DataSource.drones.Add(drone);
             }
 
-            public IEnumerable<Station> Displays_list_of_stations()
+            public IEnumerable<Station> GetListOfStations()
             //return all the station from DataSource.stations
 
             {
