@@ -13,7 +13,6 @@ namespace IBL
 {
     public partial class BL : IBL
     {
-        // public delegate IEnumerable<StationForTheList> 
         int FunParcelSituation(IDAL.DO.Parcel p)
         {
             if (p.Delivered != null) return 3;
@@ -22,6 +21,8 @@ namespace IBL
             return 0;
 
         }
+
+        // Return list of entity_BO ('entity' to list).
         public IEnumerable<StationToTheList> GetListOfBaseStations()
         {
             List<BO.StationToTheList> stations = GetAllStaionsBy(p => true).ToList();
@@ -70,6 +71,8 @@ namespace IBL
             return customersToList;
         }
 
+
+        // Filter functions of list with entity_DO and return list with entity_BO (after the filter).
         public IEnumerable<ParcelToList> GetAllParcelsBy(System.Predicate<IDAL.DO.Parcel> filter)
         {
             List<ParcelToList> parcelsToLists = new List<ParcelToList>();
@@ -113,6 +116,9 @@ namespace IBL
 
             return DronesToList;
         }
+
+
+        //  Convert functions from entity_DO to entity_BO.
         ParcelToList convertParcelDoToParcelBo(IDAL.DO.Parcel item)
         {
             try
