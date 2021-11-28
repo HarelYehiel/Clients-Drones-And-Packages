@@ -48,6 +48,8 @@ namespace IBL
         public IEnumerable<BO.DroneToList> GetTheListOfDrones();
         public IEnumerable<BO.CustomerToList> GetListOfCustomers();
         public IEnumerable<BO.ParcelToList> DisplaysTheListOfParcels();
+        public IEnumerable<BO.DroneToList> GetAllDronesBy(System.Predicate<BO.DroneToList> filter);
+
         /* Until here */
 
     }

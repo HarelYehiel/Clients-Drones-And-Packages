@@ -15,7 +15,10 @@ namespace IBL
         // List<BO.Drone> listDrons = new List<BO.Drone>();
         IDAL.DO.IDal accessIdal = new IDAL.DalObject.DalObject();
         List<DroneToList> ListDroneToList = new List<DroneToList>();
-
+        public BL()
+        {
+            InitializeAndUpdateTheListsInIBL();
+        }
         public void InitializeAndUpdateTheListsInIBL()
         // Do initialize if data sourse and update the list listDrons of IBL.
         {
@@ -48,7 +51,7 @@ namespace IBL
             {
                 try
                 {
-                    AssignPackageToDrone(item.uniqueID);
+                   // AssignPackageToDrone(item.uniqueID);
 
                 }
                 catch (Exception)
