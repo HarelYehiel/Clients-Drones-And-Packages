@@ -10,6 +10,10 @@ namespace IBL
     {
         IDAL.DalObject.UpdateClass updateDataSourceFun = new IDAL.DalObject.UpdateClass();
         public delegate bool Predicate<in T>(T obj);
+
+        public delegate BO.Parcel Converter<in ParcelToList , out Parcel>(BO.ParcelToList input);
+
+
         public static bool findEmergency(IDAL.DO.Parcel parcel) { return (parcel.Scheduled == null && parcel.priority == IDAL.DO.Enum.Priorities.Emergency); }
         public static bool findFast(IDAL.DO.Parcel parcel) { return (parcel.Scheduled == null && parcel.priority == IDAL.DO.Enum.Priorities.Fast); }
         public static bool findNormal(IDAL.DO.Parcel parcel) { return (parcel.Scheduled == null && parcel.priority == IDAL.DO.Enum.Priorities.Normal); }
@@ -95,19 +99,19 @@ namespace IBL
                 //-----check drone status, only if he is free check the next condition-----
                 if (drone.droneStatus == IDAL.DO.Enum.DroneStatus.Avilble)
                 {
-                 
+
                     ///----------find the most close station---------
-                    IDAL.DO.Point point1, point2 = new IDAL.DO.Point();
-                    point1.latitude = droneToList_Bo.location.latitude;
-                    point1.longitude = droneToList_Bo.location.longitude;
-                    point2 = IDAL.DalObject.DataSource.stations[0].Location;
+                    List<BO.station> stations = GetListOfBaseStations().ToList().ConvertAll(convertToStationNotList);
+                    BO.Location point1, point2 = new BO.Location();
+                    point1 = droneToList_Bo.location;
+                    point2 = stations[0].location;
                     double min = point1.distancePointToPoint(point2);
-                    foreach (var station in IDAL.DalObject.DataSource.stations)
+                    foreach (var station in stations)
                     {
-                        double dis = point1.distancePointToPoint(station.Location);
+                        double dis = point1.distancePointToPoint(station.location);
                         if (dis < min)
                         {
-                            point2 = station.Location;
+                            point2 = station.location;
                         }
                     }
                     //--------if drone's battary can survive up to the station-------------
@@ -122,17 +126,16 @@ namespace IBL
 
                         //update station data
                         IDAL.DO.Station sta = new IDAL.DO.Station();
-                        foreach (var station in IDAL.DalObject.DataSource.stations)
+                        foreach (var station in stations)
                         {
-                            if (station.Location.latitude == point2.latitude && station.Location.longitude == point2.longitude)
+                            if (station.location == point2)
                             {
-                                if (station.ChargeSlots > 0)
-                                    sta = station;
+                                if (station.availableChargingStations > 0)
+                                    sta.ChargeSlots--;
                                 else
                                     throw new BO.MyExeption_BO("There is no free slot for this drone!");
                             }
                         }
-                        sta.ChargeSlots--;
 
                         //update all the changes data
                         updateDataSourceFun.updateStation(sta);
@@ -176,21 +179,19 @@ namespace IBL
                         }
                     }
                     //update data in dataSource
-                    IDAL.DO.Point point = new IDAL.DO.Point();
-                    point.latitude = droneBo.location.latitude;
-                    point.longitude = droneBo.location.longitude;
+                    BO.Location point = droneBo.location;
                     updateDataSourceFun.updateRelaseDroneFromCharge(ID, point, min);
 
                     //update all the changes data at the stations list
                     IDAL.DO.Station sta = new IDAL.DO.Station();
-                    foreach (var station in IDAL.DalObject.DataSource.stations)
+                    List < BO.station > stations = GetListOfBaseStations().ToList().ConvertAll(convertToStationNotList);
+                    foreach (var station in stations)
                     {
-                        if (station.Location.latitude == point.latitude && station.Location.longitude == point.longitude)
+                        if (station.location == point)
                         {
-                            sta = station;
+                            sta.ChargeSlots++;
                         }
                     }
-                    sta.ChargeSlots++;
 
                     updateDataSourceFun.updateStation(sta);
                 }
@@ -219,20 +220,20 @@ namespace IBL
                 bool flag = true;
                 //---------------first of all - check if the drone is avilble----------------------
                 if (drone.droneStatus == IDAL.DO.Enum.DroneStatus.Avilble)
-                {  
+                {
                     //-----------we always prefere to take care by priority order---------------
-                    List<IDAL.DO.Parcel> newList = IDAL.DalObject.DataSource.parcels.FindAll(findEmergency);
-                    newList.AddRange(IDAL.DalObject.DataSource.parcels.FindAll(findFast));
-                    newList.AddRange(IDAL.DalObject.DataSource.parcels.FindAll(findNormal));
+                    List<BO.ParcelToList> newList = GetAllParcelsBy(findEmergency).ToList();//IDAL.DalObject.DataSource.parcels.FindAll(findEmergency);
+                    newList.AddRange(GetAllParcelsBy(findFast).ToList());
+                    newList.AddRange(GetAllParcelsBy(findNormal).ToList());
                   
                     foreach (var parcel in newList)
-                        if (parcel.weight <= drone.MaxWeight)
+                        if ((int)parcel.weight <= (int)drone.MaxWeight)
                         {
                             //newList now have all the aviable and unScheluled drones by priority order 
                             flag = serchForRelevantParcel(parcel, drone, droneBo, droneId);
                             if (!flag)
                             {
-                                parcelDO = accessIdal.GetParcel(parcel.Id);
+                                parcelDO = accessIdal.GetParcel(parcel.uniqueID);
                                 break;
                             }
                         }                        
@@ -269,19 +270,20 @@ namespace IBL
                 IDAL.DO.Parcel parcel = new IDAL.DO.Parcel();
                 if (drone.droneStatus == IDAL.DO.Enum.DroneStatus.Delivery)
                 {
-                    for (int i = 0; i < IDAL.DalObject.DataSource.parcels.Count; i++)
+                    List<BO.Parcel> parcels = DisplaysTheListOfParcels().ToList().ConvertAll(convertToParcelNotList);
+                    for (int i = 0; i < parcels.Count; i++)
                     {
-                        if (IDAL.DalObject.DataSource.parcels[i].DroneId == ID)
+                        if (parcels[i].droneInParcel.uniqueID == ID)
                         {
                             int senderId;
                             //if the parcel not picked up yet the PickUp time will be defult
-                            if (IDAL.DalObject.DataSource.parcels[i].PickedUp == null)
+                            if (parcels[i].pickedUp == null)
                             {
                                 BO.DroneToList droneToListeBo = GetDroneBO(ID);//new BO.DroneToList();                               
-                                parcel = accessIdal.GetParcel(IDAL.DalObject.DataSource.parcels[i].Id);
+                                parcel = accessIdal.GetParcel(parcels[i].uniqueID);
                                 
                                 //find sender location
-                                senderId = IDAL.DalObject.DataSource.parcels[i].SenderId;
+                                senderId = parcels[i].customerInParcelSender.uniqueID;
                                 IDAL.DO.Point point1, point2 = new IDAL.DO.Point();
                                 IDAL.DO.Customer sender = accessIdal.GetCustomer(senderId);
                                 point1.latitude = sender.location.latitude;
@@ -326,18 +328,19 @@ namespace IBL
                 IDAL.DO.Parcel parcel = new IDAL.DO.Parcel();
                 if (drone.droneStatus == IDAL.DO.Enum.DroneStatus.Delivery)
                 {
-                    for (int i = 0; i < IDAL.DalObject.DataSource.parcels.Count; i++)
+                    List<BO.Parcel> parcels = DisplaysTheListOfParcels().ToList().ConvertAll(convertToParcelNotList);//GetAllParcelsBy(p => true).ToList();
+                    for (int i = 0; i < parcels.Count; i++)
                     {
-                        if (IDAL.DalObject.DataSource.parcels[i].DroneId == ID)
+                        if (parcels[i].droneInParcel.uniqueID == ID)
                         {
                             //if this drone is picked up so the pickedUp time isn't defult and not yet deliverd
-                            if (IDAL.DalObject.DataSource.parcels[i].PickedUp != null && IDAL.DalObject.DataSource.parcels[i].Delivered == null)
+                            if (parcels[i].pickedUp != null && parcels[i].delivered == null)
                             {
                                 int targetId;
                                 BO.DroneToList droneToList_Bo = GetDroneBO(ID);
                                
                                 //find target location
-                                targetId = IDAL.DalObject.DataSource.parcels[i].TargetId;
+                                targetId = parcels[i].customerInParcel_Target.uniqueID;
                                 IDAL.DO.Point point1, point2 = new IDAL.DO.Point();
                                 IDAL.DO.Customer target = accessIdal.GetCustomer(targetId);
                                 point1.latitude = target.location.latitude;
@@ -362,11 +365,10 @@ namespace IBL
                                     }
                                 }
 
-                                parcel = IDAL.DalObject.DataSource.parcels[i];
+                                parcel = parcels[i];
                                 parcel.Delivered = DateTime.Now;
-                                //IDAL.DalObject.DataSource.parcels[i] = parcel;
-
                                 drone.droneStatus = IDAL.DO.Enum.DroneStatus.Avilble;
+
                                 updateDataSourceFun.updateDrone(drone);
 
                                 updateDataSourceFun.updateParcel(parcel);
@@ -430,6 +432,46 @@ namespace IBL
                 throw new BO.MyExeption_BO("Exception from function 'serchForRelevantParcel", e);
             }
 
+        }
+        BO.station convertToStationNotList(BO.StationToTheList stationToTheList)
+        {
+            BO.station station = new BO.station();
+            station.uniqueID = stationToTheList.uniqueID;
+            station.name = stationToTheList.name;
+            station.availableChargingStations = stationToTheList.availableChargingStations;
+            accessIdal.GetListOfStations().ToList().ForEach(delegate (IDAL.DO.Station stationDO)
+            {
+                if (station.uniqueID == stationDO.id)
+                {
+                    station.location.latitude = stationDO.Location.latitude;
+                    station.location.longitude = stationDO.Location.longitude;
+
+                }
+            });
+            return station;
+        }
+        BO.Parcel convertToParcelNotList(BO.ParcelToList parcelToList)
+        {
+            BO.Parcel parcel = new BO.Parcel();
+            parcel.uniqueID = parcelToList.uniqueID;
+            parcel.customerInParcelSender.name = parcelToList.namrSender;
+            parcel.customerInParcel_Target.name = parcelToList.nameTarget;
+            parcel.priority = parcelToList.priority;
+            parcel.weight = parcelToList.weight;
+            accessIdal.GetListOfParcels().ToList().ForEach(delegate (IDAL.DO.Parcel parcelDO)
+            {
+                if (parcel.uniqueID == parcelDO.Id)
+                {
+                    parcel.delivered = parcelDO.Delivered;
+                    parcel.scheduled = parcelDO.Scheduled;
+                    parcel.pickedUp = parcelDO.PickedUp;
+                    parcel.requested = parcelDO.Requested;
+                    parcel.droneInParcel.uniqueID = parcelDO.DroneId;
+
+
+                }
+            });
+            return parcel;
         }
        
     }

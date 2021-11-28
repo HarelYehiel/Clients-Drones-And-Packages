@@ -38,20 +38,20 @@ namespace ConsoleUI
 
                 Console.WriteLine("Choose one of the following:" + "\n1 = distance from customer" + "\n2 = distance from station");
                 choose = Convert.ToInt32(Console.ReadLine());
-                double minDistance = IDAL.DalObject.DataSource.customers[0].location.distancePointToPoint(p);
-                switch (choose)
-                {
-                    case 1:
-                        Console.WriteLine(temp.MinimumFromCustomer(minDistance,p));
-                        return;
+                //double minDistance = IDAL.DalObject.DataSource.customers[0].location.distancePointToPoint(p);
+                //switch (choose)
+                //{
+                //    case 1:
+                //        Console.WriteLine(temp.MinimumFromCustomer(minDistance,p));
+                //        return;
 
-                    case 2:
-                        Console.WriteLine(temp.MinimumFromStation(minDistance,p));
-                        return;
+                //    case 2:
+                ////        Console.WriteLine(temp.MinimumFromStation(minDistance,p));
+                ////        return;
 
-                    default:
-                        break;
-                }
+                //    default:
+                //        break;
+                //}
             } while (choose != 1 && choose != 2);
             Exception e11 = new Exception("Error in function distanceFromCustomerOrStation");
             throw e11;
