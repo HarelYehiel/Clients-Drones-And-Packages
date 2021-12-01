@@ -5,8 +5,36 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="DroneListWindow" Height="450" Width="800">
-    <Grid>
-        
+        Title="DroneListWindow" Height="640" Width="800">
+    <Grid Name="MainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50*"/>
+            <RowDefinition Height="400*"/>
+        </Grid.RowDefinitions>
+        <Grid Name="UpGrid" HorizontalAlignment="Stretch" Height="auto" Grid.Row="0"
+            VerticalAlignment="Stretch" Width="auto">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions >
+            <ComboBox Name="WieghtCombo" Grid.Column="1" IsEditable ="true" IsReadOnly="True" Text="Choose wieght"  SelectionChanged="StatusDroneWeight" Initialized="WieghtCombo_Initialized" Margin="40,0,41,44"/>
+            <TextBox Name ="ChooseFilter"  Grid.Column="0" HorizontalAlignment="Left" Margin="15,16,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+            <ComboBox Name="SituationCombo" Grid.Column="1" IsEditable ="true" Text="Choose status"  HorizontalAlignment="Center" Margin="0,35,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="StatusDroneSituation" Initialized="SituationCombo_Initialized"/>
+            <Button Content="Clear filter" Grid.Column="2" HorizontalAlignment="Left" Margin="21,42,0,0" VerticalAlignment="Top" Width="119" Click="ClearFilter"/>
+            <Button Content="Both Filter" Grid.Column="2"   HorizontalAlignment="Left" Margin="21,12,0,0" VerticalAlignment="Top" Height="22" Width="119" Click="BothFilter" RenderTransformOrigin="0.494,0.661"/>
+            <Button Content="AddingdDrone" Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Click="AddingNewDrone" />
+        </Grid>
+        <ListView x:Name="DronesListView"  Grid.Row="1" SelectionChanged="DronesListView_SelectionChanged">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <CheckBox Content="CheckBox" HorizontalAlignment="Left" Margin="1034,78,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+
     </Grid>
+
 </Window>

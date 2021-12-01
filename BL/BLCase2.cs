@@ -11,7 +11,7 @@ namespace IBL
         IDAL.DalObject.UpdateClass updateDataSourceFun = new IDAL.DalObject.UpdateClass();
         public delegate bool Predicate<in T>(T obj);
 
-       // public delegate BO.Parcel Converter<in ParcelToList, out Parcel>(BO.ParcelToList input);
+        //public delegate BO.Parcel Converter<in ParcelToList, out Parcel>(BO.ParcelToList input);
 
 
         public static bool findEmergency(IDAL.DO.Parcel parcel) { return (parcel.Scheduled == null && parcel.priority == IDAL.DO.Enum.Priorities.Emergency); }
@@ -115,33 +115,33 @@ namespace IBL
                         }
                     }
                     //--------if drone's battary can survive up to the station-------------
-                    //if (droneToList_Bo.Battery - updateDataSourceFun.colculateBattery(point1, point2, ID) > 0)
-                    //{
-                    //    //update drone data in BO
-                    //    droneToList_Bo.Battery -= updateDataSourceFun.colculateBattery(point1, point2, ID);
-                    //    droneToList_Bo.location.latitude = point2.latitude;
-                    //    droneToList_Bo.location.longitude = point2.longitude;
-                    //    droneToList_Bo.status = BO.EnumBO.DroneStatus.Baintenance;
+                    if (droneToList_Bo.Battery - colculateBatteryBO(point1, point2, ID) > 0)
+                    {
+                        //update drone data in BO
+                        droneToList_Bo.Battery -= colculateBatteryBO(point1, point2, ID);
+                        droneToList_Bo.location.latitude = point2.latitude;
+                        droneToList_Bo.location.longitude = point2.longitude;
+                        droneToList_Bo.status = BO.EnumBO.DroneStatus.Baintenance;
 
 
-                    //    //update station data
-                    //    IDAL.DO.Station sta = new IDAL.DO.Station();
-                    //    foreach (var station in stations)
-                    //    {
-                    //        if (station.location == point2)
-                    //        {
-                    //            if (station.availableChargingStations > 0)
-                    //                sta.ChargeSlots--;
-                    //            else
-                    //                throw new BO.MyExeption_BO("There is no free slot for this drone!");
-                    //        }
-                    //    }
+                        //update station data
+                        IDAL.DO.Station sta = new IDAL.DO.Station();
+                        foreach (var station in stations)
+                        {
+                            if (station.location == point2)
+                            {
+                                if (station.availableChargingStations > 0)
+                                    sta.ChargeSlots--;
+                                else
+                                    throw new BO.MyExeption_BO("There is no free slot for this drone!");
+                            }
+                        }
 
-                    //    //update all the changes data
-                    //    updateDataSourceFun.updateStation(sta);
-                    //    updateDataSourceFun.updateDroneToCharge(ID, sta.id);
-                    //}
-                //    else
+                        //update all the changes data
+                        updateDataSourceFun.updateStation(sta);
+                        updateDataSourceFun.updateDroneToCharge(ID, sta.id);
+                    }
+                    else
                         throw new BO.MyExeption_BO("He does not have enough battery to get to the station");
                 }
                 else
@@ -180,7 +180,7 @@ namespace IBL
                     }
                     //update data in dataSource
                     BO.Location point = droneBo.location;
-                   // updateDataSourceFun.updateRelaseDroneFromCharge(ID, point, min);
+                    //updateDataSourceFun.updateRelaseDroneFromCharge(ID, point.longitude, point.latitude, min);
 
                     //update all the changes data at the stations list
                     IDAL.DO.Station sta = new IDAL.DO.Station();
@@ -222,15 +222,14 @@ namespace IBL
                 if (drone.droneStatus == IDAL.DO.Enum.DroneStatus.Avilble)
                 {
                     //-----------we always prefere to take care by priority order---------------
-                    List<BO.ParcelToList> newList = GetAllParcelsBy(findEmergency).ToList();//IDAL.DalObject.DataSource.parcels.FindAll(findEmergency);
+                    List<BO.ParcelToList> newList = GetAllParcelsBy(findEmergency).ToList();
                     newList.AddRange(GetAllParcelsBy(findFast).ToList());
                     newList.AddRange(GetAllParcelsBy(findNormal).ToList());
-
-                    foreach (var parcel in newList)
+                    foreach (var parcel in newList.ConvertAll(convertToParcelNotList))
                         if ((int)parcel.weight <= (int)drone.MaxWeight)
                         {
                             //newList now have all the aviable and unScheluled drones by priority order 
-                           // flag = serchForRelevantParcel(parcel, drone, droneBo, droneId);
+                            flag = serchForRelevantParcel(parcel, drone, droneBo, droneId);
                             if (!flag)
                             {
                                 parcelDO = accessIdal.GetParcel(parcel.uniqueID);
@@ -365,7 +364,6 @@ namespace IBL
                                     }
                                 }
 
-                               // parcel = parcels[i];
                                 parcel.Delivered = DateTime.Now;
                                 drone.droneStatus = IDAL.DO.Enum.DroneStatus.Avilble;
 
@@ -395,34 +393,24 @@ namespace IBL
             }
             throw new BO.MyExeption_BO("Exception from function 'GetDroneBO", BO.MyExeption_BO.There_is_no_variable_with_this_ID);
         }
-        bool serchForRelevantParcel(IDAL.DO.Parcel parcel, IDAL.DO.Drone drone, BO.DroneToList droneBo, int droneId)
+        bool serchForRelevantParcel(BO.Parcel parcel, IDAL.DO.Drone drone, BO.DroneToList droneBo, int droneId)
         {
             try
             {
-                IDAL.DO.Point point1, point2, point3 = new IDAL.DO.Point();
-                IDAL.DO.Customer sender, target = new IDAL.DO.Customer();
+                BO.Location point1, point2, point3 = new BO.Location();
+                BO.Customer sender, target = new BO.Customer();
                 //get the location of the parcel sender
-                sender = accessIdal.GetCustomer(parcel.SenderId);
-                point1.latitude = sender.location.latitude;
-                point1.longitude = sender.location.longitude;
+                sender = GetCustomer(parcel.customerInParcelSender.uniqueID);
+                point1 = sender.location;
                 //get the location of our drone
-                point2.latitude = droneBo.location.latitude;
-                point2.longitude = droneBo.location.longitude;
+                point2 = droneBo.location;
                 //get the location of the parcel tgrget
-                target = accessIdal.GetCustomer(parcel.TargetId);
-                point3.latitude = target.location.latitude;
-                point3.longitude = target.location.longitude;
+                target = GetCustomer(parcel.customerInParcel_Target.uniqueID);
+                point3 = target.location;
                 //check if drone have enough battery to get up to the sender and than go up to target with the parcel
-                if (droneBo.Battery - updateDataSourceFun.colculateBattery(point1, point2, droneId) - updateDataSourceFun.colculateBattery(point1, point3, droneId) > 0)
+                if (droneBo.Battery - colculateBatteryBO(point1, point2, droneId) - colculateBatteryBO(point1, point3, droneId) > 0)
                 {
-                    //we found a parcel! change accordingly
-                    drone.droneStatus = IDAL.DO.Enum.DroneStatus.Delivery;
-                    droneBo.status = BO.EnumBO.DroneStatus.Delivery;
-                    IDAL.DO.Parcel par = parcel;
-                    par.Scheduled = DateTime.Now;
-                    //update to data source
-                    UpdateDroneData(droneId, drone.Model);
-                    updateDataSourceFun.updateParcel(par);
+                    //we found a parcel! return false for 
                     return false;
                 }
                 return true;
@@ -453,9 +441,12 @@ namespace IBL
         BO.Parcel convertToParcelNotList(BO.ParcelToList parcelToList)
         {
             BO.Parcel parcel = new BO.Parcel();
+            BO.CustomerInParcel tempCust = new BO.CustomerInParcel();
             parcel.uniqueID = parcelToList.uniqueID;
-            parcel.customerInParcelSender.name = parcelToList.namrSender;
-            parcel.customerInParcel_Target.name = parcelToList.nameTarget;
+            tempCust.name = parcelToList.namrSender;
+            parcel.customerInParcelSender = tempCust;
+            tempCust.name = parcelToList.nameTarget; ;
+            parcel.customerInParcel_Target = tempCust;
             parcel.priority = parcelToList.priority;
             parcel.weight = parcelToList.weight;
             accessIdal.GetListOfParcels().ToList().ForEach(delegate (IDAL.DO.Parcel parcelDO)
@@ -466,14 +457,42 @@ namespace IBL
                     parcel.scheduled = parcelDO.Scheduled;
                     parcel.pickedUp = parcelDO.PickedUp;
                     parcel.requested = parcelDO.Requested;
-                    parcel.droneInParcel.uniqueID = parcelDO.DroneId;
+                    BO.DroneInPackage droneInPackage = new BO.DroneInPackage();
+                    droneInPackage.uniqueID = parcelDO.DroneId;
+                    parcel.droneInParcel = droneInPackage;
 
 
                 }
             });
             return parcel;
         }
-
+        public double distance(BO.Location p1, BO.Location p2)
+        {
+            return 1000 * Math.Sqrt((Math.Pow(p1.latitude - p2.latitude, 2) + Math.Pow(p1.longitude - p2.longitude, 2)));
+        }
+        public double colculateBatteryBO(BO.Location point1, BO.Location point2, int ID)
+        {
+            BO.Drone drone = GetDrone(ID);
+            double minus = 0;
+            List<double> configStatus = accessIdal.PowerConsumptionBySkimmer();
+            double distance = point1.distancePointToPoint(point2);
+            if (drone.weight == BO.EnumBO.WeightCategories.Light)
+            {
+                //all 1500 meters is minus 1% battery
+                minus = distance / configStatus[1];
+            }
+            if (drone.weight == BO.EnumBO.WeightCategories.Medium)
+            {
+                //all 1000 meters is minus 1% battery
+                minus = distance / configStatus[2];
+            }
+            if (drone.weight == BO.EnumBO.WeightCategories.Heavy)
+            {
+                //all 850 meters is minus 1% battery
+                minus = distance / configStatus[3];
+            }
+            return minus;
+        }
     }
 
 }

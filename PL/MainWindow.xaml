@@ -19,20 +19,9 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions >
-            <ComboBox Name="WieghtCombo" Grid.Column="1" SelectionChanged="StatusDroneWeight" Initialized="WieghtCombo_Initialized" Margin="40,0,41,44"/>
-            <TextBox Name ="ChooseFilter"  Grid.Column="0" HorizontalAlignment="Left" Margin="15,16,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
             <Button Content="Click To Show Drone List" Grid.Column="2" HorizontalAlignment="Center" Margin="0,9,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.403,0.496" Click="ClickToShowDroneList" Height="22" Width="200"/>
-            <ComboBox Name="SituationCombo" Grid.Column="1" HorizontalAlignment="Center" Margin="0,35,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="StatusDroneSituation" Initialized="SituationCombo_Initialized"/>
-            <Button Content="Clear filter" Grid.Column="2" HorizontalAlignment="Left" Margin="21,42,0,0" VerticalAlignment="Top" Width="119" Click="ClearFilter"/>
-            <Button Content="Both Filter" Grid.Column="3" HorizontalAlignment="Center" Margin="0,20,0,0" VerticalAlignment="Top" Height="22" Width="90" Click="Button_Click_1"/>
         </Grid>
-        <ListView x:Name="DronesListView"  Grid.Row="1">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+       
 
     </Grid>
 
