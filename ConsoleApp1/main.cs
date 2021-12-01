@@ -173,35 +173,35 @@ namespace ConsoleUI
                             {
                                 case 1:
                                    // List<IDAL.DO.Station> tempSta = temp.Displays_list_of_stations();
-                                    foreach (Station station in DataSource.stations)
-                                    {
-                                        Console.WriteLine(station.ToString());
-                                    }
+                                    //foreach (Station station in DataSource.stations)
+                                    //{
+                                    //    Console.WriteLine(station.ToString());
+                                    //}
                                     break;
 
                                 case 2:
                                     //List<IDAL.DO.Drone> tempDro = temp.DisplaysListOfDrones();
-                                    foreach (Drone drone in DataSource.drones)
-                                    {
-                                        Console.WriteLine(drone.ToString());
-                                    }
+                                    //foreach (Drone drone in DataSource.drones)
+                                    //{
+                                    //    Console.WriteLine(drone.ToString());
+                                    //}
                                     break;
 
                                 case 3:
                                    // List<IDAL.DO.Customer> tempCus = temp.DisplaysListOfCustmers();
-                                    foreach (Customer customer in DataSource.customers)
-                                    {
-                                        Console.WriteLine(customer.ToString());
-                                    }
+                                    //foreach (Customer customer in DataSource.customers)
+                                    //{
+                                    //    Console.WriteLine(customer.ToString());
+                                    //}
                                     break;
                                     
 
                                 case 4:
                                    // List<IDAL.DO.Parcel> tempPar = temp.DisplaysListOfParcels();
-                                    foreach (Parcel parcel in DataSource.parcels)
-                                    {
-                                        Console.WriteLine(parcel.ToString());
-                                    }
+                                    //foreach (Parcel parcel in DataSource.parcels)
+                                    //{
+                                    //    Console.WriteLine(parcel.ToString());
+                                    //}
                                     break;
 
                                 case 5:

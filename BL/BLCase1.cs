@@ -8,7 +8,7 @@ namespace IBL
 {
     public partial class BL : IBL
     {
-        public delegate DroneToList Converter<in TInput, out DroneToList>(TInput input);
+        //public delegate BO.DroneToList Converter<in IDAL.DO.Drone, out BO.DroneToList>(IDAL.DO.Drone input);
     
         public void AddingBaseStation(int ID,string name,double Latitude,double Longitude, int numSlots)
         {

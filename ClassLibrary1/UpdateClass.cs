@@ -66,8 +66,11 @@ namespace IDAL
                 }
 
             }
-            public void updateRelaseDroneFromCharge(int droneId, DO.Point stationLocation, int min)
+            public void updateRelaseDroneFromCharge(int droneId, double longi, double lati, int min)
             {
+                DO.Point stationLocation = new DO.Point();
+                stationLocation.latitude = lati;
+                stationLocation.longitude = longi;
                 for (int i = 0; i < DataSource.drones.Count; i++)
                 {
                     if (DataSource.drones[i].Id == droneId)
