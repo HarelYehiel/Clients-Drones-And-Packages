@@ -27,7 +27,7 @@ namespace PL
         {
             bl = bl1;
             InitializeComponent();
-            
+
 
             // Hide the all tools from view drone.
             DronesListView.Visibility = Visibility.Hidden;
@@ -50,7 +50,7 @@ namespace PL
             DronesListView.ItemsSource = dronesToLists;
 
             // Save the id of drone for the functions in combobox.
-            SaveTheDrineID.Text = droneToList1.uniqueID.ToString();
+            //SaveTheDrineID.Text = droneToList1.uniqueID.ToString();
 
             // Just frome function 'update drone', if choose this function this tools visible
             ModalDroneTextBox.Visibility = Visibility.Hidden;
@@ -67,16 +67,26 @@ namespace PL
             ModelTextBox.Visibility = Visibility.Hidden;
             StationIDTextBox.Visibility = Visibility.Hidden;
         }
-
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            
-        }
-
         private void AddDrone(object sender, RoutedEventArgs e)
         {
-            bl.AddingDrone(Convert.ToInt32(IDTextBox.Text), ModelTextBox.Text,  (int) WieghtCombo.SelectedItem, Convert.ToInt32(StationIDTextBox.Text));
+            try
+            {
+                Random r = new Random();
+
+                int IdDrone = Convert.ToInt32(IDTextBox.Text);
+                List<StationToTheList> stationToTheLists = bl.GetAllStaionsBy(s => s.ChargeSlots > 0).ToList();
+                int IdStation = stationToTheLists[r.Next(0, stationToTheLists.Count)].uniqueID;
+                bl.AddingDrone(IdDrone, ModelTextBox.Text,
+                    (int)WieghtCombo.SelectedItem, IdStation);
+
+                MessageBox.Show("The drone added", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                this.Close(); //? איך מפעילים מפה את הכפתור close
+
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("The drone not added", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
 
         private void Okay(object sender, RoutedEventArgs e)
@@ -102,14 +112,14 @@ namespace PL
 
             }
             else if (FunctionConbo.SelectedIndex == 1) // send drone to charge at station
-                bl.SendingDroneToCharging(Convert.ToInt32(SaveTheDrineID.Text));
+                bl.SendingDroneToCharging(droneToList.uniqueID);
             else if (FunctionConbo.SelectedIndex == 2) ; // send drone from charge in station
-            //   bl.ReleaseDroneFromCharging(Convert.ToInt32(SaveTheDrineID.Text));
-            //חסר את הזמן שהיה בטעינה.  ;
+                                                         //bl.ReleaseDroneFromCharging(Convert.ToInt32(SaveTheDrineID.Text),);
+                                                         //חסר את הזמן שהיה בטעינה.  ;
 
 
             else if (FunctionConbo.SelectedIndex == 3) // assign drone to parcel
-                bl.AssignPackageToDrone(Convert.ToInt32(SaveTheDrineID.Text));
+                bl.AssignPackageToDrone(droneToList.uniqueID);
             else if (FunctionConbo.SelectedIndex == 4) // update picked up parcel by drone
                 bl.CollectionOfPackageByDrone(Convert.ToInt32(SaveTheDrineID.Text));
             else if (FunctionConbo.SelectedIndex == 5) // update delivered parcel by drone
@@ -131,14 +141,9 @@ namespace PL
             FunctionConbo.ItemsSource = s;
         }
 
-        private void DronesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
         private void FunctionConbo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-             if (FunctionConbo.SelectedIndex ==  0) // "update drone"
+            if (FunctionConbo.SelectedIndex == 0) // "update drone"
             {
                 ModalDroneTextBox.Visibility = Visibility.Visible;
                 ModeDronelLabel.Visibility = Visibility.Visible;
@@ -150,6 +155,22 @@ namespace PL
             }
         }
 
+        private void Close(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void CloseWindow(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+
+        }
+
+        private void WieghtCombo_Initialized(object sender, EventArgs e)
+        {
+            WieghtCombo.ItemsSource = Enum.GetValues(typeof(EnumBO.WeightCategories));
+
+        }
     }
 }
 

@@ -34,21 +34,7 @@ namespace IBL
         }
         public IEnumerable<DroneToList> GetTheListOfDrones()
         {
-            try
-            {
-                List<BO.DroneToList> dronesToList = GetAllDronesBy(p => true).ToList();
-
-                if (dronesToList.Count == 0)
-                    throw new MyExeption_BO(MyExeption_BO.An_empty_list);
-
-                return dronesToList;
-            }
-            catch (Exception e)
-            {
-
-                throw new MyExeption_BO("Exception from function 'Displays_the_list_of_drones'", e);
-            }
-
+            return ListDroneToList;
         }
         public IEnumerable<CustomerToList> GetListOfCustomers()
         {
