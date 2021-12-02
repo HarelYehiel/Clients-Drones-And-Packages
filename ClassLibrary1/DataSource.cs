@@ -35,7 +35,7 @@ namespace IDAL
                 Config.lightWeight = 1500;
                 Config.mediumWeight = 1000;
                 Config.heavyWeight = 850;
-                Config.droneLoadingRate = 1/60;//all minute is charge the drone at 1%
+                Config.droneLoadingRate = 1;//all minute is charge the drone at 1%
                 for (int i = 0; i < 5; i++)//create 5 drones withe random data
                 {
                     Drone drone = new Drone();

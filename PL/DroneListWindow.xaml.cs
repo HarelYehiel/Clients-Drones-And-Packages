@@ -62,11 +62,19 @@ namespace PL
         }
         private void DronesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            new DroneWindow(bl, DronesListView.SelectedItem as IBL.BO.DroneToList).Show();
+            new DroneWindow(bl, DronesListView.SelectedItem as IBL.BO.DroneToList).ShowDialog();
+
+            DronesListView.ItemsSource = null;
+            if (SituationCombo.SelectedIndex == -1 && WieghtCombo.SelectedIndex == -1) // No filter
+                DronesListView.ItemsSource = bl.GetTheListOfDrones();
+            else // Have filter/s.
+                ShowTheSkimmersAgain();
+
         }
         private void AddingNewDrone(object sender, RoutedEventArgs e)
         {
-            new DroneWindow(bl).Show();
+            DronesListView.ItemsSource = null; // Reset the list drone.
+            new DroneWindow(bl).ShowDialog();
 
             if (SituationCombo.SelectedIndex == -1 && WieghtCombo.SelectedIndex == -1) // No filter
                 DronesListView.ItemsSource = bl.GetTheListOfDrones();

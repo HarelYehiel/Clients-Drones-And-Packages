@@ -80,7 +80,7 @@ namespace PL
                     (int)WieghtCombo.SelectedItem, IdStation);
 
                 MessageBox.Show("The drone added", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                this.Close(); //? איך מפעילים מפה את הכפתור close
+                this.Close();
 
             }
             catch (Exception)
@@ -91,39 +91,51 @@ namespace PL
 
         private void Okay(object sender, RoutedEventArgs e)
         {
-            if (FunctionConbo.SelectedIndex == -1) ;
-            // בעיה שלא בחרו אופציה
-
-            else if (FunctionConbo.SelectedIndex == 0)  // update drone
+            try
             {
-                if (ModelTextBox.SelectedText == "" || ModelTextBox.SelectedText == "Type Modal Drone") ;
-                // הודעה של בעיה לא כתב מודל
-                else
-                {
-                    // Change the model drone in datasource.
-                    bl.UpdateDroneData(Convert.ToInt32(SaveTheDrineID.Text), ModelTextBox.Text);
+                if (FunctionConbo.SelectedIndex == -1) ;
+                    
 
-                    // Change the model drone in listview
-                    droneToList.Model = ModelTextBox.Text;
-                    List<DroneToList> dronesToLists = new List<DroneToList>();
-                    dronesToLists.Add(droneToList);
-                    DronesListView.ItemsSource = dronesToLists;
+                else if (FunctionConbo.SelectedIndex == 0)  // update drone
+                {
+                    if (ModelTextBox.SelectedText == "" || ModelTextBox.SelectedText == "Type model drone") 
+                        MessageBox.Show("not get new model.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                    
+                    else
+                    {
+                        // Change the model drone in datasource.
+                        bl.UpdateDroneData(droneToList.uniqueID, ModelTextBox.Text);
+
+                        // Change the model drone in listview
+                        droneToList.Model = ModelTextBox.Text;
+                        List<DroneToList> dronesToLists = new List<DroneToList>();
+                        dronesToLists.Add(droneToList);
+                        DronesListView.ItemsSource = dronesToLists;
+                    }
+
                 }
+                else if (FunctionConbo.SelectedIndex == 1) // send drone to charge at station
+                    bl.SendingDroneToCharging(droneToList.uniqueID);
+                else if (FunctionConbo.SelectedIndex == 2)  // send drone from charge in station
+                {
+                    int ba = Convert.ToInt32(ModalDroneTextBox.Text);
+                    bl.ReleaseDroneFromCharging(droneToList.uniqueID, Convert.ToInt32(ModalDroneTextBox.Text));
+                }
+                else if (FunctionConbo.SelectedIndex == 3) // assign drone to parcel
+                    bl.AssignPackageToDrone(droneToList.uniqueID);
+                else if (FunctionConbo.SelectedIndex == 4) // update picked up parcel by drone
+                    bl.CollectionOfPackageByDrone(droneToList.uniqueID);
+                else if (FunctionConbo.SelectedIndex == 5) // update delivered parcel by drone
+                    bl.DeliveryOfPackageByDrone(droneToList.uniqueID);
+
+                MessageBox.Show("The drone updated", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
 
             }
-            else if (FunctionConbo.SelectedIndex == 1) // send drone to charge at station
-                bl.SendingDroneToCharging(droneToList.uniqueID);
-            else if (FunctionConbo.SelectedIndex == 2) ; // send drone from charge in station
-                                                         //bl.ReleaseDroneFromCharging(Convert.ToInt32(SaveTheDrineID.Text),);
-                                                         //חסר את הזמן שהיה בטעינה.  ;
+            catch (Exception)
+            {
+                MessageBox.Show("The drone not updated", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
 
-
-            else if (FunctionConbo.SelectedIndex == 3) // assign drone to parcel
-                bl.AssignPackageToDrone(droneToList.uniqueID);
-            else if (FunctionConbo.SelectedIndex == 4) // update picked up parcel by drone
-                bl.CollectionOfPackageByDrone(Convert.ToInt32(SaveTheDrineID.Text));
-            else if (FunctionConbo.SelectedIndex == 5) // update delivered parcel by drone
-                bl.DeliveryOfPackageByDrone(Convert.ToInt32(SaveTheDrineID.Text));
 
 
         }
@@ -148,6 +160,14 @@ namespace PL
                 ModalDroneTextBox.Visibility = Visibility.Visible;
                 ModeDronelLabel.Visibility = Visibility.Visible;
             }
+            else if (FunctionConbo.SelectedIndex == 2)
+            {
+                ModeDronelLabel.Content = "Enter dfaasf";
+                ModalDroneTextBox.Text = "Enter text";
+                ModalDroneTextBox.Visibility = Visibility.Visible;
+                ModeDronelLabel.Visibility = Visibility.Visible;
+
+            }
             else // Other functions
             {
                 ModalDroneTextBox.Visibility = Visibility.Hidden;
@@ -170,6 +190,11 @@ namespace PL
         {
             WieghtCombo.ItemsSource = Enum.GetValues(typeof(EnumBO.WeightCategories));
 
+        }
+
+        private void ModalDroneTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ModalDroneTextBox.SelectedText = "asfw";
         }
     }
 }
