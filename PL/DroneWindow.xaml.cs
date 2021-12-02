@@ -93,21 +93,25 @@ namespace PL
         {
             try
             {
-                if (FunctionConbo.SelectedIndex == -1) ;
-                    
-
+                //string s = ModelTextBox.Text;
+                //s = ModelTextBox.GetLineText();
+                if (FunctionConbo.SelectedIndex == -1)
+                {
+                    MessageBox.Show("You not choose anything", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    this.Close();
+                }
                 else if (FunctionConbo.SelectedIndex == 0)  // update drone
                 {
-                    if (ModelTextBox.SelectedText == "" || ModelTextBox.SelectedText == "Type model drone") 
+                    if (ModalDroneTextBox.Text == "" || ModalDroneTextBox.Text == "Type model drone")
                         MessageBox.Show("not get new model.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                    
+
                     else
                     {
                         // Change the model drone in datasource.
-                        bl.UpdateDroneData(droneToList.uniqueID, ModelTextBox.Text);
+                        bl.UpdateDroneData(droneToList.uniqueID, ModalDroneTextBox.Text);
 
                         // Change the model drone in listview
-                        droneToList.Model = ModelTextBox.Text;
+                        droneToList.Model = ModalDroneTextBox.Text;
                         List<DroneToList> dronesToLists = new List<DroneToList>();
                         dronesToLists.Add(droneToList);
                         DronesListView.ItemsSource = dronesToLists;
@@ -192,10 +196,10 @@ namespace PL
 
         }
 
-        private void ModalDroneTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            ModalDroneTextBox.SelectedText = "asfw";
-        }
+        //private void ModalDroneTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        //{
+        //    ModalDroneTextBox.SelectedText = "asfw";
+        //}
     }
 }
 
