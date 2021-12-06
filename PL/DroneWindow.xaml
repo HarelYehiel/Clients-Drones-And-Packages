@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="DroneWindow" Height="450" Width="800">
-    <Grid>
+        Title="DroneWindow" Height="450" Width="800" Loaded="CancelButtonX">
+    <Grid Loaded="CancelButtonX">
         <Grid.RowDefinitions>
             <RowDefinition Height="150*"/>
             <RowDefinition Height="400*"/>

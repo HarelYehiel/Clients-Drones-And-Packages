@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Runtime.InteropServices;
+using System.Windows.Interop;
 using IBL.BO;
 
 namespace PL
@@ -21,6 +23,13 @@ namespace PL
     public partial class DroneListWindow : Window
     {
         IBL.IBL bl;
+
+        private const int GWL_STYLE = -16;
+        private const int WS_SYSMENU = 0x80000;
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
+        [DllImport("user32.dll")]
+        private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
         public DroneListWindow(ref IBL.IBL bL1)
         {
             bl = bL1;
@@ -95,6 +104,12 @@ namespace PL
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void cancelButtonX(object sender, RoutedEventArgs e)
+        {
+            var hwnd = new WindowInteropHelper(this).Handle;
+            SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_SYSMENU);
         }
     }
 }

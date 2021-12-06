@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="DroneListWindow" Height="640" Width="800">
+        Title="DroneListWindow" Height="640" Width="800" Loaded="cancelButtonX">
     <Grid Name="MainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="50*"/>
@@ -25,7 +25,7 @@
             <Button Content="Clear filter" Grid.Column="1" HorizontalAlignment="Left" Margin="50,42,0,0" VerticalAlignment="Top" Width="120" Click="ClearFilter"/>
             <Button Content="Both Filter" Grid.Column="1"   HorizontalAlignment="Left" Margin="50,12,0,0" VerticalAlignment="Top" Height="22" Width="120" Click="AllFilters" RenderTransformOrigin="0.494,0.661"/>
             <Button Content="Adding Drone" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Click="AddingNewDrone" Margin="0,41,0,0" />
-            <Button Content="Close" Grid.Column="3" HorizontalAlignment="Left"  Margin="153,1,0,48" Width="37" Click="CloseWindow" />
+            <Button Content="Close" Grid.Column="3"  Margin="153,1,10,48" Click="CloseWindow" />
         </Grid>
         <ListView x:Name="DronesListView"  Grid.Row="1" SelectionChanged="DronesListView_SelectionChanged">
             <ListView.View>
