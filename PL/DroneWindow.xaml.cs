@@ -79,16 +79,43 @@ namespace PL
         {
             try
             {
+                int IdDrone = Convert.ToInt32(IDTextBox.Text);
+                int IdStaion = Convert.ToInt32(StationIDTextBox.Text);
                 Random r = new Random();
 
-                int IdDrone = Convert.ToInt32(IDTextBox.Text);
-                List<StationToTheList> stationToTheLists = bl.GetAllStaionsBy(s => s.ChargeSlots > 0).ToList();
-                int IdStation = stationToTheLists[r.Next(0, stationToTheLists.Count)].uniqueID;
-                bl.AddingDrone(IdDrone, ModelTextBox.Text,
-                    (int)WieghtCombo.SelectedItem, IdStation);
+                if (!existThisIdDrone(IdDrone))
+                {
+                    // אדום ליד ID
+                    MessageBox.Show("This ID drone exists, select another.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 
-                MessageBox.Show("The drone added", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                this.Close();
+                }
+                else if(ModelTextBox.Text == "Type model drone")
+                {
+                    // אדום ליד ID
+                    MessageBox.Show("Select the model of drone.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else if (!existThisIdStation(IdStaion))
+                {
+                    // אדום ליד ID
+                    MessageBox.Show("This ID station exists, select another.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else if (WieghtCombo.SelectedIndex == -1)
+                {
+                    // אדום ליד ID
+                    MessageBox.Show("Select the wieght of drone.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else
+                {
+
+
+                    List<StationToTheList> stationToTheLists = bl.GetAllStaionsBy(s => s.ChargeSlots > 0).ToList();
+                    int IdStation = stationToTheLists[r.Next(0, stationToTheLists.Count)].uniqueID;
+                    bl.AddingDrone(IdDrone, ModelTextBox.Text,
+                        (int)WieghtCombo.SelectedItem, IdStation);
+
+                    MessageBox.Show("The drone added", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                    this.Close();
+                }
 
             }
             catch (Exception)
@@ -96,7 +123,6 @@ namespace PL
                 MessageBox.Show("The drone not added", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
-
         private void Okay(object sender, RoutedEventArgs e)
         {
             try
@@ -164,7 +190,6 @@ namespace PL
 
             FunctionConbo.ItemsSource = s;
         }
-
         private void FunctionConbo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (FunctionConbo.SelectedIndex == 0) // "update drone"
@@ -186,34 +211,53 @@ namespace PL
                 ModeDronelLabel.Visibility = Visibility.Hidden;
             }
         }
-
         private void Close(object sender, RoutedEventArgs e)
         {
 
         }
-
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
             this.Close();
 
         }
-
         private void WieghtCombo_Initialized(object sender, EventArgs e)
         {
             WieghtCombo.ItemsSource = Enum.GetValues(typeof(EnumBO.WeightCategories));
 
         }
-
         private void CancelButtonX(object sender, RoutedEventArgs e)
         {
             var hwnd = new WindowInteropHelper(this).Handle;
             SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_SYSMENU);
         }
 
-        //private void ModalDroneTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        //{
-        //    ModalDroneTextBox.SelectedText = "asfw";
-        //}
+        bool existThisIdDrone(int id)
+        {
+            try
+            {
+                Drone drone;
+                drone = bl.GetDrone(id);
+                if (drone.uniqueID == id) return false; // Exist drine with this id.
+                return true;
+            }
+            catch (Exception)
+            {
+                return true;// Don't exist drone with this id.
+            }
+        }
+        bool existThisIdStation(int id)
+        {
+            try
+            {
+                if (bl.getBaseStation(id).uniqueID == id) return false; // Exist staion with this id.
+                return true;
+            }
+            catch (Exception)
+            {
+                return true;// Don't exist station with this id.
+            }
+        }
+
     }
 }
 
