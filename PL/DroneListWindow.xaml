@@ -7,34 +7,41 @@
         mc:Ignorable="d"
         Title="DroneListWindow" Height="640" Width="800" Loaded="cancelButtonX">
     <Grid Name="MainGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="11*"/>
+            <ColumnDefinition Width="89*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="50*"/>
             <RowDefinition Height="400*"/>
         </Grid.RowDefinitions>
-        <Grid Name="UpGrid" HorizontalAlignment="Stretch" Height="auto" Grid.Row="0"
-            VerticalAlignment="Stretch" Width="auto">
+        <Grid Name="UpGrid" Height="auto" Grid.Row="0" Width="auto" Grid.ColumnSpan="2" Background="#274472
+
+">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="147*"/>
+                <ColumnDefinition Width="53*"/>
+                <ColumnDefinition Width="200*"/>
+                <ColumnDefinition Width="200*"/>
+                <ColumnDefinition Width="200*"/>
             </Grid.ColumnDefinitions >
-            <ComboBox Name="WieghtCombo" Grid.Column="0" IsEditable ="true" IsReadOnly="True" Text="Choose wieght"  SelectionChanged="StatusDroneWeight" Initialized="WieghtCombo_Initialized" Margin="40,18,41,27"/>
-            <TextBox Name ="FilterTextBox"  Grid.Column="0" HorizontalAlignment="Left" Margin="74,-2,0,0" Text="Fliters" TextWrapping="Wrap" VerticalAlignment="Top" Width="44"/>
-            <ComboBox Name="SituationCombo" IsEditable ="true" Text="Choose status"  HorizontalAlignment="Center" Margin="0,43,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="StatusDroneSituation" Initialized="SituationCombo_Initialized" Height="22"/>
-            <Button Content="Clear filter" Grid.Column="1" HorizontalAlignment="Left" Margin="50,42,0,0" VerticalAlignment="Top" Width="120" Click="ClearFilter"/>
-            <Button Content="Both Filter" Grid.Column="1"   HorizontalAlignment="Left" Margin="50,12,0,0" VerticalAlignment="Top" Height="22" Width="120" Click="AllFilters" RenderTransformOrigin="0.494,0.661"/>
-            <Button Content="Adding Drone" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Click="AddingNewDrone" Margin="0,41,0,0" />
-            <Button Content="Close" Grid.Column="3"  Margin="153,1,10,48" Click="CloseWindow" />
+            <ComboBox Name="WieghtCombo" Grid.Column="0" IsEditable ="true" IsReadOnly="True" Text="Choose wieght"  SelectionChanged="StatusDroneWeight" Initialized="WieghtCombo_Initialized" Margin="43,21,34,24" Grid.ColumnSpan="2"/>
+            <TextBox Name ="FilterTextBox" FontWeight = "DemiBold" HorizontalAlignment="Left" Margin="43,1,0,0" Text="Fliters" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Background = "#C3E0E5
+" Height="18" Grid.ColumnSpan="2"/>
+            <ComboBox Name="SituationCombo" IsEditable ="true" Text="Choose status"  HorizontalAlignment="Left" Margin="43,46,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="StatusDroneSituation" Initialized="SituationCombo_Initialized" Height="20" Grid.ColumnSpan="2"/>
+            <Button Content="Clear filter" FontWeight = "DemiBold" Grid.Column="2" HorizontalAlignment="Center" Margin="0,43,0,0" VerticalAlignment="Top" Width="120" Click="ClearFilter" Background="#C3E0E5"/>
+            <Button Content="Both Filter" FontWeight = "DemiBold" Grid.Column="2"   HorizontalAlignment="Center" Margin="0,11,0,0" VerticalAlignment="Top" Height="22" Width="120" Click="AllFilters" RenderTransformOrigin="0.494,0.661" Background="#C3E0E5"/>
+            <Button Content="Add new Drone" FontWeight = "DemiBold"  Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Top" Click="AddingNewDrone" Margin="0,18,0,0" Background="#C3E0E5" Height="27" Width="124" />
+            <Button Content="Close" Grid.Column="4"  Margin="153,1,10,48" Click="CloseWindow" />
         </Grid>
-        <ListView x:Name="DronesListView"  Grid.Row="1" SelectionChanged="DronesListView_SelectionChanged">
+        <ListView x:Name="DronesListView" SelectionChanged="DronesListView_SelectionChanged" Grid.ColumnSpan="2" Margin="0,69,0,0" Grid.RowSpan="2" Background ="#5885AF">
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>
                 </GridView>
             </ListView.View>
         </ListView>
-        <CheckBox Content="CheckBox" HorizontalAlignment="Left" Margin="1034,78,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+        <CheckBox Content="CheckBox" HorizontalAlignment="Left" Margin="946,78,0,0" Grid.Row="1" VerticalAlignment="Top" Grid.Column="1"/>
 
     </Grid>
 
