@@ -26,12 +26,29 @@
                 <ColumnDefinition Width="200*"/>
             </Grid.ColumnDefinitions >
             <ComboBox Name="WieghtCombo" Grid.Column="0" IsEditable ="true" IsReadOnly="True" Text="Choose wieght"  SelectionChanged="StatusDroneWeight" Initialized="WieghtCombo_Initialized" Margin="43,21,34,24" Grid.ColumnSpan="2"/>
-            <TextBox Name ="FilterTextBox" FontWeight = "DemiBold" HorizontalAlignment="Left" Margin="43,1,0,0" Text="Fliters" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Background = "#C3E0E5
-" Height="18" Grid.ColumnSpan="2"/>
+            <TextBox Name ="FilterTextBox" FontWeight = "DemiBold" HorizontalAlignment="Left" Margin="43,1,0,0" Text="Fliters" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Background = "#C3E0E5" Height="18" Grid.ColumnSpan="2"/>
             <ComboBox Name="SituationCombo" IsEditable ="true" Text="Choose status"  HorizontalAlignment="Left" Margin="43,46,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="StatusDroneSituation" Initialized="SituationCombo_Initialized" Height="20" Grid.ColumnSpan="2"/>
-            <Button Content="Clear filter" FontWeight = "DemiBold" Grid.Column="2" HorizontalAlignment="Center" Margin="0,43,0,0" VerticalAlignment="Top" Width="120" Click="ClearFilter" Background="#C3E0E5"/>
-            <Button Content="Both Filter" FontWeight = "DemiBold" Grid.Column="2"   HorizontalAlignment="Center" Margin="0,11,0,0" VerticalAlignment="Top" Height="22" Width="120" Click="AllFilters" RenderTransformOrigin="0.494,0.661" Background="#C3E0E5"/>
-            <Button Content="Add new Drone" FontWeight = "DemiBold"  Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Top" Click="AddingNewDrone" Margin="0,18,0,0" Background="#C3E0E5" Height="27" Width="124" />
+            <Button Content="Clear filter" FontWeight = "DemiBold" Grid.Column="2" HorizontalAlignment="Center" Margin="0,43,0,0" VerticalAlignment="Top" Width="120" Click="ClearFilter" Background="#C3E0E5" BorderBrush = "White">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="8"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button Content="Both Filter" FontWeight = "DemiBold" Grid.Column="2"   HorizontalAlignment="Center" Margin="0,11,0,0" VerticalAlignment="Top" Height="22" Width="120" Click="AllFilters" RenderTransformOrigin="0.494,0.661" Background="#C3E0E5" BorderBrush = "White">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="8"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button Content="Add new Drone" FontWeight = "DemiBold"  Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Top" Click="AddingNewDrone" Margin="0,18,0,0" Background="#C3E0E5" BorderBrush = "White" Height="27" Width="124" >
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="12"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
             <Button Content="Close" Grid.Column="4"  Margin="153,1,10,48" Click="CloseWindow" />
         </Grid>
         <ListView x:Name="DronesListView" SelectionChanged="DronesListView_SelectionChanged" Grid.ColumnSpan="2" Margin="0,69,0,0" Grid.RowSpan="2" Background ="#5885AF">

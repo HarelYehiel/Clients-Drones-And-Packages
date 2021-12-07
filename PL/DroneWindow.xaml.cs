@@ -160,7 +160,6 @@ namespace PL
                 , "update picked up parcel by drone"
                 , "update delivered parcel by drone"
             };
-
             FunctionConbo.ItemsSource = s;
         }
 

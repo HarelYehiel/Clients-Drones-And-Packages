@@ -12,7 +12,13 @@
             <RowDefinition Height="150*"/>
             <RowDefinition Height="400*"/>
         </Grid.RowDefinitions>
-        <Button x:Name="AddDroneButton" Content="Add Drone"  FontWeight = "DemiBold" HorizontalAlignment="Left" Margin="134,252,0,0" VerticalAlignment="Top" Height="32" Width="100" Click="AddDrone" Grid.Row="1"/>
+        <Button x:Name="AddDroneButton" Content="Add Drone" BorderBrush = "White" FontWeight = "DemiBold" HorizontalAlignment="Left" Margin="134,252,0,0" VerticalAlignment="Top" Height="32" Width="100" Click="AddDrone" Grid.Row="1">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="15"/>
+                </Style>
+            </Button.Resources>
+        </Button>
         <Label x:Name="IDLabel" Content="ID" FontWeight="ExtraBlack" HorizontalAlignment="Left" Margin="25,59,0,0" VerticalAlignment="Top" Height="44" Width="92" Grid.Row="1"/>
         <Label x:Name="ModelLabel" Content="Model" FontWeight="ExtraBlack" HorizontalAlignment="Left" Margin="25,109,0,0" VerticalAlignment="Top" Height="35" Width="92" Grid.Row="1"/>
         <Label x:Name="StationIDLabel" Content="Station ID" FontWeight="ExtraBlack" HorizontalAlignment="Left" Margin="25,159,0,0" VerticalAlignment="Top" Height="36" Width="92" Grid.Row="1"/>
@@ -22,7 +28,13 @@
         <TextBox  x:Name ="ModelTextBox" HorizontalAlignment="Left" Margin="121,108,0,0" Text="Type model drone" TextWrapping="Wrap" VerticalAlignment="Top" Width="127" Height="42" Grid.Row="1"/>
         <TextBox  x:Name ="StationIDTextBox" HorizontalAlignment="Left" Margin="121,154,0,0" Text="Type ID station" TextWrapping="Wrap" VerticalAlignment="Top" Width="126" Height="44" Grid.Row="1"/>
         <ComboBox x:Name="FunctionConbo" HorizontalAlignment="Left"  IsEditable ="true" IsReadOnly="True" Text="Choose function" Margin="610,139,0,0" VerticalAlignment="Top" Width="154" Height="29" RenderTransformOrigin="0.491,1.082" Grid.Row="1" SelectionChanged="FunctionConbo_SelectionChanged" Initialized="FunctionConbo_Initialized"/>
-        <Button x:Name="OkayButton" Content="OK" FontWeight = "DemiBold" HorizontalAlignment="Left" Margin="610,194,0,0" VerticalAlignment="Top" Width="154" Height="34" Grid.Row="1" Click="Okay"/>
+        <Button x:Name="OkayButton" Content="OK" BorderBrush = "White" FontWeight = "DemiBold" HorizontalAlignment="Left" Margin="610,194,0,0" VerticalAlignment="Top" Width="154" Height="34" Grid.Row="1" Click="Okay">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="15"/>
+                </Style>
+            </Button.Resources>
+        </Button>
         <ListView x:Name="DronesListView"  Grid.Row="0" SelectionChanged="DronesListView_SelectionChanged" Background="#5885AF">
             <ListView.View>
                 <GridView>
