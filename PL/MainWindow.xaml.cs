@@ -25,6 +25,8 @@ namespace PL
         public MainWindow()
         {
             bl = new IBL.BL();
+            ImageBrush image = new ImageBrush();
+            image.ImageSource = new BitmapImage(new Uri("C:\\Users\\Thee\\source\\repos\\Yonithee\\CourseMiniProject1\\PL\\MainBackground.jpeg"));
             InitializeComponent();
         }
 

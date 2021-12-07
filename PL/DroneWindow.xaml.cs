@@ -56,7 +56,6 @@ namespace PL
             List<DroneToList> dronesToLists = new List<DroneToList>();
             dronesToLists.Add(droneToList1);
             DronesListView.ItemsSource = dronesToLists;
-
             // Save the id of drone for the functions in combobox.
             //SaveTheDrineID.Text = droneToList1.uniqueID.ToString();
 
@@ -199,8 +198,8 @@ namespace PL
             }
             else if (FunctionConbo.SelectedIndex == 2)
             {
-                ModeDronelLabel.Content = "Enter dfaasf";
-                ModalDroneTextBox.Text = "Enter text";
+                ModeDronelLabel.Content = "Amount of time";
+                ModalDroneTextBox.Text = "Type how many minute";
                 ModalDroneTextBox.Visibility = Visibility.Visible;
                 ModeDronelLabel.Visibility = Visibility.Visible;
 
@@ -258,6 +257,15 @@ namespace PL
             }
         }
 
+        private void DronesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        //private void ModalDroneTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        //{
+        //    ModalDroneTextBox.SelectedText = "asfw";
+        //}
     }
 }
 
