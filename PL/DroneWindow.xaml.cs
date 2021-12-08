@@ -221,7 +221,6 @@ namespace PL
                 , "update picked up parcel by drone"
                 , "update delivered parcel by drone"
             };
-
             FunctionConbo.ItemsSource = s;
         }
         private void FunctionConbo_SelectionChanged(object sender, SelectionChangedEventArgs e)

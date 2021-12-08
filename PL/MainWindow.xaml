@@ -21,7 +21,13 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions >
             <Button Content="Click To Show Drone List"  FontWeight = "DemiBold" Grid.Column="2" HorizontalAlignment="Center" Background = "#D4F1F4" BorderBrush = "White"  
-                    Margin="0,14,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.403,0.496" Click="ClickToShowDroneList" Height="40" Width="150"/>
+                    Margin="0,14,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.403,0.496" Click="ClickToShowDroneList" Height="40" Width="150">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="15"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
             
         </Grid>
     </Grid>
