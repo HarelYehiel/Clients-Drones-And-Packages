@@ -71,7 +71,8 @@ namespace PL
         }
         private void DronesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            new DroneWindow(bl, DronesListView.SelectedItem as IBL.BO.DroneToList).ShowDialog();
+            if (DronesListView.ItemsSource != null)
+                new DroneWindow(bl, DronesListView.SelectedItem as IBL.BO.DroneToList).ShowDialog();
 
             DronesListView.ItemsSource = null;
             if (SituationCombo.SelectedIndex == -1 && WieghtCombo.SelectedIndex == -1) // No filter

@@ -7,11 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="MainBackground.jpeg" />
+    <None Remove="MainIcon.jpeg" />
     <None Remove="WhatsApp Image 2021-12-07 at 10.21.02.jpeg" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BL\BL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="MainBackground.jpeg" />
+    <Resource Include="MainIcon.jpeg" />
   </ItemGroup>
 
 </Project>
