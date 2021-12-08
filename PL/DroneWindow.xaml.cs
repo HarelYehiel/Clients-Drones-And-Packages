@@ -74,7 +74,7 @@ namespace PL
             ModelTextBox.Visibility = Visibility.Hidden;
             StationIDTextBox.Visibility = Visibility.Hidden;
         }
-        public static bool checkIfThisNumber(string s)
+        bool isNumber(string s)
         {
             if (s.Length == 0) return false;
             for (int i = 0; i < s.Length; i++)
@@ -95,13 +95,13 @@ namespace PL
                 Random r = new Random();
                 hideAndReseteAllTextBlocks(); // Hide and resete all the TextBlocks
 
-                if (!checkIfThisNumber(IDTextBox.Text))
-                    // Check if the drone ID is typed only with numbers.
+                if (!isNumber(IDTextBox.Text))
+                // Check if the drone ID is typed only with numbers.
                 {
                     IDTextBlock.Text = "Type only numbers";
                     IDTextBlock.Visibility = Visibility.Visible;
                 }
-                else if (!checkIfThisNumber(StationIDTextBox.Text))
+                else if (!isNumber(StationIDTextBox.Text))
                 // Check if the station ID is typed only with numbers.
                 {
                     StationTextBlock.Text = "Type only numbers";
@@ -111,10 +111,10 @@ namespace PL
                 {
                     int IdDrone = Convert.ToInt32(IDTextBox.Text);
                     int IdStaion = Convert.ToInt32(StationIDTextBox.Text);
-                   
+
 
                     if (existThisIdDrone(IdDrone) || IDTextBox.Text.Length == 0)
-                        // ID drone exist in the list ? if true (yes), so error
+                    // ID drone exist in the list ? if true (yes), so error
                     {
                         IDTextBlock.Text = "This ID drone exists, select another.";
                         IDTextBlock.Visibility = Visibility.Visible;
@@ -161,8 +161,8 @@ namespace PL
         {
             try
             {
-                //string s = ModelTextBox.Text;
-                //s = ModelTextBox.GetLineText();
+                InfoTextBlock.Visibility = Visibility.Hidden;
+
                 if (FunctionConbo.SelectedIndex == -1)
                 {
                     MessageBox.Show("You not choose anything", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -170,28 +170,46 @@ namespace PL
                 }
                 else if (FunctionConbo.SelectedIndex == 0)  // update drone
                 {
-                    if (ModalDroneTextBox.Text == "" || ModalDroneTextBox.Text == "Type model drone")
-                        MessageBox.Show("not get new model.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                    else
+                    if (ModalDroneTextBox.Text == "" || ModalDroneTextBox.Text == "Type Model Drone to update")
                     {
-                        // Change the model drone in datasource.
-                        bl.UpdateDroneData(droneToList.uniqueID, ModalDroneTextBox.Text);
-
-                        // Change the model drone in listview
-                        droneToList.Model = ModalDroneTextBox.Text;
-                        List<DroneToList> dronesToLists = new List<DroneToList>();
-                        dronesToLists.Add(droneToList);
-                        DronesListView.ItemsSource = dronesToLists;
+                        InfoTextBlock.Text = "not get new model";
+                        InfoTextBlock.Visibility = Visibility.Visible;
+                        return; // Back to fix.
                     }
+
+                    // Change the model drone in datasource.
+                    bl.UpdateDroneData(droneToList.uniqueID, ModalDroneTextBox.Text);
+
+                    // Change the model drone in listview
+                    droneToList.Model = ModalDroneTextBox.Text;
+                    List<DroneToList> dronesToLists = new List<DroneToList>();
+                    dronesToLists.Add(droneToList);
+                    DronesListView.ItemsSource = dronesToLists;
+
 
                 }
                 else if (FunctionConbo.SelectedIndex == 1) // send drone to charge at station
                     bl.SendingDroneToCharging(droneToList.uniqueID);
                 else if (FunctionConbo.SelectedIndex == 2)  // send drone from charge in station
                 {
+                    if (ModalDroneTextBox.Text.Length == 0 || ModalDroneTextBox.Text == "Type how many minute" ||
+                        !isNumber(ModalDroneTextBox.Text))
+                    {
+                        InfoTextBlock.Text = "No loading minutes typed";
+                        InfoTextBlock.Visibility = Visibility.Visible;
+                        return; // Back to fix.
+                    }
                     int ba = Convert.ToInt32(ModalDroneTextBox.Text);
-                    bl.ReleaseDroneFromCharging(droneToList.uniqueID, Convert.ToInt32(ModalDroneTextBox.Text));
+                    try
+                    {
+                        bl.ReleaseDroneFromCharging(droneToList.uniqueID, Convert.ToInt32(ModalDroneTextBox.Text));
+
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("The drone is not maintained at all", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                        return; // Back to fix.
+                    }
                 }
                 else if (FunctionConbo.SelectedIndex == 3) // assign drone to parcel
                     bl.AssignPackageToDrone(droneToList.uniqueID);
@@ -225,8 +243,12 @@ namespace PL
         }
         private void FunctionConbo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            InfoTextBlock.Visibility = Visibility.Hidden;
+
             if (FunctionConbo.SelectedIndex == 0) // "update drone"
             {
+                ModeDronelLabel.Content = "Drone Model";
+                ModalDroneTextBox.Text = "Type Model Drone to update";
                 ModalDroneTextBox.Visibility = Visibility.Visible;
                 ModeDronelLabel.Visibility = Visibility.Visible;
             }
