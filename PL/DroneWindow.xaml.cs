@@ -36,9 +36,10 @@ namespace PL
             bl = bl1;
             InitializeComponent();
 
+            // View the details of drone.
+            DronesListView.ItemsSource = bl.GetListOfBaseStations();
 
             // Hide the all tools from view drone.
-            DronesListView.Visibility = Visibility.Hidden;
             FunctionConbo.Visibility = Visibility.Hidden;
             OkayButton.Visibility = Visibility.Hidden;
             ModalDroneTextBox.Visibility = Visibility.Hidden;
@@ -92,7 +93,6 @@ namespace PL
             try
             {
                 bool AreAllTestsNormal = true;
-                Random r = new Random();
                 hideAndReseteAllTextBlocks(); // Hide and resete all the TextBlocks
 
                 if (!isNumber(IDTextBox.Text))
@@ -127,28 +127,24 @@ namespace PL
                         AreAllTestsNormal = false;
 
                     }
-                    //if (!existThisIdStation(IdStaion))
-                    //    // ID station exist ? if false (no), so error.
-                    //{
-                    //    StationTextBlock.Text = "This ID station not exists, select another.";
-                    //    StationTextBlock.Visibility = Visibility.Visible;
-                    //    AreAllTestsNormal = false;
-
-                    //}
+                    if (!existThisIdStation(IdStaion))
+                    // ID station exist ? if false (no), so error.
+                    {
+                        StationTextBlock.Text = "This ID station not exists, select another.";
+                        StationTextBlock.Visibility = Visibility.Visible;
+                        AreAllTestsNormal = false;
+                    }
                     if (WieghtCombo.SelectedIndex == -1) // Wieght drone
                     {
                         WieghtTextBlock.Visibility = Visibility.Visible;
                         AreAllTestsNormal = false;
                     }
                     if (AreAllTestsNormal) // Yes, all the tests normal.
-                    {
-                        List<StationToTheList> stationToTheLists = bl.GetAllStaionsBy(s => s.ChargeSlots > 0).ToList();
-                        int IdStation = stationToTheLists[r.Next(0, stationToTheLists.Count)].uniqueID;
-                        bl.AddingDrone(IdDrone, ModelTextBox.Text,
-                            (int)WieghtCombo.SelectedItem, IdStation);
+                    {                       
+                        bl.AddingDrone(IdDrone, ModelTextBox.Text, (int)WieghtCombo.SelectedItem, IdStaion);
 
                         MessageBox.Show("The drone added", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                        this.Close();
+                        Close();
                     }
                 }
             }
@@ -318,10 +314,6 @@ namespace PL
             ModelTextBlock.Visibility = Visibility.Hidden;
             StationTextBlock.Visibility = Visibility.Hidden;
             WieghtTextBlock.Visibility = Visibility.Hidden;
-        }
-        private void DronesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
         }
     }
 }

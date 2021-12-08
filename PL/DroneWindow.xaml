@@ -26,7 +26,7 @@
         <ComboBox  x:Name ="WieghtCombo" HorizontalAlignment="Left"  IsEditable ="true" IsReadOnly="True" Text="Choose wieght"  Margin="121,202,0,0" VerticalAlignment="Top" Width="127" Height="43" Grid.Row="1" Initialized="WieghtCombo_Initialized"/>
         <TextBox  x:Name ="IDTextBox" HorizontalAlignment="Left" Margin="121,60,0,0" Text="Type ID drone" TextWrapping="Wrap" VerticalAlignment="Top" Width="127" Height="44" Grid.Row="1"/>
         <TextBox  x:Name ="ModelTextBox" HorizontalAlignment="Left" Margin="121,108,0,0" Text="Type model drone" TextWrapping="Wrap" VerticalAlignment="Top" Width="127" Height="42" Grid.Row="1"/>
-        <TextBox  x:Name ="StationIDTextBox" HorizontalAlignment="Left" Margin="121,154,0,0" Text="Type ID station" TextWrapping="Wrap" VerticalAlignment="Top" Width="126" Height="44" Grid.Row="1"/>
+        <TextBox  x:Name ="StationIDTextBox" HorizontalAlignment="Left" Margin="121,154,0,0" Text="Type ID station from the list above" TextWrapping="Wrap" VerticalAlignment="Top" Width="126" Height="44" Grid.Row="1"/>
         <ComboBox x:Name="FunctionConbo" HorizontalAlignment="Left"  IsEditable ="true" IsReadOnly="True" Text="Choose function" Margin="610,139,0,0" VerticalAlignment="Top" Width="154" Height="29" RenderTransformOrigin="0.491,1.082" Grid.Row="1" SelectionChanged="FunctionConbo_SelectionChanged" Initialized="FunctionConbo_Initialized"/>
         <Button x:Name="OkayButton" Content="OK" BorderBrush = "White" FontWeight = "DemiBold" HorizontalAlignment="Left" Margin="610,194,0,0" VerticalAlignment="Top" Width="154" Height="34" Grid.Row="1" Click="Okay">
             <Button.Resources>
@@ -35,7 +35,7 @@
                 </Style>
             </Button.Resources>
         </Button>
-        <ListView x:Name="DronesListView"  Grid.Row="0" SelectionChanged="DronesListView_SelectionChanged" Background="#5885AF">
+        <ListView x:Name="DronesListView"  Grid.Row="0" Background="#5885AF">
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>
