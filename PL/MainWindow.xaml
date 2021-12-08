@@ -5,12 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Icon="C:\Users\Thee\source\repos\Yonithee\CourseMiniProject1\PL\MainIcon.jpeg"
         Title="MainWindow" Height="640" Width="800">
     <Grid Name="MainGrid">
-        <Grid.Background>
-            <ImageBrush ImageSource = "C:\Users\Thee\source\repos\Yonithee\CourseMiniProject1\PL\MainBackground.jpeg"></ImageBrush>
-        </Grid.Background>
+       
         <Grid.RowDefinitions>
             <RowDefinition Height="69*"/>
             <RowDefinition Height="14*"/>

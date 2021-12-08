@@ -74,48 +74,83 @@ namespace PL
             ModelTextBox.Visibility = Visibility.Hidden;
             StationIDTextBox.Visibility = Visibility.Hidden;
         }
+        public static bool checkIfThisNumber(string s)
+        {
+            if (s.Length == 0) return false;
+            for (int i = 0; i < s.Length; i++)
+            {
+                if ((int)s[i] >= (int)'0' && (int)s[i] <= (int)'9')
+                    continue;
+
+                return false;
+            }
+
+            return true;
+        }
         private void AddDrone(object sender, RoutedEventArgs e)
         {
             try
             {
-                int IdDrone = Convert.ToInt32(IDTextBox.Text);
-                int IdStaion = Convert.ToInt32(StationIDTextBox.Text);
+                bool AreAllTestsNormal = true;
                 Random r = new Random();
+                hideAndReseteAllTextBlocks(); // Hide and resete all the TextBlocks
 
-                if (!existThisIdDrone(IdDrone))
+                if (!checkIfThisNumber(IDTextBox.Text))
+                    // Check if the drone ID is typed only with numbers.
                 {
-                    // אדום ליד ID
-                    MessageBox.Show("This ID drone exists, select another.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-
+                    IDTextBlock.Text = "Type only numbers";
+                    IDTextBlock.Visibility = Visibility.Visible;
                 }
-                else if(ModelTextBox.Text == "Type model drone")
+                else if (!checkIfThisNumber(StationIDTextBox.Text))
+                // Check if the station ID is typed only with numbers.
                 {
-                    // אדום ליד ID
-                    MessageBox.Show("Select the model of drone.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-                else if (!existThisIdStation(IdStaion))
-                {
-                    // אדום ליד ID
-                    MessageBox.Show("This ID station exists, select another.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-                else if (WieghtCombo.SelectedIndex == -1)
-                {
-                    // אדום ליד ID
-                    MessageBox.Show("Select the wieght of drone.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    StationTextBlock.Text = "Type only numbers";
+                    StationTextBlock.Visibility = Visibility.Visible;
                 }
                 else
                 {
+                    int IdDrone = Convert.ToInt32(IDTextBox.Text);
+                    int IdStaion = Convert.ToInt32(StationIDTextBox.Text);
+                   
 
+                    if (existThisIdDrone(IdDrone) || IDTextBox.Text.Length == 0)
+                        // ID drone exist in the list ? if true (yes), so error
+                    {
+                        IDTextBlock.Text = "This ID drone exists, select another.";
+                        IDTextBlock.Visibility = Visibility.Visible;
+                        AreAllTestsNormal = false;
+                    }
+                    if (ModelTextBox.Text.Length == 0 || ModelTextBox.Text == "Type model drone")
+                    // Model drone
+                    {
+                        ModelTextBlock.Visibility = Visibility.Visible;
+                        AreAllTestsNormal = false;
 
-                    List<StationToTheList> stationToTheLists = bl.GetAllStaionsBy(s => s.ChargeSlots > 0).ToList();
-                    int IdStation = stationToTheLists[r.Next(0, stationToTheLists.Count)].uniqueID;
-                    bl.AddingDrone(IdDrone, ModelTextBox.Text,
-                        (int)WieghtCombo.SelectedItem, IdStation);
+                    }
+                    //if (!existThisIdStation(IdStaion))
+                    //    // ID station exist ? if false (no), so error.
+                    //{
+                    //    StationTextBlock.Text = "This ID station not exists, select another.";
+                    //    StationTextBlock.Visibility = Visibility.Visible;
+                    //    AreAllTestsNormal = false;
 
-                    MessageBox.Show("The drone added", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                    this.Close();
+                    //}
+                    if (WieghtCombo.SelectedIndex == -1) // Wieght drone
+                    {
+                        WieghtTextBlock.Visibility = Visibility.Visible;
+                        AreAllTestsNormal = false;
+                    }
+                    if (AreAllTestsNormal) // Yes, all the tests normal.
+                    {
+                        List<StationToTheList> stationToTheLists = bl.GetAllStaionsBy(s => s.ChargeSlots > 0).ToList();
+                        int IdStation = stationToTheLists[r.Next(0, stationToTheLists.Count)].uniqueID;
+                        bl.AddingDrone(IdDrone, ModelTextBox.Text,
+                            (int)WieghtCombo.SelectedItem, IdStation);
+
+                        MessageBox.Show("The drone added", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                        this.Close();
+                    }
                 }
-
             }
             catch (Exception)
             {
@@ -236,36 +271,37 @@ namespace PL
             {
                 Drone drone;
                 drone = bl.GetDrone(id);
-                if (drone.uniqueID == id) return false; // Exist drine with this id.
-                return true;
+                if (drone.uniqueID == id) return true; // Exist drine with this id.
+                return false;
             }
             catch (Exception)
             {
-                return true;// Don't exist drone with this id.
+                return false;// Don't exist drone with this id.
             }
         }
         bool existThisIdStation(int id)
         {
             try
             {
-                if (bl.getBaseStation(id).uniqueID == id) return false; // Exist staion with this id.
-                return true;
+                if (bl.getBaseStation(id).uniqueID == id) return true; // Exist staion with this id.
+                return false;
             }
             catch (Exception)
             {
-                return true;// Don't exist station with this id.
+                return false;// Not exist station with this id.
             }
         }
-
+        void hideAndReseteAllTextBlocks()
+        {
+            IDTextBlock.Visibility = Visibility.Hidden;
+            ModelTextBlock.Visibility = Visibility.Hidden;
+            StationTextBlock.Visibility = Visibility.Hidden;
+            WieghtTextBlock.Visibility = Visibility.Hidden;
+        }
         private void DronesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }
-
-        //private void ModalDroneTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        //{
-        //    ModalDroneTextBox.SelectedText = "asfw";
-        //}
     }
 }
 
