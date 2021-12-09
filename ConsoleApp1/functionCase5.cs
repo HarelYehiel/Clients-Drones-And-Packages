@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using DO;
 namespace ConsoleUI
 {
     class functionCase5
     {
-        IDAL.DO.IDal temp = new IDAL.DalObject.DalObject();
+        IDal temp = DalApi.DalFactory.GetDal("s");
 
         public void chooseObjectToconvert()
         {
             Console.WriteLine("witch cordinate you want to convert? ");
-            IDAL.DO.Point point = new IDAL.DO.Point();
+            Point point = new Point();
             point.latitude = Convert.ToDouble(Console.ReadLine());
             point.longitude = Convert.ToDouble(Console.ReadLine());
-            string newLat = IDAL.DO.Point.convertLatitudeToDegree(point);
-            string newLon = IDAL.DO.Point.convertLongitudeToDegree(point);
+            string newLat = Point.convertLatitudeToDegree(point);
+            string newLon = Point.convertLongitudeToDegree(point);
             Console.WriteLine("the new Latitude is: " + newLat);
             Console.WriteLine("the new Longitude is: " + newLon);
 
@@ -28,7 +28,7 @@ namespace ConsoleUI
         from any base or client to that point.*/
         {
             Console.WriteLine("Type Latitude and Longitude");
-            IDAL.DO.Point p = new IDAL.DO.Point();
+            Point p = new Point();
             p.latitude = Convert.ToDouble(Console.ReadLine());
             p.longitude = Convert.ToDouble(Console.ReadLine());
             int choose;

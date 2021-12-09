@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-namespace IDAL
+using DO;
+namespace DalApi
 {
     namespace DalObject
     {
@@ -103,7 +103,7 @@ namespace IDAL
             }
             public double colculateBattery(DO.Point point1,DO.Point point2,int ID)
             {
-                IDAL.DO.Drone drone = temp.GetDrone(ID);
+                Drone drone = temp.GetDrone(ID);
                 double minus = 0;
                 List<double> configStatus = temp.PowerConsumptionBySkimmer();
                 double distance = point1.distancePointToPoint(point2);

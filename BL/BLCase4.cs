@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using IDAL.DalObject;
-using IDAL.DO;
-using IBL.BO;
-using IBL;
+using DalApi.DalObject;
+using DO;
+using BO;
+using BlApi;
 
 
-namespace IBL
+namespace BlApi
 {
     public partial class BL : IBL
     {
-        int FunParcelSituation(IDAL.DO.Parcel p)
+        int FunParcelSituation(DO.Parcel p)
         {
             if (p.Delivered != null) return 3;
             else if (p.PickedUp != null) return 2;
@@ -59,7 +59,7 @@ namespace IBL
 
 
         // Filter functions of list with entity_DO and return list with entity_BO (after the filter).
-        public IEnumerable<ParcelToList> GetAllParcelsBy(System.Predicate<IDAL.DO.Parcel> filter)
+        public IEnumerable<ParcelToList> GetAllParcelsBy(System.Predicate<DO.Parcel> filter)
         {
             List<ParcelToList> parcelsToLists = new List<ParcelToList>();
 
@@ -70,7 +70,7 @@ namespace IBL
 
             return parcelsToLists;
         }
-        public IEnumerable<StationToTheList> GetAllStaionsBy(System.Predicate<IDAL.DO.Station> filter)
+        public IEnumerable<StationToTheList> GetAllStaionsBy(System.Predicate<DO.Station> filter)
         {
             List<StationToTheList> StationsToTheList = new List<StationToTheList>();
 
@@ -82,7 +82,7 @@ namespace IBL
 
             return StationsToTheList;
         }
-        public IEnumerable<CustomerToList> GetAllCustomersBy(System.Predicate<IDAL.DO.Customer> filter)
+        public IEnumerable<CustomerToList> GetAllCustomersBy(System.Predicate<DO.Customer> filter)
         {
             List<CustomerToList> customersToList = new List<CustomerToList>();
 
@@ -105,7 +105,7 @@ namespace IBL
 
 
         //  Convert functions from entity_DO to entity_BO.
-        ParcelToList convertParcelDoToParcelBo(IDAL.DO.Parcel item)
+        ParcelToList convertParcelDoToParcelBo(DO.Parcel item)
         {
             try
             {
@@ -130,7 +130,7 @@ namespace IBL
 
 
         }
-        StationToTheList convertStaionDoToStaionBo(IDAL.DO.Station staion)
+        StationToTheList convertStaionDoToStaionBo(DO.Station staion)
         {
             StationToTheList stationForTheList = new StationToTheList();
 
@@ -146,7 +146,7 @@ namespace IBL
 
             return stationForTheList;
         }
-        DroneToList convertDroneDoToDroneBo(IDAL.DO.Drone customer)
+        DroneToList convertDroneDoToDroneBo(DO.Drone customer)
         {
             DroneToList droneToList = new DroneToList();
 
@@ -154,7 +154,7 @@ namespace IBL
 
             return droneToList;
         }
-        CustomerToList convertCustomerDoToCustomerBo(IDAL.DO.Customer customer)
+        CustomerToList convertCustomerDoToCustomerBo(DO.Customer customer)
         {
             CustomerToList customerToList = new CustomerToList();
 
@@ -164,7 +164,7 @@ namespace IBL
 
 
             // Run on the list parcel and find the parcels the related him (the customer).
-            accessIdal.GetListOfParcels().ToList().ForEach(delegate (IDAL.DO.Parcel parcel)
+            accessIdal.GetListOfParcels().ToList().ForEach(delegate (DO.Parcel parcel)
             {
 
                 // packages sent and delivered

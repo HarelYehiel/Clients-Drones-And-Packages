@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using IDAL.DO;
+using DO;
 
-namespace IDAL
+namespace DalApi
 {
     namespace DalObject
     {
@@ -42,7 +42,7 @@ namespace IDAL
                     var rand = new Random();
                     drone.Id = rand.Next(10000, 99999);
                     drone.Model = "dro" + rand.Next(1, 10);
-                    drone.MaxWeight = (IDAL.DO.Enum.WeightCategories)rand.Next(0, 2);
+                    drone.MaxWeight = (DO.Enum.WeightCategories)rand.Next(0, 2);
                     drone.droneStatus = DO.Enum.DroneStatus.Avilble;
                     drones.Add(drone);
                     

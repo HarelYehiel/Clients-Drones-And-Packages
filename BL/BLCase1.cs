@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DO;
 
-namespace IBL
+namespace BlApi
 {
     public partial class BL : IBL
     {
@@ -19,10 +20,10 @@ namespace IBL
             station.location.longitude = Longitude;
             station.availableChargingStations = numSlots;
           */
-            IDAL.DO.Station station1 = new IDAL.DO.Station();
+            Station station1 = new Station();
             station1.id = ID; // update the drones list at BL
             station1.name = name;
-            IDAL.DO.Point loc = new IDAL.DO.Point();
+            Point loc = new Point();
             loc.latitude = Latitude;
             loc.longitude = Longitude;
             station1.Location = loc;
@@ -32,7 +33,7 @@ namespace IBL
         }
         public void AddingDrone(int ID,string model,int maxWeight,int staId)
         {
-            IDAL.DO.Station sta = new IDAL.DO.Station();
+            Station sta = new Station();
             sta = accessIdal.GetStation(staId);
 
             BO.DroneToList drone = new BO.DroneToList();
@@ -50,10 +51,10 @@ namespace IBL
             var rand = new Random();
             drone.Battery = rand.Next(20, 40);
 
-            IDAL.DO.Drone drone1 = new IDAL.DO.Drone();
+            Drone drone1 = new Drone();
             drone1.Id = ID;
             drone1.Model = model;
-            drone1.MaxWeight = (IDAL.DO.Enum.WeightCategories)maxWeight;
+            drone1.MaxWeight = (DO.Enum.WeightCategories)maxWeight;
             accessIdal.InputTheDroneToArray(drone1);
             this.ListDroneToList.Add(drone);
 
@@ -68,12 +69,12 @@ namespace IBL
             customer.location.longitude = Longitude0;*/
     
 
-            IDAL.DO.Customer customer1 = new IDAL.DO.Customer();
+            Customer customer1 = new Customer();
 
             customer1.Id = ID;
             customer1.name = nameCu;
             customer1.phone = phoneNumber;
-            IDAL.DO.Point point = new IDAL.DO.Point();
+            Point point = new Point();
             point.latitude = Latitude;
             point.longitude = Longitude;
             customer1.location = point;
@@ -89,12 +90,12 @@ namespace IBL
             parcel.requested = DateTime.Now;
             parcel.droneInParcel.uniqueID = 0;
             */
-            IDAL.DO.Parcel parcel1 = new IDAL.DO.Parcel();
+            Parcel parcel1 = new Parcel();
             parcel1.Id = parcelID;
             parcel1.SenderId = senderName;
             parcel1.TargetId = targetName;
-            parcel1.weight = (IDAL.DO.Enum.WeightCategories)maxWeight;
-            parcel1.priority = (IDAL.DO.Enum.Priorities)prioerity;
+            parcel1.weight = (DO.Enum.WeightCategories)maxWeight;
+            parcel1.priority = (DO.Enum.Priorities)prioerity;
             parcel1.Requested = DateTime.Now;
             parcel1.DroneId = 0;
             DateTime def = new DateTime();

@@ -4,14 +4,14 @@ using System.Collections;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using IDAL.DO;
+using DO;
 
-namespace IDAL
+namespace DalApi
 {
     namespace DalObject
     {
 
-        public struct DalObject : IDal
+        internal struct DalObject : IDal
         {
             public List<double> PowerConsumptionBySkimmer()
             {
@@ -36,7 +36,7 @@ namespace IDAL
                 par.runNumber++;
             }
 
-            public IDAL.DO.Station GetStation(int stationId)
+            public Station GetStation(int stationId)
             // Return the station with stationId
             {
                // IEnumerable<station> stations  = DataSource.stations;
@@ -47,7 +47,7 @@ namespace IDAL
                 }
                 throw new myExceptionDO("Exception from function GetStation", myExceptionDO.There_is_no_variable_with_this_ID);
             }
-            public IDAL.DO.Drone GetDrone(int droneId)
+            public Drone GetDrone(int droneId)
 
             {
                 foreach(Drone drone in DataSource.drones)
@@ -58,7 +58,7 @@ namespace IDAL
                 throw new myExceptionDO("Exception from function GetDrone", myExceptionDO.There_is_no_variable_with_this_ID);
             }
 
-            public IDAL.DO.Customer GetCustomer(int CustomerId)
+            public Customer GetCustomer(int CustomerId)
 
             {
                 foreach (Customer customer in DataSource.customers)
@@ -70,7 +70,7 @@ namespace IDAL
 
             }
 
-            public IDAL.DO.Parcel GetParcel(int ParcelId)
+            public Parcel GetParcel(int ParcelId)
 
             // Return the parcel with parcelId
             {
@@ -273,7 +273,7 @@ namespace IDAL
                 if (DataSource.parcels.Count == 0)
                     throw new myExceptionDO("Exception from function AffiliationDroneToParcel", myExceptionDO.Dont_have_any_parcel_in_the_list);
 
-                IDAL.DO.Parcel parcel = new IDAL.DO.Parcel();
+                Parcel parcel = new Parcel();
                 for (int i = 0; i < DataSource.parcels.Count(); i++)
                 {
                     if (DataSource.parcels[i].Id == parcelID)
@@ -292,7 +292,7 @@ namespace IDAL
                 if (DataSource.parcels.Count == 0)
                     throw new myExceptionDO("Exception from function pickUp", myExceptionDO.Dont_have_any_parcel_in_the_list);
 
-                IDAL.DO.Parcel parcel = new IDAL.DO.Parcel();
+                Parcel parcel = new Parcel();
                 for (int i = 0; i < DataSource.parcels.Count(); i++)
                 {
                     if (DataSource.parcels[i].Id == parcelId)
@@ -311,7 +311,7 @@ namespace IDAL
                 if (DataSource.parcels.Count == 0)
                     throw new myExceptionDO("Exception from function delivered", myExceptionDO.Dont_have_any_parcel_in_the_list);
 
-                IDAL.DO.Parcel tempParcel = new IDAL.DO.Parcel();
+                Parcel tempParcel = new Parcel();
                 for (int i = 0; i < DataSource.parcels.Count(); i++)
                 {
                     if (DataSource.parcels[i].Id == deliId)
@@ -378,12 +378,12 @@ namespace IDAL
                 {
                     if(DataSource.stations[i].id == stationId)
                     {
-                        IDAL.DO.DroneCharge droneCharge = new DroneCharge();
+                        DroneCharge droneCharge = new DroneCharge();
                         droneCharge.DroneId = droneId;
                         droneCharge.staitionId = stationId;
                         DataSource.dronesCharge.Add(droneCharge);
 
-                        IDAL.DO.Station station = new Station();
+                        Station station = new Station();
                         station = DataSource.stations[i];
                         station.ChargeSlots--;
                         DataSource.stations[i] = station;

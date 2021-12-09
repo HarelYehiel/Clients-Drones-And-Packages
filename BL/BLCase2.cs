@@ -3,26 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DO; 
 
-namespace IBL
+namespace BlApi
 {
     public partial class BL : IBL
     {
-        IDAL.DalObject.UpdateClass updateDataSourceFun = new IDAL.DalObject.UpdateClass();
+        DalApi.DalObject.UpdateClass updateDataSourceFun = new DalApi.DalObject.UpdateClass();
         public delegate bool Predicate<in T>(T obj);
 
         public delegate BO.Parcel Converter<in ParcelToList, out Parcel>(BO.ParcelToList input);
 
 
-        public static bool findEmergency(IDAL.DO.Parcel parcel) { return (parcel.Scheduled == null && parcel.priority == IDAL.DO.Enum.Priorities.Emergency); }
-        public static bool findFast(IDAL.DO.Parcel parcel) { return (parcel.Scheduled == null && parcel.priority == IDAL.DO.Enum.Priorities.Fast); }
-        public static bool findNormal(IDAL.DO.Parcel parcel) { return (parcel.Scheduled == null && parcel.priority == IDAL.DO.Enum.Priorities.Normal); }
+        public static bool findEmergency(Parcel parcel) { return (parcel.Scheduled == null && parcel.priority == DO.Enum.Priorities.Emergency); }
+        public static bool findFast(Parcel parcel) { return (parcel.Scheduled == null && parcel.priority == DO.Enum.Priorities.Fast); }
+        public static bool findNormal(Parcel parcel) { return (parcel.Scheduled == null && parcel.priority == DO.Enum.Priorities.Normal); }
 
         public void UpdateDroneData(int ID, string newModel)
         {
             try
             {
-                IDAL.DO.Drone drone = accessIdal.GetDrone(ID);
+                Drone drone = accessIdal.GetDrone(ID);
                 drone.Model = newModel;
                 updateDataSourceFun.updateDrone(drone);
                 BO.DroneToList droneToList_BO;
@@ -51,7 +52,7 @@ namespace IBL
                 if (name == "" && numSlots == 0)
                     return; // Don't do nathing.
 
-                IDAL.DO.Station station = accessIdal.GetStation(ID);
+                Station station = accessIdal.GetStation(ID);
                 if (name != "")
                     station.name = name;
                 if (numSlots != 0)
@@ -76,7 +77,7 @@ namespace IBL
         {
             try
             {
-                IDAL.DO.Customer customer = accessIdal.GetCustomer(ID);
+                Customer customer = accessIdal.GetCustomer(ID);
                 if (name != "")
                     customer.name = name;
                 if (phoneNumber != "")
@@ -94,10 +95,10 @@ namespace IBL
         {
             try
             {
-                IDAL.DO.Drone drone = accessIdal.GetDrone(ID);
+                Drone drone = accessIdal.GetDrone(ID);
                 BO.DroneToList droneToListBo = GetDroneBO(ID);
                 //-----check drone status, only if he is free check the next condition-----
-                if (drone.droneStatus == IDAL.DO.Enum.DroneStatus.Avilble)
+                if (drone.droneStatus == DO.Enum.DroneStatus.Avilble)
                 {
 
                     ///----------find the most close station---------
@@ -163,8 +164,8 @@ namespace IBL
         {
             try
             {
-                IDAL.DO.Drone drone = accessIdal.GetDrone(ID);
-                if (drone.droneStatus == IDAL.DO.Enum.DroneStatus.Baintenance)
+                Drone drone = accessIdal.GetDrone(ID);
+                if (drone.droneStatus == DO.Enum.DroneStatus.Baintenance)
                 {
                     //------gett data of this dron from BL drone list-----------
                     BO.DroneToList droneBo = GetDroneBO(ID);// new BO.DroneToList();
@@ -188,7 +189,7 @@ namespace IBL
                     updateDataSourceFun.updateRelaseDroneFromCharge(ID, point.longitude, point.latitude, min);
 
                     //update all the changes data at the stations list
-                    IDAL.DO.Station sta = new IDAL.DO.Station();
+                    Station sta = new Station();
                     List<BO.station> stations = GetListOfBaseStations().ToList().ConvertAll(convertToStationNotList);
                     foreach (var station in stations)
                     {
@@ -213,15 +214,15 @@ namespace IBL
             try
             {
                 //get the data of the specific drone from DAL(data source)
-                IDAL.DO.Drone drone = accessIdal.GetDrone(droneId);
+                Drone drone = accessIdal.GetDrone(droneId);
                 //get the data of the specific drone at BO
                 BO.DroneToList droneBo = GetDroneBO(droneId);
-                IDAL.DO.Parcel parcelDO = new IDAL.DO.Parcel();
+                Parcel parcelDO = new Parcel();
 
 
                 bool flag = true;
                 //---------------first of all - check if the drone is avilble----------------------
-                if (drone.droneStatus == IDAL.DO.Enum.DroneStatus.Avilble)
+                if (drone.droneStatus == DO.Enum.DroneStatus.Avilble)
                 {
                     //-----------we always prefere to take care by priority order---------------
                     List<BO.ParcelToList> newList = GetAllParcelsBy(findEmergency).ToList();
@@ -246,7 +247,7 @@ namespace IBL
                         parcelDO.DroneId = drone.Id;
                         updateDataSourceFun.updateParcel(parcelDO);
 
-                        drone.droneStatus = IDAL.DO.Enum.DroneStatus.Delivery;
+                        drone.droneStatus = DO.Enum.DroneStatus.Delivery;
                         updateDataSourceFun.updateDrone(drone);
 
                         droneBo.status = BO.EnumBO.DroneStatus.Delivery;
@@ -267,9 +268,9 @@ namespace IBL
         {
             try
             {
-                IDAL.DO.Drone drone = accessIdal.GetDrone(ID);
-                IDAL.DO.Parcel parcel = new IDAL.DO.Parcel();
-                if (drone.droneStatus == IDAL.DO.Enum.DroneStatus.Delivery)
+                Drone drone = accessIdal.GetDrone(ID);
+                Parcel parcel = new Parcel();
+                if (drone.droneStatus == DO.Enum.DroneStatus.Delivery)
                 {
                     List<BO.Parcel> parcels = DisplaysTheListOfParcels().ToList().ConvertAll(convertToParcelNotList);
                     for (int i = 0; i < parcels.Count; i++)
@@ -317,8 +318,8 @@ namespace IBL
         {
             try
             {
-                IDAL.DO.Drone drone = accessIdal.GetDrone(ID);
-                if (drone.droneStatus == IDAL.DO.Enum.DroneStatus.Delivery)
+                Drone drone = accessIdal.GetDrone(ID);
+                if (drone.droneStatus == DO.Enum.DroneStatus.Delivery)
                 {
                     List<BO.Parcel> parcels = DisplaysTheListOfParcels().ToList().ConvertAll(convertToParcelNotList);//GetAllParcelsBy(p => true).ToList();
                     for (int i = 0; i < parcels.Count; i++)
@@ -345,9 +346,9 @@ namespace IBL
                                         ListDroneToList[j] = droneToList_Bo;
                                     }
                                 }
-                                IDAL.DO.Parcel parcel = accessIdal.GetParcel(parcels[i].uniqueID);
+                                Parcel parcel = accessIdal.GetParcel(parcels[i].uniqueID);
                                 parcel.Delivered = DateTime.Now;
-                                drone.droneStatus = IDAL.DO.Enum.DroneStatus.Avilble;
+                                drone.droneStatus = DO.Enum.DroneStatus.Avilble;
 
                                 //update changes in DataSource
                                 updateDataSourceFun.updateDrone(drone);
@@ -375,7 +376,7 @@ namespace IBL
             }
             throw new BO.MyExeption_BO("Exception from function 'GetDroneBO", BO.MyExeption_BO.There_is_no_variable_with_this_ID);
         }
-        bool serchForRelevantParcel(BO.Parcel parcel, IDAL.DO.Drone drone, BO.DroneToList droneBo, int droneId)
+        bool serchForRelevantParcel(BO.Parcel parcel, Drone drone, BO.DroneToList droneBo, int droneId)
         {
             try
             {
@@ -409,7 +410,7 @@ namespace IBL
             station.uniqueID = stationToTheList.uniqueID;
             station.name = stationToTheList.name;
             station.availableChargingStations = stationToTheList.availableChargingStations;
-            accessIdal.GetListOfStations().ToList().ForEach(delegate (IDAL.DO.Station stationDO)
+            accessIdal.GetListOfStations().ToList().ForEach(delegate (Station stationDO)
             {
                 if (station.uniqueID == stationDO.id)
                 {
@@ -433,7 +434,7 @@ namespace IBL
            // tempCust.name = parcelToList.nameTarget; ;
             parcel.priority = parcelToList.priority;
             parcel.weight = parcelToList.weight;
-            accessIdal.GetListOfParcels().ToList().ForEach(delegate (IDAL.DO.Parcel parcelDO)
+            accessIdal.GetListOfParcels().ToList().ForEach(delegate (Parcel parcelDO)
             {
                 if (parcel.uniqueID == parcelDO.Id)
                 {

@@ -1,6 +1,6 @@
 ﻿using System;
-using IDAL.DalObject;
-using IDAL.DO;
+using DalApi.DalObject;
+using DO;
 using System.Collections.Generic;
 namespace ConsoleUI
 {
@@ -13,7 +13,7 @@ namespace ConsoleUI
             static void Main(string[] args)
 
             {
-                IDAL.DO.IDal temp = new IDAL.DalObject.DalObject(); 
+                IDal temp = DalApi.DalFactory.GetDal("s");
                 Console.WriteLine("Choose one of the following:");
                 int ch, ch1, ch2, ch3, ch4;
                 do

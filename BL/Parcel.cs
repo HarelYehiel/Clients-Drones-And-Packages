@@ -4,8 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IBL
-{
+
     namespace BO
     {
          public class Parcel
@@ -36,5 +35,5 @@ namespace IBL
                 return s;
             }
         }
-    }
+    
 }

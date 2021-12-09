@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IBL
+namespace BlApi
 {
     public partial class BL : IBL
     {
@@ -32,7 +32,7 @@ namespace IBL
         {
             try
             {
-                IDAL.DO.Customer customerDO = new IDAL.DO.Customer();
+                DO.Customer customerDO = new DO.Customer();
                 BO.CustomerInParcel customerInParcelBO = new BO.CustomerInParcel();
 
                 customerDO = accessIdal.GetCustomer(id);
@@ -57,7 +57,7 @@ namespace IBL
         {
             try
             {
-                IDAL.DO.Parcel parcelDO = new IDAL.DO.Parcel();
+                DO.Parcel parcelDO = new DO.Parcel();
                 BO.parcelAtCustomer parcelToCustomerBO = new BO.parcelAtCustomer();
 
                 parcelDO = accessIdal.GetParcel(id_parcel);
@@ -97,7 +97,7 @@ namespace IBL
         {
             try
             {
-                IDAL.DO.Station stationDO = new IDAL.DO.Station();
+                DO.Station stationDO = new DO.Station();
                 BO.station stationBO = new BO.station();
 
                 stationDO = accessIdal.GetStation(id);
@@ -114,7 +114,7 @@ namespace IBL
                 //The all drones that charging in this station.
                 BO.DroneInCharging droneInCharging_BO = new BO.DroneInCharging();
                 stationBO.dronesInCharging = new List<BO.DroneInCharging>();
-                foreach (IDAL.DO.DroneCharge item in accessIdal.GetListOfDroneCharge()) // IDAL.DalObject.DataSource.dronesCharge
+                foreach (DO.DroneCharge item in accessIdal.GetListOfDroneCharge()) // IDAL.DalObject.DataSource.dronesCharge
                 {
                     if (item.DroneId == id)
                     {
@@ -152,7 +152,7 @@ namespace IBL
                         parcelByTransfer.priority = (BO.EnumBO.Priorities)item.priority;
                         parcelByTransfer.weight = (BO.EnumBO.WeightCategories)item.weight;
                         
-                        IDAL.DO.Customer customer_DO = accessIdal.GetCustomer(item.SenderId);
+                        DO.Customer customer_DO = accessIdal.GetCustomer(item.SenderId);
                         BO.Location l = new BO.Location();
                         l.latitude = customer_DO.location.latitude;
                         l.longitude = customer_DO.location.longitude;
@@ -219,7 +219,7 @@ namespace IBL
         {
             try
             {
-                IDAL.DO.Customer customerDO = new IDAL.DO.Customer();
+                DO.Customer customerDO = new DO.Customer();
                 BO.Customer customerBO = new BO.Customer();
 
                 customerDO = accessIdal.GetCustomer(id);
@@ -235,7 +235,7 @@ namespace IBL
 
                 customerBO.fromTheCustomer = new List<BO.parcelAtCustomer>();
                 customerBO.toTheCustomer = new List<BO.parcelAtCustomer>();
-                foreach (IDAL.DO.Parcel item in accessIdal.GetListOfParcels())
+                foreach (DO.Parcel item in accessIdal.GetListOfParcels())
                 {
                     if (item.SenderId == id)
                     {
@@ -261,7 +261,7 @@ namespace IBL
         {
             try
             {
-                IDAL.DO.Parcel parcelDO = new IDAL.DO.Parcel();
+                DO.Parcel parcelDO = new DO.Parcel();
                 BO.Parcel parcelBO = new BO.Parcel();
 
                 parcelDO = accessIdal.GetParcel(id);

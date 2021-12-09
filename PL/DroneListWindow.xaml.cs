@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
-using IBL.BO;
+using BO;
 
 namespace PL
 {
@@ -22,7 +22,7 @@ namespace PL
     /// </summary>
     public partial class DroneListWindow : Window
     {
-        IBL.IBL bl;
+        BlApi.IBL bl;
 
         private const int GWL_STYLE = -16;
         private const int WS_SYSMENU = 0x80000;
@@ -30,7 +30,7 @@ namespace PL
         private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
         [DllImport("user32.dll")]
         private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
-        public DroneListWindow(ref IBL.IBL bL1)
+        public DroneListWindow(ref BlApi.IBL bL1)
         {
             bl = bL1;
             InitializeComponent();
@@ -72,7 +72,7 @@ namespace PL
         private void DronesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (DronesListView.ItemsSource != null)
-                new DroneWindow(bl, DronesListView.SelectedItem as IBL.BO.DroneToList).ShowDialog();
+                new DroneWindow(bl, DronesListView.SelectedItem as BO.DroneToList).ShowDialog();
 
             DronesListView.ItemsSource = null;
             if (SituationCombo.SelectedIndex == -1 && WieghtCombo.SelectedIndex == -1) // No filter

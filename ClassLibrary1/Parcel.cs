@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using IDAL.DalObject;
+using DalApi.DalObject;
 
-namespace IDAL
-{
+
     namespace DO
     {
         public struct Parcel
@@ -31,4 +30,4 @@ namespace IDAL
         }
 
     }
-}
+

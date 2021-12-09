@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using IBL.BO;
+using BO;
 
-namespace IBL
+namespace BlApi
 {
     
     public interface IBL
@@ -51,9 +51,9 @@ namespace IBL
         public IEnumerable<BO.ParcelToList> DisplaysTheListOfParcels();
         
         public IEnumerable<BO.DroneToList> GetAllDronesBy(System.Predicate<BO.DroneToList> filter);
-        public IEnumerable<StationToTheList> GetAllStaionsBy(System.Predicate<IDAL.DO.Station> filter);
-        public IEnumerable<CustomerToList> GetAllCustomersBy(System.Predicate<IDAL.DO.Customer> filter);
-        public IEnumerable<ParcelToList> GetAllParcelsBy(System.Predicate<IDAL.DO.Parcel> filter);
+        public IEnumerable<StationToTheList> GetAllStaionsBy(System.Predicate<DO.Station> filter);
+        public IEnumerable<CustomerToList> GetAllCustomersBy(System.Predicate<DO.Customer> filter);
+        public IEnumerable<ParcelToList> GetAllParcelsBy(System.Predicate<DO.Parcel> filter);
 
         /* Until here */
 

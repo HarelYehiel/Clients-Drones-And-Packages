@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using IDAL.DO;
-using IBL.BO;
-using IBL;
+using DO;
+using BO;
+using BlApi;
 
-namespace IBL
+namespace BlApi
 {
 
     public partial class BL : IBL
     {
         // List<BO.Drone> listDrons = new List<BO.Drone>();
-        IDAL.DO.IDal accessIdal = new IDAL.DalObject.DalObject();
+ //***********************************************************************************לשנות את מה ששולחים לfactory
+        IDal accessIdal = DalApi.DalFactory.GetDal("s");//new DalApi.DalObject.DalObject();
         List<DroneToList> ListDroneToList = new List<DroneToList>();
         public BL()
         {
@@ -22,7 +23,7 @@ namespace IBL
         public void InitializeAndUpdateTheListsInIBL()
         // Do initialize if data sourse and update the list listDrons of IBL.
         {
-            IDAL.DalObject.DataSource.Initialize();
+            DalApi.DalObject.DataSource.Initialize();
             BO.DroneToList droneToListBO;
 
             foreach (var item in accessIdal.GetListOfDrones()) // Update the list in listDrons of IBL

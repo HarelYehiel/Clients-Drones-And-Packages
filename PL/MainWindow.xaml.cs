@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using IBL.BO;
+using BO;
 
 namespace PL
 {
@@ -21,10 +21,11 @@ namespace PL
     /// </summary>
     public partial class MainWindow : Window
     {
-        IBL.IBL bl;
+        BlApi.IBL bl;
         public MainWindow()
         {
-            bl = new IBL.BL();
+            //*****************************************להבין מה הסינון הנדרש בשביל זה כמו בכל השלבים של factory nams
+            bl = BlApi.BlFactory.GetBl("");
             ImageBrush image = new ImageBrush();
             image.ImageSource = new BitmapImage(new Uri("MainBackground.jpeg", UriKind.Relative));
             InitializeComponent();

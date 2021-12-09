@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using IDAL.DO;
 
-namespace IDAL
-{
     namespace DO
     {
         public interface IDal
@@ -22,7 +19,7 @@ namespace IDAL
 
             public Customer GetCustomer(int CustomerId);
             public IEnumerable<DroneCharge> GetListOfDroneCharge();
-            public IDAL.DO.Parcel GetParcel(int ParcelId);
+            public Parcel GetParcel(int ParcelId);
             // Return the parcel with parcelId
 
             public void InputTheStationToArray(Station station);
@@ -59,4 +56,4 @@ namespace IDAL
         }
 
     }
-}
+

@@ -4,8 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IDAL
-{
     namespace DO
     {
         public class myExceptionDO : Exception
@@ -29,4 +27,4 @@ namespace IDAL
         }
     }
 
-}
+

@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
-using IBL.BO;
+using BO;
 
 namespace PL
 {
@@ -22,7 +22,7 @@ namespace PL
     /// </summary>
     public partial class DroneWindow : Window
     {
-        IBL.IBL bl;
+        BlApi.IBL bl;
         DroneToList droneToList;
         private const int GWL_STYLE = -16;
         private const int WS_SYSMENU = 0x80000;
@@ -30,7 +30,7 @@ namespace PL
         private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
         [DllImport("user32.dll")]
         private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
-        public DroneWindow(IBL.IBL bl1)
+        public DroneWindow(BlApi.IBL bl1)
         // Constructor for adding drone.
         {
             bl = bl1;
@@ -46,7 +46,7 @@ namespace PL
             ModeDronelLabel.Visibility = Visibility.Hidden;
 
         }
-        public DroneWindow(IBL.IBL bl1, DroneToList droneToList1)
+        public DroneWindow(BlApi.IBL bl1, DroneToList droneToList1)
         // Constructor for view drone and allow do actions.
         {
             bl = bl1;
