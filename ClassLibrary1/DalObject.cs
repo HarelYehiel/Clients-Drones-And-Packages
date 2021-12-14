@@ -11,8 +11,11 @@ namespace DalApi
     namespace DalObject
     {
 
-        internal struct DalObject : IDal
+        internal sealed class DalObject : IDal
         {
+            // make the access to DalObject by singelton way
+            static readonly DalObject instance = new DalObject();
+            internal static DalObject Instance{ get{ return instance; } }
             public List<double> PowerConsumptionBySkimmer()
             {
                 List<double> dou = new List<double>();
@@ -26,7 +29,7 @@ namespace DalApi
 
 
             }
-            public DalObject(int x = 0)
+            private DalObject()
             {
                 DataSource.Initialize();
             }

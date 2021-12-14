@@ -13,10 +13,10 @@ namespace DalApi
         //לחזור לפה להבין מה המחלקה אמורה להחזיר ומה היא אמורה לזרוק
         static public IDal GetDal(string s)
         {
-            if (s != "")
-                return new DalObject.DalObject();
+            if (s == "DalObject")
+                return DalObject.DalObject.Instance;
             else
-                throw new Exception();
+                throw new myExceptionDO("Exception from function DalFactory.GetDal", myExceptionDO.Get_wrong_string_for_geting_access_to_DalObject);
         }
     }
 }

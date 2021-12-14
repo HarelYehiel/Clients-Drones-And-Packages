@@ -25,7 +25,7 @@ namespace PL
         public MainWindow()
         {
             //*****************************************להבין מה הסינון הנדרש בשביל זה כמו בכל השלבים של factory nams
-            bl = BlApi.BlFactory.GetBl("");
+            bl = BlApi.BlFactory.GetBl();
             ImageBrush image = new ImageBrush();
             image.ImageSource = new BitmapImage(new Uri("MainBackground.jpeg", UriKind.Relative));
             InitializeComponent();

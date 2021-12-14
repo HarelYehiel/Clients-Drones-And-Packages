@@ -12,9 +12,9 @@ namespace BlApi
 
     public partial class BL : IBL
     {
-        // List<BO.Drone> listDrons = new List<BO.Drone>();
- //***********************************************************************************לשנות את מה ששולחים לfactory
-        IDal accessIdal = DalApi.DalFactory.GetDal("s");//new DalApi.DalObject.DalObject();
+        static readonly BL instance = new BL();
+        internal static BL Instance { get { return instance; } }
+        IDal accessIdal = DalApi.DalFactory.GetDal("DalObject");
         List<DroneToList> ListDroneToList = new List<DroneToList>();
         public BL()
         {

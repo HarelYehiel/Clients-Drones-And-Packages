@@ -10,7 +10,7 @@ namespace DalApi
     {
         public class UpdateClass
         {
-            DalObject temp = new DalObject();
+            IDal temp = DalFactory.GetDal("DalObject");
             public void updateDrone(DO.Drone drone)
             {
                 for(int i = 0; i < DataSource.drones.Count; i++)

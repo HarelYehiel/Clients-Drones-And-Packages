@@ -8,15 +8,10 @@ namespace BlApi
 {
     static public class BlFactory
     {
-     //**********************************************לחזור להבין מה הסינון הנדרש ומה החריגה הרלוונטית
-        static public IBL GetBl(string s)
+        static public IBL GetBl()
         {
-            if (s == "")
-            {
-                return new BL();
-            }
-            else
-                throw new Exception();
+                return BL.Instance;
+            
         }
     }
 }

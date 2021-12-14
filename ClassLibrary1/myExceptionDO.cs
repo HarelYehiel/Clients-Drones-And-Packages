@@ -18,6 +18,7 @@ using System.Threading.Tasks;
             public static Exception Dont_have_any_drone_in_the_list = new Exception("Don't have any drone in the list.");
             public static Exception We_ge_to_the_end_of_list_and_dont_find_the_station = new Exception("We get to the end of list and don't find the station");
             public static Exception We_ge_to_the_end_of_list_and_dont_find_the_drone = new Exception("We get to the end of list and don't find the drone");
+            public static Exception Get_wrong_string_for_geting_access_to_DalObject = new Exception("get wrong string for geting access to DalObject");
             
             public myExceptionDO(Exception e) : base(e.ToString()) { }
             public myExceptionDO(string s, Exception e) : base(s, e) { }
