@@ -8,8 +8,7 @@ namespace ConsuleUIBL
         public static int giveNumber()
         {
             string s;
-            BlApi.BL temp = new BlApi.BL();
-
+            BlApi.IBL temp = BlApi.BlFactory.GetBl();
             do
             {
                 s = Console.ReadLine();
@@ -20,7 +19,7 @@ namespace ConsuleUIBL
         }public static int giveNumberRang()
         {
             string s;
-            BlApi.BL temp = new BlApi.BL();
+            BlApi.IBL temp = BlApi.BlFactory.GetBl();
 
             do
             {
@@ -32,7 +31,7 @@ namespace ConsuleUIBL
         }
         static void Main(string[] args)
         {
-            BlApi.BL temp = new BlApi.BL();
+            BlApi.IBL temp = BlApi.BlFactory.GetBl();
             int ch = 0, ch1, ch2, ch3, ch4;
             temp.InitializeAndUpdateTheListsInIBL(); // Do initialize if data sourse and update the list listDrons of IBL.
 

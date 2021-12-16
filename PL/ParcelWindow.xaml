@@ -1,0 +1,91 @@
+﻿<Window x:Class="PL.ParcelWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PL"
+        mc:Ignorable="d"
+            Background="#5885AF"
+        Title="ParcelWindow" Height="450" Width="800">
+    <Grid>
+        <Border Background="#2e3137" CornerRadius="20" Margin="217,17,218,16" Grid.RowSpan="2">
+            <StackPanel Margin="20">
+                <Label Name ="title" Content="New Parcel" Foreground="White" FontSize="25" HorizontalAlignment="Center"/>
+                <Separator></Separator>
+                <Label Name ="LabelID" Content="ID" Foreground="White"/>
+                <TextBox Name="txtId" Background="#545d6a" Foreground="White" FontSize="18" TextChanged="txtId_TextChanged"/>
+                <Label Content="Sender ID" Foreground="White"/>
+                <TextBox Name="txtSender" Background="#545d6a" Foreground="White" FontSize="18" TextChanged="txtSender_TextChanged">
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Setter Property="Text" Value = ""/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseCaptured" Value="True">
+                                    <Setter Property="Text" Value="choose from the left list"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+                <Label Content="Target ID" Foreground="White"/>
+                <TextBox Name="txtTarget" Background="#545d6a" Foreground="White" FontSize="18" TextChanged="txtTarget_TextChanged">
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Setter Property="Text" Value = ""/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseCaptured" Value="True">
+                                    <Setter Property="Text" Value="choose from the left list"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+                <Label Content="Weight" Foreground="White"/>
+                <ComboBox Name="comboWeight" Background="#545d6a" Foreground="Black" FontSize="18" SelectionChanged="comboWeight_SelectionChanged" Initialized="comboWeight_Initialized"/>
+                <Label Content="Priority" Foreground="White"/>
+                <ComboBox Name="comboPriority" Background="#545d6a" Foreground="black" FontSize="18" SelectionChanged="comboPriority_SelectionChanged" Initialized="comboPriority_Initialized"/>
+                <Button Name="Add" Content="Create"  Click="create_Click" Margin="60 10" Background="#545d6a" Foreground="White" FontSize="18">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="8"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+
+            </StackPanel>
+        </Border>
+        <TextBox  x:Name ="SaveTheDrineID" Visibility="Hidden" HorizontalAlignment="Left" Margin="644,272,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="86" Height="12" Grid.Row="1"/>
+        <Button Content="Close" HorizontalAlignment="Left"  Margin="738,30,0,0" Width="37" VerticalAlignment="Top" Click="CloseWindow" />
+        <Label Name ="LabelCustomers" Content="list of optional customers" Background="#FFDDDDDD" BorderBrush="#C3E0E5" HorizontalAlignment="Left" Margin="36,33,0,0" VerticalAlignment="Top" Width="145"/>
+        <ListView Name="OptinalCustomer" Background= "#5885AF" BorderBrush="#C3E0E5" Margin="36,59,609,57" Grid.RowSpan="2" >
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header=" Name" Width="65" DisplayMemberBinding="{Binding name}"/>
+                    <GridViewColumn Header=" ID" Width="65" DisplayMemberBinding="{Binding uniqueID}"/>
+                </GridView>
+
+            </ListView.View>
+
+        </ListView>
+        <Border Name="UpdateBorder" Background="#2e3137" CornerRadius="20" Margin="593,125,19,125">
+            <StackPanel Margin="15">
+
+                <Label Name ="parcelAssociated" Content="Parcel associated" Foreground="White" Width="100" Margin="-35,8,5,0"/>
+                <CheckBox x:Name="updateAssociated" Background="Gray" FontSize="18" Width="14" Margin="100,-18,13,0" Checked="updateAssociated_Checked"/>
+                <Label Name ="parcelCollected" Content="Parcel collected" Foreground="White" Width="94" Margin="-35,0,5,0"/>
+                <CheckBox x:Name="updatecollection" Background="Gray" FontSize="18" Width="14" Margin="100,-18,12,0" Checked="updatecollection_Checked"/>
+                <Label Name ="parcelDelivered" Content="Parcel Delivered:" Foreground="White" Width="94" Margin="-35,0,5,0"/>
+                <CheckBox x:Name="updateDelivered" Background="Gray" Foreground="White" FontSize="18" Width="14" Margin="100,-18,12,0" Checked="updateDelivered_Checked"/>
+                <Separator></Separator>
+                <Button Name="deleteParcel" Content="Delete Parcel" Width="94" FontWeight="Bold" Foreground="Red" Margin="0,13,0,0" Click="deleteParcel_Click" Height="25">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="8"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

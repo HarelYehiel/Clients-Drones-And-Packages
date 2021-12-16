@@ -87,11 +87,15 @@ namespace DalApi
             }
             public void DelParcel(int ID) 
             {
+                Parcel parcelToRemove = new Parcel();
             foreach(var par in DataSource.parcels)
                 {
                     if (par.Id == ID)
-                        DataSource.parcels.Remove(par);
+                        parcelToRemove = par;
                 }
+                if (parcelToRemove.Requested != null)
+                     DataSource.parcels.Remove(parcelToRemove);
+
             }
 
             public void DelStation(int ID)
