@@ -1,12 +1,12 @@
-﻿<Window x:Class="PL.DroneListWindow"
+﻿<Window x:Class="PL.ParclListWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="Drone List Window" Height="640" Width="650" Loaded="cancelButtonX">
-    <Grid Name="MainGrid">
+        Title="ParclListWindow" Height="640" Width="800">
+    <Grid Name = "ParclList">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="11*"/>
             <ColumnDefinition Width="89*"/>
@@ -25,9 +25,9 @@
                 <ColumnDefinition Width="200*"/>
                 <ColumnDefinition Width="200*"/>
             </Grid.ColumnDefinitions >
-            <ComboBox Name="WieghtCombo" Grid.Column="0" IsEditable ="true" IsReadOnly="True" Text="Choose wieght"  SelectionChanged="StatusDroneWeight" Initialized="WieghtCombo_Initialized" Margin="43,21,34,24" Grid.ColumnSpan="2"/>
+            <TextBox Margin="43,24,37,26"  Name="txtFilter" TextChanged="txtFilter_TextChanged" Height="19" Grid.ColumnSpan="2" />
             <TextBox Name ="FilterTextBox" FontWeight = "DemiBold" HorizontalAlignment="Left" Margin="43,1,0,0" Text="Fliters" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Background = "#C3E0E5" Height="18" Grid.ColumnSpan="2"/>
-            <ComboBox Name="SituationCombo" IsEditable ="true" Text="Choose status"  HorizontalAlignment="Left" Margin="43,46,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="StatusDroneSituation" Initialized="SituationCombo_Initialized" Height="20" Grid.ColumnSpan="2"/>
+            <ComboBox Name="filterCombo" IsEditable ="true" Text="Choose filter"  HorizontalAlignment="Left" Margin="43,46,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="filterSelectionChanged" Initialized="filterCombo_Initialized" Height="20" Grid.ColumnSpan="2"/>
             <Button Content="Clear filter" FontWeight = "DemiBold" Grid.Column="2" HorizontalAlignment="Center" Margin="0,43,0,0" VerticalAlignment="Top" Width="120" Click="ClearFilter" Background="#C3E0E5" BorderBrush = "White">
                 <Button.Resources>
                     <Style TargetType="Border">
@@ -42,28 +42,27 @@
                     </Style>
                 </Button.Resources>
             </Button>
-            <Button Content="Add new Drone" FontWeight = "DemiBold"  Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Top" Click="AddingNewDrone" Margin="0,18,0,0" Background="#C3E0E5" BorderBrush = "White" Height="27" Width="124" >
+            <Button Content="Add new Parcel" FontWeight = "DemiBold"  Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Top" Click="AddNewParcel" Margin="0,18,0,0" Background="#C3E0E5" BorderBrush = "White" Height="27" Width="124" >
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="12"/>
                     </Style>
                 </Button.Resources>
             </Button>
-            <Button Content="Close" Grid.Column="4" Margin="98,10,14,39" Click="CloseWindow" />
+            <Button Content="Close" Grid.Column="4"  Margin="153,1,10,48" Click="CloseWindow" />
         </Grid>
-        <ListView x:Name="DronesListView" SelectionChanged="DronesListView_SelectionChanged" Grid.ColumnSpan="2" Margin="0,69,0,0" Grid.RowSpan="2" Background ="#5885AF">
+        <ListView x:Name="ParcelListView" SelectionChanged="ParcelListView_SelectionChanged" Grid.ColumnSpan="2" Margin="0,69,0,0" Grid.RowSpan="2" Background ="#5885AF">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Drone ID" Width="80" DisplayMemberBinding="{Binding uniqueID}"/>
-                    <GridViewColumn Header="Model" Width="80" DisplayMemberBinding="{Binding Model}" />
-                    <GridViewColumn Header="Weight" Width="80" DisplayMemberBinding="{Binding weight}" />
-                    <GridViewColumn Header="Status" Width="100" DisplayMemberBinding="{Binding status}" />
-                    <GridViewColumn Header="Battery" Width="100" DisplayMemberBinding="{Binding Battery}" />
-                    <GridViewColumn Header="Location" Width="250" DisplayMemberBinding="{Binding location}" />
-                    <GridViewColumn Header="Parcel" Width="100" DisplayMemberBinding="{Binding packageDelivered}" />
+                    <GridViewColumn Header="Parcel ID" Width="100" DisplayMemberBinding="{Binding uniqueID}"/>
+                    <GridViewColumn Header="Sender" Width="100" DisplayMemberBinding="{Binding namrSender}" />
+                    <GridViewColumn Header="Target" Width="100" DisplayMemberBinding="{Binding nameTarget}" />
+                    <GridViewColumn Header="Prioritiy" Width="100" DisplayMemberBinding="{Binding priority}" />
+                    <GridViewColumn Header="Weight" Width="100" DisplayMemberBinding="{Binding weight}" />
+                    <GridViewColumn Header="Situation" Width="100" DisplayMemberBinding="{Binding parcelsituation}" />
                 </GridView>
 
-            </ListView.View>
+        </ListView.View>
             <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Setter Property="Background" Value="#FFCDD7D9"/>
@@ -73,10 +72,9 @@
                     <Setter Property="HorizontalContentAlignment" Value="Center" />
                 </Style>
             </ListView.ItemContainerStyle>
+
         </ListView>
-        
         <CheckBox Content="CheckBox" HorizontalAlignment="Left" Margin="946,78,0,0" Grid.Row="1" VerticalAlignment="Top" Grid.Column="1"/>
 
     </Grid>
-
 </Window>

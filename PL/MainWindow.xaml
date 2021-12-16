@@ -6,50 +6,63 @@
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
         Icon = "/MainIcon.jpeg"
-        Title="MainWindow" Height="640" Width="800">
+        Title="MainWindow" Height="640" Width="800" Background="#04c582">
 
     <Grid Name="MainGrid">
         <Grid.Background>
             <ImageBrush ImageSource="/MainBackground.jpeg"></ImageBrush>
         </Grid.Background>
+        <Grid Name="Login" Grid.ColumnSpan="4" Margin="0,0,19,415" Grid.RowSpan="3" RenderTransformOrigin="0.5,0.5">
+            <Grid.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0.103"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Grid.RenderTransform>
+            <Border Background="#2e3137" CornerRadius="20" Margin="215,102,200,-355">
+                <StackPanel Margin="20">
+                    <Label Content="Login" Foreground="White" FontSize="25" HorizontalAlignment="Center"/>
+                    <Separator></Separator>
+                    <Label Content="Username" Foreground="White"/>
+                    <TextBox Name="txtUsername" Background="#545d6a" Foreground="White" FontSize="18"/>
+                    <Label Content="Password" Foreground="White"/>
+                    <PasswordBox Name="txtPassword" Background="#545d6a" Foreground="White" FontSize="18"/>
+                    <Button Name="enter" Content="Enter" Click="enter_Click" Margin="60 10" Background="#545d6a" Foreground="White" FontSize="18"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+        <Button x:Name="droneListButton" Content="Click To Show Drone List"  FontWeight = "DemiBold" Grid.Column="2" HorizontalAlignment="Center" Background = "#D4F1F4" BorderBrush = "White"  
+                    Margin="0,14,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.403,0.496" Click="ClickToShowDroneList" Height="40" Width="150">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="15"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+        <Button x:Name="ParcelListButton" Content="Click To Show Parcel List"  FontWeight = "DemiBold" Grid.Column="0" HorizontalAlignment="Center" Background = "#D4F1F4" BorderBrush = "#274472"  
+                    Margin="0,14,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.403,0.496" Click="ClickToShowParcelList" Height="40" Width="150">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="15"/>
+                </Style>
+            </Button.Resources>
+        </Button>
         <Grid.RowDefinitions>
             <RowDefinition Height="69*"/>
             <RowDefinition Height="14*"/>
             <RowDefinition Height="541*"/>
         </Grid.RowDefinitions>
-        <Grid Name="UpGrid" Height="auto" Grid.Row="0" Width="auto">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions >
-            <Button Content="Click To Show Drone List"  FontWeight = "DemiBold" Grid.Column="2" HorizontalAlignment="Center" Background = "#D4F1F4" BorderBrush = "White"  
-                    Margin="0,14,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.403,0.496" Click="ClickToShowDroneList" Height="40" Width="150">
-                <Button.Resources>
-                    <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="15"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
-            <Button Content="Click To Show customer List"  FontWeight = "DemiBold" Grid.Column="3" HorizontalAlignment="Left" Background = "#D4F1F4" BorderBrush = "White"  
-                VerticalAlignment="Center" RenderTransformOrigin="-0.403,0.496" Height="40" Width="167" Margin="23,0,0,0" Click="ClickToShowCustomerList">
-                <Button.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="15"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
-            <Button Content="Click To Show Station List"  FontWeight = "DemiBold" Grid.Column="1" HorizontalAlignment="Left" Background = "#D4F1F4" BorderBrush = "White"  
-                VerticalAlignment="Center" RenderTransformOrigin="-0.403,0.496" Height="40" Width="156" Margin="30,0,0,0" Click="ClickToShowStatoinList">
-                <Button.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="15"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
 
-        </Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions >
+
+
     </Grid>
 </Window>
 

@@ -58,6 +58,9 @@ namespace BlApi
         public IEnumerable<ParcelToList> GetAllParcelsBy(System.Predicate<DO.Parcel> filter);
 
         /* Until here */
+        public bool IsDigitsOnly(string str);
+        public void InitializeAndUpdateTheListsInIBL();
+        public void DelParcel(int ID);
 
     }
 }

@@ -53,7 +53,9 @@ using System.Threading.Tasks;
             public string MinimumFromCustomer(double minDistance, Point p);
 
             public string MinimumFromStation(double minDistance, Point p);
+        public void DelParcel(int ID);
+
         }
 
-    }
+}
 

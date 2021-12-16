@@ -16,7 +16,7 @@ namespace BlApi
         internal static BL Instance { get { return instance; } }
         IDal accessIdal = DalApi.DalFactory.GetDal("DalObject");
         List<DroneToList> ListDroneToList = new List<DroneToList>();
-        public BL()
+        private BL()
         {
             InitializeAndUpdateTheListsInIBL();
         }
@@ -116,6 +116,11 @@ namespace BlApi
             Console.WriteLine("press 4 to Displays the list of parcels.");
             Console.WriteLine("press 5 to displays a list of packages that have not yet been assigned to the drone.");
             Console.WriteLine("press 6 to base stations with available charging stations.\n");
+        }
+        //***********new cases for PL*************
+        public void DelParcel(int ID)
+        {
+            accessIdal.DelParcel(ID);
         }
     }
 }

@@ -13,11 +13,14 @@ namespace PL
         BlApi.IBL bl;
         public MainWindow()
         {
-            //*****************************************להבין מה הסינון הנדרש בשביל זה כמו בכל השלבים של factory nams
             bl = BlApi.BlFactory.GetBl();
             ImageBrush image = new ImageBrush();
             image.ImageSource = new BitmapImage(new Uri("MainBackground.jpeg", UriKind.Relative));
             InitializeComponent();
+            droneListButton.Visibility = Visibility.Hidden;
+            ParcelListButton.Visibility = Visibility.Hidden;
+            Login.Visibility = Visibility.Visible;
+
         }
 
         private void ClickToShowDroneList(object sender, RoutedEventArgs e)
@@ -29,6 +32,22 @@ namespace PL
             new CustomerListWindow(bl).Show();
         }
 
+        private void enter_Click(object sender, RoutedEventArgs e)
+        {
+            if (txtUsername.Text == "Yoni" && txtPassword.Password == "123456")
+            {
+                Login.Visibility = Visibility.Hidden;
+                droneListButton.Visibility = Visibility.Visible;
+                ParcelListButton.Visibility = Visibility.Visible;
+
+            }
+                
+        }
+
+        private void ClickToShowParcelList(object sender, RoutedEventArgs e)
+        {
+            new ParclListWindow(bl).Show();
+        }
         private void ClickToShowStatoinList(object sender, RoutedEventArgs e)
         {
             new StationListWindow(bl).Show();
