@@ -1,19 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BO;
+using System;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Runtime.InteropServices;
 using System.Windows.Interop;
-using BO;
 
 namespace PL
 {
@@ -30,10 +20,11 @@ namespace PL
         private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
         [DllImport("user32.dll")]
         private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
-        public DroneListWindow(ref BlApi.IBL bL1)
+        public DroneListWindow(BlApi.IBL bL1)
         {
             bl = bL1;
             InitializeComponent();
+            DronesListView.ItemsSource = bl.GetTheListOfDrones();
         }
         private void StatusDroneWeight(object sender, SelectionChangedEventArgs e)
         {
@@ -55,6 +46,7 @@ namespace PL
         }
         private void ClearFilter(object sender, RoutedEventArgs e)
         {
+
             DronesListView.ItemsSource = bl.GetTheListOfDrones();
 
             SituationCombo.SelectedIndex = -1;

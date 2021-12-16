@@ -32,7 +32,23 @@
                     </Style>
                 </Button.Resources>
             </Button>
-            
+            <Button Content="Click To Show customer List"  FontWeight = "DemiBold" Grid.Column="3" HorizontalAlignment="Left" Background = "#D4F1F4" BorderBrush = "White"  
+                VerticalAlignment="Center" RenderTransformOrigin="-0.403,0.496" Height="40" Width="167" Margin="23,0,0,0" Click="ClickToShowCustomerList">
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="15"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button Content="Click To Show Station List"  FontWeight = "DemiBold" Grid.Column="1" HorizontalAlignment="Left" Background = "#D4F1F4" BorderBrush = "White"  
+                VerticalAlignment="Center" RenderTransformOrigin="-0.403,0.496" Height="40" Width="156" Margin="30,0,0,0" Click="ClickToShowStatoinList">
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="15"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+
         </Grid>
     </Grid>
 </Window>

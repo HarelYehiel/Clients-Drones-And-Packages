@@ -13,12 +13,12 @@ namespace BlApi
 {
     public partial class BL : IBL
     {
-        int FunParcelSituation(DO.Parcel p)
+        BO.EnumBO.Situations FunParcelSituation(DO.Parcel p)
         {
-            if (p.Delivered != null) return 3;
-            else if (p.PickedUp != null) return 2;
-            else if (p.Scheduled != null) return 1;
-            return 0;
+            if (p.Delivered != null) return BO.EnumBO.Situations.provided;
+            else if (p.PickedUp != null) return BO.EnumBO.Situations.collected;
+            else if (p.Scheduled != null) return BO.EnumBO.Situations.associated;
+            return BO.EnumBO.Situations.created;
 
         }
 
@@ -117,7 +117,7 @@ namespace BlApi
                 ParcelToListBO.namrSender = accessIdal.GetCustomer(item.SenderId).name;
                 ParcelToListBO.priority = (BO.EnumBO.Priorities)(int)item.priority;
                 ParcelToListBO.weight = (BO.EnumBO.WeightCategories)(int)item.weight;
-                ParcelToListBO.parcelsituation = BO.EnumBO.Situations.created;
+                ParcelToListBO.parcelsituation = FunParcelSituation(item);
 
                 return ParcelToListBO;
 
@@ -145,14 +145,6 @@ namespace BlApi
 
 
             return stationForTheList;
-        }
-        DroneToList convertDroneDoToDroneBo(DO.Drone customer)
-        {
-            DroneToList droneToList = new DroneToList();
-
-
-
-            return droneToList;
         }
         CustomerToList convertCustomerDoToCustomerBo(DO.Customer customer)
         {

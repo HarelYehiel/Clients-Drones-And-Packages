@@ -13,9 +13,9 @@ namespace DalApi
             IDal temp = DalFactory.GetDal("DalObject");
             public void updateDrone(DO.Drone drone)
             {
-                for(int i = 0; i < DataSource.drones.Count; i++)
+                for (int i = 0; i < DataSource.drones.Count; i++)
                 {
-                    if(DataSource.drones[i].Id == drone.Id)
+                    if (DataSource.drones[i].Id == drone.Id)
                     {
                         DataSource.drones[i] = drone;
                     }
@@ -41,7 +41,7 @@ namespace DalApi
                     }
                 }
             }
-            public void updateDroneToCharge(int droneId,int stationId)
+            public void updateDroneToCharge(int droneId, int stationId)
             {
                 for (int i = 0; i < DataSource.drones.Count; i++)
                 {
@@ -52,21 +52,14 @@ namespace DalApi
                         DataSource.drones[i] = drone;
                     }
                 }
-                
-                for (int i = 0; i < DataSource.drones.Count; i++)
-                {
-                    if (DataSource.drones[i].Id == droneId)
-                    {
-                        DO.DroneCharge droneCharge = new DO.DroneCharge();
-                        droneCharge.DroneId = droneId;
-                        droneCharge.staitionId = stationId;
-                        DataSource.dronesCharge.Add(droneCharge);
-                    }
 
-                }
-
+                DO.DroneCharge droneCharge = new DO.DroneCharge();
+                droneCharge.DroneId = droneId;
+                droneCharge.staitionId = stationId;
+                droneCharge.startCharge = DateTime.Now;
+                temp.InputTheDroneChargeToArray(droneCharge);
             }
-            public void updateRelaseDroneFromCharge(int droneId, double longi, double lati, int min)
+            public void updateRelaseDroneFromCharge(int droneId, double longi, double lati, double min)
             {
                 DO.Point stationLocation = new DO.Point();
                 stationLocation.latitude = lati;
@@ -89,25 +82,25 @@ namespace DalApi
                         DataSource.stations[i] = station;
                     }
                 }
-                for(int i = 0; i < DataSource.dronesCharge.Count; i++)
+                for (int i = 0; i < DataSource.dronesCharge.Count; i++)
                 {
                     if (DataSource.dronesCharge[i].DroneId == droneId)
                         DataSource.dronesCharge.RemoveAt(i);
 
                 }
             }
-            
+
             public void updateDeliveryParcelByDrone(int ID)
             {
-            
+
             }
-            public double colculateBattery(DO.Point point1,DO.Point point2,int ID)
+            public double colculateBattery(DO.Point point1, DO.Point point2, int ID)
             {
                 Drone drone = temp.GetDrone(ID);
                 double minus = 0;
                 List<double> configStatus = temp.PowerConsumptionBySkimmer();
                 double distance = point1.distancePointToPoint(point2);
-                if(drone.MaxWeight == DO.Enum.WeightCategories.Light)
+                if (drone.MaxWeight == DO.Enum.WeightCategories.Light)
                 {
                     //all 1500 meters is minus 1% battery
                     minus = distance / configStatus[1];
@@ -124,7 +117,7 @@ namespace DalApi
                 }
                 return minus;
             }
-            public void updateParcel(DO.Parcel parcel) 
+            public void updateParcel(DO.Parcel parcel)
             {
                 for (int i = 0; i < DataSource.parcels.Count; i++)
                 {
@@ -135,7 +128,7 @@ namespace DalApi
                 }
             }
 
-            
+
         }
     }
 }

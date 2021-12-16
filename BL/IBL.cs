@@ -27,7 +27,7 @@ namespace BlApi
         public void UpdateStationData(int ID, string name, int numSlots);
         public void UpdateCustomerData(int ID, string custName, string phoneNumber);
         public void SendingDroneToCharging(int ID);
-        public void ReleaseDroneFromCharging(int ID,int min);
+        public void ReleaseDroneFromCharging(int ID,double min);
         public void AssignPackageToDrone(int droneId);
         public void CollectionOfPackageByDrone(int droneId);
         public void DeliveryOfPackageByDrone(int droneId);
@@ -40,6 +40,8 @@ namespace BlApi
         public BO.Drone GetDrone(int ID);
         public BO.Customer GetCustomer(int ID);
         public BO.Parcel GetParcel(int ID);
+        public BO.DroneInCharging GetDroneInCharging(int ID);
+
         /* Until here */
 
         public void ListViewOptions();

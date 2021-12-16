@@ -14,7 +14,6 @@ using System.Threading.Tasks;
             public string nameTarget { get; set; }
             public EnumBO.Priorities priority { get; set; }
             public EnumBO.WeightCategories weight { get; set; }
-
             public EnumBO.Situations parcelsituation { get; set; }
 
             public override string ToString()

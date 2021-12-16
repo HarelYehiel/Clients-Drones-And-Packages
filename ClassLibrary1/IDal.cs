@@ -23,7 +23,7 @@ using System.Threading.Tasks;
             // Return the parcel with parcelId
 
             public void InputTheStationToArray(Station station);
-
+            public void InputTheDroneChargeToArray(DroneCharge droneCharge);
             public void InputTheParcelToArray(Parcel par);
 
             public void InputTheCustomerToArray(Customer cust);

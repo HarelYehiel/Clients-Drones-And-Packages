@@ -1,18 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using BO;
 
 namespace PL
 {
@@ -33,9 +22,18 @@ namespace PL
 
         private void ClickToShowDroneList(object sender, RoutedEventArgs e)
         {
-            new DroneListWindow(ref bl).Show();
+            new DroneListWindow(bl).Show();
+        }
+        private void ClickToShowCustomerList(object sender, RoutedEventArgs e)
+        {
+            new CustomerListWindow(bl).Show();
         }
 
-        
+        private void ClickToShowStatoinList(object sender, RoutedEventArgs e)
+        {
+            new StationListWindow(bl).Show();
+
+        }
+
     }
 }

@@ -1,0 +1,81 @@
+﻿<Window x:Class="PL.CustomerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PL"
+                mc:Ignorable="d"
+        Background="#5885AF"
+        Title="DroneWindow" Height="450" Width="1000" Loaded="CancelButtonX">
+    <Grid Loaded="CancelButtonX">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="150*"/>
+            <RowDefinition Height="400*"/>
+        </Grid.RowDefinitions>
+        <ListView x:Name="DronesListView"  Grid.Row="0" Background="#5885AF">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="ID" Width="100" DisplayMemberBinding="{Binding uniqueID}"/>
+                    <GridViewColumn Header="Name" Width="100" DisplayMemberBinding="{Binding name}"/>
+                    <GridViewColumn Header="Phone" Width="100" DisplayMemberBinding="{Binding phone}"/>
+                    <GridViewColumn Header="packages Sent And Delivered" DisplayMemberBinding="{Binding packagesSentAndDelivered}"/>
+                    <GridViewColumn Header="packages Sent And Not Delivered" DisplayMemberBinding="{Binding packagesSentAndNotDelivered}"/>
+                    <GridViewColumn Header="packages He Received" DisplayMemberBinding="{Binding packagesHeReceived}"/>
+                    <GridViewColumn Header="packages On The Way To The Customer" DisplayMemberBinding="{Binding packagesOnTheWayToTheCustomer}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <TextBox  x:Name ="SaveTheDrineID" Visibility="Hidden" HorizontalAlignment="Left" Margin="644,272,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="86" Height="12" Grid.Row="1"/>
+        <Button Content="Close" HorizontalAlignment="Left"  Margin="941,5,0,0" Width="37" VerticalAlignment="Top" Click="CloseWindow" Grid.Row="1" />
+        <TextBlock x:Name="IDTextBlock" HorizontalAlignment="Left" Margin="291,55,0,0" Grid.Row="1" Text="Type customer's ID with numbers only." TextWrapping="Wrap" VerticalAlignment="Top" Visibility="Hidden" Foreground="#FFFF000F" FontSize="14" />
+        <TextBlock x:Name="NameTextBlock" HorizontalAlignment="Left" Margin="289,87,0,0" Grid.Row="1" Text="Type the name." TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" Visibility="Hidden" Foreground="#FFFF000F" />
+        <TextBlock x:Name="PhoneTextBlock" HorizontalAlignment="Left" Margin="289,124,0,0" Grid.Row="1" Text="Type the phone with numbers only." TextWrapping="Wrap" VerticalAlignment="Top" Visibility="Hidden" Foreground="#FFFF000F" FontSize="14" />
+        <TextBlock x:Name="LatitudeTextBlock" HorizontalAlignment="Left" Margin="293,154,0,0" Grid.Row="1" Text="Type the latitude with numbers only." TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" Visibility="Hidden" Foreground="#FFFF000F" />
+        <TextBlock x:Name="LongitudeTextBlock" HorizontalAlignment="Left" Margin="293,184,0,0" Grid.Row="1" Text="Type the longitude with numbers only." TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" Visibility="Hidden" Foreground="#FFFF000F" />
+        <TextBlock x:Name="FunctionTextBlock" HorizontalAlignment="Left" Margin="839,157,0,0" Grid.Row="1" Text="Choose one of them." TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" Visibility="Hidden" Foreground="#FFFF000F" />
+
+        <Button x:Name="AddDroneButton" Content="Add Drone" BorderBrush = "White" FontWeight = "DemiBold" HorizontalAlignment="Left" Margin="155,216,0,0" VerticalAlignment="Top" Height="38" Width="108" Click="AddDrone" Grid.Row="1">
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="15"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+        <Label x:Name="IDLabel" Content="ID" FontWeight="ExtraBlack" HorizontalAlignment="Left" Margin="12,54,0,0" VerticalAlignment="Top" Height="31" Width="92" Grid.Row="1"/>
+        <Label x:Name="NameLabel" Content="Name" FontWeight="ExtraBlack" HorizontalAlignment="Left" Margin="9,84,0,0" VerticalAlignment="Top" Height="26" Width="92" Grid.Row="1"/>
+        <Label x:Name="PhoneLabel" Content="Phone" FontWeight="ExtraBlack" HorizontalAlignment="Left" Margin="9,117,0,0" VerticalAlignment="Top" Height="25" Width="92" Grid.Row="1"/>
+        <Label x:Name="LatitudeLabel" Content="Latitude customer" FontWeight="ExtraBlack" HorizontalAlignment="Left" Margin="6,154,0,0" VerticalAlignment="Top" Height="28" Width="120" Grid.Row="1"/>
+        <TextBox  x:Name ="IDTextBox" HorizontalAlignment="Left" Margin="144,55,0,0" Text="Type customer's ID with numbers only." TextWrapping="Wrap" VerticalAlignment="Top" Width="126" Height="21" Grid.Row="1"/>
+        <TextBox  x:Name ="NameTextBox" HorizontalAlignment="Left" Margin="143,83,0,0" Text="Type customer's name" TextWrapping="Wrap" VerticalAlignment="Top" Width="126" Height="27" Grid.Row="1"/>
+        <TextBox  x:Name ="PhoneTextBox" HorizontalAlignment="Left" Margin="144,119,0,0" Text="Type customer's phone" TextWrapping="Wrap" VerticalAlignment="Top" Width="126" Height="35" Grid.Row="1"/>
+        <TextBox  x:Name ="LatitudeTextBox" HorizontalAlignment="Left" Margin="145,159,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="126" Height="20" Grid.Row="1"/>
+        <TextBox  x:Name ="LongitudeTextBox" HorizontalAlignment="Left" Margin="146,188,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="126" Height="20" Grid.Row="1"/>
+        <Label x:Name="LongitudeLabel" Content="Longitude customer" FontWeight="ExtraBlack" HorizontalAlignment="Left" Margin="4,182,0,0" VerticalAlignment="Top" Height="53" Width="137" Grid.Row="1"/>
+
+
+        <Grid x:Name="FunctionsCustomerGrid" Grid.Row="1" Margin="803,107,0,77" HorizontalAlignment="Left" Width="183">
+            <ComboBox x:Name="FunctionConbo" HorizontalAlignment="Left"  IsEditable ="true" IsReadOnly="True" Text="Choose function" Margin="20,14,0,0" VerticalAlignment="Top" Width="154" Height="29" RenderTransformOrigin="0.491,1.082" SelectionChanged="FunctionConbo_SelectionChanged" Initialized="FunctionConbo_Initialized"/>
+            <Button x:Name="OkayButton" Content="OK" BorderBrush = "White" FontWeight = "DemiBold" HorizontalAlignment="Left" Margin="20,79,0,0" VerticalAlignment="Top" Width="154" Height="34" Click="Okay">
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="15"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <TextBlock x:Name="InfoTextBlock" HorizontalAlignment="Left" Margin="106,91,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" Foreground="#FFFF000F" />
+        </Grid>
+        <ListView x:Name="ParcelsListView"  Grid.Row="1" Visibility="Hidden" Background="#5885AF" Margin="322,5,187,20" >
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="ID" Width="50" DisplayMemberBinding="{Binding uniqueID}"/>
+                    <GridViewColumn Header="namrSender" Width="100" DisplayMemberBinding="{Binding namrSender}"/>
+                    <GridViewColumn Header="nameTarget" Width="100" DisplayMemberBinding="{Binding nameTarget}"/>
+                    <GridViewColumn Header="priority" Width="70" DisplayMemberBinding="{Binding priority}"/>
+                    <GridViewColumn Header="weight" Width="65" DisplayMemberBinding="{Binding weight}"/>
+                    <GridViewColumn Header="parcelsituation" Width="100" DisplayMemberBinding="{Binding parcelsituation}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+    </Grid>
+</Window>

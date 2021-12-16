@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DO; 
+using DO;
 
 namespace BlApi
 {
@@ -27,7 +27,7 @@ namespace BlApi
                 drone.Model = newModel;
                 updateDataSourceFun.updateDrone(drone);
                 BO.DroneToList droneToList_BO;
-                droneToList_BO = GetDroneBO(ID);
+                droneToList_BO = GetDroneToListBO(ID);
                 droneToList_BO.Model = newModel;
                 for (int i = 0; i < ListDroneToList.Count; i++)
                 {
@@ -96,13 +96,13 @@ namespace BlApi
             try
             {
                 Drone drone = accessIdal.GetDrone(ID);
-                BO.DroneToList droneToListBo = GetDroneBO(ID);
+                BO.DroneToList droneToListBo = GetDroneToListBO(ID);
                 //-----check drone status, only if he is free check the next condition-----
                 if (drone.droneStatus == DO.Enum.DroneStatus.Avilble)
                 {
 
                     ///----------find the most close station---------
-                    List<BO.station> stations = GetListOfBaseStations().ToList().ConvertAll(convertToStationNotList);
+                    List<BO.station> stations = GetAllStaionsBy(s => s.ChargeSlots > 0).ToList().ConvertAll(convertToStationNotList);
                     BO.Location point1, point2 = new BO.Location();
                     point1 = droneToListBo.location;
                     point2 = stations[0].location;
@@ -133,19 +133,15 @@ namespace BlApi
                         {
                             if (station.location == point2)
                             {
-                                if (station.availableChargingStations > 0)
-                                {
-                                    station.availableChargingStations--;
-                                    //update station data in DataSource
-                                    UpdateStationData(station.uniqueID, station.name, station.availableChargingStations);
-                                    //update all the changes data
-                                    updateDataSourceFun.updateDroneToCharge(ID, station.uniqueID);
-                                }
-                                else
-                                    throw new BO.MyExeption_BO("There is no free slot for this drone!");
+                                station.availableChargingStations--;
+                                //update station data in DataSource
+                                UpdateStationData(station.uniqueID, station.name, station.availableChargingStations);
+                                //update all the changes data
+                                updateDataSourceFun.updateDroneToCharge(ID, station.uniqueID);
                             }
                         }
 
+                       
                     }
                     else
                         throw new BO.MyExeption_BO("He does not have enough battery to get to the station");
@@ -160,7 +156,7 @@ namespace BlApi
             }
 
         }
-        public void ReleaseDroneFromCharging(int ID, int min)
+        public void ReleaseDroneFromCharging(int ID, double min)
         {
             try
             {
@@ -168,7 +164,7 @@ namespace BlApi
                 if (drone.droneStatus == DO.Enum.DroneStatus.Baintenance)
                 {
                     //------gett data of this dron from BL drone list-----------
-                    BO.DroneToList droneBo = GetDroneBO(ID);// new BO.DroneToList();
+                    BO.DroneToList droneBo = GetDroneToListBO(ID);// new BO.DroneToList();
                     List<double> getConfig = accessIdal.PowerConsumptionBySkimmer();
                     //update drone in BL list
                     droneBo.Battery = droneBo.Battery + (min * getConfig[4]);//every minute in charge is 1% more
@@ -216,7 +212,7 @@ namespace BlApi
                 //get the data of the specific drone from DAL(data source)
                 Drone drone = accessIdal.GetDrone(droneId);
                 //get the data of the specific drone at BO
-                BO.DroneToList droneBo = GetDroneBO(droneId);
+                BO.DroneToList droneBo = GetDroneToListBO(droneId);
                 Parcel parcelDO = new Parcel();
 
 
@@ -280,7 +276,7 @@ namespace BlApi
                             //if the parcel not picked up yet the PickUp time will be defult
                             if (parcels[i].pickedUp == null)
                             {
-                                BO.DroneToList droneToListeBo = GetDroneBO(ID);
+                                BO.DroneToList droneToListeBo = GetDroneToListBO(ID);
                                 BO.Customer sender = GetCustomer(parcels[i].customerInParcelSender.uniqueID);
                                 double minus = colculateBatteryBO(sender.location, droneToListeBo.location, ID);
 
@@ -329,7 +325,7 @@ namespace BlApi
                             //if this drone is picked up so the pickedUp time isn't defult and not yet deliverd
                             if (parcels[i].pickedUp != null && parcels[i].delivered == null)
                             {
-                                BO.DroneToList droneToList_Bo = GetDroneBO(ID);
+                                BO.DroneToList droneToList_Bo = GetDroneToListBO(ID);
                                 BO.Customer target = GetCustomer(parcels[i].customerInParcel_Target.uniqueID);
 
                                 //update list drone in BL
@@ -368,7 +364,7 @@ namespace BlApi
             }
 
         }
-        private BO.DroneToList GetDroneBO(int id)
+        private BO.DroneToList GetDroneToListBO(int id)
         {
             for (int i = 0; i < ListDroneToList.Count; i++)
             {
@@ -431,7 +427,7 @@ namespace BlApi
 
             parcel.customerInParcelSender = GetCustomerInParcel(GetParcel(parcelToList.uniqueID).customerInParcelSender.uniqueID);
             parcel.customerInParcel_Target = GetCustomerInParcel(GetParcel(parcelToList.uniqueID).customerInParcel_Target.uniqueID);
-           // tempCust.name = parcelToList.nameTarget; ;
+            // tempCust.name = parcelToList.nameTarget; ;
             parcel.priority = parcelToList.priority;
             parcel.weight = parcelToList.weight;
             accessIdal.GetListOfParcels().ToList().ForEach(delegate (Parcel parcelDO)

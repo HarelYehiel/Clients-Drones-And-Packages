@@ -11,8 +11,9 @@ using System.Threading.Tasks;
         {
             public int DroneId { get; set; }
             public int staitionId{get; set;}
+            public DateTime startCharge { get; set; }
 
-            public override string ToString()
+        public override string ToString()
             {
                 return $"DroneCharge ID: {DroneId}, station {staitionId}";
             }

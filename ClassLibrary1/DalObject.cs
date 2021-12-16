@@ -124,6 +124,10 @@ namespace DalApi
             {
                 DataSource.stations.Add(station);
             }
+            public void InputTheDroneChargeToArray(DroneCharge droneCharge)
+            {
+                DataSource.dronesCharge.Add(droneCharge);
+            }
             public void InputTheParcelToArray(Parcel par)
             {
                 DataSource.parcels.Add(par);

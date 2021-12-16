@@ -11,6 +11,7 @@ using System.Threading.Tasks;
         {
             public int uniqueID { get; set; }
             public double batteryStatus { get; set; }
+            public DateTime startCharge { get; set; }
 
             public override string ToString()
             {

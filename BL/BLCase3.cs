@@ -65,7 +65,7 @@ namespace BlApi
                 parcelToCustomerBO.uniqueID = parcelDO.Id;
                 parcelToCustomerBO.weight = (BO.EnumBO.WeightCategories)parcelDO.weight;
                 parcelToCustomerBO.priority = (BO.EnumBO.Priorities)parcelDO.priority;
-                parcelToCustomerBO.situation = (BO.EnumBO.Situations)FunParcelSituation(parcelDO);
+                parcelToCustomerBO.situation = FunParcelSituation(parcelDO);
 
                 // Find the 'customer_In_Delivery' for parcelToCustomer_BO:
 
@@ -287,6 +287,30 @@ namespace BlApi
                 throw new BO.MyExeption_BO("Exception from function 'parcel_view'", e);
             }
 
+        }
+        public BO.DroneInCharging GetDroneInCharging(int ID)
+        {
+            try
+            {
+               BO.DroneInCharging droneCharge = new BO.DroneInCharging();
+                List<DO.DroneCharge> droneCharges = accessIdal.GetListOfDroneCharge().ToList();
+                for (int i = 0; i < droneCharges.Count(); i++)
+                {
+                    if(droneCharges[i].DroneId == ID)
+                    {
+                        droneCharge.startCharge = droneCharges[i].startCharge;
+                        droneCharge.uniqueID = droneCharges[i].DroneId;
+                        droneCharge.batteryStatus = GetBatteryStatus(ID);
+                        return droneCharge;
+                    }
+                }
+                throw new BO.MyExeption_BO("Don't have this drone in the list.");
+            }
+            catch (Exception e)
+            {
+
+                throw new BO.MyExeption_BO("Exception from function 'GetDroneInCharging'", e);
+            }
         }
     }
 }

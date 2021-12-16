@@ -1,0 +1,60 @@
+﻿<Window x:Class="PL.CustomerListWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PL"
+        mc:Ignorable="d"
+        Title="Customer List Window" Height="450" Width="1000">
+    <Grid Name="MainGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="11*"/>
+            <ColumnDefinition Width="89*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50*"/>
+            <RowDefinition Height="400*"/>
+        </Grid.RowDefinitions>
+        <Grid Name="UpGrid" Height="auto" Grid.Row="0" Width="auto" Grid.ColumnSpan="2" Background="#274472
+
+" Margin="0,0,0,334" Grid.RowSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="147*"/>
+                <ColumnDefinition Width="53*"/>
+                <ColumnDefinition Width="200*"/>
+                <ColumnDefinition Width="200*"/>
+                <ColumnDefinition Width="200*"/>
+            </Grid.ColumnDefinitions >
+            <Button Content="Clear filter" FontWeight = "DemiBold" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="120" Click="ClearFilter" Background="#C3E0E5" BorderBrush = "White" Height="25">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="8"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button Content="Add new Customer" FontWeight = "DemiBold"  Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Top" Click="AddingNewCustomer" Margin="0,38,0,0" Background="#C3E0E5" BorderBrush = "White" Height="27" Width="124" >
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="12"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button Content="Close" Grid.Column="4"  Margin="153,1,10,48" Click="CloseWindow" />
+        </Grid>
+        <ListView x:Name="CustomersListView" SelectionChanged="CustomersListView_SelectionChanged" Grid.ColumnSpan="2" Margin="0,57,0,0" Background ="#5885AF" Grid.Row="1">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="ID" Width="100" DisplayMemberBinding="{Binding uniqueID}"/>
+                    <GridViewColumn Header="Name" Width="100" DisplayMemberBinding="{Binding name}"/>
+                    <GridViewColumn Header="Phone" Width="100" DisplayMemberBinding="{Binding phone}"/>
+                    <GridViewColumn Header="packages Sent And Delivered" DisplayMemberBinding="{Binding packagesSentAndDelivered}"/>
+                    <GridViewColumn Header="packages Sent And Not Delivered" DisplayMemberBinding="{Binding packagesSentAndNotDelivered}"/>
+                    <GridViewColumn Header="packages He Received" DisplayMemberBinding="{Binding packagesHeReceived}"/>
+                    <GridViewColumn Header="packages On The Way To The Customer" DisplayMemberBinding="{Binding packagesOnTheWayToTheCustomer}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <CheckBox Content="CheckBox" HorizontalAlignment="Left" Margin="946,78,0,0" Grid.Row="1" VerticalAlignment="Top" Grid.Column="1"/>
+
+    </Grid>
+</Window>

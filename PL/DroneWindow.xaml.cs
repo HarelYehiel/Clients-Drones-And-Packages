@@ -1,19 +1,10 @@
-﻿using System;
+﻿using BO;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Runtime.InteropServices;
 using System.Windows.Interop;
-using  BO;
 
 namespace PL
 {
@@ -41,6 +32,7 @@ namespace PL
 
             // Hide the all tools from view drone.
             FunctionConbo.Visibility = Visibility.Hidden;
+            CharginDroneDatePicker.Visibility = Visibility.Hidden;
             OkayButton.Visibility = Visibility.Hidden;
             ModalDroneTextBox.Visibility = Visibility.Hidden;
             ModeDronelLabel.Visibility = Visibility.Hidden;
@@ -57,23 +49,26 @@ namespace PL
             List<DroneToList> dronesToLists = new List<DroneToList>();
             dronesToLists.Add(droneToList1);
             DronesListView.ItemsSource = dronesToLists;
-            // Save the id of drone for the functions in combobox.
-            //SaveTheDrineID.Text = droneToList1.uniqueID.ToString();
 
             // Just frome function 'update drone', if choose this function this tools visible
             ModalDroneTextBox.Visibility = Visibility.Hidden;
             ModeDronelLabel.Visibility = Visibility.Hidden;
 
+            // Just frome function 'send drone from charge in station', if choose this function this tools visible
+            CharginDroneDatePicker.Visibility = Visibility.Hidden;
+
             // Hide the all tools from adding drone
-            AddDroneButton.Visibility = Visibility.Hidden;
-            IDLabel.Visibility = Visibility.Hidden;
-            ModelLabel.Visibility = Visibility.Hidden;
-            StationIDLabel.Visibility = Visibility.Hidden;
-            WieghtDroneLabel.Visibility = Visibility.Hidden;
-            WieghtCombo.Visibility = Visibility.Hidden;
-            IDTextBox.Visibility = Visibility.Hidden;
-            ModelTextBox.Visibility = Visibility.Hidden;
-            StationIDTextBox.Visibility = Visibility.Hidden;
+            addDroneGrid.Visibility = Visibility.Hidden;
+
+            //AddDroneButton.Visibility = Visibility.Hidden;
+            //IDLabel.Visibility = Visibility.Hidden;
+            //ModelLabel.Visibility = Visibility.Hidden;
+            //StationIDLabel.Visibility = Visibility.Hidden;
+            //WieghtDroneLabel.Visibility = Visibility.Hidden;
+            //WieghtCombo.Visibility = Visibility.Hidden;
+            //IDTextBox.Visibility = Visibility.Hidden;
+            //ModelTextBox.Visibility = Visibility.Hidden;
+            //StationIDTextBox.Visibility = Visibility.Hidden;
         }
         bool isNumber(string s)
         {
@@ -158,11 +153,10 @@ namespace PL
             try
             {
                 InfoTextBlock.Visibility = Visibility.Hidden;
-
                 if (FunctionConbo.SelectedIndex == -1)
                 {
                     MessageBox.Show("You not choose anything", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    this.Close();
+                    return;
                 }
                 else if (FunctionConbo.SelectedIndex == 0)  // update drone
                 {
@@ -185,20 +179,25 @@ namespace PL
 
                 }
                 else if (FunctionConbo.SelectedIndex == 1) // send drone to charge at station
+                {
                     bl.SendingDroneToCharging(droneToList.uniqueID);
+                }
                 else if (FunctionConbo.SelectedIndex == 2)  // send drone from charge in station
                 {
-                    if (ModalDroneTextBox.Text.Length == 0 || ModalDroneTextBox.Text == "Type how many minute" ||
-                        !isNumber(ModalDroneTextBox.Text))
+                    if (CharginDroneDatePicker.SelectedDate.Value == new DateTime())
                     {
-                        InfoTextBlock.Text = "No loading minutes typed";
+                        InfoTextBlock.Text = "No selected date";
                         InfoTextBlock.Visibility = Visibility.Visible;
                         return; // Back to fix.
                     }
-                    int ba = Convert.ToInt32(ModalDroneTextBox.Text);
                     try
                     {
-                        bl.ReleaseDroneFromCharging(droneToList.uniqueID, Convert.ToInt32(ModalDroneTextBox.Text));
+                        // Get the drone in charging from the list in dataSource.
+                        BO.DroneInCharging droneInCharging = bl.GetDroneInCharging(droneToList.uniqueID);
+
+                        // Calculate the range between the times
+                        TimeSpan timeSpan = CharginDroneDatePicker.SelectedDate.Value - droneInCharging.startCharge;
+                        bl.ReleaseDroneFromCharging(droneToList.uniqueID, timeSpan.TotalMinutes);
 
                     }
                     catch (Exception)
@@ -240,6 +239,8 @@ namespace PL
         private void FunctionConbo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             InfoTextBlock.Visibility = Visibility.Hidden;
+            CharginDroneDatePicker.Visibility = Visibility.Hidden;
+            ModalDroneTextBox.Visibility = Visibility.Hidden;
 
             if (FunctionConbo.SelectedIndex == 0) // "update drone"
             {
@@ -250,9 +251,13 @@ namespace PL
             }
             else if (FunctionConbo.SelectedIndex == 2)
             {
-                ModeDronelLabel.Content = "Amount of time";
-                ModalDroneTextBox.Text = "Type how many minute";
-                ModalDroneTextBox.Visibility = Visibility.Visible;
+                // Get the drone in charging from the list in dataSource.
+                BO.DroneInCharging droneInCharging = bl.GetDroneInCharging(droneToList.uniqueID);
+                // Limit the date to the minimum date in DatePicker
+                CharginDroneDatePicker.DisplayDateStart = droneInCharging.startCharge;
+
+                ModeDronelLabel.Content = "Select the end date";
+                CharginDroneDatePicker.Visibility = Visibility.Visible;
                 ModeDronelLabel.Visibility = Visibility.Visible;
 
             }
