@@ -53,6 +53,15 @@
                     <GridViewColumn Header="packages On The Way To The Customer" DisplayMemberBinding="{Binding packagesOnTheWayToTheCustomer}"/>
                 </GridView>
             </ListView.View>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Setter Property="Background" Value="#FFCDD7D9"/>
+                    <Setter Property="BorderBrush" Value="#274472" />
+                    <Setter Property="Foreground" Value="#274472" />
+                    <Setter Property="BorderThickness" Value="2" />
+                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                </Style>
+            </ListView.ItemContainerStyle>
         </ListView>
         <CheckBox Content="CheckBox" HorizontalAlignment="Left" Margin="946,78,0,0" Grid.Row="1" VerticalAlignment="Top" Grid.Column="1"/>
 

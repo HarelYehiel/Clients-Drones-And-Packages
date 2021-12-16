@@ -49,6 +49,22 @@
                 </Style>
             </Button.Resources>
         </Button>
+        <Button x:Name="StationListButton" Content="Click To Show Station List"  FontWeight = "DemiBold" Grid.Column="3" HorizontalAlignment="Center" Background = "#D4F1F4" BorderBrush = "White"  
+            VerticalAlignment="Center" RenderTransformOrigin="-0.403,0.496" Click="ClickToShowStatoinList" Height="40" Width="150">
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="15"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+        <Button x:Name="CustomerListButton" Content="Click To Show Customer List"  FontWeight = "DemiBold" Grid.Column="1" HorizontalAlignment="Center" Background = "#D4F1F4" BorderBrush = "White"  
+            VerticalAlignment="Center" RenderTransformOrigin="-0.403,0.496" Click="ClickToShowCustomerList" Height="40" Width="164">
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="15"/>
+                </Style>
+            </Button.Resources>
+        </Button>
         <Grid.RowDefinitions>
             <RowDefinition Height="69*"/>
             <RowDefinition Height="14*"/>
