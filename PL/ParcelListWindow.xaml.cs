@@ -55,7 +55,10 @@ namespace PL
         {
 
             if (ParcelListView.ItemsSource != null)
+            {
+                
                 new ParcelWindow(bl, ParcelListView.SelectedItem as BO.ParcelToList).ShowDialog();
+            }
             ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels();
         }
         private bool UserFilter(object item)

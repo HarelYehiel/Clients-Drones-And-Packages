@@ -51,9 +51,10 @@
             </Button>
             <Button Content="Close" Grid.Column="4"  Margin="153,1,10,48" Click="CloseWindow" />
         </Grid>
-        <ListView x:Name="ParcelListView" SelectionChanged="ParcelListView_SelectionChanged" Grid.ColumnSpan="2" Margin="0,69,0,0" Grid.RowSpan="2" Background ="#5885AF">
+        <ListView x:Name="ParcelListView" SelectionChanged="ParcelListView_SelectionChanged" Grid.ColumnSpan="2" Margin="0,69,0,0" Grid.RowSpan="2" Background ="#5885AF" RenderTransformOrigin="0.851,0.073">
             <ListView.View>
                 <GridView>
+
                     <GridViewColumn Header="Parcel ID" Width="100" DisplayMemberBinding="{Binding uniqueID}"/>
                     <GridViewColumn Header="Sender" Width="100" DisplayMemberBinding="{Binding namrSender}" />
                     <GridViewColumn Header="Target" Width="100" DisplayMemberBinding="{Binding nameTarget}" />
@@ -75,6 +76,7 @@
 
         </ListView>
         <CheckBox Content="CheckBox" HorizontalAlignment="Left" Margin="946,78,0,0" Grid.Row="1" VerticalAlignment="Top" Grid.Column="1"/>
+        
 
     </Grid>
 </Window>

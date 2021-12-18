@@ -54,6 +54,7 @@ using System.Threading.Tasks;
 
             public string MinimumFromStation(double minDistance, Point p);
         public void DelParcel(int ID);
+        public void updateParcel(DO.Parcel parcel);
 
         }
 

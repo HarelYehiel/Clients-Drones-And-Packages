@@ -122,5 +122,6 @@ namespace BlApi
         {
             accessIdal.DelParcel(ID);
         }
+
     }
 }

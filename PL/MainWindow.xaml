@@ -23,13 +23,14 @@
             </Grid.RenderTransform>
             <Border Background="#2e3137" CornerRadius="20" Margin="215,102,200,-355">
                 <StackPanel Margin="20">
-                    <Label Content="Login" Foreground="White" FontSize="25" HorizontalAlignment="Center"/>
+                    <Label Name="TitleBox" Content="Manager - Login" Foreground="White" FontSize="25" HorizontalAlignment="Center"/>
                     <Separator></Separator>
-                    <Label Content="Username" Foreground="White"/>
+                    <Label Name="username" Content="Username" Foreground="White"/>
                     <TextBox Name="txtUsername" Background="#545d6a" Foreground="White" FontSize="18"/>
-                    <Label Content="Password" Foreground="White"/>
+                    <Label Name ="password" Content="Password" Foreground="White"/>
                     <PasswordBox Name="txtPassword" Background="#545d6a" Foreground="White" FontSize="18"/>
                     <Button Name="enter" Content="Enter" Click="enter_Click" Margin="60 10" Background="#545d6a" Foreground="White" FontSize="18"/>
+                    <Button x:Name="changeHierarchy" Content="Not manager?" Click="situationLogin_Click" Background="#545d6a" Foreground="White" FontSize="18" Width="208"/>
                 </StackPanel>
             </Border>
         </Grid>
@@ -62,6 +63,14 @@
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
                     <Setter Property="CornerRadius" Value="15"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+        <Button Name ="signOut" Content="Sign Out" Grid.Column="3" HorizontalAlignment="Left" Margin="97,469,0,0" Grid.Row="2" VerticalAlignment="Top"
+                Background = "#D4F1F4" BorderBrush = "White" Click="signOut_Click">
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="5"/>
                 </Style>
             </Button.Resources>
         </Button>

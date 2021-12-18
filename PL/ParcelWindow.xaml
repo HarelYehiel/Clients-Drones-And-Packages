@@ -67,11 +67,8 @@
             </ListView.View>
 
         </ListView>
-        <Border Name="UpdateBorder" Background="#2e3137" CornerRadius="20" Margin="593,125,19,125">
+        <Border Name="UpdateBorder" Background="#2e3137" CornerRadius="20" Margin="593,150,19,150">
             <StackPanel Margin="15">
-
-                <Label Name ="parcelAssociated" Content="Parcel associated" Foreground="White" Width="100" Margin="-35,8,5,0"/>
-                <CheckBox x:Name="updateAssociated" Background="Gray" FontSize="18" Width="14" Margin="100,-18,13,0" Checked="updateAssociated_Checked"/>
                 <Label Name ="parcelCollected" Content="Parcel collected" Foreground="White" Width="94" Margin="-35,0,5,0"/>
                 <CheckBox x:Name="updatecollection" Background="Gray" FontSize="18" Width="14" Margin="100,-18,12,0" Checked="updatecollection_Checked"/>
                 <Label Name ="parcelDelivered" Content="Parcel Delivered:" Foreground="White" Width="94" Margin="-35,0,5,0"/>

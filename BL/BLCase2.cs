@@ -273,6 +273,7 @@ namespace BlApi
                     {
                         if (parcels[i].droneInParcel.uniqueID == ID)
                         {
+                            /////////////////////////////////////////////////////////////בעצם להכניס לפה את האפשרות לקבל חבילה ולעדכן אותה כמשוייכת לרחפן הזה
                             //if the parcel not picked up yet the PickUp time will be defult
                             if (parcels[i].pickedUp == null)
                             {
@@ -286,7 +287,10 @@ namespace BlApi
                                 droneToListeBo.location.longitude = sender.location.longitude;
 
                                 //update changes at DataSource
-                                parcel = accessIdal.GetParcel(parcels[i].uniqueID);
+                                //if (parcelFromUser == 0)
+                                //    parcel = accessIdal.GetParcel(parcelFromUser);
+                                //else
+                                    parcel = accessIdal.GetParcel(parcels[i].uniqueID);
                                 parcel.PickedUp = DateTime.Now;
                                 updateDataSourceFun.updateParcel(parcel);
 
@@ -469,11 +473,21 @@ namespace BlApi
             }
             if (drone.weight == BO.EnumBO.WeightCategories.Heavy)
             {
-                //all 850 meters is minus 1% battery
+                //All 850 meters is minus 1% battery
                 minus = distance / configStatus[3];
             }
             return minus;
         }
+        public void updateParcel(int parcelID, int choise) 
+        {
+            // In the object "ParcelToList" no have drone Id paraneter, so we take it from DO.Parcel
+            DO.Parcel parcel1 = accessIdal.GetParcel(parcelID);
+            if(choise == 1)
+            // After that we have droneID update collection parcel by this drone 
+                CollectionOfPackageByDrone(parcel1.DroneId);
+            if (choise == 2)
+                DeliveryOfPackageByDrone(parcel1.DroneId);
+        } 
     }
 
 }

@@ -403,6 +403,16 @@ namespace DalApi
                 }
 
             }
+            public void updateParcel(DO.Parcel parcel)
+            {
+                for (int i = 0; i < DataSource.parcels.Count; i++)
+                {
+                    if (DataSource.parcels[i].Id == parcel.Id)
+                    {
+                        DataSource.parcels[i] = parcel;
+                    }
+                }
+            }
         }
     }
 

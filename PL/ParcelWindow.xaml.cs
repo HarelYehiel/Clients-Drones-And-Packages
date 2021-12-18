@@ -26,6 +26,13 @@ namespace PL
             bl = bl1;
             parcel = Parcel1;
             InitializeComponent();
+            txtId.IsEnabled = false;
+            txtSender.IsEnabled = false;
+            txtTarget.IsEnabled = false;
+            comboWeight.IsEnabled = false;
+            comboPriority.IsEnabled = false;
+
+
             if (Parcel1 != null)
             {
                 title.Content = "update Parcel";
@@ -45,25 +52,17 @@ namespace PL
                 txtId.Foreground = new SolidColorBrush(Colors.Red);
                 txtId.Background = new SolidColorBrush(Colors.White);
                 txtId.Text = "DELETED";
-                txtId.IsEnabled = false;
                 txtSender.Background = new SolidColorBrush(Colors.White);
                 txtSender.Foreground = new SolidColorBrush(Colors.Red);
                 txtSender.Text = "DELETED";
-                txtSender.IsEnabled = false;
                 txtTarget.Background = new SolidColorBrush(Colors.White);
                 txtTarget.Foreground = new SolidColorBrush(Colors.Red);
-                txtTarget.Text = "DELETED";
-                txtTarget.IsEnabled = false;
-                comboWeight.IsEnabled = false;
-                comboPriority.IsEnabled = false;
+                txtTarget.Text = "DELETED";               
                 Add.Visibility = Visibility.Hidden;
                 OptinalCustomer.Visibility = Visibility.Hidden;
                 LabelCustomers.Visibility = Visibility.Hidden;
                 UpdateBorder.Visibility = Visibility.Hidden;
             }
-            //if (Parcel1 == null)
-            //    this.Close();
-
         }
         public ParcelWindow(BlApi.IBL bl1)
         {
@@ -146,19 +145,32 @@ namespace PL
 
         private void updatecollection_Checked(object sender, RoutedEventArgs e)
         {
-            parcel.parcelsituation = BO.EnumBO.Situations.collected;
-            /////////// צריך להוסיף פונקציית עדכון חבילה 
+            try
+            {
+                parcel.parcelsituation = BO.EnumBO.Situations.collected;
+                bl.updateParcel(parcel.uniqueID, 1);
+                Close();
+            }
+            catch (Exception)
+            {
+                updatecollection.IsChecked = false;
+                MessageBox.Show("This update is unlegal", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
 
         private void updateDelivered_Checked(object sender, RoutedEventArgs e)
         {
-            parcel.parcelsituation = BO.EnumBO.Situations.provided;
-            /////////// צריך להוסיף פונקציית עדכון חבילה 
-        }
-        private void updateAssociated_Checked(object sender, RoutedEventArgs e)
-        {
-            parcel.parcelsituation = BO.EnumBO.Situations.associated;
-            /////////// צריך להוסיף פונקציית עדכון חבילה
+            try
+            {
+                parcel.parcelsituation = BO.EnumBO.Situations.provided;
+                bl.updateParcel(parcel.uniqueID, 2);
+                Close();
+            }
+            catch (Exception)
+            {
+                updateDelivered.IsChecked = false;
+                MessageBox.Show("This update is unlegal", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
         private void comboWeight_Initialized(object sender, EventArgs e)
         {

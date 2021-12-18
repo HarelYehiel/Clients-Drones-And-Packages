@@ -31,6 +31,7 @@ namespace BlApi
         public void AssignPackageToDrone(int droneId);
         public void CollectionOfPackageByDrone(int droneId);
         public void DeliveryOfPackageByDrone(int droneId);
+        public void updateParcel(int parcelID,int choise);
         /* Until here */
 
         public void EntityDisplayOptions();
