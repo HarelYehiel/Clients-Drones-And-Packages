@@ -98,17 +98,58 @@ namespace PL
         {
             hideAllRemarks();
 
-            if (IDTextBox.Text.Length == 0 || !isNumber(IDTextBox.Text)) // check ID
-                 IDTextBlock.Visibility = Visibility.Visible;           
-            if (NameTextBox.Text.Length == 0 || NameTextBox.Text == "Type customer's name")// check Name      
-                NameTextBlock.Visibility = Visibility.Visible;
-            if (PhoneTextBox.Text.Length == 0 || PhoneTextBox.Text == "Type customer's phone"
-                || !isNumber(PhoneTextBox.Text)) // check Phone
+            if (!IsInt(IDTextBox.Text))
+            {
+                IDTextBlock.Text = "Type the ID with only numbers.";
+                IDTextBlock.Visibility = Visibility.Visible;
+            }
+            else if(!IsInt(PhoneTextBox.Text))
+            {
+                PhoneTextBlock.Text = "Type the phone with only numbers.";
                 PhoneTextBlock.Visibility = Visibility.Visible;
-            if (LatitudeTextBox.Text.Length == 0 || !isNumber(LatitudeTextBox.Text)) // check Latitude     
-                LatitudeTextBlock.Visibility = Visibility.Visible;           
-            if (LongitudeTextBox.Text.Length == 0 || !isNumber(LongitudeTextBox.Text)) // check Longitude     
+            }
+            else if(!IsDouble(LatitudeTextBox.Text))
+            {
+                LatitudeTextBlock.Text = "Type only numbers and one point.";
+                LatitudeTextBlock.Visibility = Visibility.Visible;
+            }
+            else if(!IsDouble(LongitudeTextBox.Text))
+            {
+                LongitudeTextBlock.Text = "Type only numbers and one point.";
                 LongitudeTextBlock.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                // If all input is proper add the customer,
+                // else ERROR with TextBlocks.
+                bool isAllProper = true;
+
+                int IdCustome = Convert.ToInt32(IDTextBox.Text);
+                string Phone = PhoneTextBox.Text;
+                double Latitude = Convert.ToDouble(LatitudeTextBox.Text);
+                double Longitude = Convert.ToDouble(LongitudeTextBox.Text);
+                string Name = NameTextBox.Text;
+
+                if (existThisIdCustomer(IdCustome))
+                {
+                    IDTextBlock.Text = "This ID customer exists, select another.";
+                    IDTextBlock.Visibility = Visibility.Visible;
+                    isAllProper = false;
+                }
+                if (Name.Length == 0 || Name == "Type customer's name")// check Name
+                {
+                    NameTextBlock.Visibility = Visibility.Visible;
+                    isAllProper = false;
+                }
+
+                // If all proper add th customer.
+                if (isAllProper)
+                {
+                    bl.AbsorptionNewCustomer(IdCustome, Name, Phone, Latitude, Longitude);
+
+                    MessageBox.Show("The customer added", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
         }
 
         private void CloseWindow(object sender, RoutedEventArgs e)
@@ -134,7 +175,7 @@ namespace PL
             {
 
                 FunctionTextBlock.Visibility = Visibility.Visible;
-                    return;
+                return;
 
             }
             else if (FunctionConbo.SelectedIndex == 0) //Update customer
@@ -188,7 +229,7 @@ namespace PL
                 ParcelsListView.ItemsSource = bl.GetAllParcelsBy(c => c.TargetId == customerToList.uniqueID);
             else if (FunctionConbo.SelectedIndex == 4) // My shipments            
                 ParcelsListView.ItemsSource = bl.GetAllParcelsBy(c => c.SenderId == customerToList.uniqueID);
-            
+
         }
         void hideAllRemarks()
         {
@@ -200,7 +241,7 @@ namespace PL
             LatitudeTextBlock.Visibility = Visibility.Hidden;
             LongitudeTextBlock.Visibility = Visibility.Hidden;
         }
-        bool isNumber(string s)
+        bool IsInt(string s)
         {
             if (s.Length == 0) return false;
             for (int i = 0; i < s.Length; i++)
@@ -213,10 +254,47 @@ namespace PL
 
             return true;
         }
+        bool IsDouble(string s)
+        {
+            bool HaveOnePointInTheNumber = true;
+
+
+            if (s.Length == 0) return false;
+            if (s.Length == 1 && (int)s[0] == (int)'.') return false;
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                if ((int)s[i] >= (int)'0' && (int)s[i] <= (int)'9')
+                    continue;
+                else if(HaveOnePointInTheNumber &&(int)s[i] == (int)'.')
+                {
+                    HaveOnePointInTheNumber = false;
+                    continue;
+                }
+
+                return false;
+            }
+
+            return true;
+        }
+        bool existThisIdCustomer(int id)
+        {
+            try
+            {
+                Customer customer;
+                customer = bl.GetCustomer(id);
+                if (customer.uniqueID == id) return true; // Exist drine with this id.
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;// Don't exist drone with this id.
+            }
+        }
         private bool CheckThePhoneAndName()
         {
-            if (PhoneTextBox.Text != "Type customer's phone" &&!isNumber(PhoneTextBox.Text))
-            { 
+            if (PhoneTextBox.Text != "Type customer's phone" && !IsInt(PhoneTextBox.Text))
+            {
                 PhoneTextBlock.Text = "Type only numbers";
                 return false;
             }
@@ -237,7 +315,7 @@ namespace PL
 
             return false;
         }
-          private bool CheckIfWantPhoneButNotName()
+        private bool CheckIfWantPhoneButNotName()
         {
             if ((NameTextBox.Text.Length == 0 || NameTextBox.Text == "Type customer's name")
                && (PhoneTextBox.Text.Length != 0 && PhoneTextBox.Text != "Type customer's phone"))

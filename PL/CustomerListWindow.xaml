@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
         Title="Customer List Window" Height="450" Width="1000">
-    <Grid Name="MainGrid">
+    <Grid  Loaded="CancelButtonX">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="11*"/>
             <ColumnDefinition Width="89*"/>

@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
+        Background ="#5885AF"
         Title="Drone List Window" Height="640" Width="650" Loaded="cancelButtonX">
     <Grid Name="MainGrid">
         <Grid.ColumnDefinitions>
@@ -25,17 +26,8 @@
                 <ColumnDefinition Width="200*"/>
                 <ColumnDefinition Width="200*"/>
             </Grid.ColumnDefinitions >
-            <ComboBox Name="WieghtCombo" Grid.Column="0" IsEditable ="true" IsReadOnly="True" Text="Choose wieght"  SelectionChanged="StatusDroneWeight" Initialized="WieghtCombo_Initialized" Margin="43,21,34,24" Grid.ColumnSpan="2"/>
-            <TextBox Name ="FilterTextBox" FontWeight = "DemiBold" HorizontalAlignment="Left" Margin="43,1,0,0" Text="Fliters" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Background = "#C3E0E5" Height="18" Grid.ColumnSpan="2"/>
-            <ComboBox Name="SituationCombo" IsEditable ="true" Text="Choose status"  HorizontalAlignment="Left" Margin="43,46,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="StatusDroneSituation" Initialized="SituationCombo_Initialized" Height="20" Grid.ColumnSpan="2"/>
+            <ComboBox Name="WieghtCombo" Grid.Column="2" IsEditable ="true" IsReadOnly="True" Text="Choose wieght"  SelectionChanged="StatusDroneWeight" Visibility="Visible" Initialized="WieghtCombo_Initialized" Margin="56,84,21,-33" FontSize="9"/>
             <Button Content="Clear filter" FontWeight = "DemiBold" Grid.Column="2" HorizontalAlignment="Center" Margin="0,43,0,0" VerticalAlignment="Top" Width="120" Click="ClearFilter" Background="#C3E0E5" BorderBrush = "White">
-                <Button.Resources>
-                    <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="8"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
-            <Button Content="Both Filter" FontWeight = "DemiBold" Grid.Column="2"   HorizontalAlignment="Center" Margin="0,11,0,0" VerticalAlignment="Top" Height="22" Width="120" Click="AllFilters" RenderTransformOrigin="0.494,0.661" Background="#C3E0E5" BorderBrush = "White">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="8"/>
@@ -51,15 +43,15 @@
             </Button>
             <Button Content="Close" Grid.Column="4" Margin="98,10,14,39" Click="CloseWindow" />
         </Grid>
-        <ListView x:Name="DronesListView" SelectionChanged="DronesListView_SelectionChanged" Grid.ColumnSpan="2" Margin="0,69,0,0" Grid.RowSpan="2" Background ="#5885AF">
+        <ListView x:Name="DronesListView" SelectionChanged="DronesListView_SelectionChanged" Grid.ColumnSpan="2" Margin="0,34,0,0" Background ="#5885AF" Grid.Row="1">
             <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Drone ID" Width="80" DisplayMemberBinding="{Binding uniqueID}"/>
-                    <GridViewColumn Header="Model" Width="80" DisplayMemberBinding="{Binding Model}" />
-                    <GridViewColumn Header="Weight" Width="80" DisplayMemberBinding="{Binding weight}" />
+                <GridView >
+                    <GridViewColumn Header="Drone ID" Width="100" DisplayMemberBinding="{Binding uniqueID}"/>
+                    <GridViewColumn Header="Model" Width="100" DisplayMemberBinding="{Binding Model}" />
+                    <GridViewColumn Header="Weight" Width="100" DisplayMemberBinding="{Binding weight}" />
                     <GridViewColumn Header="Status" Width="100" DisplayMemberBinding="{Binding status}" />
                     <GridViewColumn Header="Battery" Width="100" DisplayMemberBinding="{Binding Battery}" />
-                    <GridViewColumn Header="Location" Width="250" DisplayMemberBinding="{Binding location}" />
+                    <GridViewColumn Header="Location" Width="200" DisplayMemberBinding="{Binding location}" />
                     <GridViewColumn Header="Parcel" Width="100" DisplayMemberBinding="{Binding packageDelivered}" />
                 </GridView>
 
@@ -74,8 +66,19 @@
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
-        
-        <CheckBox Content="CheckBox" HorizontalAlignment="Left" Margin="946,78,0,0" Grid.Row="1" VerticalAlignment="Top" Grid.Column="1"/>
+
+        <Button x:Name="SearchIDButton" Content="s" HorizontalAlignment="Left" Margin="4,36,0,0" Grid.Row="1" VerticalAlignment="Top" Width="20" Click="SearchIDButton_Click"/>
+        <Button x:Name="SearchStatusButton" Content="s" Margin="234,35,0,500" Grid.Row="1" Grid.Column="1" Visibility="Visible" HorizontalAlignment="Left" Width="20" Click="SearchStatusButton_Click" />
+        <Button x:Name="SearchWeightButton" Content="s" HorizontalAlignment="Left" Margin="134,35,0,0" Grid.Row="1" VerticalAlignment="Top" Width="20" Grid.Column="1" Click="SearchWeightButton_Click"/>
+        <Button x:Name="SearchModelButton" Content="s" HorizontalAlignment="Left" Margin="34,35,0,0" Grid.Row="1" VerticalAlignment="Top" Width="20"  Grid.Column="1" Click="SearchModelButton_Click"/>
+        <Button x:Name="SearchBattryButton" Content="s" HorizontalAlignment="Left" Margin="332,35,0,0" Grid.Row="1" VerticalAlignment="Top" Width="20"  Grid.Column="1" Click="SearchBattryButton_Click"/>
+        <Button x:Name="SearchLocationButton" Content="s" HorizontalAlignment="Left" Margin="434,35,0,0" Grid.Row="1" VerticalAlignment="Top" Width="20"  Grid.Column="1" Click="SearchLocationButton_Click" />
+        <TextBox x:Name="FilterIDTextBox" HorizontalAlignment="Left" Margin="28,17,0,0" Grid.Row="1" Text="Search" Visibility="Visible" TextWrapping="Wrap" VerticalAlignment="Top" Width="51" TextChanged="AnyFilterTextBox_TextChanged" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="FilterModelTextBox"  HorizontalAlignment="Left" Margin="60,17,0,0" Grid.Row="1" Text="Search" Visibility="Visible" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" Grid.Column="1" TextChanged="AnyFilterTextBox_TextChanged"/>
+        <TextBox x:Name="FilterBatteryTextBox"  HorizontalAlignment="Left" Margin="350,17,0,0" Grid.Row="1" Text="Search" Visibility="Visible" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" Grid.Column="1" TextChanged="AnyFilterTextBox_TextChanged"/>
+        <TextBox x:Name="FilterLocationTextBox"  HorizontalAlignment="Left" Margin="476,17,0,0" Grid.Row="1" Text="Search" Visibility="Visible" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" Grid.Column="1" TextChanged="AnyFilterTextBox_TextChanged"/>
+        <ComboBox x:Name="StatusCombo" IsEditable ="true" Text="Choose status"  HorizontalAlignment="Left" Margin="246,17,0,0" Visibility="Visible" VerticalAlignment="Top" SelectionChanged="StatusDroneSituation" Initialized="StatusCombo_Initialized" Grid.Column="1" Grid.Row="1" FontSize="9" Width="82.9533333333333"/>
+
 
     </Grid>
 
