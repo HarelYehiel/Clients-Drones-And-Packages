@@ -1,12 +1,7 @@
-﻿using System;
+﻿using BO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DalApi.DalObject;
-using DO;
-using BO;
-using BlApi;
 
 
 namespace BlApi
@@ -17,7 +12,7 @@ namespace BlApi
         {
             if (p.Delivered != null) return BO.EnumBO.Situations.provided;
             else if (p.PickedUp != null) return BO.EnumBO.Situations.collected;
-            else if (p.Scheduled != null) return BO.EnumBO.Situations.associated;
+            else if (p.Scheduled != null) return EnumBO.Situations.associated;
             return BO.EnumBO.Situations.created;
 
         }
@@ -82,6 +77,14 @@ namespace BlApi
 
             return StationsToTheList;
         }
+        public IEnumerable<StationToTheList> GetAllStaionsBy22(System.Predicate<BO.station> filter)
+        {
+            List<StationToTheList> StationsToTheList = new List<StationToTheList>();
+            return StationsToTheList;
+
+
+        }
+
         public IEnumerable<CustomerToList> GetAllCustomersBy(System.Predicate<DO.Customer> filter)
         {
             List<CustomerToList> customersToList = new List<CustomerToList>();

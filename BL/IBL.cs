@@ -54,6 +54,10 @@ namespace BlApi
         
         public IEnumerable<BO.DroneToList> GetAllDronesBy(System.Predicate<BO.DroneToList> filter);
         public IEnumerable<StationToTheList> GetAllStaionsBy(System.Predicate<DO.Station> filter);
+
+        public IEnumerable<StationToTheList> GetAllStaionsBy22(System.Predicate<station> filter);
+
+
         public IEnumerable<CustomerToList> GetAllCustomersBy(System.Predicate<DO.Customer> filter);
         public IEnumerable<ParcelToList> GetAllParcelsBy(System.Predicate<DO.Parcel> filter);
 

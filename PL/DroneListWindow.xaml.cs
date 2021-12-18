@@ -1,5 +1,6 @@
 ﻿using BO;
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,6 +14,11 @@ namespace PL
     public partial class DroneListWindow : Window
     {
         BlApi.IBL bl;
+        List<DroneToList> dronesToTheLists;
+
+        // When true allows the 'filters' function to be activated, otherwise there is no access.
+        //We usually use this when initializing or resetting the TextBox.
+        bool TurnOnFunctionFilters;
 
         private const int GWL_STYLE = -16;
         private const int WS_SYSMENU = 0x80000;
@@ -23,42 +29,52 @@ namespace PL
         public DroneListWindow(BlApi.IBL bL1)
         {
             bl = bL1;
+            dronesToTheLists = new List<DroneToList>();
+            dronesToTheLists.AddRange(bl.GetTheListOfDrones());
+
+            TurnOnFunctionFilters = false;
             InitializeComponent();
-            DronesListView.ItemsSource = bl.GetTheListOfDrones();
+            TurnOnFunctionFilters = true;
+
+            DronesListView.ItemsSource = dronesToTheLists;
         }
         private void StatusDroneWeight(object sender, SelectionChangedEventArgs e)
         {
-            if (WieghtCombo.SelectedIndex > -1)
-                DronesListView.ItemsSource = bl.GetAllDronesBy(D => D.weight == (EnumBO.WeightCategories)WieghtCombo.SelectedItem);
+            Filters();
+            //מפעם קודמת
+            //  if (WieghtCombo.SelectedIndex > -1)
+            //        DronesListView.ItemsSource = bl.GetAllDronesBy(D => D.weight == (EnumBO.WeightCategories)WieghtCombo.SelectedItem);
         }
         private void StatusDroneSituation(object sender, SelectionChangedEventArgs e)
         {
-            if (SituationCombo.SelectedIndex > -1)
-                DronesListView.ItemsSource = bl.GetAllDronesBy(D => D.status == (EnumBO.DroneStatus)SituationCombo.SelectedItem);
+            Filters();
+            //מפעם קודמת
+            // if (StatusCombo.SelectedIndex > -1)
+            //        DronesListView.ItemsSource = bl.GetAllDronesBy(D => D.status == (EnumBO.DroneStatus)StatusCombo.SelectedItem);
+
         }
         private void WieghtCombo_Initialized(object sender, EventArgs e)
         {
             WieghtCombo.ItemsSource = Enum.GetValues(typeof(EnumBO.WeightCategories));
         }
-        private void SituationCombo_Initialized(object sender, EventArgs e)
+        private void StatusCombo_Initialized(object sender, EventArgs e)
         {
-            SituationCombo.ItemsSource = Enum.GetValues(typeof(EnumBO.DroneStatus));
+            StatusCombo.ItemsSource = Enum.GetValues(typeof(EnumBO.DroneStatus));
         }
         private void ClearFilter(object sender, RoutedEventArgs e)
         {
 
             DronesListView.ItemsSource = bl.GetTheListOfDrones();
 
-            SituationCombo.SelectedIndex = -1;
-            WieghtCombo.SelectedIndex = -1;
+            HideAndReseteAllTextBox();
         }
         private void AllFilters(object sender, RoutedEventArgs e)
         {
-            if (SituationCombo.SelectedIndex == -1 || WieghtCombo.SelectedIndex == -1)
-                MessageBox.Show("One of the filters was not selected", "Error",MessageBoxButton.OK);
-            else if (SituationCombo.SelectedItem != Enum.GetValues(typeof(EnumBO.Situations)) && WieghtCombo.SelectedItem != Enum.GetValues(typeof(EnumBO.WeightCategories)))
+            if (StatusCombo.SelectedIndex == -1 || WieghtCombo.SelectedIndex == -1)
+                MessageBox.Show("One of the filters was not selected", "Error", MessageBoxButton.OK);
+            else if (StatusCombo.SelectedItem != Enum.GetValues(typeof(EnumBO.Situations)) && WieghtCombo.SelectedItem != Enum.GetValues(typeof(EnumBO.WeightCategories)))
                 DronesListView.ItemsSource = bl.GetAllDronesBy
-                    (D => D.status == (EnumBO.DroneStatus)SituationCombo.SelectedItem
+                    (D => D.status == (EnumBO.DroneStatus)StatusCombo.SelectedItem
                     && D.weight == (EnumBO.WeightCategories)WieghtCombo.SelectedItem);
         }
         private void DronesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -67,7 +83,7 @@ namespace PL
                 new DroneWindow(bl, DronesListView.SelectedItem as BO.DroneToList).ShowDialog();
 
             DronesListView.ItemsSource = null;
-            if (SituationCombo.SelectedIndex == -1 && WieghtCombo.SelectedIndex == -1) // No filter
+            if (StatusCombo.SelectedIndex == -1 && WieghtCombo.SelectedIndex == -1) // No filter
                 DronesListView.ItemsSource = bl.GetTheListOfDrones();
             else // Have filter/s.
                 ShowTheSkimmersAgain();
@@ -78,7 +94,7 @@ namespace PL
             DronesListView.ItemsSource = null; // Reset the list drone.
             new DroneWindow(bl).ShowDialog();
 
-            if (SituationCombo.SelectedIndex == -1 && WieghtCombo.SelectedIndex == -1) // No filter
+            if (StatusCombo.SelectedIndex == -1 && WieghtCombo.SelectedIndex == -1) // No filter
                 DronesListView.ItemsSource = bl.GetTheListOfDrones();
             else // Have filter/s.
                 ShowTheSkimmersAgain();
@@ -87,12 +103,12 @@ namespace PL
         private void ShowTheSkimmersAgain()
         // Show the skimmers again with the one filter on
         {
-            if (SituationCombo.SelectedIndex == -1)
+            if (StatusCombo.SelectedIndex == -1)
                 DronesListView.ItemsSource = bl.GetAllDronesBy
                    (D => D.weight == (EnumBO.WeightCategories)WieghtCombo.SelectedItem);
             else if (WieghtCombo.SelectedIndex == -1)
                 DronesListView.ItemsSource = bl.GetAllDronesBy
-                   (D => D.status == (EnumBO.DroneStatus)SituationCombo.SelectedItem);
+                   (D => D.status == (EnumBO.DroneStatus)StatusCombo.SelectedItem);
         }
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
@@ -104,5 +120,202 @@ namespace PL
             var hwnd = new WindowInteropHelper(this).Handle;
             SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_SYSMENU);
         }
+        bool isNumber(string s)
+        {
+            if (s.Length == 0) return false;
+            for (int i = 0; i < s.Length; i++)
+            {
+                if ((int)s[i] >= (int)'0' && (int)s[i] <= (int)'9')
+                    continue;
+
+                return false;
+            }
+
+            return true;
+        }
+        bool IsDouble(string s)
+        {
+            bool HaveOnePointInTheNumber = true;
+
+
+            if (s.Length == 0) return false;
+            if (s.Length == 1 && (int)s[0] == (int)'.') return false;
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                if ((int)s[i] >= (int)'0' && (int)s[i] <= (int)'9')
+                    continue;
+                else if (HaveOnePointInTheNumber && (int)s[i] == (int)'.')
+                {
+                    HaveOnePointInTheNumber = false;
+                    continue;
+                }
+
+                return false;
+            }
+
+            return true;
+        }
+        private void HideAndReseteAllTextBox()
+        {
+            TurnOnFunctionFilters = false;
+
+            FilterIDTextBox.Text = "Search";
+            FilterIDTextBox.Visibility = Visibility.Hidden;
+
+            FilterModelTextBox.Text = "Search";
+            FilterModelTextBox.Visibility = Visibility.Hidden;
+
+            StatusCombo.SelectedIndex = -1;
+            StatusCombo.Text = "Choose status";
+            StatusCombo.Visibility = Visibility.Hidden;
+
+            WieghtCombo.SelectedIndex = -1;
+            WieghtCombo.Text = "Choose wieght";
+            WieghtCombo.Visibility = Visibility.Hidden;
+
+            FilterBatteryTextBox.Text = "Search";
+            FilterBatteryTextBox.Visibility = Visibility.Hidden;
+
+            FilterLocationTextBox.Text = "Search";
+            FilterLocationTextBox.Visibility = Visibility.Hidden;
+
+            TurnOnFunctionFilters = true;
+        }
+
+        private void Filters()
+        // Search by all filter togther.
+        {
+
+            try
+            {
+                DronesListView.ItemsSource = null;
+                dronesToTheLists.Clear();
+                dronesToTheLists.AddRange(bl.GetTheListOfDrones());
+
+                if (isNumber(FilterIDTextBox.Text)) // Filter ID
+                {
+                    string id = FilterIDTextBox.Text;
+                    dronesToTheLists = dronesToTheLists.FindAll
+                        (s => s.uniqueID.ToString().Contains(id));
+                }
+                if (WieghtCombo.SelectedIndex != -1) // Filter wieght
+                {
+                    dronesToTheLists = dronesToTheLists.FindAll
+                        (s => s.weight == (EnumBO.WeightCategories)WieghtCombo.SelectedIndex);
+                }
+
+                if (IsDouble(FilterBatteryTextBox.Text))
+                // Filter battrey
+                {
+                    string Battery = FilterBatteryTextBox.Text;
+                    dronesToTheLists = dronesToTheLists.FindAll
+                        (s => s.Battery.ToString().Contains(Battery));
+                }
+                if (FilterModelTextBox.Text != "Search" &&
+                    FilterModelTextBox.Text != "")
+                // Filter model
+                {
+                    string model = FilterModelTextBox.Text;
+                    dronesToTheLists = dronesToTheLists.FindAll
+                        (s => s.Model.Contains(model));
+                }
+                if (IsDouble(FilterLocationTextBox.Text))
+                // Filter loction
+                {
+                    string Loction = FilterLocationTextBox.Text;
+                    dronesToTheLists = dronesToTheLists.FindAll
+                        (s => s.location.latitude.ToString().Contains(Loction) ||
+                         s.location.longitude.ToString().Contains(Loction));
+                }
+                if (StatusCombo.SelectedIndex != -1)
+                // Filter status
+                {
+                    dronesToTheLists = dronesToTheLists.FindAll
+                        (s => s.status == (EnumBO.DroneStatus)StatusCombo.SelectedIndex);
+                }
+
+                DronesListView.ItemsSource = dronesToTheLists;
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+        private void SearchIDButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (FilterIDTextBox.Visibility == Visibility.Hidden)
+                FilterIDTextBox.Visibility = Visibility.Visible;
+            else
+            {
+                FilterIDTextBox.Text = "Search";
+                FilterIDTextBox.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void SearchModelButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (FilterModelTextBox.Visibility == Visibility.Hidden)
+                FilterModelTextBox.Visibility = Visibility.Visible;
+            else
+            {
+                FilterModelTextBox.Text = "Search";
+                FilterModelTextBox.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void SearchWeightButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (WieghtCombo.Visibility == Visibility.Hidden)
+                WieghtCombo.Visibility = Visibility.Visible;
+            else
+            {
+                WieghtCombo.SelectedIndex = -1;
+                WieghtCombo.Text = "Choose wieght";
+                WieghtCombo.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void SearchStatusButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (StatusCombo.Visibility == Visibility.Hidden)
+                StatusCombo.Visibility = Visibility.Visible;
+            else
+            {
+                StatusCombo.SelectedIndex = -1;
+                StatusCombo.Text = "Choose status";
+                StatusCombo.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void SearchBattryButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (FilterBatteryTextBox.Visibility == Visibility.Hidden)
+                FilterBatteryTextBox.Visibility = Visibility.Visible;
+            else
+            {
+                FilterBatteryTextBox.Text = "Search";
+                FilterBatteryTextBox.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void SearchLocationButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (FilterLocationTextBox.Visibility == Visibility.Hidden)
+                FilterLocationTextBox.Visibility = Visibility.Visible;
+            else
+            {
+                FilterLocationTextBox.Text = "Search";
+                FilterLocationTextBox.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void AnyFilterTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (TurnOnFunctionFilters)
+                Filters();
+        }
+
     }
 }
+

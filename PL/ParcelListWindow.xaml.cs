@@ -1,16 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace PL
 {
@@ -62,17 +54,17 @@ namespace PL
         {
             if (String.IsNullOrEmpty(txtFilter.Text))
                 return true;
-            else if (filterCombo.SelectedIndex == 0)
+            else if (filterCombo.SelectedIndex == 0) //Parcl ID
                 return ((item as BO.ParcelToList).uniqueID.ToString().IndexOf(txtFilter.Text, StringComparison.OrdinalIgnoreCase) >= 0);
-            else if (filterCombo.SelectedIndex == 1)
+            else if (filterCombo.SelectedIndex == 1) //Sender name
                 return ((item as BO.ParcelToList).namrSender.IndexOf(txtFilter.Text, StringComparison.OrdinalIgnoreCase) >= 0);
-            else if (filterCombo.SelectedIndex == 2)
+            else if (filterCombo.SelectedIndex == 2) //Target name
                 return ((item as BO.ParcelToList).nameTarget.IndexOf(txtFilter.Text, StringComparison.OrdinalIgnoreCase) >= 0);
-            else if (filterCombo.SelectedIndex == 3)
+            else if (filterCombo.SelectedIndex == 3)// Priority
                 return ((item as BO.ParcelToList).priority.ToString().IndexOf(txtFilter.Text, StringComparison.OrdinalIgnoreCase) >= 0);
-            else if (filterCombo.SelectedIndex == 4)
+            else if (filterCombo.SelectedIndex == 4)// Weight
                 return ((item as BO.ParcelToList).weight.ToString().IndexOf(txtFilter.Text, StringComparison.OrdinalIgnoreCase) >= 0);
-            else if (filterCombo.SelectedIndex == 5)
+            else if (filterCombo.SelectedIndex == 5)// Situation
                 return ((item as BO.ParcelToList).parcelsituation.ToString().IndexOf(txtFilter.Text, StringComparison.OrdinalIgnoreCase) >= 0);
             else
                 return true;

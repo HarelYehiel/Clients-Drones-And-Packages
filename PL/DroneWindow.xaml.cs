@@ -13,6 +13,8 @@ namespace PL
     /// </summary>
     public partial class DroneWindow : Window
     {
+
+
         BlApi.IBL bl;
         DroneToList droneToList;
         private const int GWL_STYLE = -16;
@@ -120,7 +122,6 @@ namespace PL
                     {
                         ModelTextBlock.Visibility = Visibility.Visible;
                         AreAllTestsNormal = false;
-
                     }
                     if (!existThisIdStation(IdStaion))
                     // ID station exist ? if false (no), so error.
