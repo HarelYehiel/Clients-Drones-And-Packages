@@ -5,52 +5,40 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
-        Title="Customer List Window" Height="450" Width="1000">
-    <Grid  Loaded="CancelButtonX">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="11*"/>
-            <ColumnDefinition Width="89*"/>
-        </Grid.ColumnDefinitions>
+        Title="Customer List Window" Height="450" Width="888" Background ="#5885AF">
+    <Grid  Loaded="CancelButtonX" Margin="0,10,0,-16">
         <Grid.RowDefinitions>
-            <RowDefinition Height="50*"/>
-            <RowDefinition Height="400*"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="400"/>
         </Grid.RowDefinitions>
-        <Grid Name="UpGrid" Height="auto" Grid.Row="0" Width="auto" Grid.ColumnSpan="2" Background="#274472
+        <Grid Name="UpGrid" Height="auto" Grid.Row="0" Background="#274472" Margin="2,0,0,10">
 
-" Margin="0,0,0,334" Grid.RowSpan="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="147*"/>
-                <ColumnDefinition Width="53*"/>
-                <ColumnDefinition Width="200*"/>
-                <ColumnDefinition Width="200*"/>
-                <ColumnDefinition Width="200*"/>
-            </Grid.ColumnDefinitions >
-            <Button Content="Clear filter" FontWeight = "DemiBold" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Width="120" Click="ClearFilter" Background="#C3E0E5" BorderBrush = "White" Height="25">
+            <Button Content="Clear filter" FontWeight = "DemiBold" HorizontalAlignment="Left" VerticalAlignment="Center" Width="120" Click="ClearFilter" Background="#C3E0E5" BorderBrush = "White" Height="26" Margin="235,0,0,0">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="8"/>
                     </Style>
                 </Button.Resources>
             </Button>
-            <Button Content="Add new Customer" FontWeight = "DemiBold"  Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Top" Click="AddingNewCustomer" Margin="0,38,0,0" Background="#C3E0E5" BorderBrush = "White" Height="27" Width="124" >
+            <Button Content="Add new Customer" FontWeight = "DemiBold" HorizontalAlignment="Left" VerticalAlignment="Center" Click="AddingNewCustomer" Margin="23,0,0,0" Background="#C3E0E5" BorderBrush = "White" Height="26" Width="124" >
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="12"/>
                     </Style>
                 </Button.Resources>
             </Button>
-            <Button Content="Close" Grid.Column="4"  Margin="153,1,10,48" Click="CloseWindow" />
+            <Button Content="Close"  Margin="819,0,0,23" Click="CloseWindow" HorizontalAlignment="Left" Width="55" Height="18" VerticalAlignment="Bottom" />
         </Grid>
-        <ListView x:Name="CustomersListView" SelectionChanged="CustomersListView_SelectionChanged" Grid.ColumnSpan="2" Margin="0,57,0,0" Background ="#5885AF" Grid.Row="1">
+        <ListView x:Name="CustomersListView" SelectionChanged="CustomersListView_SelectionChanged" Margin="3,12,0,45" Background ="#5885AF" Grid.Row="1">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="ID" Width="100" DisplayMemberBinding="{Binding uniqueID}"/>
+                    <GridViewColumn Header="ID" Width="100"  DisplayMemberBinding="{Binding uniqueID}"/>
                     <GridViewColumn Header="Name" Width="100" DisplayMemberBinding="{Binding name}"/>
                     <GridViewColumn Header="Phone" Width="100" DisplayMemberBinding="{Binding phone}"/>
-                    <GridViewColumn Header="packages Sent And Delivered" DisplayMemberBinding="{Binding packagesSentAndDelivered}"/>
-                    <GridViewColumn Header="packages Sent And Not Delivered" DisplayMemberBinding="{Binding packagesSentAndNotDelivered}"/>
-                    <GridViewColumn Header="packages He Received" DisplayMemberBinding="{Binding packagesHeReceived}"/>
-                    <GridViewColumn Header="packages On The Way To The Customer" DisplayMemberBinding="{Binding packagesOnTheWayToTheCustomer}"/>
+                    <GridViewColumn Header="Sent And Delivered" Width="150" DisplayMemberBinding="{Binding packagesSentAndDelivered}"/>
+                    <GridViewColumn Header="Sent And Not Delivered" Width="180" DisplayMemberBinding="{Binding packagesSentAndNotDelivered}"/>
+                    <GridViewColumn Header="Received" Width="110" DisplayMemberBinding="{Binding packagesHeReceived}"/>
+                    <GridViewColumn Header="On The Way" Width="120" DisplayMemberBinding="{Binding packagesOnTheWayToTheCustomer}"/>
                 </GridView>
             </ListView.View>
             <ListView.ItemContainerStyle>
@@ -63,7 +51,20 @@
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
-        <CheckBox Content="CheckBox" HorizontalAlignment="Left" Margin="946,78,0,0" Grid.Row="1" VerticalAlignment="Top" Grid.Column="1"/>
+        <Button x:Name="SearchIDButton" Content="s" HorizontalAlignment="Left" Margin="7,14,0,0" VerticalAlignment="Top" Width="20"  Height="20" Grid.Row="1" Click="SearchIDButton_Click"/>
+        <Button x:Name="SearchNameButton" Content="s" Margin="108,14,0,0" VerticalAlignment="Top" Height="20" Grid.Row="1" Click="SearchNameButton_Click" HorizontalAlignment="Left" Width="21"/>
+        <Button x:Name="SearchPhoneButton" Content="s" Margin="208,14,0,0" VerticalAlignment="Top"  Height="20" HorizontalAlignment="Left" Width="19" Grid.Row="1" Click="SearchPhoneButton_Click" />
+        <Button x:Name="SearchSADButton" Content="s" HorizontalAlignment="Left" Margin="307,14,0,0" VerticalAlignment="Top" Width="20"  Height="20" Grid.Row="1" Click="SearchSADButton_Click" />
+        <Button x:Name="SearchSANDButton" Content="s" HorizontalAlignment="Left" Margin="458,14,0,0" VerticalAlignment="Top" Width="20"  Height="20" Grid.Row="1" Click="SearchSANDButton_Click" />
+        <Button x:Name="SearchReceivedButton" Content="s" HorizontalAlignment="Left" Margin="639,13,0,0" VerticalAlignment="Top" Width="20" Height="20" Grid.Row="1" Click="SearchReceivedButton_Click" />
+        <Button x:Name="SearchOTWButton" Content="s" HorizontalAlignment="Left" Margin="750,14,0,0" VerticalAlignment="Top" Width="20" Height="20" Grid.Row="1" Click="SearchOTWButton_Click" />
+        <TextBox x:Name="FilterIDTextBox" HorizontalAlignment="Left" Margin="24,47,0,0" Text="Search" Visibility="Hidden" TextWrapping="Wrap" VerticalAlignment="Top" Width="51" TextChanged="AnyFilterTextBox_TextChanged" Height="18" Grid.RowSpan="2"/>
+        <TextBox x:Name="FilterNameTextBox" Margin="121,0,0,0" Text="Search" Visibility="Hidden" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="AnyFilterTextBox_TextChanged" Height="18" HorizontalAlignment="Left" Width="47" Grid.Row="1"/>
+        <TextBox x:Name="FilterPhoneTextBox"  HorizontalAlignment="Left" Margin="221,49,0,0" Text="Search" Visibility="Hidden" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" TextChanged="AnyFilterTextBox_TextChanged" Height="18" Grid.RowSpan="2"/>
+        <TextBox x:Name="FilterSADTextBox"  HorizontalAlignment="Left" Margin="320,48,0,0" Text="Search" Visibility="Hidden" TextWrapping="Wrap" VerticalAlignment="Top" Width="46" TextChanged="AnyFilterTextBox_TextChanged" Height="20" Grid.RowSpan="2"/>
+        <TextBox x:Name="FilterSANDTextBox"  HorizontalAlignment="Left" Margin="481,48,0,0" Text="Search" Visibility="Hidden" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" TextChanged="AnyFilterTextBox_TextChanged" Height="18" Grid.RowSpan="2"/>
+        <TextBox x:Name="FilterReceiveTextBox"  HorizontalAlignment="Left" Margin="649,47,0,0" Text="Search" Visibility="Hidden" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" TextChanged="AnyFilterTextBox_TextChanged" Height="18" Grid.RowSpan="2"/>
+        <TextBox x:Name="FilterOTWTextBox"  HorizontalAlignment="Left" Margin="775,49,0,0" Text="Search" Visibility="Hidden" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" TextChanged="AnyFilterTextBox_TextChanged" Height="18" Grid.RowSpan="2"/>
 
     </Grid>
 </Window>

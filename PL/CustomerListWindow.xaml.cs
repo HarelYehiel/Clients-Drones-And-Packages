@@ -1,5 +1,6 @@
 ﻿using BO;
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,6 +14,12 @@ namespace PL
     public partial class CustomerListWindow : Window
     {
         BlApi.IBL bl;
+        List<CustomerToList> customersToTheLists;
+
+        // When true allows the 'filters' function to be activated, otherwise there is no access.
+        //We usually use this when initializing or resetting the TextBox.
+        bool TurnOnFunctionFilters;
+
         private const int GWL_STYLE = -16;
         private const int WS_SYSMENU = 0x80000;
         [DllImport("user32.dll", SetLastError = true)]
@@ -23,9 +30,15 @@ namespace PL
         public CustomerListWindow( BlApi.IBL bL1)
         {
             bl = bL1;
+            customersToTheLists = new List<CustomerToList>();
+            customersToTheLists.AddRange(bl.GetListOfCustomers());
 
+
+            TurnOnFunctionFilters = false;
             InitializeComponent();
-            CustomersListView.ItemsSource = bl.GetListOfCustomers();
+            TurnOnFunctionFilters = true;
+
+            CustomersListView.ItemsSource = customersToTheLists;
         }
 
         private void CustomersListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -55,6 +68,190 @@ namespace PL
         private void ClearFilter(object sender, RoutedEventArgs e)
         {
             CustomersListView.ItemsSource = bl.GetListOfCustomers();
+            HideAndReseteAllTextBox();
+        }
+
+        private void SearchSADButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (FilterSADTextBox.Visibility == Visibility.Hidden)
+                FilterSADTextBox.Visibility = Visibility.Visible;
+            else
+            {
+                FilterSADTextBox.Text = "Search";
+                FilterSADTextBox.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void SearchSANDButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (FilterSANDTextBox.Visibility == Visibility.Hidden)
+                FilterSANDTextBox.Visibility = Visibility.Visible;
+            else
+            {
+                FilterSANDTextBox.Text = "Search";
+                FilterSANDTextBox.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void SearchReceivedButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (FilterReceiveTextBox.Visibility == Visibility.Hidden)
+                FilterReceiveTextBox.Visibility = Visibility.Visible;
+            else
+            {
+                FilterReceiveTextBox.Text = "Search";
+                FilterReceiveTextBox.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void SearchOTWButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (FilterOTWTextBox.Visibility == Visibility.Hidden)
+                FilterOTWTextBox.Visibility = Visibility.Visible;
+            else
+            {
+                FilterOTWTextBox.Text = "Search";
+                FilterOTWTextBox.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void SearchIDButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (FilterIDTextBox.Visibility == Visibility.Hidden)
+                FilterIDTextBox.Visibility = Visibility.Visible;
+            else
+            {
+                FilterIDTextBox.Text = "Search";
+                FilterIDTextBox.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void SearchNameButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (FilterNameTextBox.Visibility == Visibility.Hidden)
+                FilterNameTextBox.Visibility = Visibility.Visible;
+            else
+            {
+                FilterNameTextBox.Text = "Search";
+                FilterNameTextBox.Visibility = Visibility.Hidden;
+            }
+        }
+        private void SearchPhoneButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (FilterPhoneTextBox.Visibility == Visibility.Hidden)
+                FilterPhoneTextBox.Visibility = Visibility.Visible;
+            else
+            {
+                FilterPhoneTextBox.Text = "Search";
+                FilterPhoneTextBox.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void AnyFilterTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (TurnOnFunctionFilters)
+                Filters();
+        }
+        bool isNumber(string s)
+        {
+            if (s.Length == 0) return false;
+            for (int i = 0; i < s.Length; i++)
+            {
+                if ((int)s[i] >= (int)'0' && (int)s[i] <= (int)'9')
+                    continue;
+
+                return false;
+            }
+
+            return true;
+        }
+        private void HideAndReseteAllTextBox()
+        {
+            TurnOnFunctionFilters = false;
+
+            FilterIDTextBox.Text = "Search";
+            FilterIDTextBox.Visibility = Visibility.Hidden;
+
+            FilterNameTextBox.Text = "Search";
+            FilterNameTextBox.Visibility = Visibility.Hidden;
+
+            FilterPhoneTextBox.Text = "Search";
+            FilterPhoneTextBox.Visibility = Visibility.Hidden;
+
+            FilterSADTextBox.Text = "Search";
+            FilterSADTextBox.Visibility = Visibility.Hidden;
+
+            FilterSANDTextBox.Text = "Search";
+            FilterSANDTextBox.Visibility = Visibility.Hidden;
+
+            FilterReceiveTextBox.Text = "Search";
+            FilterReceiveTextBox.Visibility = Visibility.Hidden;
+
+            FilterOTWTextBox.Text = "Search";
+            FilterOTWTextBox.Visibility = Visibility.Hidden;
+
+            TurnOnFunctionFilters = true;
+        }
+
+        private void Filters()
+        // Search by all filter togther.
+        {
+
+            try
+            {
+                CustomersListView.ItemsSource = null;
+                customersToTheLists.Clear();
+                customersToTheLists.AddRange(bl.GetListOfCustomers());
+
+                if (isNumber(FilterIDTextBox.Text)) // Filter ID
+                {
+                    string id = FilterIDTextBox.Text;
+                    customersToTheLists = customersToTheLists.FindAll
+                        (s => s.uniqueID.ToString().Contains(id));
+                }
+                if (isNumber(FilterNameTextBox.Text)) // Filter name
+                {
+                    string name = FilterNameTextBox.Text;
+                    customersToTheLists = customersToTheLists.FindAll
+                        (s => s.name.Contains(name));
+                }
+                if (isNumber(FilterPhoneTextBox.Text)) // Filter phone
+                {
+                    string phone = FilterPhoneTextBox.Text;
+                    customersToTheLists = customersToTheLists.FindAll
+                        (s => s.phone.ToString().Contains(phone));
+                }
+                if (isNumber(FilterSADTextBox.Text)) // Filter Sent And Delivered"
+                {
+                    string SentAndDelivered = FilterSADTextBox.Text;
+                    customersToTheLists = customersToTheLists.FindAll
+                        (s => s.packagesSentAndDelivered.ToString().Contains(SentAndDelivered));
+                }
+                if (isNumber(FilterSANDTextBox.Text)) // Filter Sent And Not Delivered
+                {
+                    string SentAndNotDelivered = FilterSANDTextBox.Text;
+                    customersToTheLists = customersToTheLists.FindAll
+                        (s => s.packagesSentAndNotDelivered.ToString().Contains(SentAndNotDelivered));
+                }
+                 if (isNumber(FilterReceiveTextBox.Text)) // Filter Receive
+                {
+                    string Receive = FilterReceiveTextBox.Text;
+                    customersToTheLists = customersToTheLists.FindAll
+                        (s => s.packagesHeReceived.ToString().Contains(Receive));
+                }
+                 if (isNumber(FilterOTWTextBox.Text)) // Filter On The Way
+                {
+                    string OnTheWay = FilterOTWTextBox.Text;
+                    customersToTheLists = customersToTheLists.FindAll
+                        (s => s.packagesOnTheWayToTheCustomer.ToString().Contains(OnTheWay));
+                }
+            
+                CustomersListView.ItemsSource = customersToTheLists;
+            }
+            catch (Exception)
+            {
+
+            }
         }
     }
 }

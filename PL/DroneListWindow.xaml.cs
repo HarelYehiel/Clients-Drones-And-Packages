@@ -199,6 +199,12 @@ namespace PL
                     dronesToTheLists = dronesToTheLists.FindAll
                         (s => s.uniqueID.ToString().Contains(id));
                 }
+                if (isNumber(FilterParcelTextBox.Text)) // Filter ID parcel
+                {
+                    string idParcel = FilterParcelTextBox.Text;
+                    dronesToTheLists = dronesToTheLists.FindAll
+                        (s => s.packageDelivered.ToString().Contains(idParcel));
+                }
                 if (WieghtCombo.SelectedIndex != -1) // Filter wieght
                 {
                     dronesToTheLists = dronesToTheLists.FindAll
@@ -316,6 +322,17 @@ namespace PL
                 Filters();
         }
 
+        private void SearchParcelButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (FilterParcelTextBox.Visibility == Visibility.Hidden)
+                FilterParcelTextBox.Visibility = Visibility.Visible;
+            else
+            {
+                FilterParcelTextBox.Text = "Search";
+                FilterParcelTextBox.Visibility = Visibility.Hidden;
+            }
+
+        }
     }
 }
 
