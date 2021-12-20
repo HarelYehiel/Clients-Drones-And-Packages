@@ -28,17 +28,10 @@
             <TextBox Margin="43,24,37,26"  Name="txtFilter" TextChanged="txtFilter_TextChanged" Height="19" Grid.ColumnSpan="2" />
             <TextBox Name ="FilterTextBox" FontWeight = "DemiBold" HorizontalAlignment="Left" Margin="43,1,0,0" Text="Fliters" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Background = "#C3E0E5" Height="18" Grid.ColumnSpan="2"/>
             <ComboBox Name="filterCombo" IsEditable ="true" Text="Choose filter"  HorizontalAlignment="Left" Margin="43,46,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="filterSelectionChanged" Initialized="filterCombo_Initialized" Height="20" Grid.ColumnSpan="2"/>
-            <Button Content="Clear filter" FontWeight = "DemiBold" Grid.Column="2" HorizontalAlignment="Center" Margin="0,43,0,0" VerticalAlignment="Top" Width="120" Click="ClearFilter" Background="#C3E0E5" BorderBrush = "White">
+            <Button Content="Clear filter" FontWeight = "DemiBold" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Width="120" Click="ClearFilter" Background="#C3E0E5" BorderBrush = "White" Height="28" Margin="0,18,0,0">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="8"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
-            <Button Content="Both Filter" FontWeight = "DemiBold" Grid.Column="2"   HorizontalAlignment="Center" Margin="0,11,0,0" VerticalAlignment="Top" Height="22" Width="120" Click="AllFilters" RenderTransformOrigin="0.494,0.661" Background="#C3E0E5" BorderBrush = "White">
-                <Button.Resources>
-                    <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="8"/>
+                        <Setter Property="CornerRadius" Value="12"/>
                     </Style>
                 </Button.Resources>
             </Button>
@@ -49,9 +42,11 @@
                     </Style>
                 </Button.Resources>
             </Button>
-            <Button Content="Close" Grid.Column="4"  Margin="153,1,10,48" Click="CloseWindow" />
+            <Button Content="Close" Grid.Column="4"  Margin="159,1,4,48" Click="CloseWindow" />
+            <ComboBox Name ="options" Initialized="options_Initialized" Grid.Column="4" HorizontalAlignment="Left" Margin="32,38,0,0" VerticalAlignment="Top" Width="121"/>
+            <Label Name="optionsToOpen" Content="choose what to open" Background="#C3E0E5" Grid.Column="4" HorizontalAlignment="Left" Margin="32,12,0,0" VerticalAlignment="Top" Width="121"/>
         </Grid>
-        <ListView x:Name="ParcelListView" SelectionChanged="ParcelListView_SelectionChanged" Grid.ColumnSpan="2" Margin="0,69,0,0" Grid.RowSpan="2" Background ="#5885AF" RenderTransformOrigin="0.851,0.073">
+        <ListView x:Name="ParcelListView"  ItemsSource="{Binding}" SelectionChanged="ParcelListView_SelectionChanged" Grid.ColumnSpan="2" Margin="0,69,0,0" Grid.RowSpan="2" Background ="#5885AF" RenderTransformOrigin="0.851,0.073">
             <ListView.View>
                 <GridView>
 
@@ -63,7 +58,8 @@
                     <GridViewColumn Header="Situation" Width="100" DisplayMemberBinding="{Binding parcelsituation}" />
                 </GridView>
 
-        </ListView.View>
+            </ListView.View>
+
             <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Setter Property="Background" Value="#FFCDD7D9"/>
@@ -73,10 +69,8 @@
                     <Setter Property="HorizontalContentAlignment" Value="Center" />
                 </Style>
             </ListView.ItemContainerStyle>
-
         </ListView>
-        <CheckBox Content="CheckBox" HorizontalAlignment="Left" Margin="946,78,0,0" Grid.Row="1" VerticalAlignment="Top" Grid.Column="1"/>
-        
+
 
     </Grid>
 </Window>

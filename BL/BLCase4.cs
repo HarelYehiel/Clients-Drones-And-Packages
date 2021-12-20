@@ -98,12 +98,19 @@ namespace BlApi
         }
         public IEnumerable<DroneToList> GetAllDronesBy(System.Predicate<BO.DroneToList> filter)
         {
-            List<DroneToList> DronesToList = new List<DroneToList>();
+            try
+            {
+                List<DroneToList> DronesToList = new List<DroneToList>();
 
-            DronesToList.AddRange(ListDroneToList // List of all drones in BO.
-                .FindAll(filter)); // Filter the list by the 'filter'.
+                DronesToList.AddRange(ListDroneToList // List of all drones in BO.
+                    .FindAll(filter)); // Filter the list by the 'filter'.
 
-            return DronesToList;
+                return DronesToList;
+            }
+            catch (Exception)
+            {
+                throw new BO.MyExeption_BO("No_object_by_this_filter");
+            }
         }
 
 

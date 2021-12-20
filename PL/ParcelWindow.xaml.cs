@@ -154,7 +154,7 @@ namespace PL
             catch (Exception)
             {
                 updatecollection.IsChecked = false;
-                MessageBox.Show("This update is unlegal", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("This update is unlegal", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
@@ -169,7 +169,7 @@ namespace PL
             catch (Exception)
             {
                 updateDelivered.IsChecked = false;
-                MessageBox.Show("This update is unlegal", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("This update is unlegal", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
         private void comboWeight_Initialized(object sender, EventArgs e)

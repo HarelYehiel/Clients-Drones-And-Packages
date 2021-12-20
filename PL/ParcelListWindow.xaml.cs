@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Data;
 
@@ -45,11 +46,52 @@ namespace PL
         }
         private void ParcelListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            
             if (ParcelListView.ItemsSource != null)
             {
-                
-                new ParcelWindow(bl, ParcelListView.SelectedItem as BO.ParcelToList).ShowDialog();
+                try
+                {
+                    BO.ParcelToList parcel = ParcelListView.SelectedItem as BO.ParcelToList;
+                    if (options.SelectedIndex == -1 && parcel != null)
+                    {
+                        MessageBox.Show("You not choose what to open!", "choose any kind from the up right corenr", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    else if (options.SelectedIndex == 0 && parcel != null)
+                    {
+                        new ParcelWindow(bl, parcel).ShowDialog();
+                    }
+                    else if (options.SelectedIndex == 1 && parcel != null)
+                    {
+                        try
+                        {
+                            BO.Parcel temp = bl.GetParcel(parcel.uniqueID);
+                            List<BO.DroneToList> lst = bl.GetAllDronesBy(D => D.uniqueID == temp.droneInParcel.uniqueID).ToList();
+                            new DroneWindow(bl, lst[0]).ShowDialog();
+                            Close();
+                        }
+                        catch (Exception)
+                        {
+                            MessageBox.Show("this parcel not assign yet to drone", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+
+                    }
+                    else if (options.SelectedIndex == 2 && parcel != null)
+                    {
+                        List<BO.CustomerToList> lst = bl.GetAllCustomersBy(C => C.name == parcel.namrSender).ToList();
+                        new CustomerWindow(bl, lst[0]).ShowDialog();
+                        Close();
+                    }
+                    else if (options.SelectedIndex == 3 && parcel != null)
+                    {
+                        List<BO.CustomerToList> lst = bl.GetAllCustomersBy(C => C.name == parcel.nameTarget).ToList();
+                        new CustomerWindow(bl, lst[0]).ShowDialog();
+                        Close();
+                    }
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("The system have problem to open this item, try another one or choose difference parameter to open", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
             ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels();
         }
@@ -85,6 +127,12 @@ namespace PL
         private void filterSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             CollectionViewSource.GetDefaultView(ParcelListView.ItemsSource).Refresh();
+        }
+
+        private void options_Initialized(object sender, EventArgs e)
+        {
+            List<string> s = new List<string>() { "Open this parcel" , "Open drone" , "Open sender" , "Open target" };
+            options.ItemsSource = s;
         }
     }
     
