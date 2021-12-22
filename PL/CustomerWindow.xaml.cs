@@ -5,6 +5,10 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
+using System.Windows.Media;
+using System.Windows.Data;
+
+
 
 namespace PL
 {
@@ -30,7 +34,7 @@ namespace PL
             // Hide all tools of view castomer.
             FunctionsCustomerGrid.Visibility = Visibility.Hidden;
             ParcelsListView.Visibility = Visibility.Hidden;
-            DronesListView.Visibility = Visibility.Hidden;
+            CustomersListView.Visibility = Visibility.Hidden;
 
 
         }
@@ -42,195 +46,37 @@ namespace PL
             InitializeComponent();
 
             // View the details of customer.
-            List<CustomerToList> dronesToLists = new List<CustomerToList>();
-            dronesToLists.Add(customerToList);
-            DronesListView.ItemsSource = dronesToLists;
+            List<CustomerToList> custonersToLists = new List<CustomerToList>();
+            custonersToLists.Add(customerToList);
+            CustomersListView.ItemsSource = custonersToLists;
 
-            // Just for functions 'My shipments' and 'My shipments'.
-            ParcelsListView.Visibility = Visibility.Hidden;
-
-            // Hide all tools of add castomer.
-            IDTextBox.Visibility = Visibility.Hidden;
-            IDLabel.Visibility = Visibility.Hidden;
-            NameTextBox.Visibility = Visibility.Hidden;
-            PhoneTextBox.Visibility = Visibility.Hidden;
-            NameLabel.Visibility = Visibility.Hidden;
-            PhoneLabel.Visibility = Visibility.Hidden;
-            LatitudeLabel.Visibility = Visibility.Hidden;
-            LongitudeLabel.Visibility = Visibility.Hidden;
-            LatitudeTextBox.Visibility = Visibility.Hidden;
-            LongitudeTextBox.Visibility = Visibility.Hidden;
-            AddDroneButton.Visibility = Visibility.Hidden;
-
+            txtId.Text = customerToList.uniqueID.ToString();
+            txtId.IsEnabled = false;
+            txtName.Text = customerToList.name;
+            txtName.Background = new SolidColorBrush(Colors.White);
+            txtName.Foreground = new SolidColorBrush(Colors.Red);
+            txtPhone.Text = customerToList.phone;
+            txtPhone.Background = new SolidColorBrush(Colors.White);
+            txtPhone.Foreground = new SolidColorBrush(Colors.Red);
+            labelLati.Content = "Quantity of parcels shipped";
+            Latitude.Text = customerToList.packagesHeReceived.ToString();
+            Latitude.IsEnabled = false;
+            labelLongi.Content = "Quantity of parcels on the way";
+            Longitude.Text = customerToList.packagesOnTheWayToTheCustomer.ToString();
+            Longitude.IsEnabled = false;
+            Add.Content = "Update";
         }
         private void CancelButtonX(object sender, RoutedEventArgs e)
         {
             var hwnd = new WindowInteropHelper(this).Handle;
             SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_SYSMENU);
         }
-        private void FunctionConbo_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-
-            if (FunctionConbo.SelectedIndex == 0) // update customer
-            {
-                NameTextBox.Visibility = Visibility.Visible;
-                PhoneTextBox.Visibility = Visibility.Visible;
-                NameLabel.Visibility = Visibility.Visible;
-                PhoneLabel.Visibility = Visibility.Visible;
-                ParcelsListView.Visibility = Visibility.Hidden;
-
-            }
-            else if (FunctionConbo.SelectedIndex == 4 || FunctionConbo.SelectedIndex == 3)
-                ParcelsListView.Visibility = Visibility.Visible;
-
-            else
-            {
-                ParcelsListView.Visibility = Visibility.Hidden;
-                NameTextBox.Visibility = Visibility.Hidden;
-                PhoneTextBox.Visibility = Visibility.Hidden;
-                NameLabel.Visibility = Visibility.Hidden;
-                PhoneLabel.Visibility = Visibility.Hidden;
-            }
-        }
-
-        private void AddDrone(object sender, RoutedEventArgs e)
-        {
-            hideAllRemarks();
-
-            if (!IsInt(IDTextBox.Text))
-            {
-                IDTextBlock.Text = "Type the ID with only numbers.";
-                IDTextBlock.Visibility = Visibility.Visible;
-            }
-            else if(!IsInt(PhoneTextBox.Text))
-            {
-                PhoneTextBlock.Text = "Type the phone with only numbers.";
-                PhoneTextBlock.Visibility = Visibility.Visible;
-            }
-            else if(!IsDouble(LatitudeTextBox.Text))
-            {
-                LatitudeTextBlock.Text = "Type only numbers and one point.";
-                LatitudeTextBlock.Visibility = Visibility.Visible;
-            }
-            else if(!IsDouble(LongitudeTextBox.Text))
-            {
-                LongitudeTextBlock.Text = "Type only numbers and one point.";
-                LongitudeTextBlock.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                // If all input is proper add the customer,
-                // else ERROR with TextBlocks.
-                bool isAllProper = true;
-
-                int IdCustome = Convert.ToInt32(IDTextBox.Text);
-                string Phone = PhoneTextBox.Text;
-                double Latitude = Convert.ToDouble(LatitudeTextBox.Text);
-                double Longitude = Convert.ToDouble(LongitudeTextBox.Text);
-                string Name = NameTextBox.Text;
-
-                if (existThisIdCustomer(IdCustome))
-                {
-                    IDTextBlock.Text = "This ID customer exists, select another.";
-                    IDTextBlock.Visibility = Visibility.Visible;
-                    isAllProper = false;
-                }
-                if (Name.Length == 0 || Name == "Type customer's name")// check Name
-                {
-                    NameTextBlock.Visibility = Visibility.Visible;
-                    isAllProper = false;
-                }
-
-                // If all proper add th customer.
-                if (isAllProper)
-                {
-                    bl.AbsorptionNewCustomer(IdCustome, Name, Phone, Latitude, Longitude);
-
-                    MessageBox.Show("The customer added", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-            }
-        }
-
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
             this.Close();
         }
-        private void FunctionConbo_Initialized(object sender, EventArgs e)
-        {
-            List<string> options = new List<string>() {
-                "Update customer"
-                , "Creat new order"
-                , "Creat new delivery"
-                , "My order"
-                , "My shipments"
-                };
-            FunctionConbo.ItemsSource = options;
-        }
-        private void Okay(object sender, RoutedEventArgs e)
-        {
-            hideAllRemarks();
 
-            if (FunctionConbo.SelectedIndex == -1)
-            {
 
-                FunctionTextBlock.Visibility = Visibility.Visible;
-                return;
-
-            }
-            else if (FunctionConbo.SelectedIndex == 0) //Update customer
-            {
-                try
-                {
-                    // Not typed new name and a new phone.
-                    if (!CheckThePhoneAndName())
-                    {
-                        NameTextBlock.Visibility = Visibility.Visible;
-                        PhoneTextBlock.Visibility = Visibility.Visible;
-                    }
-                    else if (CheckIfWantNameButNotPhone()) //Update only name
-                    {
-                        bl.UpdateCustomerData(customerToList.uniqueID, NameTextBox.Text, "");
-                        customerToList.name = NameTextBox.Text;
-                    }
-                    else if (CheckIfWantPhoneButNotName()) // Update only phone
-                    {
-                        bl.UpdateCustomerData(customerToList.uniqueID, "", PhoneTextBox.Text);
-                        customerToList.phone = PhoneTextBox.Text;
-                    }
-                    else // Update name and phone
-                    {
-                        bl.UpdateCustomerData(customerToList.uniqueID, NameTextBox.Text, PhoneTextBox.Text);
-                        customerToList.name = NameTextBox.Text;
-                        customerToList.phone = PhoneTextBox.Text;
-                    }
-
-                    // Update the list in this window.
-                    List<CustomerToList> dronesToLists = new List<CustomerToList>();
-                    dronesToLists.Add(customerToList);
-                    DronesListView.ItemsSource = dronesToLists;
-
-                    MessageBox.Show("Update the details", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-                catch (Exception)
-                {
-                    MessageBox.Show("Can't Update the details", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-            }
-            else if (FunctionConbo.SelectedIndex == 1)
-            {
-                // יפנה לחלון 
-            }
-            else if (FunctionConbo.SelectedIndex == 2)
-            {
-                // יפנה לחלון 
-            }
-            else if (FunctionConbo.SelectedIndex == 3) // My order
-                ParcelsListView.ItemsSource = bl.GetAllParcelsBy(c => c.TargetId == customerToList.uniqueID);
-            else if (FunctionConbo.SelectedIndex == 4) // My shipments            
-                ParcelsListView.ItemsSource = bl.GetAllParcelsBy(c => c.SenderId == customerToList.uniqueID);
-
-        }
         void hideAllRemarks()
         {
             FunctionTextBlock.Visibility = Visibility.Hidden;
@@ -266,7 +112,7 @@ namespace PL
             {
                 if ((int)s[i] >= (int)'0' && (int)s[i] <= (int)'9')
                     continue;
-                else if(HaveOnePointInTheNumber &&(int)s[i] == (int)'.')
+                else if (HaveOnePointInTheNumber && (int)s[i] == (int)'.')
                 {
                     HaveOnePointInTheNumber = false;
                     continue;
@@ -293,35 +139,85 @@ namespace PL
         }
         private bool CheckThePhoneAndName()
         {
-            if (PhoneTextBox.Text != "Type customer's phone" && !IsInt(PhoneTextBox.Text))
+            if (!IsInt(txtPhone.Text))
             {
                 PhoneTextBlock.Text = "Type only numbers";
+                PhoneTextBlock.Visibility = Visibility.Visible;
                 return false;
             }
+            else
+                PhoneTextBlock.Visibility = Visibility.Hidden;
 
-            if ((NameTextBox.Text.Length == 0 && PhoneTextBox.Text.Length == 0)
-                    || (NameTextBox.Text == "Type customer's name" && PhoneTextBox.Text == "Type customer's phone")
-                    || (NameTextBox.Text.Length == 0 && PhoneTextBox.Text == "Type customer's phone")
-                    || (PhoneTextBox.Text.Length == 0 && NameTextBox.Text == "Type customer's name"))
+
+            if (txtName.Text.Length == 0 && txtPhone.Text.Length == 0)
                 return false;
 
             return true;
         }
-        private bool CheckIfWantNameButNotPhone()
-        {
-            if ((NameTextBox.Text.Length != 0 && NameTextBox.Text != "Type customer's name")
-               && (PhoneTextBox.Text.Length == 0 || PhoneTextBox.Text == "Type customer's phone"))
-                return true;
 
-            return false;
-        }
-        private bool CheckIfWantPhoneButNotName()
+        private void create_Click(object sender, RoutedEventArgs e)
         {
-            if ((NameTextBox.Text.Length == 0 || NameTextBox.Text == "Type customer's name")
-               && (PhoneTextBox.Text.Length != 0 && PhoneTextBox.Text != "Type customer's phone"))
-                return true;
+            if (Add.Content is "Create")
+            {
+                if (!IsInt(txtId.Text))
+                {
+                    IDTextBlock.Text = "Type the ID with only numbers.";
+                    IDTextBlock.Visibility = Visibility.Visible;
+                }
+                else if (!IsInt(txtPhone.Text))
+                {
+                    PhoneTextBlock.Text = "Type the phone with only numbers.";
+                    PhoneTextBlock.Visibility = Visibility.Visible;
+                }
+                else if (!IsDouble(Latitude.Text))
+                {
+                    LatitudeTextBlock.Text = "Type only numbers and one point.";
+                    LatitudeTextBlock.Visibility = Visibility.Visible;
+                }
+                else if (!IsDouble(Longitude.Text))
+                {
+                    LongitudeTextBlock.Text = "Type only numbers and one point.";
+                    LongitudeTextBlock.Visibility = Visibility.Visible;
+                }
+                else
+                {
 
-            return false;
+                    // If all input is proper add the customer,
+                    // else ERROR with TextBlocks.
+                    int ID = Convert.ToInt32(txtId.Text);
+                    Double longi = Convert.ToDouble(Longitude.Text);
+                    Double lati = Convert.ToDouble(Latitude.Text);
+                    bool isAllProper = true;
+                    if (existThisIdCustomer(ID))
+                    {
+                        IDTextBlock.Text = "This ID customer exists, select another.";
+                        IDTextBlock.Visibility = Visibility.Visible;
+                        isAllProper = false;
+                    }
+                    if (txtName.Text.Length == 0)// check Name
+                    {
+                        NameTextBlock.Visibility = Visibility.Visible;
+                        isAllProper = false;
+                    }
+
+                    // If all proper add th customer.
+                    if (isAllProper)
+                    {
+                        bl.AbsorptionNewCustomer(ID, txtName.Text, txtPhone.Text, lati, longi);
+                        MessageBox.Show("The customer added", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                        
+                    }
+
+                }
+            }
+            if(Add.Content is "Update")
+            {
+                int ID = Convert.ToInt32(txtId.Text);
+                bl.UpdateCustomerData( ID, txtName.Text, txtPhone.Text);
+                Close();
+            }
+
+
         }
     }
 }

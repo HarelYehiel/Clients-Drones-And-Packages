@@ -5,6 +5,8 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
+using System.Windows.Data;
+
 
 namespace PL
 {
@@ -37,6 +39,7 @@ namespace PL
             TurnOnFunctionFilters = false;
             InitializeComponent();
             TurnOnFunctionFilters = true;
+            openOptions.Visibility = Visibility.Hidden;
 
             CustomersListView.ItemsSource = customersToTheLists;
         }
@@ -45,10 +48,17 @@ namespace PL
         {
 
             if (CustomersListView.ItemsSource != null)
-                new CustomerWindow(bl, CustomersListView.SelectedItem as CustomerToList).ShowDialog();
+            {
+                openOptions.Visibility = Visibility.Visible;
+                //new CustomerWindow(bl, CustomersListView.SelectedItem as CustomerToList).ShowDialog();
+            }
+            else
+                openOptions.Visibility = Visibility.Hidden;
 
-            CustomersListView.ItemsSource = null;
-            CustomersListView.ItemsSource = bl.GetListOfCustomers();
+            CollectionViewSource.GetDefaultView(CustomersListView.ItemsSource).Refresh();
+
+            //CustomersListView.ItemsSource = null;
+            //CustomersListView.ItemsSource = bl.GetListOfCustomers();
 
         }
         private void CancelButtonX(object sender, RoutedEventArgs e)
@@ -252,6 +262,57 @@ namespace PL
             {
 
             }
+        }
+
+        private void OpenCustomerView_Click(object sender, RoutedEventArgs e)
+        {
+            BO.CustomerToList customer = CustomersListView.SelectedItem as BO.CustomerToList;
+            new CustomerWindow(bl, customer).Show();
+            openOptions.Visibility = Visibility.Hidden;
+            CollectionViewSource.GetDefaultView(CustomersListView.ItemsSource).Refresh();
+
+        }
+
+        private void OpenNewParcelView_Click(object sender, RoutedEventArgs e)
+        {
+            BO.CustomerToList customer = CustomersListView.SelectedItem as BO.CustomerToList;
+            ParcelWindow openNewOrder = new ParcelWindow(bl);
+            openNewOrder.txtId.Text = customer.uniqueID.ToString();
+            openNewOrder.txtId.IsEnabled = false;
+            openNewOrder.txtSender.Text = customer.name;
+            openNewOrder.txtSender.IsEnabled = false;
+            openNewOrder.Show();
+            openOptions.Visibility = Visibility.Hidden;
+            CollectionViewSource.GetDefaultView(CustomersListView.ItemsSource).Refresh();
+
+        }
+
+        private void OpenCustomrsOrderView_Click(object sender, RoutedEventArgs e)
+        {
+            BO.CustomerToList customer = CustomersListView.SelectedItem as BO.CustomerToList;
+            ParclListWindow openMyOrder = new ParclListWindow(bl);
+            openMyOrder.txtFilter.Text = customer.name;
+            openMyOrder.txtFilter.IsEnabled = false;
+            openMyOrder.filterCombo.SelectedIndex = 1;
+            openMyOrder.filterCombo.IsEnabled = false;
+            openMyOrder.Show();
+            openOptions.Visibility = Visibility.Hidden;
+            CollectionViewSource.GetDefaultView(CustomersListView.ItemsSource).Refresh();
+
+        }
+
+        private void MyShipmentView_Click(object sender, RoutedEventArgs e)
+        {
+            BO.CustomerToList customer = CustomersListView.SelectedItem as BO.CustomerToList;
+            ParclListWindow openMyOrder = new ParclListWindow(bl);
+            openMyOrder.txtFilter.Text = customer.name;
+            openMyOrder.txtFilter.IsEnabled = false;
+            openMyOrder.filterCombo.SelectedIndex = 2;
+            openMyOrder.filterCombo.IsEnabled = false;
+            openMyOrder.Show();
+            openOptions.Visibility = Visibility.Hidden;
+            CollectionViewSource.GetDefaultView(CustomersListView.ItemsSource).Refresh();
+
         }
     }
 }

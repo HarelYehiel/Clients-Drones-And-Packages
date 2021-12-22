@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Data;
 
@@ -19,12 +20,14 @@ namespace PL
             ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels();
             CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelListView.ItemsSource);
             view.Filter = UserFilter;
+            openOptions.Visibility = Visibility.Hidden;
         }
 
         private void AddNewParcel(object sender, RoutedEventArgs e)
         {
             new ParcelWindow(bl).ShowDialog();
             ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels();
+            CollectionViewSource.GetDefaultView(ParcelListView).Refresh();
 
         }
 
@@ -45,13 +48,8 @@ namespace PL
         }
         private void ParcelListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
-            if (ParcelListView.ItemsSource != null)
-            {
-                
-                new ParcelWindow(bl, ParcelListView.SelectedItem as BO.ParcelToList).ShowDialog();
-            }
-            ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels();
+            openOptions.Visibility = Visibility.Visible;
+            //ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels();
         }
         private bool UserFilter(object item)
         {
@@ -78,14 +76,58 @@ namespace PL
         }
         private void filterCombo_Initialized(object sender, EventArgs e)
         {
-            List<string> s = new List<string>() { "Parcl ID" , "Sender name", "Target name", "Priority", "Weight", "Situation" };
+            List<string> s = new List<string>() { "Parcl ID", "Sender name", "Target name", "Priority", "Weight", "Situation" };
             filterCombo.ItemsSource = s;
         }
-        
+
         private void filterSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             CollectionViewSource.GetDefaultView(ParcelListView.ItemsSource).Refresh();
         }
+
+
+        private void OpenParcelView_Click(object sender, RoutedEventArgs e)
+        {
+            BO.ParcelToList parcel = ParcelListView.SelectedItem as BO.ParcelToList;
+            new ParcelWindow(bl, parcel).ShowDialog();
+            openOptions.Visibility = Visibility.Hidden;
+        }
+
+        private void OpenSenderView_Click(object sender, RoutedEventArgs e)
+        {
+            BO.ParcelToList parcel = ParcelListView.SelectedItem as BO.ParcelToList;
+            List<BO.CustomerToList> lst = bl.GetAllCustomersBy(C => C.name == parcel.namrSender).ToList();
+            new CustomerWindow(bl, lst[0]).ShowDialog();
+            openOptions.Visibility = Visibility.Hidden;
+            Close();
+        }
+
+        private void OpenTargetView_Click(object sender, RoutedEventArgs e)
+        {
+            BO.ParcelToList parcel = ParcelListView.SelectedItem as BO.ParcelToList;
+            List<BO.CustomerToList> lst = bl.GetAllCustomersBy(C => C.name == parcel.nameTarget).ToList();
+            new CustomerWindow(bl, lst[0]).ShowDialog();
+            openOptions.Visibility = Visibility.Hidden;
+            Close();
+        }
+
+        private void OpenDroneView_Click(object sender, RoutedEventArgs e)
+        {
+            BO.ParcelToList parcel = ParcelListView.SelectedItem as BO.ParcelToList;
+            try
+            {
+                BO.Parcel temp = bl.GetParcel(parcel.uniqueID);
+                List<BO.DroneToList> lst = bl.GetAllDronesBy(D => D.uniqueID == temp.droneInParcel.uniqueID).ToList();
+                new DroneWindow(bl, lst[0]).ShowDialog();
+                openOptions.Visibility = Visibility.Hidden;
+                Close();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("this parcel not assign yet to drone", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
     }
     
 }
