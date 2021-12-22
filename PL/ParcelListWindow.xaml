@@ -19,23 +19,26 @@
 
 ">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="147*"/>
-                <ColumnDefinition Width="53*"/>
+                <ColumnDefinition Width="200*"/>
                 <ColumnDefinition Width="200*"/>
                 <ColumnDefinition Width="200*"/>
                 <ColumnDefinition Width="200*"/>
             </Grid.ColumnDefinitions >
-            <TextBox Margin="43,24,37,26"  Name="txtFilter" TextChanged="txtFilter_TextChanged" Height="19" Grid.ColumnSpan="2" />
-            <TextBox Name ="FilterTextBox" FontWeight = "DemiBold" HorizontalAlignment="Left" Margin="43,1,0,0" Text="Fliters" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Background = "#C3E0E5" Height="18" Grid.ColumnSpan="2"/>
-            <ComboBox Name="filterCombo" IsEditable ="true" Text="Choose filter"  HorizontalAlignment="Left" Margin="43,46,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="filterSelectionChanged" Initialized="filterCombo_Initialized" Height="20" Grid.ColumnSpan="2"/>
-            <Button Content="Clear filter" FontWeight = "DemiBold" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Width="120" Click="ClearFilter" Background="#C3E0E5" BorderBrush = "White" Height="28" Margin="0,18,0,0">
+            <TextBox Margin="43,24,37,26"  Name="txtFilter" TextChanged="txtFilter_TextChanged" Height="19" />
+            <TextBox Name ="FilterTextBox" FontWeight = "DemiBold" HorizontalAlignment="Left" Margin="43,1,0,0"
+                     Text="Fliters" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" 
+                     Background = "#C3E0E5" Height="18" Grid.ColumnSpan="2"/>
+            <ComboBox Name="filterCombo" IsEditable ="true" Text="Choose filter"  HorizontalAlignment="Left"
+                      Margin="43,46,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="filterSelectionChanged" Initialized="filterCombo_Initialized" Height="20" Grid.ColumnSpan="2"/>
+            <Button Content="Clear filter" FontWeight = "DemiBold" Grid.Column="1" HorizontalAlignment="Center" 
+                    VerticalAlignment="Top" Width="120" Click="ClearFilter" Background="#C3E0E5" BorderBrush = "White" Height="28" Margin="0,18,0,0">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="12"/>
                     </Style>
                 </Button.Resources>
             </Button>
-            <Button Content="Add new Parcel" FontWeight = "DemiBold"  Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Top" Click="AddNewParcel" Margin="0,18,0,0" Background="#C3E0E5" BorderBrush = "White" Height="27" Width="124" >
+            <Button Content="Add new Parcel" FontWeight = "DemiBold"  Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Top" Click="AddNewParcel" Margin="0,18,0,0" Background="#C3E0E5" BorderBrush = "White" Height="27" Width="124" >
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="12"/>
@@ -43,14 +46,11 @@
                 </Button.Resources>
             </Button>
             <Button Content="Close" Grid.Column="4"  Margin="159,1,4,48" Click="CloseWindow" />
-            <ComboBox Name ="options" Initialized="options_Initialized" Grid.Column="4" HorizontalAlignment="Left" Margin="32,38,0,0" VerticalAlignment="Top" Width="121"/>
-            <Label Name="optionsToOpen" Content="choose what to open" Background="#C3E0E5" Grid.Column="4" HorizontalAlignment="Left" Margin="32,12,0,0" VerticalAlignment="Top" Width="121"/>
         </Grid>
-        <ListView x:Name="ParcelListView"  ItemsSource="{Binding}" SelectionChanged="ParcelListView_SelectionChanged" Grid.ColumnSpan="2" Margin="0,69,0,0" Grid.RowSpan="2" Background ="#5885AF" RenderTransformOrigin="0.851,0.073">
+        <ListView x:Name="ParcelListView" SelectionChanged="ParcelListView_SelectionChanged" Grid.ColumnSpan="2" Margin="0,69,0,0" Grid.RowSpan="3" Background ="#5885AF" RenderTransformOrigin="0.851,0.073">
             <ListView.View>
                 <GridView>
-
-                    <GridViewColumn Header="Parcel ID" Width="100" DisplayMemberBinding="{Binding uniqueID}"/>
+                    <GridViewColumn Header="Parcel ID" Width="100" DisplayMemberBinding="{Binding uniqueID}" />
                     <GridViewColumn Header="Sender" Width="100" DisplayMemberBinding="{Binding namrSender}" />
                     <GridViewColumn Header="Target" Width="100" DisplayMemberBinding="{Binding nameTarget}" />
                     <GridViewColumn Header="Prioritiy" Width="100" DisplayMemberBinding="{Binding priority}" />
@@ -70,7 +70,52 @@
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
+  
+        <Border Name ="openOptions"  BorderThickness="1"  Grid.Column="1" Grid.Row="1" Margin="148,135,285,134"
+             Background="#2e3137" CornerRadius="20" >
+            <StackPanel Margin="20">
+                <Label Name="TitleOptions" Content="Open Bar" Foreground="White" FontSize="25" HorizontalAlignment="Center"/>
+                <Separator></Separator>
+                <Label></Label>
+                <Button Name="OpenParcelView" Content="Open parcel" FontWeight = "DemiBold" Background="#545d6a" Foreground="White" Grid.Column="0"
+                        HorizontalAlignment="Center" Height="34" Width="206" Click="OpenParcelView_Click">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="8"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+                <Label></Label>
+                
+                <Button x:Name="OpenSenderView" Content="Open sender" FontWeight = "DemiBold" Background="#545d6a" Foreground="White" Height="34" Width="206" Click="OpenSenderView_Click">
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="8"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+                <Label></Label>
+                <Button Name="OpenTargetView" Content="Open target" FontWeight = "DemiBold" Background="#545d6a" Foreground="White" Height="34" Width="206" Click="OpenTargetView_Click">
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="8"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+                <Label></Label>
+                
+                <Button Name="OpenDroneView" Content="Open drone" FontWeight = "DemiBold" Background="#545d6a" Foreground="White" Height="34" Width="206" Click="OpenDroneView_Click">
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="8"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+                
+            </StackPanel>
+        </Border>
 
 
     </Grid>
+
 </Window>

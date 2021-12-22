@@ -20,12 +20,14 @@ namespace PL
             ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels();
             CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelListView.ItemsSource);
             view.Filter = UserFilter;
+            openOptions.Visibility = Visibility.Hidden;
         }
 
         private void AddNewParcel(object sender, RoutedEventArgs e)
         {
             new ParcelWindow(bl).ShowDialog();
             ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels();
+            CollectionViewSource.GetDefaultView(ParcelListView).Refresh();
 
         }
 
@@ -46,54 +48,8 @@ namespace PL
         }
         private void ParcelListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
-            if (ParcelListView.ItemsSource != null)
-            {
-                try
-                {
-                    BO.ParcelToList parcel = ParcelListView.SelectedItem as BO.ParcelToList;
-                    if (options.SelectedIndex == -1 && parcel != null)
-                    {
-                        MessageBox.Show("You not choose what to open!", "choose any kind from the up right corenr", MessageBoxButton.OK, MessageBoxImage.Information);
-                    }
-                    else if (options.SelectedIndex == 0 && parcel != null)
-                    {
-                        new ParcelWindow(bl, parcel).ShowDialog();
-                    }
-                    else if (options.SelectedIndex == 1 && parcel != null)
-                    {
-                        try
-                        {
-                            BO.Parcel temp = bl.GetParcel(parcel.uniqueID);
-                            List<BO.DroneToList> lst = bl.GetAllDronesBy(D => D.uniqueID == temp.droneInParcel.uniqueID).ToList();
-                            new DroneWindow(bl, lst[0]).ShowDialog();
-                            Close();
-                        }
-                        catch (Exception)
-                        {
-                            MessageBox.Show("this parcel not assign yet to drone", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                        }
-
-                    }
-                    else if (options.SelectedIndex == 2 && parcel != null)
-                    {
-                        List<BO.CustomerToList> lst = bl.GetAllCustomersBy(C => C.name == parcel.namrSender).ToList();
-                        new CustomerWindow(bl, lst[0]).ShowDialog();
-                        Close();
-                    }
-                    else if (options.SelectedIndex == 3 && parcel != null)
-                    {
-                        List<BO.CustomerToList> lst = bl.GetAllCustomersBy(C => C.name == parcel.nameTarget).ToList();
-                        new CustomerWindow(bl, lst[0]).ShowDialog();
-                        Close();
-                    }
-                }
-                catch (Exception)
-                {
-                    MessageBox.Show("The system have problem to open this item, try another one or choose difference parameter to open", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-            }
-            ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels();
+            openOptions.Visibility = Visibility.Visible;
+            //ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels();
         }
         private bool UserFilter(object item)
         {
@@ -120,20 +76,58 @@ namespace PL
         }
         private void filterCombo_Initialized(object sender, EventArgs e)
         {
-            List<string> s = new List<string>() { "Parcl ID" , "Sender name", "Target name", "Priority", "Weight", "Situation" };
+            List<string> s = new List<string>() { "Parcl ID", "Sender name", "Target name", "Priority", "Weight", "Situation" };
             filterCombo.ItemsSource = s;
         }
-        
+
         private void filterSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             CollectionViewSource.GetDefaultView(ParcelListView.ItemsSource).Refresh();
         }
 
-        private void options_Initialized(object sender, EventArgs e)
+
+        private void OpenParcelView_Click(object sender, RoutedEventArgs e)
         {
-            List<string> s = new List<string>() { "Open this parcel" , "Open drone" , "Open sender" , "Open target" };
-            options.ItemsSource = s;
+            BO.ParcelToList parcel = ParcelListView.SelectedItem as BO.ParcelToList;
+            new ParcelWindow(bl, parcel).ShowDialog();
+            openOptions.Visibility = Visibility.Hidden;
         }
+
+        private void OpenSenderView_Click(object sender, RoutedEventArgs e)
+        {
+            BO.ParcelToList parcel = ParcelListView.SelectedItem as BO.ParcelToList;
+            List<BO.CustomerToList> lst = bl.GetAllCustomersBy(C => C.name == parcel.namrSender).ToList();
+            new CustomerWindow(bl, lst[0]).ShowDialog();
+            openOptions.Visibility = Visibility.Hidden;
+            Close();
+        }
+
+        private void OpenTargetView_Click(object sender, RoutedEventArgs e)
+        {
+            BO.ParcelToList parcel = ParcelListView.SelectedItem as BO.ParcelToList;
+            List<BO.CustomerToList> lst = bl.GetAllCustomersBy(C => C.name == parcel.nameTarget).ToList();
+            new CustomerWindow(bl, lst[0]).ShowDialog();
+            openOptions.Visibility = Visibility.Hidden;
+            Close();
+        }
+
+        private void OpenDroneView_Click(object sender, RoutedEventArgs e)
+        {
+            BO.ParcelToList parcel = ParcelListView.SelectedItem as BO.ParcelToList;
+            try
+            {
+                BO.Parcel temp = bl.GetParcel(parcel.uniqueID);
+                List<BO.DroneToList> lst = bl.GetAllDronesBy(D => D.uniqueID == temp.droneInParcel.uniqueID).ToList();
+                new DroneWindow(bl, lst[0]).ShowDialog();
+                openOptions.Visibility = Visibility.Hidden;
+                Close();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("this parcel not assign yet to drone", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
     }
     
 }

@@ -29,7 +29,7 @@
             </Button>
             <Button Content="Close"  Margin="819,0,0,23" Click="CloseWindow" HorizontalAlignment="Left" Width="55" Height="18" VerticalAlignment="Bottom" />
         </Grid>
-        <ListView x:Name="CustomersListView" SelectionChanged="CustomersListView_SelectionChanged" Margin="3,12,0,45" Background ="#5885AF" Grid.Row="1">
+        <ListView x:Name="CustomersListView" SelectionChanged="CustomersListView_SelectionChanged" Margin="0,45,3,61" Background ="#5885AF" Grid.RowSpan="2">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="ID" Width="100"  DisplayMemberBinding="{Binding uniqueID}"/>
@@ -65,6 +65,50 @@
         <TextBox x:Name="FilterSANDTextBox"  HorizontalAlignment="Left" Margin="481,48,0,0" Text="Search" Visibility="Hidden" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" TextChanged="AnyFilterTextBox_TextChanged" Height="18" Grid.RowSpan="2"/>
         <TextBox x:Name="FilterReceiveTextBox"  HorizontalAlignment="Left" Margin="649,47,0,0" Text="Search" Visibility="Hidden" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" TextChanged="AnyFilterTextBox_TextChanged" Height="18" Grid.RowSpan="2"/>
         <TextBox x:Name="FilterOTWTextBox"  HorizontalAlignment="Left" Margin="775,49,0,0" Text="Search" Visibility="Hidden" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" TextChanged="AnyFilterTextBox_TextChanged" Height="18" Grid.RowSpan="2"/>
+        <Border Name ="openOptions"  BorderThickness="1" Grid.Row="1" Margin="283,24,285,61"
+             Background="#2e3137" CornerRadius="20" >
+            <StackPanel Margin="20">
+                <Label Name="TitleOptions" Content="Open Bar" Foreground="White" FontSize="25" HorizontalAlignment="Center"/>
+                <Separator></Separator>
+                <Label></Label>
+                <Button Name="OpenCustomerView" Content="Update customer" FontWeight = "DemiBold" Background="#545d6a" Foreground="White" Grid.Column="0"
+                        HorizontalAlignment="Center" Height="34" Width="206" Click="OpenCustomerView_Click">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="8"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+                <Label></Label>
 
+                <Button x:Name="OpenNewParcelView" Content="Creat new order" FontWeight = "DemiBold" Background="#545d6a" Foreground="White" Height="34" Width="206" Click="OpenNewParcelView_Click">
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="8"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+                <Label></Label>
+                <Button Name="OpenParcelOfThisCustomerView" Content="Show my orders" FontWeight = "DemiBold" Background="#545d6a" Foreground="White" Height="34" Width="206" Click="OpenCustomrsOrderView_Click">
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="8"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+                <Label></Label>  
+                <Button Name="MyShipmentView" Content="Show my shipping" FontWeight = "DemiBold" Background="#545d6a" Foreground="White" Height="34" Width="206" Click="MyShipmentView_Click">
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="8"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+                <Label></Label>
+
+                
+
+            </StackPanel>
+        </Border>
     </Grid>
 </Window>

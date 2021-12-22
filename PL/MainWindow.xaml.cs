@@ -132,6 +132,10 @@ namespace PL
         private void signOut_Click(object sender, RoutedEventArgs e)
         {
             Login.Visibility = Visibility.Visible;
+            droneListButton.Visibility = Visibility.Hidden;
+            ParcelListButton.Visibility = Visibility.Hidden;
+            CustomerListButton.Visibility = Visibility.Hidden;
+            StationListButton.Visibility = Visibility.Hidden;
             txtPassword.Password = "";
             txtUsername.Text = "";
         }
