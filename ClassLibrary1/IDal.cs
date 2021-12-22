@@ -36,8 +36,10 @@ using System.Threading.Tasks;
             public IEnumerable<Parcel> GetListOfParcels();
             //Copy all the Parcel from DataSource.parcels[] to new_array_parcels.
             public IEnumerable<Drone> GetListOfDrones();
-            //Copy all the Drone from DataSource.drones[] to new_array_drones.
-            public IEnumerable<Parcel> DisplaysParcelsDontHaveDrone();
+        //Copy all the Drone from DataSource.drones[] to new_array_drones.
+        public IEnumerable<DroneCharge> GetListOfDronesInCharging();
+        //Copy all the Drone from DataSource.drones[] to new_array_drones.
+        public IEnumerable<Parcel> DisplaysParcelsDontHaveDrone();
             // Print the details of all the parcels don't have An associated skimmer (Selected_drone == 0).
             public IEnumerable<Station> AvailableChargingStations();
             public void AffiliationDroneToParcel(int parcelID, int droneID);

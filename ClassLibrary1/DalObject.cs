@@ -161,7 +161,7 @@ namespace DalApi
             //return all the station from DataSource.stations
 
             {
-                if (DataSource.parcels.Count == 0)
+                if (DataSource.stations.Count == 0)
                     throw new myExceptionDO("Exception from function Displays_list_of_stations", myExceptionDO.Dont_have_any_station_in_the_list);
 
                 List<Station> stations = new List<Station>();
@@ -181,6 +181,19 @@ namespace DalApi
                     customers.Add(customer);
                 return customers;
             }
+            public IEnumerable<DroneCharge> GetListOfDronesInCharging()
+            {
+                if (DataSource.dronesCharge.Count == 0)
+                    throw new myExceptionDO("Don't have drones in charging", myExceptionDO.Dont_have_any_parcel_in_the_list);
+
+                List<DroneCharge> Drones = new List<DroneCharge>();
+                foreach (DroneCharge parcel in DataSource.dronesCharge)
+                {
+                    Drones.Add(parcel);
+                }
+                return Drones;
+            }
+
             public IEnumerable<Parcel> GetListOfParcels()
             //print all the Parcel from DataSource.parcels
 

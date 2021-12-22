@@ -73,6 +73,23 @@ namespace BlApi
             }
 
         }
+        public void RemoveAllSkimmersFromTheStation(int ID)
+        {
+            List<BO.DroneInCharging> droneInChargings = new List<BO.DroneInCharging>();
+            droneInChargings = GetAllDronesInCharging(d => d.staitionId == ID).ToList();
+
+            foreach (var item in droneInChargings)
+            {
+                double timestamp = DateTime.UtcNow.Ticks;
+
+                var converted = DateTime.Now.ToOADate();
+
+                double d = 1;//= ( DateTime.Now - item.startCharge)
+                DateTime dateTime = new DateTime();
+                dateTime = DateTime.Now;
+                ReleaseDroneFromCharging(item.uniqueID, d);
+            }
+        }
         public void UpdateCustomerData(int ID, string name, string phoneNumber)
         {
             try

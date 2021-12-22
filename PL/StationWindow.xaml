@@ -6,73 +6,52 @@
         xmlns:local="clr-namespace:PL"
         mc:Ignorable="d"
                 Background="#5885AF"
-        Title="Station Window" Height="450" Width="1000" Loaded="CancelButtonX">
-    <Grid Loaded="CancelButtonX">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="150*"/>
-            <RowDefinition Height="400*"/>
-        </Grid.RowDefinitions>
-        <ListView x:Name="DronesListView"  Grid.Row="0" Background="#5885AF" Margin="192,5,270,311" Grid.RowSpan="2">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="ID" Width="100" DisplayMemberBinding="{Binding uniqueID}"/>
-                    <GridViewColumn Header="Name" Width="100" DisplayMemberBinding="{Binding name}"/>
-                    <GridViewColumn Header="Phone" Width="100" DisplayMemberBinding="{Binding phone}"/>
-                    <GridViewColumn Header="available Charging" DisplayMemberBinding="{Binding availableChargingStations}"/>
-                    <GridViewColumn Header="unAvailable Charging" DisplayMemberBinding="{Binding unAvailableChargingStations}"/>
-                    </GridView>
-            </ListView.View>
-        </ListView>
-        <TextBox  x:Name ="SaveTheDrineID" Visibility="Hidden" HorizontalAlignment="Left" Margin="644,272,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="86" Height="12" Grid.Row="1"/>
-        <Button Content="Close" HorizontalAlignment="Left"  Margin="941,5,0,0" Width="37" VerticalAlignment="Top" Click="CloseWindow" Grid.Row="1" />
-        <TextBlock x:Name="IDTextBlock" HorizontalAlignment="Left" Margin="291,55,0,0" Grid.Row="1" Text="Type customer's ID with numbers only." TextWrapping="Wrap" VerticalAlignment="Top" Visibility="Hidden" Foreground="#FFFF000F" FontSize="14" />
-        <TextBlock x:Name="NameTextBlock" HorizontalAlignment="Left" Margin="289,87,0,0" Grid.Row="1" Text="Type the name." TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" Visibility="Hidden" Foreground="#FFFF000F" />
-        <TextBlock x:Name="ChargeSlotsTextBlock" HorizontalAlignment="Left" Margin="289,124,0,0" Grid.Row="1" Text="Type the phone with numbers only." TextWrapping="Wrap" VerticalAlignment="Top" Visibility="Hidden" Foreground="#FFFF000F" FontSize="14" />
-        <TextBlock x:Name="LatitudeTextBlock" HorizontalAlignment="Left" Margin="293,154,0,0" Grid.Row="1" Text="Type the latitude." TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" Visibility="Hidden" Foreground="#FFFF000F" />
-        <TextBlock x:Name="LongitudeTextBlock" HorizontalAlignment="Left" Margin="293,184,0,0" Grid.Row="1" Text="Type the longitude." TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" Visibility="Hidden" Foreground="#FFFF000F" />
-        <TextBlock x:Name="FunctionTextBlock" HorizontalAlignment="Left" Margin="839,157,0,0" Grid.Row="1" Text="Choose one of them." TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" Visibility="Hidden" Foreground="#FFFF000F" />
+        Title="Station Window" Height="558" Width="520" Loaded="CancelButtonX">
+    <Grid Loaded="CancelButtonX" Margin="10,0,0,0" HorizontalAlignment="Left" Width="524" Height="542" VerticalAlignment="Top">
 
-        <Button x:Name="AddDroneButton" Content="Add Drone" BorderBrush = "White" FontWeight = "DemiBold" HorizontalAlignment="Left" Margin="155,216,0,0" VerticalAlignment="Top" Height="38" Width="108" Click="AddDrone" Grid.Row="1">
+
+        <Border Background="#2e3137" CornerRadius="20" Margin="17,15,242,0" VerticalAlignment="Top">
+            <StackPanel Margin="20,20,20,13">
+                <Label Name ="title" Content="New Station" Foreground="White" FontSize="25" HorizontalAlignment="Center"/>
+                <Separator></Separator>
+                <Label x:Name="IDLabel"  Foreground="White" Content="ID" FontWeight="ExtraBlack" Height="30" Width="224"/>
+                <TextBlock x:Name="IDTextBlock" Text="Type ID with numbers only." TextWrapping="Wrap" Visibility="Collapsed" Foreground="#FFFF000F" FontSize="14" Height="19" Width="218" />
+                <TextBox  x:Name ="IDTextBox"  Background="#545d6a" Foreground="White" FontSize="18" TextWrapping="Wrap" Width="221" Height="26"/>
+
+                <Label x:Name="NameLabel"  Foreground="White" Content="Name" FontWeight="ExtraBlack" Height="25" Width="225"/>
+                <TextBlock x:Name="NameTextBlock" Text="Type the name." TextWrapping="Wrap" FontSize="14" Visibility="Collapsed" Foreground="#FFFF000F" Height="19" Width="217" />
+                <TextBox  x:Name ="NameTextBox"  Background="#545d6a" Foreground="White" FontSize="18" TextWrapping="Wrap" Width="233" Height="26"/>
+
+                <Label x:Name="ChargeSlotsLabel"  Foreground="White" Content="Charge Slots" FontWeight="ExtraBlack" Height="24" Width="225"/>
+                <TextBlock x:Name="ChargeSlotsTextBlock" Text="Type with numbers only." TextWrapping="Wrap" Visibility="Collapsed" Foreground="#FFFF000F" FontSize="14" Height="19" Width="217" />
+                <TextBox  x:Name ="ChargeSlotsTextBox"  Background="#545d6a" Foreground="White" FontSize="18" TextWrapping="Wrap" Width="226" Height="34"/>
+
+                <Label x:Name="LatitudeLabel"  Foreground="White" Content="Latitude of station" FontWeight="ExtraBlack" Height="26" Width="225"/>
+                <TextBlock x:Name="LatitudeTextBlock" Text="Type the latitude." TextWrapping="Wrap" FontSize="14" Visibility="Collapsed" Foreground="#FFFF000F" Height="23" Width="216" />
+                <TextBox  x:Name ="LatitudeTextBox"  Background="#545d6a" Foreground="White" FontSize="18" Text="" TextWrapping="Wrap" Width="219" Height="27"/>
+
+                <Label x:Name="LongitudeLabel"  Foreground="White" Content="Longitude fo station" FontWeight="ExtraBlack" Height="29" Width="223"/>
+                <TextBlock x:Name="LongitudeTextBlock" Text="Type the longitude." TextWrapping="Wrap" FontSize="14" Visibility="Collapsed" Foreground="#FFFF000F" Height="19" Width="214" />
+                <TextBox  x:Name ="LongitudeTextBox"  Background="#545d6a" Foreground="White" FontSize="18" Text="" TextWrapping="Wrap" Width="226" Height="27"/>
+
+                <Button x:Name="StationButton" Content="Add Station" Margin="60 10" Background="#545d6a" Foreground="White" FontWeight = "DemiBold" Click="addStation_Button" Height="30" Width="93">
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="8"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+
+            </StackPanel>
+        </Border>
+
+        <Button Content="Close" HorizontalAlignment="Left"  Margin="455,5,0,0" Width="37" VerticalAlignment="Top" Click="CloseWindow" Grid.Row="1" Height="20" Grid.Column="1" />
+        <Button x:Name="RemoveAllSkimmersFromTheCharge" Content="Remove All Skimmers" BorderBrush = "White" FontWeight = "DemiBold" HorizontalAlignment="Left" Margin="346,224,0,0" Width="154" Click="RemoveAllSkimmersFromTheStation" Grid.ColumnSpan="2" Height="34" VerticalAlignment="Top" Grid.Row="1">
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
                     <Setter Property="CornerRadius" Value="15"/>
                 </Style>
             </Button.Resources>
         </Button>
-        <Label x:Name="IDLabel" Content="ID" FontWeight="ExtraBlack" HorizontalAlignment="Left" Margin="12,54,0,0" VerticalAlignment="Top" Height="31" Width="92" Grid.Row="1"/>
-        <Label x:Name="NameLabel" Content="Name" FontWeight="ExtraBlack" HorizontalAlignment="Left" Margin="9,84,0,0" VerticalAlignment="Top" Height="26" Width="92" Grid.Row="1"/>
-        <Label x:Name="ChargeSlotsLabel" Content="Charge Slots" FontWeight="ExtraBlack" HorizontalAlignment="Left" Margin="9,117,0,0" VerticalAlignment="Top" Height="25" Width="92" Grid.Row="1"/>
-        <Label x:Name="LatitudeLabel" Content="Latitude of station" FontWeight="ExtraBlack" HorizontalAlignment="Left" Margin="6,154,0,0" VerticalAlignment="Top" Height="28" Width="120" Grid.Row="1"/>
-        <TextBox  x:Name ="IDTextBox" HorizontalAlignment="Left" Margin="144,55,0,0" Text="Type station's ID with numbers only." TextWrapping="Wrap" VerticalAlignment="Top" Width="126" Height="21" Grid.Row="1"/>
-        <TextBox  x:Name ="NameTextBox" HorizontalAlignment="Left" Margin="143,83,0,0" Text="Type station's name" TextWrapping="Wrap" VerticalAlignment="Top" Width="126" Height="27" Grid.Row="1"/>
-        <TextBox  x:Name ="ChargeSlotsTextBox" HorizontalAlignment="Left" Margin="144,119,0,0" Text="Type station's charge slots" TextWrapping="Wrap" VerticalAlignment="Top" Width="126" Height="35" Grid.Row="1"/>
-        <TextBox  x:Name ="LatitudeTextBox" HorizontalAlignment="Left" Margin="145,159,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="126" Height="20" Grid.Row="1"/>
-        <TextBox  x:Name ="LongitudeTextBox" HorizontalAlignment="Left" Margin="146,188,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="126" Height="20" Grid.Row="1"/>
-        <Label x:Name="LongitudeLabel" Content="Longitude fo station" FontWeight="ExtraBlack" HorizontalAlignment="Left" Margin="4,182,0,0" VerticalAlignment="Top" Height="53" Width="137" Grid.Row="1"/>
-
-
-        <Grid x:Name="FunctionsCustomerGrid" Grid.Row="1" Margin="803,107,0,77" HorizontalAlignment="Left" Width="183">
-            <ComboBox x:Name="FunctionConbo" HorizontalAlignment="Left"  IsEditable ="true" IsReadOnly="True" Text="Choose function" Margin="20,14,0,0" VerticalAlignment="Top" Width="154" Height="29" RenderTransformOrigin="0.491,1.082" SelectionChanged="FunctionConbo_SelectionChanged" Initialized="FunctionConbo_Initialized"/>
-            <Button x:Name="OkayButton" Content="OK" BorderBrush = "White" FontWeight = "DemiBold" HorizontalAlignment="Left" Margin="20,79,0,0" VerticalAlignment="Top" Width="154" Height="34" Click="Okay">
-                <Button.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="15"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
-            <TextBlock x:Name="InfoTextBlock" HorizontalAlignment="Left" Margin="106,91,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" Foreground="#FFFF000F" />
-        </Grid>
-        <ListView x:Name="ParcelsListView"  Grid.Row="1" Visibility="Hidden" Background="#5885AF" Margin="322,5,187,20" >
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="ID" Width="50" DisplayMemberBinding="{Binding uniqueID}"/>
-                    <GridViewColumn Header="namrSender" Width="100" DisplayMemberBinding="{Binding namrSender}"/>
-                    <GridViewColumn Header="nameTarget" Width="100" DisplayMemberBinding="{Binding nameTarget}"/>
-                    <GridViewColumn Header="priority" Width="70" DisplayMemberBinding="{Binding priority}"/>
-                    <GridViewColumn Header="weight" Width="65" DisplayMemberBinding="{Binding weight}"/>
-                    <GridViewColumn Header="parcelsituation" Width="100" DisplayMemberBinding="{Binding parcelsituation}"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
     </Grid>
 </Window>

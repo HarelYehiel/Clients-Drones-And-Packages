@@ -17,6 +17,8 @@ namespace PL
 
         BlApi.IBL bl;
         DroneToList droneToList;
+        DateTime? dateTime;
+
         private const int GWL_STYLE = -16;
         private const int WS_SYSMENU = 0x80000;
         [DllImport("user32.dll", SetLastError = true)]
@@ -29,16 +31,11 @@ namespace PL
             bl = bl1;
             InitializeComponent();
 
-            // View the details of drone.
-            DronesListView.ItemsSource = bl.GetListOfBaseStations();
-
             // Hide the all tools from view drone.
-            FunctionConbo.Visibility = Visibility.Hidden;
-            CharginDroneDatePicker.Visibility = Visibility.Hidden;
-            OkayButton.Visibility = Visibility.Hidden;
-            ModalDroneTextBox.Visibility = Visibility.Hidden;
-            ModeDronelLabel.Visibility = Visibility.Hidden;
-
+            FunctionConbo.Visibility = Visibility.Collapsed;
+            CharginDroneDatePicker.Visibility = Visibility.Collapsed;
+            OkayButton.Visibility = Visibility.Collapsed;
+           
         }
         public DroneWindow(BlApi.IBL bl1, DroneToList droneToList1)
         // Constructor for view drone and allow do actions.
@@ -47,30 +44,13 @@ namespace PL
             droneToList = droneToList1;
             InitializeComponent();
 
-            // View the details of drone.
-            List<DroneToList> dronesToLists = new List<DroneToList>();
-            dronesToLists.Add(droneToList1);
-            DronesListView.ItemsSource = dronesToLists;
-
-            // Just frome function 'update drone', if choose this function this tools visible
-            ModalDroneTextBox.Visibility = Visibility.Hidden;
-            ModeDronelLabel.Visibility = Visibility.Hidden;
-
-            // Just frome function 'send drone from charge in station', if choose this function this tools visible
-            CharginDroneDatePicker.Visibility = Visibility.Hidden;
-
-            // Hide the all tools from adding drone
-            addDroneGrid.Visibility = Visibility.Hidden;
-
-            //AddDroneButton.Visibility = Visibility.Hidden;
-            //IDLabel.Visibility = Visibility.Hidden;
-            //ModelLabel.Visibility = Visibility.Hidden;
-            //StationIDLabel.Visibility = Visibility.Hidden;
-            //WieghtDroneLabel.Visibility = Visibility.Hidden;
-            //WieghtCombo.Visibility = Visibility.Hidden;
-            //IDTextBox.Visibility = Visibility.Hidden;
-            //ModelTextBox.Visibility = Visibility.Hidden;
-            //StationIDTextBox.Visibility = Visibility.Hidden;
+            statusDroneLabel.Visibility = Visibility.Visible;
+            statusTextBox.Visibility = Visibility.Visible;
+            BatteryLabel.Visibility = Visibility.Visible;
+            BatteryTextBox.Visibility = Visibility.Visible;
+            packageDeliveredLabel.Visibility = Visibility.Visible;
+            packageDeliveredTextBox.Visibility = Visibility.Visible;
+           
         }
         bool isNumber(string s)
         {
@@ -126,7 +106,7 @@ namespace PL
                     if (!existThisIdStation(IdStaion))
                     // ID station exist ? if false (no), so error.
                     {
-                        StationTextBlock.Text = "This ID station not exists, select another.";
+                        StationTextBlock.Text = "This ID station not exists.";
                         StationTextBlock.Visibility = Visibility.Visible;
                         AreAllTestsNormal = false;
                     }
@@ -136,7 +116,7 @@ namespace PL
                         AreAllTestsNormal = false;
                     }
                     if (AreAllTestsNormal) // Yes, all the tests normal.
-                    {                       
+                    {
                         bl.AddingDrone(IdDrone, ModelTextBox.Text, (int)WieghtCombo.SelectedItem, IdStaion);
 
                         MessageBox.Show("The drone added", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -153,31 +133,10 @@ namespace PL
         {
             try
             {
-                InfoTextBlock.Visibility = Visibility.Hidden;
-                if (FunctionConbo.SelectedIndex == -1)
+               if (FunctionConbo.SelectedIndex == 0 || FunctionConbo.SelectedIndex == -1)
                 {
-                    MessageBox.Show("You not choose anything", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
-                else if (FunctionConbo.SelectedIndex == 0)  // update drone
-                {
-                    if (ModalDroneTextBox.Text == "" || ModalDroneTextBox.Text == "Type Model Drone to update")
-                    {
-                        InfoTextBlock.Text = "not get new model";
-                        InfoTextBlock.Visibility = Visibility.Visible;
-                        return; // Back to fix.
-                    }
-
-                    // Change the model drone in datasource.
-                    bl.UpdateDroneData(droneToList.uniqueID, ModalDroneTextBox.Text);
-
-                    // Change the model drone in listview
-                    droneToList.Model = ModalDroneTextBox.Text;
-                    List<DroneToList> dronesToLists = new List<DroneToList>();
-                    dronesToLists.Add(droneToList);
-                    DronesListView.ItemsSource = dronesToLists;
-
-
+                    FunctionsTextBlock.Visibility = Visibility.Visible;
+                    return; // Back to fix.
                 }
                 else if (FunctionConbo.SelectedIndex == 1) // send drone to charge at station
                 {
@@ -187,8 +146,8 @@ namespace PL
                 {
                     if (CharginDroneDatePicker.SelectedDate.Value == new DateTime())
                     {
-                        InfoTextBlock.Text = "No selected date";
-                        InfoTextBlock.Visibility = Visibility.Visible;
+                        DatePickerTextBlock.Text = "No selected date";
+                        DatePickerTextBlock.Visibility = Visibility.Visible;
                         return; // Back to fix.
                     }
                     try
@@ -228,7 +187,7 @@ namespace PL
         private void FunctionConbo_Initialized(object sender, EventArgs e)
         {
             List<string> s = new List<string>() {
-                "update drone"
+                "Select Function"
                 , "send drone to charge at station"
                 , "send drone from charge in station"
                 , "assign drone to parcel"
@@ -239,34 +198,34 @@ namespace PL
         }
         private void FunctionConbo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            InfoTextBlock.Visibility = Visibility.Hidden;
-            CharginDroneDatePicker.Visibility = Visibility.Hidden;
-            ModalDroneTextBox.Visibility = Visibility.Hidden;
-
-            if (FunctionConbo.SelectedIndex == 0) // "update drone"
+            try
             {
-                ModeDronelLabel.Content = "Drone Model";
-                ModalDroneTextBox.Text = "Type Model Drone to update";
-                ModalDroneTextBox.Visibility = Visibility.Visible;
-                ModeDronelLabel.Visibility = Visibility.Visible;
-            }
-            else if (FunctionConbo.SelectedIndex == 2)
-            {
-                // Get the drone in charging from the list in dataSource.
-                BO.DroneInCharging droneInCharging = bl.GetDroneInCharging(droneToList.uniqueID);
-                // Limit the date to the minimum date in DatePicker
-                CharginDroneDatePicker.DisplayDateStart = droneInCharging.startCharge;
+                CharginDroneDatePicker.Visibility = Visibility.Collapsed;
 
-                ModeDronelLabel.Content = "Select the end date";
-                CharginDroneDatePicker.Visibility = Visibility.Visible;
-                ModeDronelLabel.Visibility = Visibility.Visible;
+               if (FunctionConbo.SelectedIndex == 2) // "send drone from charge in station"
+                {
+                    // Get the drone in charging from the list in dataSource.
+                    BO.DroneInCharging droneInCharging = bl.GetDroneInCharging(droneToList.uniqueID);
+                    // Limit the date to the minimum date in DatePicker
+                    CharginDroneDatePicker.DisplayDateStart = droneInCharging.startCharge;
+
+                    CharginDroneDatePicker.Visibility = Visibility.Visible;
+
+                    dateTime = new DateTime();
+
+                }
+                else // Other functions
+                {
+
+                }
+            }
+            catch (Exception)
+            {
+
+                throw new BO.MyExeption_BO("Don't have this drone in charging.");
 
             }
-            else // Other functions
-            {
-                ModalDroneTextBox.Visibility = Visibility.Hidden;
-                ModeDronelLabel.Visibility = Visibility.Hidden;
-            }
+
         }
         private void Close(object sender, RoutedEventArgs e)
         {
@@ -316,10 +275,15 @@ namespace PL
         }
         void hideAndReseteAllTextBlocks()
         {
-            IDTextBlock.Visibility = Visibility.Hidden;
-            ModelTextBlock.Visibility = Visibility.Hidden;
-            StationTextBlock.Visibility = Visibility.Hidden;
-            WieghtTextBlock.Visibility = Visibility.Hidden;
+            IDTextBlock.Visibility = Visibility.Collapsed;
+            ModelTextBlock.Visibility = Visibility.Collapsed;
+            StationTextBlock.Visibility = Visibility.Collapsed;
+            WieghtTextBlock.Visibility = Visibility.Collapsed;
+        }
+
+        private void CharginDroneDatePicker_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            dateTime = CharginDroneDatePicker.SelectedDate;
         }
     }
 }

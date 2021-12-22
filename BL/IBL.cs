@@ -26,6 +26,8 @@ namespace BlApi
         public void UpdateDroneData(int ID, string newModel);
         public void UpdateStationData(int ID, string name, int numSlots);
         public void UpdateCustomerData(int ID, string custName, string phoneNumber);
+        public void RemoveAllSkimmersFromTheStation(int ID);
+
         public void SendingDroneToCharging(int ID);
         public void ReleaseDroneFromCharging(int ID,double min);
         public void AssignPackageToDrone(int droneId);
@@ -38,6 +40,7 @@ namespace BlApi
 
         /* In function Entity_display_options*/
         public BO.station getBaseStation(int ID);
+        public BO.StationToTheList GetStationToTheList(int ID);
         public BO.Drone GetDrone(int ID);
         public BO.Customer GetCustomer(int ID);
         public BO.Parcel GetParcel(int ID);
@@ -55,9 +58,6 @@ namespace BlApi
         
         public IEnumerable<BO.DroneToList> GetAllDronesBy(System.Predicate<BO.DroneToList> filter);
         public IEnumerable<StationToTheList> GetAllStaionsBy(System.Predicate<DO.Station> filter);
-
-        public IEnumerable<StationToTheList> GetAllStaionsBy22(System.Predicate<station> filter);
-
 
         public IEnumerable<CustomerToList> GetAllCustomersBy(System.Predicate<DO.Customer> filter);
         public IEnumerable<ParcelToList> GetAllParcelsBy(System.Predicate<DO.Parcel> filter);

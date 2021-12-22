@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BO;
 
 namespace BlApi
 {
@@ -312,5 +313,14 @@ namespace BlApi
                 throw new BO.MyExeption_BO("Exception from function 'GetDroneInCharging'", e);
             }
         }
+        public BO.StationToTheList GetStationToTheList(int ID)
+        {
+            List<StationToTheList> stationsToTheLists = GetAllStaionsBy(s => s.id == ID).ToList();
+            if (stationsToTheLists.Count == 1)
+                return stationsToTheLists[0];
+
+            throw MyExeption_BO.There_is_no_variable_with_this_ID;
+        }
+
     }
 }

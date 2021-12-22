@@ -77,14 +77,7 @@ namespace BlApi
 
             return StationsToTheList;
         }
-        public IEnumerable<StationToTheList> GetAllStaionsBy22(System.Predicate<BO.station> filter)
-        {
-            List<StationToTheList> StationsToTheList = new List<StationToTheList>();
-            return StationsToTheList;
-
-
-        }
-
+      
         public IEnumerable<CustomerToList> GetAllCustomersBy(System.Predicate<DO.Customer> filter)
         {
             List<CustomerToList> customersToList = new List<CustomerToList>();
@@ -96,6 +89,15 @@ namespace BlApi
 
             return customersToList;
         }
+        public IEnumerable<DroneInCharging> GetAllDronesInCharging(System.Predicate<DO.DroneCharge> filter)
+        {
+            List<DroneInCharging> DronesToList = new List<DroneInCharging>();
+
+            DronesToList.AddRange(accessIdal.GetListOfDronesInCharging().ToList() // List of all drones in BO.
+                .FindAll(filter).ConvertAll(convertDroneChargeDoToDroneInChargingBo)); // Filter the list by the 'filter'.
+
+            return DronesToList;
+        }
         public IEnumerable<DroneToList> GetAllDronesBy(System.Predicate<BO.DroneToList> filter)
         {
             List<DroneToList> DronesToList = new List<DroneToList>();
@@ -105,7 +107,6 @@ namespace BlApi
 
             return DronesToList;
         }
-
 
         //  Convert functions from entity_DO to entity_BO.
         ParcelToList convertParcelDoToParcelBo(DO.Parcel item)
@@ -141,9 +142,9 @@ namespace BlApi
             stationForTheList.name = staion.name;
             stationForTheList.availableChargingStations = staion.ChargeSlots;
 
-            stationForTheList.unAvailableChargingStations = accessIdal.GetListOfStations()
+            stationForTheList.unAvailableChargingStations = accessIdal.GetListOfDroneCharge()
                 .ToList() // Comvert from IEnumerable to list.
-               .FindAll(droneCarge_DO => droneCarge_DO.id == staion.id) // Return list with all the droneCarge_DO == staion.id 
+               .FindAll(droneCarge_DO => droneCarge_DO.staitionId == staion.id) // Return list with all the droneCarge_DO == staion.id 
                 .Count(); // Return count of item in the list.
 
 
@@ -176,8 +177,16 @@ namespace BlApi
                     customerToList.packagesOnTheWayToTheCustomer++;
 
             });
-
+           
             return customerToList;
+        }
+        DroneInCharging convertDroneChargeDoToDroneInChargingBo(DO.DroneCharge item)
+        {
+            DroneInCharging droneInCharging = new DroneInCharging();
+            droneInCharging.uniqueID = item.DroneId;
+            droneInCharging.startCharge = item.startCharge;
+
+            return droneInCharging;
         }
     }
 }

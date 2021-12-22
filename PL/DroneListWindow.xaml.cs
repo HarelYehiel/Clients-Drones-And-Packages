@@ -333,6 +333,13 @@ namespace PL
             }
 
         }
+
+        private void Refresh_Click(object sender, RoutedEventArgs e)
+        {
+            if (TurnOnFunctionFilters)
+                Filters();
+        }
+
     }
 }
 

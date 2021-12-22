@@ -1,9 +1,11 @@
-﻿using System;
+﻿using BO;
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
+
 
 namespace PL
 {
@@ -21,10 +23,125 @@ namespace PL
         private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
         [DllImport("user32.dll")]
         private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
-        public StationWindow()
+        public StationWindow(BlApi.IBL bl1)
+        // Add station
         {
+            bl = bl1;
+
             InitializeComponent();
+
+
         }
+        public StationWindow(BlApi.IBL bl1, StationToTheList stationToTheList)
+        // View station
+        {
+            bl = bl1;
+
+            InitializeComponent();
+            ChangeNamesAndTitlesAccordingToStationPresentation(stationToTheList);
+        }
+
+        void ChangeNamesAndTitlesAccordingToStationPresentation(StationToTheList stationToTheList)
+        // Function to change names and titles according to the station display.
+        {
+            title.Content = "Station";
+            title.IsEnabled = false;
+
+            IDTextBox.Text = stationToTheList.uniqueID.ToString();
+            IDTextBox.IsEnabled = false;
+
+            NameTextBox.Text = stationToTheList.name;
+
+            ChargeSlotsLabel.Content = "Available Charging Stations";
+            ChargeSlotsLabel.IsEnabled = false;
+            ChargeSlotsTextBox.Text = stationToTheList.availableChargingStations.ToString();
+
+            LatitudeLabel.Content = "Unavailable Charging Stations";
+            LatitudeLabel.IsEnabled = false;
+            LatitudeTextBox.Text = stationToTheList.unAvailableChargingStations.ToString();
+            LatitudeTextBox.IsEnabled = false;
+
+            StationButton.Content = "Update";
+
+            LongitudeLabel.Visibility = Visibility.Collapsed;
+            LongitudeTextBox.Visibility = Visibility.Collapsed;
+        }
+        void addStation()
+        {
+            try
+            {
+                if (!IsInt(IDTextBox.Text))
+                {
+                    IDTextBlock.Text = "Type the ID with only numbers.";
+                    IDTextBlock.Visibility = Visibility.Visible;
+                }
+                else if (!IsInt(ChargeSlotsTextBox.Text))
+                {
+                    ChargeSlotsTextBlock.Text = "Type the charge slots with only numbers.";
+                    ChargeSlotsTextBlock.Visibility = Visibility.Visible;
+                }
+                else if (!IsDouble(LatitudeTextBox.Text))
+                {
+                    LatitudeTextBlock.Text = "Type only numbers and one point.";
+                    LatitudeTextBlock.Visibility = Visibility.Visible;
+                }
+                else if (!IsDouble(LongitudeTextBox.Text))
+                {
+                    LongitudeTextBlock.Text = "Type only numbers and one point.";
+                    LongitudeTextBlock.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    // If all input is proper add the station,
+                    // else ERROR with TextBlocks.
+                    bool isAllProper = true;
+
+                    int IdStation = Convert.ToInt32(IDTextBox.Text);
+                    int ChargeSlots = Convert.ToInt32(ChargeSlotsTextBox.Text);
+                    double Latitude = Convert.ToDouble(LatitudeTextBox.Text);
+                    double Longitude = Convert.ToDouble(LongitudeTextBox.Text);
+                    string Name = NameTextBox.Text;
+
+                    if (existThisIdStation(IdStation))
+                    {
+                        IDTextBlock.Text = "This ID customer exists, select another.";
+                        IDTextBlock.Visibility = Visibility.Visible;
+                        isAllProper = false;
+                    }
+                    if (Name.Length == 0 || Name == "Type customer's name")// check Name
+                    {
+                        NameTextBlock.Visibility = Visibility.Visible;
+                        isAllProper = false;
+                    }
+
+                    // If all proper add th customer.
+                    if (isAllProper)
+                    {
+                        bl.AddingBaseStation(IdStation, Name, Latitude, Longitude, ChargeSlots);
+                        MessageBox.Show("The station added", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("The station not added", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+
+        }
+        void update()
+        {
+            try
+            {
+                if (!IsInt(ChargeSlotsTextBox.Text))
+                    ChargeSlotsTextBlock.Visibility = Visibility.Visible;
+                else
+                    bl.UpdateStationData(Convert.ToInt32(IDTextBox.Text), NameTextBox.Text, Convert.ToInt32(ChargeSlotsTextBox.Text));
+            }
+            catch (Exception)
+            { }
+
+        }
+
         private void CancelButtonX(object sender, RoutedEventArgs e)
         {
             var hwnd = new WindowInteropHelper(this).Handle;
@@ -32,12 +149,11 @@ namespace PL
         }
         void hideAllRemarks()
         {
-            FunctionTextBlock.Visibility = Visibility.Hidden;
-            IDTextBlock.Visibility = Visibility.Hidden;
-            NameTextBlock.Visibility = Visibility.Hidden;
-            ChargeSlotsTextBlock.Visibility = Visibility.Hidden;
-            LatitudeTextBlock.Visibility = Visibility.Hidden;
-            LongitudeTextBlock.Visibility = Visibility.Hidden;
+            IDTextBlock.Visibility = Visibility.Collapsed;
+            NameTextBlock.Visibility = Visibility.Collapsed;
+            ChargeSlotsTextBlock.Visibility = Visibility.Collapsed;
+            LatitudeTextBlock.Visibility = Visibility.Collapsed;
+            LongitudeTextBlock.Visibility = Visibility.Collapsed;
         }
         bool IsInt(string s)
         {
@@ -75,63 +191,14 @@ namespace PL
 
             return true;
         }
-        private void AddDrone(object sender, RoutedEventArgs e)
+        private void addStation_Button(object sender, RoutedEventArgs e)
         {
             hideAllRemarks();
 
-            
-
-            if (!IsInt(IDTextBox.Text))
-            {
-                IDTextBlock.Text = "Type the ID with only numbers.";
-                IDTextBlock.Visibility = Visibility.Visible;
-            }
-            else if (!IsInt(ChargeSlotsTextBox.Text))
-            {
-                ChargeSlotsTextBlock.Text = "Type the charge slots with only numbers.";
-                ChargeSlotsTextBlock.Visibility = Visibility.Visible;
-            }
-            else if (!IsDouble(LatitudeTextBox.Text))
-            {
-                LatitudeTextBlock.Text = "Type only numbers and one point.";
-                LatitudeTextBlock.Visibility = Visibility.Visible;
-            }
-            else if (!IsDouble(LongitudeTextBox.Text))
-            {
-                LongitudeTextBlock.Text = "Type only numbers and one point.";
-                LongitudeTextBlock.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                // If all input is proper add the station,
-                // else ERROR with TextBlocks.
-                bool isAllProper = true;
-
-                int IdStation = Convert.ToInt32(IDTextBox.Text);
-                int ChargeSlots = Convert.ToInt32(ChargeSlotsTextBlock.Text);
-                double Latitude = Convert.ToDouble(LatitudeTextBox.Text);
-                double Longitude = Convert.ToDouble(LongitudeTextBox.Text);
-                string Name = NameTextBox.Text;
-  
-                if (existThisIdStation(IdStation))
-                {
-                    IDTextBlock.Text = "This ID customer exists, select another.";
-                    IDTextBlock.Visibility = Visibility.Visible;
-                    isAllProper = false;
-                }
-                if (Name.Length == 0 || Name == "Type customer's name")// check Name
-                {
-                    NameTextBlock.Visibility = Visibility.Visible;
-                    isAllProper = false;
-                }
-
-                // If all proper add th customer.
-                if (isAllProper)
-                {
-                    bl.AddingBaseStation(IdStation, Name, Latitude, Longitude, ChargeSlots);
-                    MessageBox.Show("The customer added", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-            }
+            if ((string)StationButton.Content == "Add Station")
+                addStation();
+            else if ((string)StationButton.Content == "Update")
+                update();
         }
         bool existThisIdStation(int id)
         {
@@ -145,29 +212,41 @@ namespace PL
                 return false;// Not exist station with this id.
             }
         }
-        private void Okay(object sender, RoutedEventArgs e)
+        private void RemoveAllSkimmersFromTheStation(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                MessageBoxResult d = MessageBox.Show("You sure you want to get all the skimmers out of charge at this station?", "Question", MessageBoxButton.OKCancel, MessageBoxImage.Question, MessageBoxResult.Yes);
+
+                if (d == MessageBoxResult.None || d == MessageBoxResult.Cancel)
+                    return;
+
+                if (IsInt(IDTextBox.Text))
+                    bl.RemoveAllSkimmersFromTheStation(Convert.ToInt32(IDTextBox.Text));
+
+                MessageBox.Show("All the skimmers out of charge at this station", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                StationToTheList stationToTheList = bl.GetStationToTheList(Convert.ToInt32(IDTextBox.Text));
+                ChargeSlotsTextBox.Text = stationToTheList.availableChargingStations.ToString();
+                LatitudeTextBox.Text = stationToTheList.unAvailableChargingStations.ToString();
+
+            }
+            catch (Exception)
+            {
+                 MessageBox.Show("Can't out all the skimmers of charge at this station or don't have skimmers of charge at this station", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
 
         }
-
-        private void FunctionConbo_Initialized(object sender, EventArgs e)
-        {
-            List<string> options = new List<string>() {
-                "Update customer"
-                , "Creat new order"
-                , "Creat new delivery"
-                , "My order"
-                , "My shipments"
-                };
-            FunctionConbo.ItemsSource = options;
-        }
-
         private void FunctionConbo_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }
 
         private void CloseWindow(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void StationsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }

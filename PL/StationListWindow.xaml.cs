@@ -47,11 +47,7 @@ namespace PL
 
         private void ClearFilter(object sender, RoutedEventArgs e)
         {
-            stationsToTheLists.Clear();
-            stationsToTheLists.AddRange(bl.GetListOfBaseStations());
-            StationListView.ItemsSource = stationsToTheLists;
-
-            HideAndReseteAllTextBox();
+            clearAndResetFilter();
         }
         private void HideAndReseteAllTextBox()
         {
@@ -73,13 +69,11 @@ namespace PL
         {
             this.Close();
         }
-        private void AddingNewStation(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private void StationsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (StationListView.ItemsSource != null)
+                new StationWindow(bl, (StationToTheList)e.AddedItems[0]).Show();
 
         }
         bool isNumber(string s)
@@ -191,6 +185,37 @@ namespace PL
                 FilterUnavailableChargingTextBox.Text = "Search";
                 FilterUnavailableChargingTextBox.Visibility = Visibility.Hidden;
             }
+        }
+        private void clearAndResetFilter()
+        {
+            HideAndReseteAllTextBox();
+
+            EnableFiltersWithConditions();
+
+        }
+        void EnableFiltersWithConditions()
+        {
+            if (TurnOnFunctionFilters)
+                Filters();
+        }
+        private void Refresh_Click(object sender, RoutedEventArgs e)
+        {
+            EnableFiltersWithConditions();
+        }
+
+        private void AvailableChargingStations_Click(object sender, RoutedEventArgs e)
+        {
+            HideAndReseteAllTextBox();
+            StationListView.ItemsSource = bl.GetAllStaionsBy(s => s.ChargeSlots > 0);
+        }
+
+        private void AddingNewStation(object sender, RoutedEventArgs e)
+        {
+            if (StationListView.ItemsSource != null)
+                new StationWindow(bl).Show();
+
+            EnableFiltersWithConditions();
+
         }
     }
 }
