@@ -20,7 +20,7 @@
                 <ColumnDefinition Width="200"/>
                 <ColumnDefinition Width="200"/>
             </Grid.ColumnDefinitions >
-            <Button Content="Clear filter" FontWeight = "DemiBold" Grid.Column="2" HorizontalAlignment="Center" Margin="0,43,0,0" VerticalAlignment="Top" Width="120" Click="ClearFilter" Background="#C3E0E5" BorderBrush = "White">
+            <Button Content="Clear filter" FontWeight = "DemiBold" Grid.Column="2" HorizontalAlignment="Center" Margin="0,43,0,12" Width="120" Click="ClearFilter" Background="#C3E0E5" BorderBrush = "White">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="8"/>
@@ -70,17 +70,18 @@
 
             </ListView>
 
+             <Button x:Name="SearchIDButton" Content="s" HorizontalAlignment="Left" Margin="-4,62,0,0" VerticalAlignment="Top" Width="20" Click="SearchIDButton_Click" Height="20"/>
+            <Button x:Name="SearchModelButton" Content="s" HorizontalAlignment="Left" Margin="99,62,0,0" VerticalAlignment="Top" Width="20" Click="SearchModelButton_Click" Height="20"/>
+            <Button x:Name="SearchBattryButton" Content="s" Margin="393,62,0,0" VerticalAlignment="Top" Click="SearchBattryButton_Click" Height="20" HorizontalAlignment="Left" Width="19"/>
+            <Button x:Name="SearchLocationButton" Content="s" HorizontalAlignment="Left" Margin="505,62,0,0" VerticalAlignment="Top" Width="20" Click="SearchLocationButton_Click" Height="20" />
+            <Button x:Name="SearchParcelButton" Content="s" HorizontalAlignment="Left" Margin="798,62,0,0" VerticalAlignment="Top" Width="20" Click="SearchParcelButton_Click" Height="20" />
             <Button x:Name="SearchStatusButton" Content="s" Margin="297,62,0,283" Visibility="Visible" HorizontalAlignment="Left" Width="19" Click="SearchStatusButton_Click" />
             <Button x:Name="SearchWeightButton" Content="s" HorizontalAlignment="Left" Margin="197,62,0,0" VerticalAlignment="Top" Width="20" Click="SearchWeightButton_Click" Height="20">
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}"/>
                 </Button.Resources>
             </Button>
-            <Button x:Name="SearchIDButton" Content="s" HorizontalAlignment="Left" Margin="-4,62,0,0" VerticalAlignment="Top" Width="20" Click="SearchIDButton_Click" Height="20"/>
-            <Button x:Name="SearchModelButton" Content="s" HorizontalAlignment="Left" Margin="99,62,0,0" VerticalAlignment="Top" Width="20" Click="SearchModelButton_Click" Height="20"/>
-            <Button x:Name="SearchBattryButton" Content="s" Margin="393,62,0,0" VerticalAlignment="Top" Click="SearchBattryButton_Click" Height="20" HorizontalAlignment="Left" Width="19"/>
-            <Button x:Name="SearchLocationButton" Content="s" HorizontalAlignment="Left" Margin="505,62,0,0" VerticalAlignment="Top" Width="20" Click="SearchLocationButton_Click" Height="20" />
-            <Button x:Name="SearchParcelButton" Content="s" HorizontalAlignment="Left" Margin="798,62,0,0" VerticalAlignment="Top" Width="20" Click="SearchParcelButton_Click" Height="20" />
+
             <TextBox x:Name="FilterIDTextBox" HorizontalAlignment="Left" Margin="25,42,0,0" Text="Search" Visibility="Hidden" TextWrapping="Wrap" VerticalAlignment="Top" Width="51" TextChanged="AnyFilterTextBox_TextChanged" Height="18"/>
             <TextBox x:Name="FilterModelTextBox" Margin="125,42,0,0" Text="Search" Visibility="Hidden" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="AnyFilterTextBox_TextChanged" Height="18" HorizontalAlignment="Left" Width="47"/>
             <TextBox x:Name="FilterBatteryTextBox"  HorizontalAlignment="Left" Margin="49,44,0,0" Text="Search" Visibility="Hidden" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" TextChanged="AnyFilterTextBox_TextChanged" Height="18" Grid.Column="2"/>
@@ -89,8 +90,48 @@
             <ComboBox x:Name="StatusCombo" IsReadOnly="True" IsEditable ="true" Text="Choose status"  HorizontalAlignment="Left" Margin="313,42,0,0" Visibility="Hidden" VerticalAlignment="Top" SelectionChanged="StatusDroneSituation" Initialized="StatusCombo_Initialized" FontSize="9" Width="83" Height="18" Grid.ColumnSpan="3"/>
             <ComboBox x:Name="WieghtCombo" IsEditable ="true" IsReadOnly="True" Text="Choose wieght"  SelectionChanged="StatusDroneWeight" Visibility="Hidden" Initialized="WieghtCombo_Initialized" Margin="207,42,0,305" FontSize="9" HorizontalAlignment="Left" Width="87"/>
         </Grid>
+        <Border Name ="openOptions" Visibility="Hidden" BorderThickness="1" Grid.Row="1" Margin="196,41,372,44"
+             Background="#2e3137" CornerRadius="20" >
+            <StackPanel Margin="20">
+                <Label Name="TitleOptions" Content="Open Bar" Foreground="White" FontSize="25" HorizontalAlignment="Center"/>
+                <Separator></Separator>
+                <Label></Label>
+
+                <Label></Label>
+
+
+                <Label></Label>
+                <Button Name="ViewDroneButton" Content="View Drone" FontWeight = "DemiBold" Background="#545d6a" Foreground="White" Height="34" Width="206" Click="ViewDroneButton_Click" >
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="8"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+                <Label></Label>
+                <Button Name="ViewParcelDeliveredButton" Content="View Package Delivered" FontWeight = "DemiBold" Background="#545d6a" Foreground="White" Height="34" Width="206" Click="ViewParcelDeliveredButton_Click" >
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="8"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+                <Label></Label>
+                <Button x:Name="CancelOpenBarButton" Content="Cancel" FontWeight = "DemiBold" Background="#545d6a" Foreground="White" Height="34" Width="206" Click="CancelOpenBarButton_Click" >
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="8"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+
+
+
+            </StackPanel>
+        </Border>
 
 
     </Grid>
+
 
 </Window>

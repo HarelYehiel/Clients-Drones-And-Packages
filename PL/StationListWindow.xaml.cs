@@ -150,8 +150,7 @@ namespace PL
 
         private void FilterIDTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (TurnOnFunctionFilters)
-                Filters();
+            EnableFiltersWithConditions();
 
         }
 

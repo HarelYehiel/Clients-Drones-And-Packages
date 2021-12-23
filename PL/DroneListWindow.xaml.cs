@@ -41,16 +41,10 @@ namespace PL
         private void StatusDroneWeight(object sender, SelectionChangedEventArgs e)
         {
             Filters();
-            //מפעם קודמת
-            //  if (WieghtCombo.SelectedIndex > -1)
-            //        DronesListView.ItemsSource = bl.GetAllDronesBy(D => D.weight == (EnumBO.WeightCategories)WieghtCombo.SelectedItem);
         }
         private void StatusDroneSituation(object sender, SelectionChangedEventArgs e)
         {
             Filters();
-            //מפעם קודמת
-            // if (StatusCombo.SelectedIndex > -1)
-            //        DronesListView.ItemsSource = bl.GetAllDronesBy(D => D.status == (EnumBO.DroneStatus)StatusCombo.SelectedItem);
 
         }
         private void WieghtCombo_Initialized(object sender, EventArgs e)
@@ -79,36 +73,15 @@ namespace PL
         }
         private void DronesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (DronesListView.ItemsSource != null)
-                new DroneWindow(bl, DronesListView.SelectedItem as BO.DroneToList).ShowDialog();
-
-            DronesListView.ItemsSource = null;
-            if (StatusCombo.SelectedIndex == -1 && WieghtCombo.SelectedIndex == -1) // No filter
-                DronesListView.ItemsSource = bl.GetTheListOfDrones();
-            else // Have filter/s.
-                ShowTheSkimmersAgain();
-
+            HideOrVisibleDronesListViewAndOpenOptionsTheOpposite();
         }
+
         private void AddingNewDrone(object sender, RoutedEventArgs e)
         {
             DronesListView.ItemsSource = null; // Reset the list drone.
             new DroneWindow(bl).ShowDialog();
 
-            if (StatusCombo.SelectedIndex == -1 && WieghtCombo.SelectedIndex == -1) // No filter
-                DronesListView.ItemsSource = bl.GetTheListOfDrones();
-            else // Have filter/s.
-                ShowTheSkimmersAgain();
-
-        }
-        private void ShowTheSkimmersAgain()
-        // Show the skimmers again with the one filter on
-        {
-            if (StatusCombo.SelectedIndex == -1)
-                DronesListView.ItemsSource = bl.GetAllDronesBy
-                   (D => D.weight == (EnumBO.WeightCategories)WieghtCombo.SelectedItem);
-            else if (WieghtCombo.SelectedIndex == -1)
-                DronesListView.ItemsSource = bl.GetAllDronesBy
-                   (D => D.status == (EnumBO.DroneStatus)StatusCombo.SelectedItem);
+            EnableFiltersWithConditions();
         }
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
@@ -318,8 +291,7 @@ namespace PL
 
         private void AnyFilterTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (TurnOnFunctionFilters)
-                Filters();
+            EnableFiltersWithConditions();
         }
 
         private void SearchParcelButton_Click(object sender, RoutedEventArgs e)
@@ -336,10 +308,95 @@ namespace PL
 
         private void Refresh_Click(object sender, RoutedEventArgs e)
         {
+            EnableFiltersWithConditions();
+        }
+        void EnableFiltersWithConditions()
+        {
             if (TurnOnFunctionFilters)
                 Filters();
         }
+        private void ViewDroneButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
 
+                if (DronesListView.ItemsSource != null)
+                    new DroneWindow(bl, DronesListView.SelectedItem as BO.DroneToList).ShowDialog();
+
+                DronesListView.SelectedItem = null;
+                EnableFiltersWithConditions();
+            }
+            catch (Exception)
+            {
+                DronesListView.SelectedItem = null;
+            }
+
+        }
+
+        private void ViewParcelDeliveredButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+
+                int IDPacel = (DronesListView.SelectedItem as BO.DroneToList).packageDelivered;
+                if (IDPacel == 0)
+                    throw new MyExeption_BO("check if the drone associated to parcel");
+
+                if (DronesListView.ItemsSource != null)
+                {
+                    ParcelToList parcelToList = bl.GetParcelToTheList(IDPacel);
+                    new ParcelWindow(bl, parcelToList).ShowDialog();
+                }
+                DronesListView.SelectedItem = null;
+                EnableFiltersWithConditions();
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message == "check if the drone associated to parcel")
+                    MessageBox.Show("Don't have this parcel, check if the drone associated to parcel.", "Eroor", MessageBoxButton.OK, MessageBoxImage.Error);
+                else
+                    DronesListView.SelectedItem = null;
+            }
+
+        }
+
+        private void CancelOpenBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            DronesListView.SelectedItem = null;
+        }
+        void HideOrVisibleDronesListViewAndOpenOptionsTheOpposite()
+        // Hide oe visible all button on DronesListView and DronesListView,
+        // DronesListView The Opposite.
+        {
+            if (DronesListView.Visibility == Visibility.Visible)
+            {
+                openOptions.Visibility = Visibility.Visible;
+
+                DronesListView.Visibility = Visibility.Hidden;
+                SearchIDButton.Visibility = Visibility.Hidden;
+                SearchModelButton.Visibility = Visibility.Hidden;
+                SearchBattryButton.Visibility = Visibility.Hidden;
+                SearchLocationButton.Visibility = Visibility.Hidden;
+                SearchParcelButton.Visibility = Visibility.Hidden;
+                SearchStatusButton.Visibility = Visibility.Hidden;
+                SearchWeightButton.Visibility = Visibility.Hidden;
+
+            }
+            else
+            {
+                openOptions.Visibility = Visibility.Hidden;
+
+                DronesListView.Visibility = Visibility.Visible;
+                SearchIDButton.Visibility = Visibility.Visible;
+                SearchModelButton.Visibility = Visibility.Visible;
+                SearchBattryButton.Visibility = Visibility.Visible;
+                SearchLocationButton.Visibility = Visibility.Visible;
+                SearchParcelButton.Visibility = Visibility.Visible;
+                SearchStatusButton.Visibility = Visibility.Visible;
+                SearchWeightButton.Visibility = Visibility.Visible;
+            }
+
+        }
     }
 }
 

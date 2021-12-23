@@ -16,7 +16,6 @@ namespace PL
 
 
         BlApi.IBL bl;
-        DroneToList droneToList;
         DateTime? dateTime;
 
         private const int GWL_STYLE = -16;
@@ -35,22 +34,66 @@ namespace PL
             FunctionConbo.Visibility = Visibility.Collapsed;
             CharginDroneDatePicker.Visibility = Visibility.Collapsed;
             OkayButton.Visibility = Visibility.Collapsed;
-           
+
         }
         public DroneWindow(BlApi.IBL bl1, DroneToList droneToList1)
         // Constructor for view drone and allow do actions.
         {
             bl = bl1;
-            droneToList = droneToList1;
             InitializeComponent();
 
+            PrepareTheToolsForDroneDisplay(droneToList1);
+
+        }
+        void PrepareTheToolsForDroneDisplay(DroneToList droneToList)
+        {
+            FunctionConbo.SelectedIndex = 0; // Select Function
+
+            // Details ID
+            IDTextBlock.Visibility = Visibility.Collapsed;
+            IDTextBox.IsEnabled = false;
+            IDTextBox.Text = droneToList.uniqueID.ToString();
+
+            // Details Model
+            ModelTextBlock.Visibility = Visibility.Collapsed;
+            ModelTextBox.Text = droneToList.Model;
+
+            // Details Wieght For View
+            WieghtForViewDroneIDLabel.Visibility = Visibility.Visible;
+            WieghtForViewDroneIDTextBox.Visibility = Visibility.Visible;
+            WieghtForViewDroneIDTextBox.Text = ((EnumBO.WeightCategories)droneToList.weight).ToString();
+            WieghtForViewDroneIDTextBox.IsEnabled = false;
+
+            // Details  Wieght - not need
+            WieghtTextBlock.Visibility = Visibility.Collapsed;
+            WieghtDroneLabel.Visibility = Visibility.Collapsed;
+            WieghtCombo.Visibility = Visibility.Collapsed;
+
+            // Details station ID - not need
+            StationIDLabel.Visibility = Visibility.Collapsed;
+            StationTextBlock.Visibility = Visibility.Collapsed;
+            StationIDTextBox.Visibility = Visibility.Collapsed;
+
+            // Details status
             statusDroneLabel.Visibility = Visibility.Visible;
             statusTextBox.Visibility = Visibility.Visible;
+            statusTextBox.Text = ((EnumBO.DroneStatus)droneToList.status).ToString();
+            statusTextBox.IsEnabled = false;
+
+            // Details Battery
             BatteryLabel.Visibility = Visibility.Visible;
             BatteryTextBox.Visibility = Visibility.Visible;
+            BatteryTextBox.Text = droneToList.Battery.ToString();
+            BatteryTextBox.IsEnabled = false;
+
+            // Details package Delivered
             packageDeliveredLabel.Visibility = Visibility.Visible;
             packageDeliveredTextBox.Visibility = Visibility.Visible;
-           
+            packageDeliveredTextBox.Text = droneToList.packageDelivered.ToString();
+            statusTextBox.IsEnabled = false;
+
+            DroneButton.Content = "Update";
+            title.Content = "Update Drone";
         }
         bool isNumber(string s)
         {
@@ -65,7 +108,23 @@ namespace PL
 
             return true;
         }
-        private void AddDrone(object sender, RoutedEventArgs e)
+        void UpdateDrone(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (ModelTextBox.Text != "")
+                {
+                    bl.UpdateDroneData(Convert.ToInt32(IDTextBox.Text), ModelTextBox.Text);
+                    MessageBox.Show("The drone update", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("The drone not update", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+
+        }
+        void AddDrone(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -128,19 +187,28 @@ namespace PL
             {
                 MessageBox.Show("The drone not added", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
             }
+
+        }
+
+        private void ActionOfDrone(object sender, RoutedEventArgs e)
+        {
+            if (DroneButton.Content.ToString() == "Add Drone")
+                AddDrone(sender, e);
+            else if (DroneButton.Content.ToString() == "Update")
+                UpdateDrone(sender, e);
         }
         private void Okay(object sender, RoutedEventArgs e)
         {
             try
             {
-               if (FunctionConbo.SelectedIndex == 0 || FunctionConbo.SelectedIndex == -1)
+                if (FunctionConbo.SelectedIndex == 0 || FunctionConbo.SelectedIndex == -1)
                 {
                     FunctionsTextBlock.Visibility = Visibility.Visible;
                     return; // Back to fix.
                 }
                 else if (FunctionConbo.SelectedIndex == 1) // send drone to charge at station
                 {
-                    bl.SendingDroneToCharging(droneToList.uniqueID);
+                    bl.SendingDroneToCharging(Convert.ToInt32(IDTextBox.Text));
                 }
                 else if (FunctionConbo.SelectedIndex == 2)  // send drone from charge in station
                 {
@@ -153,11 +221,11 @@ namespace PL
                     try
                     {
                         // Get the drone in charging from the list in dataSource.
-                        BO.DroneInCharging droneInCharging = bl.GetDroneInCharging(droneToList.uniqueID);
+                        BO.DroneInCharging droneInCharging = bl.GetDroneInCharging(Convert.ToInt32(IDTextBox.Text));
 
                         // Calculate the range between the times
                         TimeSpan timeSpan = CharginDroneDatePicker.SelectedDate.Value - droneInCharging.startCharge;
-                        bl.ReleaseDroneFromCharging(droneToList.uniqueID, timeSpan.TotalMinutes);
+                        bl.ReleaseDroneFromCharging(Convert.ToInt32(IDTextBox.Text), timeSpan.TotalMinutes);
 
                     }
                     catch (Exception)
@@ -167,11 +235,14 @@ namespace PL
                     }
                 }
                 else if (FunctionConbo.SelectedIndex == 3) // assign drone to parcel
-                    bl.AssignPackageToDrone(droneToList.uniqueID);
+                    bl.AssignPackageToDrone(Convert.ToInt32(IDTextBox.Text));
                 else if (FunctionConbo.SelectedIndex == 4) // update picked up parcel by drone
-                    bl.CollectionOfPackageByDrone(droneToList.uniqueID);
+                    bl.CollectionOfPackageByDrone(Convert.ToInt32(IDTextBox.Text));
                 else if (FunctionConbo.SelectedIndex == 5) // update delivered parcel by drone
-                    bl.DeliveryOfPackageByDrone(droneToList.uniqueID);
+                    bl.DeliveryOfPackageByDrone(Convert.ToInt32(IDTextBox.Text));
+
+                UpdateDroneData();
+
 
                 MessageBox.Show("The drone updated", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
 
@@ -180,8 +251,16 @@ namespace PL
             {
                 MessageBox.Show("The drone not updated", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
             }
+        }
+        void UpdateDroneData()
+            // Update the view drone data after click the Update button.
+        {
+            DroneToList droneToList = bl.GetDroneToTheList(Convert.ToInt32(IDTextBox.Text));
 
-
+            ModelTextBox.Text = droneToList.Model;
+            statusTextBox.Text = ((EnumBO.DroneStatus)droneToList.status).ToString();
+            BatteryTextBox.Text = droneToList.Battery.ToString();
+            packageDeliveredTextBox.Text = droneToList.packageDelivered.ToString();
 
         }
         private void FunctionConbo_Initialized(object sender, EventArgs e)
@@ -200,12 +279,11 @@ namespace PL
         {
             try
             {
-                CharginDroneDatePicker.Visibility = Visibility.Collapsed;
 
-               if (FunctionConbo.SelectedIndex == 2) // "send drone from charge in station"
+                if (FunctionConbo.SelectedIndex == 2) // "send drone from charge in station"
                 {
                     // Get the drone in charging from the list in dataSource.
-                    BO.DroneInCharging droneInCharging = bl.GetDroneInCharging(droneToList.uniqueID);
+                    BO.DroneInCharging droneInCharging = bl.GetDroneInCharging(Convert.ToInt32(IDTextBox.Text));
                     // Limit the date to the minimum date in DatePicker
                     CharginDroneDatePicker.DisplayDateStart = droneInCharging.startCharge;
 
@@ -216,14 +294,12 @@ namespace PL
                 }
                 else // Other functions
                 {
-
+                    CharginDroneDatePicker.Visibility = Visibility.Collapsed;
                 }
             }
             catch (Exception)
             {
-
-                throw new BO.MyExeption_BO("Don't have this drone in charging.");
-
+                MessageBox.Show("Don't have this drone in charging, send befor to chege.", "Eroor", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
         }
