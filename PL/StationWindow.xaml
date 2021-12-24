@@ -53,5 +53,12 @@
                 </Style>
             </Button.Resources>
         </Button>
+        <Button x:Name="ViewAllSkimmersFromTheCharge" Content="View All Skimmers" BorderBrush = "White"  FontWeight = "DemiBold" HorizontalAlignment="Left" Margin="346,164,0,0" Width="154" Height="34" VerticalAlignment="Top" Click="ViewAllSkimmersFromTheCharge_Click">
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="15"/>
+                </Style>
+            </Button.Resources>
+        </Button>
     </Grid>
 </Window>

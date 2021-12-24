@@ -135,10 +135,24 @@ namespace PL
                 if (!IsInt(ChargeSlotsTextBox.Text))
                     ChargeSlotsTextBlock.Visibility = Visibility.Visible;
                 else
+                {
                     bl.UpdateStationData(Convert.ToInt32(IDTextBox.Text), NameTextBox.Text, Convert.ToInt32(ChargeSlotsTextBox.Text));
+                    MessageBox.Show("The station update.", "Information", MessageBoxButton.OKCancel, MessageBoxImage.Information);
+                    StationToTheList stationToTheList = new StationToTheList();
+
+                    // Update the data of view station.
+                    stationToTheList = bl.GetStationToTheList(Convert.ToInt32(IDTextBox.Text));
+                    NameTextBox.Text = stationToTheList.name;
+                    ChargeSlotsTextBox.Text = stationToTheList.availableChargingStations.ToString();
+
+                }
+
+
             }
             catch (Exception)
-            { }
+            {
+                MessageBox.Show("The station not update.", "Information", MessageBoxButton.OKCancel, MessageBoxImage.Information);
+            }
 
         }
 
@@ -198,7 +212,9 @@ namespace PL
             if ((string)StationButton.Content == "Add Station")
                 addStation();
             else if ((string)StationButton.Content == "Update")
+            {
                 update();
+            }
         }
         bool existThisIdStation(int id)
         {
@@ -232,12 +248,8 @@ namespace PL
             }
             catch (Exception)
             {
-                 MessageBox.Show("Can't out all the skimmers of charge at this station or don't have skimmers of charge at this station", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Can't out all the skimmers of charge at this station or don't have skimmers of charge at this station", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-
-        }
-        private void FunctionConbo_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
 
         }
 
@@ -245,9 +257,20 @@ namespace PL
         {
             this.Close();
         }
-
-        private void StationsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ViewAllSkimmersFromTheCharge_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                DroneInChargingWindow droneInChaeginngWindow = new DroneInChargingWindow(bl, Convert.ToInt32(IDTextBox.Text));
+                droneInChaeginngWindow.Title = $"Drone In Charging At Station {IDTextBox}";
+                droneInChaeginngWindow.Show();
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Don't have drones in charging"))
+                    MessageBox.Show("Don't have drones in charging at this station.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            }
 
         }
     }
