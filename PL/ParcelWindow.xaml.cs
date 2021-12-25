@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using BO;
+
 
 namespace PL
 {
@@ -57,7 +59,7 @@ namespace PL
                 txtSender.Text = "DELETED";
                 txtTarget.Background = new SolidColorBrush(Colors.White);
                 txtTarget.Foreground = new SolidColorBrush(Colors.Red);
-                txtTarget.Text = "DELETED";               
+                txtTarget.Text = "DELETED";
                 Add.Visibility = Visibility.Hidden;
                 OptinalCustomer.Visibility = Visibility.Hidden;
                 LabelCustomers.Visibility = Visibility.Hidden;
@@ -72,26 +74,45 @@ namespace PL
             LabelCustomers.Visibility = Visibility.Hidden;
             UpdateBorder.Visibility = Visibility.Hidden;
         }
+        bool isNumber(string s)
+        {
+            if (s.Length == 0) return false;
+            for (int i = 0; i < s.Length; i++)
+            {
+                if ((int)s[i] >= (int)'0' && (int)s[i] <= (int)'9')
+                    continue;
+
+                return false;
+            }
+
+            return true;
+        }
 
         private void create_Click(object sender, RoutedEventArgs e)
         {
-            if (Add.Content.ToString() == "Create")
+            try
             {
-                if (string.IsNullOrEmpty(txtId.Text))
+                if (Add.Content.ToString() == "Create")
                 {
+                    if (!isNumber(txtTarget.Text) || !isNumber(txtSender.Text) || comboWeight.SelectedIndex == -1 || comboPriority.SelectedIndex == -1)
+                        throw new MyExeption_BO("Error");
 
+                    int ID = Convert.ToInt32(txtId.Text);
+                    int SenderId = Convert.ToInt32(txtSender.Text);
+                    int TargetId = Convert.ToInt32(txtTarget.Text);
+                    bl.ReceiptOfPackageForDelivery(ID, SenderId, TargetId, comboWeight.SelectedIndex, comboPriority.SelectedIndex);
+                    this.Close();
                 }
-
-                int ID = Convert.ToInt32(txtId.Text);
-                int SenderId = Convert.ToInt32(txtSender.Text);
-                int TargetId = Convert.ToInt32(txtTarget.Text);
-                bl.ReceiptOfPackageForDelivery(ID, SenderId, TargetId, comboWeight.SelectedIndex, comboPriority.SelectedIndex);
-                this.Close();
+                else if (Add.Content.ToString() == "Update")
+                {
+                    UpdateBorder.Visibility = Visibility.Visible;
+                }
             }
-            else if (Add.Content.ToString() == "Update")
+            catch (Exception)
             {
-                UpdateBorder.Visibility = Visibility.Visible;
+                MessageBox.Show("Note that you have filled in all the fields.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+
         }
 
 

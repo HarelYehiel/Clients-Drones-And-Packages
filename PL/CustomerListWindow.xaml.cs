@@ -279,7 +279,7 @@ namespace PL
             ParcelWindow openNewOrder = new ParcelWindow(bl);
             openNewOrder.txtId.Text = customer.uniqueID.ToString();
             openNewOrder.txtId.IsEnabled = false;
-            openNewOrder.txtSender.Text = customer.name;
+            openNewOrder.txtSender.Text = customer.uniqueID.ToString();
             openNewOrder.txtSender.IsEnabled = false;
             openNewOrder.Show();
             openOptions.Visibility = Visibility.Hidden;

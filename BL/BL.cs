@@ -47,19 +47,6 @@ namespace BlApi
 
             }
 
-
-            foreach (var item in ListDroneToList)
-            {
-                try
-                {
-                   // AssignPackageToDrone(item.uniqueID);
-
-                }
-                catch (Exception)
-                {
-                    // don't do nothing, just contiune to next. 
-                }
-            }
         }
         public bool IsDigitsOnly(string str)
         {

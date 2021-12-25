@@ -4,6 +4,8 @@ using System.Windows.Media;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media.Imaging;
+using BO;
+
 
 namespace PL
 {
@@ -16,6 +18,26 @@ namespace PL
         public MainWindow()
         {
             bl = BlApi.BlFactory.GetBl();
+
+
+            List <DroneToList> droneToList = new List<DroneToList>();
+            droneToList = bl.GetTheListOfDrones().ToList();
+
+            for (int i = 0; i < 10; i++)
+           {
+                try
+                {
+                    bl.SendingDroneToCharging(droneToList[i].uniqueID);
+                 
+
+
+                }
+                catch (Exception)
+                {
+                    // don't do nothing, just contiune to next. 
+                }
+            }
+
             ImageBrush image = new ImageBrush();
             image.ImageSource = new BitmapImage(new Uri("MainBackground.jpeg", UriKind.Relative));
             InitializeComponent();

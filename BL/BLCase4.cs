@@ -192,6 +192,7 @@ namespace BlApi
             DroneInCharging droneInCharging = new DroneInCharging();
             droneInCharging.uniqueID = item.DroneId;
             droneInCharging.startCharge = item.startCharge;
+            droneInCharging.batteryStatus = GetBatteryStatus(droneInCharging.uniqueID);
 
             return droneInCharging;
         }
