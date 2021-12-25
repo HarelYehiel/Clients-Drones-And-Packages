@@ -27,7 +27,7 @@ namespace PL
         {
             new ParcelWindow(bl).ShowDialog();
             ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels();
-            CollectionViewSource.GetDefaultView(ParcelListView).Refresh();
+            //CollectionViewSource.GetDefaultView(ParcelListView).Refresh();
 
         }
 

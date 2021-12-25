@@ -268,7 +268,7 @@ namespace PL
             List<string> s = new List<string>() {
                 "Select Function"
                 , "send drone to charge at station"
-                , "send drone from charge in station"
+                , "release drone from charge in station"
                 , "assign drone to parcel"
                 , "update picked up parcel by drone"
                 , "update delivered parcel by drone"
@@ -280,7 +280,7 @@ namespace PL
             try
             {
 
-                if (FunctionConbo.SelectedIndex == 2) // "send drone from charge in station"
+                if (FunctionConbo.SelectedIndex == 2) // "release drone from charge in station"
                 {
                     // Get the drone in charging from the list in dataSource.
                     BO.DroneInCharging droneInCharging = bl.GetDroneInCharging(Convert.ToInt32(IDTextBox.Text));
@@ -299,7 +299,7 @@ namespace PL
             }
             catch (Exception)
             {
-                MessageBox.Show("Don't have this drone in charging, send befor to chege.", "Eroor", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Don't have this drone in charging, send before to charge.", "Eroor", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
         }

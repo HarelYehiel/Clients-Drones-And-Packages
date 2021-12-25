@@ -77,6 +77,11 @@ namespace PL
         {
             if (Add.Content.ToString() == "Create")
             {
+                if (string.IsNullOrEmpty(txtId.Text))
+                {
+
+                }
+
                 int ID = Convert.ToInt32(txtId.Text);
                 int SenderId = Convert.ToInt32(txtSender.Text);
                 int TargetId = Convert.ToInt32(txtTarget.Text);

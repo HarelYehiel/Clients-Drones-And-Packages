@@ -225,7 +225,7 @@ namespace PL
                     bl.RemoveAllSkimmersFromTheStation(Convert.ToInt32(IDTextBox.Text));
 
                 MessageBox.Show("All the skimmers out of charge at this station", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                StationToTheList stationToTheList = bl.GetStationToTheList(Convert.ToInt32(IDTextBox.Text));
+                BO.StationToTheList stationToTheList = bl.GetStationToTheList(Convert.ToInt32(IDTextBox.Text));
                 ChargeSlotsTextBox.Text = stationToTheList.availableChargingStations.ToString();
                 LatitudeTextBox.Text = stationToTheList.unAvailableChargingStations.ToString();
 
