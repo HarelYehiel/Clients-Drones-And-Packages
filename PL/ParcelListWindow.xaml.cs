@@ -117,6 +117,9 @@ namespace PL
             try
             {
                 BO.Parcel temp = bl.GetParcel(parcel.uniqueID);
+                if (temp.droneInParcel == null)
+                    throw new Exception();
+
                 List<BO.DroneToList> lst = bl.GetAllDronesBy(D => D.uniqueID == temp.droneInParcel.uniqueID).ToList();
                 new DroneWindow(bl, lst[0]).ShowDialog();
                 openOptions.Visibility = Visibility.Hidden;

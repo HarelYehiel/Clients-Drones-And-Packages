@@ -18,10 +18,8 @@ namespace PL
             bl = bL1;
             StationID = StationID1;
             RunDronesInCharging = new List<DroneInCharging>();
-            SaveDronesInCharging = new List<DroneInCharging>();
 
-            SaveDronesInCharging.AddRange(bl.GetAllDronesInCharging(C => C.staitionId == StationID));
-            RunDronesInCharging = SaveDronesInCharging;
+            RunDronesInCharging.AddRange(bl.GetAllDronesInCharging(C => C.staitionId == StationID));
 
             TurnOnFunctionFilters = false;
             InitializeComponent();
@@ -34,9 +32,6 @@ namespace PL
         
         // Work with this list
         List<DroneInCharging> RunDronesInCharging;
-
-        // To eliminate the need to access BL repeatedly
-        List<DroneInCharging> SaveDronesInCharging;
 
         int StationID;
 
@@ -63,13 +58,13 @@ namespace PL
         private void ClearFilter(object sender, RoutedEventArgs e)
         {
 
-            DronesInChargingListView.ItemsSource = SaveDronesInCharging;
+            DronesInChargingListView.ItemsSource = RunDronesInCharging;
 
             HideAndReseteAllTextBox();
         }
         private void DronesInChargingListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //HideOrVisibleDronesListViewAndOpenOptionsTheOpposite();
+            HideOrVisibleDronesListViewAndOpenOptionsTheOpposite();
         }
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
@@ -138,7 +133,7 @@ namespace PL
             {
                 DronesInChargingListView.ItemsSource = null;
                 RunDronesInCharging.Clear();
-                RunDronesInCharging.AddRange(SaveDronesInCharging);
+                RunDronesInCharging.AddRange(bl.GetAllDronesInCharging(C => C.staitionId == StationID));
 
                 if (isNumber(FilterIDTextBox.Text)) // Filter ID
                 {
@@ -196,13 +191,15 @@ namespace PL
             if (TurnOnFunctionFilters)
                 Filters();
         }
-        private void ViewDroneButton_Click(object sender, RoutedEventArgs e)
+        private void RemoveFromCharging_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+                int IDDrone = (DronesInChargingListView.SelectedItem as DroneInCharging).uniqueID;
+                TimeSpan timeSpan = DateTime.Now - bl.GetDroneInCharging(Convert.ToInt32(IDDrone)).startCharge;
 
                 if (DronesInChargingListView.ItemsSource != null)
-                    new DroneWindow(bl, DronesInChargingListView.SelectedItem as BO.DroneToList).ShowDialog();
+                    bl.ReleaseDroneFromCharging(IDDrone , timeSpan.TotalMinutes);
 
                 DronesInChargingListView.SelectedItem = null;
                 EnableFiltersWithConditions();

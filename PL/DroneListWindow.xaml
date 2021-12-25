@@ -90,7 +90,7 @@
             <ComboBox x:Name="StatusCombo" IsReadOnly="True" IsEditable ="true" Text="Choose status"  HorizontalAlignment="Left" Margin="313,42,0,0" Visibility="Hidden" VerticalAlignment="Top" SelectionChanged="StatusDroneSituation" Initialized="StatusCombo_Initialized" FontSize="9" Width="83" Height="18" Grid.ColumnSpan="3"/>
             <ComboBox x:Name="WieghtCombo" IsEditable ="true" IsReadOnly="True" Text="Choose wieght"  SelectionChanged="StatusDroneWeight" Visibility="Hidden" Initialized="WieghtCombo_Initialized" Margin="207,42,0,305" FontSize="9" HorizontalAlignment="Left" Width="87"/>
         </Grid>
-        <Border Name ="openOptions" Visibility="Visible" BorderThickness="1" Grid.Row="1" Margin="196,41,372,44"
+        <Border Name ="openOptions" Visibility="Hidden" BorderThickness="1" Grid.Row="1" Margin="196,41,372,44"
              Background="#2e3137" CornerRadius="20" >
             <StackPanel Margin="20">
                 <Label Name="TitleOptions" Content="Open Bar" Foreground="White" FontSize="25" HorizontalAlignment="Center"/>

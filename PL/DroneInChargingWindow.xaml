@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PL"
         Background ="#5885AF"
         mc:Ignorable="d"
-        Title="Drone In Charging" Height="327" Width="338">
+        Title="Drone In Charging" Height="385" Width="495">
     <Grid Name="MainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="75"/>
@@ -38,12 +38,12 @@
         </Grid>
         <Grid Margin="10,40,0,142" Grid.RowSpan="2">
 
-            <ListView x:Name="DronesInChargingListView" SelectionChanged="DronesInChargingListView_SelectionChanged" Margin="-9,60,5,0" Background ="#5885AF" d:ItemsSource="{d:SampleData}" >
+            <ListView x:Name="DronesInChargingListView" SelectionChanged="DronesInChargingListView_SelectionChanged" Margin="-9,60,5,-64" Background ="#5885AF" d:ItemsSource="{d:SampleData}" >
                 <ListView.View>
                     <GridView >
                         <GridViewColumn Header="Drone ID" Width="110" DisplayMemberBinding="{Binding uniqueID}"/>
-                        <GridViewColumn Header="battery Status" Width="110" DisplayMemberBinding="{Binding batteryStatus}" />
-                        <GridViewColumn Header="start Charge" Width="110" DisplayMemberBinding="{Binding startCharge}" />
+                        <GridViewColumn Header="battery Status" Width="170" DisplayMemberBinding="{Binding batteryStatus}" />
+                        <GridViewColumn Header="start Charge" Width="200" DisplayMemberBinding="{Binding startCharge}" />
                     </GridView>
 
                 </ListView.View>
@@ -59,14 +59,14 @@
 
             </ListView>
 
-            <Button x:Name="SearchIDButton" Content="s" HorizontalAlignment="Left" Margin="-4,62,0,0" VerticalAlignment="Top" Width="20" Click="SearchIDButton_Click" Height="20"/>
+            <Button x:Name="SearchIDButton" Content="s" Margin="-5,62,0,0" VerticalAlignment="Top" Click="SearchIDButton_Click" Height="20" HorizontalAlignment="Left" Width="16"/>
             <Button x:Name="SearchBattryButton" Content="s" Margin="103,62,0,0" VerticalAlignment="Top" Click="SearchBattryButton_Click" Height="20" HorizontalAlignment="Left" Width="19"/>
 
             <TextBox x:Name="FilterIDTextBox" HorizontalAlignment="Left" Margin="25,42,0,0" Text="Search" Visibility="Hidden" TextWrapping="Wrap" VerticalAlignment="Top" Width="51" TextChanged="AnyFilterTextBox_TextChanged" Height="18"/>
             <TextBox x:Name="FilterBatteryTextBox"  HorizontalAlignment="Left" Margin="119,44,0,0" Text="Search" Visibility="Hidden" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" TextChanged="AnyFilterTextBox_TextChanged" Height="18"/>
         </Grid>
-        <Border Name ="openOptions" Visibility="Hidden" BorderThickness="1" Grid.Row="1" Margin="196,41,372,44"
-             Background="#2e3137" CornerRadius="20" >
+        <Border Name ="openOptions" Visibility="Visible" BorderThickness="1" Margin="136,40,141,128"
+             Background="#2e3137" CornerRadius="20" Grid.Row="1" >
             <StackPanel Margin="20">
                 <Label Name="TitleOptions" Content="Open Bar" Foreground="White" FontSize="25" HorizontalAlignment="Center"/>
                 <Separator></Separator>
@@ -76,7 +76,7 @@
 
 
                 <Label></Label>
-                <Button Name="ViewDroneButton" Content="View Drone" FontWeight = "DemiBold" Background="#545d6a" Foreground="White" Height="34" Width="187" Click="ViewDroneButton_Click" >
+                <Button Name="RemoveFromCharging" Content="Remove From Charging" FontWeight = "DemiBold" Background="#545d6a" Foreground="White" Height="34" Width="174" Click="RemoveFromCharging_Click" >
                     <Button.Resources>
                         <Style TargetType="{x:Type Border}">
                             <Setter Property="CornerRadius" Value="8"/>
@@ -84,15 +84,8 @@
                     </Button.Resources>
                 </Button>
                 <Label></Label>
-                <Button Name="ViewParcelDeliveredButton" Content="View Package Delivered" FontWeight = "DemiBold" Background="#545d6a" Foreground="White" Height="34" Width="190" Click="ViewParcelDeliveredButton_Click" >
-                    <Button.Resources>
-                        <Style TargetType="{x:Type Border}">
-                            <Setter Property="CornerRadius" Value="8"/>
-                        </Style>
-                    </Button.Resources>
-                </Button>
-                <Label></Label>
-                <Button x:Name="CancelOpenBarButton" Content="Cancel" FontWeight = "DemiBold" Background="#545d6a" Foreground="White" Height="34" Width="187" Click="CancelOpenBarButton_Click" >
+               
+                <Button x:Name="CancelOpenBarButton" Content="Cancel" FontWeight = "DemiBold" Background="#545d6a" Foreground="White" Height="34" Width="174" Click="CancelOpenBarButton_Click" >
                     <Button.Resources>
                         <Style TargetType="{x:Type Border}">
                             <Setter Property="CornerRadius" Value="8"/>
