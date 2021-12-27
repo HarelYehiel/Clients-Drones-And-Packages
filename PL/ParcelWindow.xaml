@@ -13,7 +13,7 @@
                 <Label Name ="title" Content="New Parcel" Foreground="White" FontSize="25" HorizontalAlignment="Center"/>
                 <Separator></Separator>
                 <Label Name ="LabelID" Content="ID" Foreground="White"/>
-                <TextBox Name="txtId" ToolTipService.ToolTip="{Binding ErrorName}"  Background="#545d6a" Foreground="White" FontSize="18" TextChanged="txtId_TextChanged"/>
+                <TextBox Name="txtId" ToolTipService.ToolTip="{Binding ErrorName}"    Background="#545d6a" Foreground="White" FontSize="18" TextChanged="txtId_TextChanged"/>
                 <Label Content="Sender ID" Foreground="White"/>
                 <TextBox Name="txtSender" Background="#545d6a" Foreground="White" FontSize="18" TextChanged="txtSender_TextChanged">
                     <TextBox.Style>

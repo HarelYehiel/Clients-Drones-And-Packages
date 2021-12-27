@@ -4,6 +4,8 @@ using System.Windows;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.ComponentModel;
+
 
 namespace PL
 {
@@ -37,10 +39,6 @@ namespace PL
 
         }
 
-        private void AllFilters(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
@@ -48,8 +46,35 @@ namespace PL
         }
         private void ParcelListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            openOptions.Visibility = Visibility.Visible;
-            //ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels();
+            if (e.OriginalSource is GridViewColumnHeader)
+            {
+                GridViewColumn clickedColumn = (e.OriginalSource as GridViewColumnHeader).Column;
+                if (clickedColumn.Header.ToString() == "Sender")
+                {
+                    CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelListView.ItemsSource);
+                    view.SortDescriptions.Add(new SortDescription("Sender", ListSortDirection.Ascending));
+                }
+                if (clickedColumn.Header.ToString() == "Target")
+                {
+                    CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelListView.ItemsSource);
+                    view.SortDescriptions.Add(new SortDescription("Target", ListSortDirection.Ascending));
+                }
+
+            }
+            else
+            {
+                openOptions.Visibility = Visibility.Visible;
+                //ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels();
+            }
+        }
+        private void AddFilter(object sender, RoutedEventArgs e)
+        {
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelListView.ItemsSource);
+            view.Filter = UserFilter;
+            CollectionView temp = view;
+            filterCombo.SelectedIndex = -1;
+            txtFilter.Text = "";
+            ParcelListView.ItemsSource = temp;
         }
         private bool UserFilter(object item)
         {
@@ -131,6 +156,22 @@ namespace PL
             }
         }
 
+        private void TextBlock_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            GridViewColumn clickedColumn = (e.OriginalSource as GridViewColumnHeader).Column;
+            if (clickedColumn.Header.ToString() == "Sender")
+            {
+                CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelListView.ItemsSource);
+                view.SortDescriptions.Add(new SortDescription("Sender", ListSortDirection.Ascending));
+            }
+            if (clickedColumn.Header.ToString() == "Target")
+            {
+                CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelListView.ItemsSource);
+                view.SortDescriptions.Add(new SortDescription("Target", ListSortDirection.Ascending));
+            }
+        }
+
+      
     }
     
-}
+}   

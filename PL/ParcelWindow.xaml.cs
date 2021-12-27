@@ -211,7 +211,10 @@ namespace PL
 
         private void deleteParcel_Click(object sender, RoutedEventArgs e)
         {
-            bl.DelParcel(parcel.uniqueID);
+            if (parcel.parcelsituation != EnumBO.Situations.associated || parcel.parcelsituation != EnumBO.Situations.collected)
+                bl.DelParcel(parcel.uniqueID);
+            else
+                MessageBox.Show("This parcel is in delivering! you cant cancel now", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             this.Close();
         }
     }

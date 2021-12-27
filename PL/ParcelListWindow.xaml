@@ -8,7 +8,7 @@
         Title="ParclListWindow" Height="640" Width="800">
     <Window.Resources>
         <CollectionViewSource
-        x:Key="cvsViewers" Source="{Binding ParclList}">
+        x:Key="CVS" Source="{Binding ParclList}">
             <CollectionViewSource.GroupDescriptions>
                 <PropertyGroupDescription PropertyName="nameTarget" />
             </CollectionViewSource.GroupDescriptions>
@@ -39,10 +39,18 @@
             <ComboBox Name="filterCombo" IsEditable ="true" Text="Choose filter"  HorizontalAlignment="Left"
                       Margin="43,46,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="filterSelectionChanged" Initialized="filterCombo_Initialized" Height="20" Grid.ColumnSpan="2"/>
             <Button Content="Clear filter" FontWeight = "DemiBold" Grid.Column="1" HorizontalAlignment="Center" 
-                    VerticalAlignment="Top" Width="120" Click="ClearFilter" Background="#C3E0E5" BorderBrush = "White" Height="28" Margin="0,18,0,0">
+                    VerticalAlignment="Top" Width="120" Click="ClearFilter" Background="#C3E0E5" BorderBrush = "White" Height="23" Margin="0,36,0,0">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="12"/>
+                        <Setter Property="CornerRadius" Value="8"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button Content="Add filter" FontWeight = "DemiBold" Grid.Column="1" HorizontalAlignment="Center" 
+                    VerticalAlignment="Top" Width="120" Click="AddFilter" Background="#C3E0E5" BorderBrush = "White" Height="21" Margin="0,10,0,0">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="8"/>
                     </Style>
                 </Button.Resources>
             </Button>
@@ -55,23 +63,59 @@
             </Button>
             <Button Content="Close" Grid.Column="4"  Margin="159,1,4,48" Click="CloseWindow" />
         </Grid>
-        <ListView ItemsSource="{Binding Source={StaticResource cvsViewers}}"
-                x:Name="ParcelListView" SelectionChanged="ParcelListView_SelectionChanged" Grid.ColumnSpan="2" Margin="0,69,0,0" Grid.RowSpan="3" Background ="#5885AF" RenderTransformOrigin="0.851,0.073">
+        <ListView ItemsSource="{Binding Source={StaticResource CVS}}"
+                x:Name="ParcelListView" SelectionChanged="ParcelListView_SelectionChanged"  Grid.ColumnSpan="2" Margin="0,69,0,0" Grid.RowSpan="3" Background ="#5885AF" RenderTransformOrigin="0.851,0.073">
+            <ListView.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.ContainerStyle>
+                        <Style TargetType="{x:Type GroupItem}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <Expander IsExpanded="True">
+                                            <Expander.Header>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding Path=TargetHead}" />
+                                                </StackPanel>
+                                            </Expander.Header>
+                                            <ItemsPresenter />
+                                        </Expander>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </GroupStyle.ContainerStyle>
+                </GroupStyle>
+            </ListView.GroupStyle>
+            <ListView.View>
+                <GridView AllowsColumnReorder="True">
 
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Parcel ID" Width="100" DisplayMemberBinding="{Binding uniqueID}" />
-                        <GridViewColumn Header="Sender" Width="100" DisplayMemberBinding="{Binding namrSender}" />
-                        <GridViewColumn Header="Target" Width="100" DisplayMemberBinding="{Binding nameTarget}" />
-                        <GridViewColumn Header="Prioritiy" Width="100" DisplayMemberBinding="{Binding priority}" />
-                        <GridViewColumn Header="Weight" Width="100" DisplayMemberBinding="{Binding weight}" />
-                        <GridViewColumn Header="Situation" Width="100" DisplayMemberBinding="{Binding parcelsituation}" />
-                    </GridView>
+                    <GridViewColumn x:Name="ParcelID" Header="Parcel ID" Width="100" DisplayMemberBinding="{Binding uniqueID}" />
+                    <GridViewColumn x:Name="SenderHead" Header="Sender" Width="100" DisplayMemberBinding="{Binding namrSender}">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=namrSender}" MouseEnter="TextBlock_MouseEnter"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn x:Name="TargetHead" Header="Target" Width="100" DisplayMemberBinding="{Binding nameTarget}" >
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=nameTarget}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Prioritiy" Width="100" DisplayMemberBinding="{Binding priority}" />
+                    <GridViewColumn Header="Weight" Width="100" DisplayMemberBinding="{Binding weight}" />
+                    <GridViewColumn Header="Situation" Width="100" DisplayMemberBinding="{Binding parcelsituation}" />
 
 
-                </ListView.View>
+                </GridView>
 
-                <ListView.GroupStyle>
+
+            </ListView.View>
+
+            <!--<ListView.GroupStyle>
                     <GroupStyle>
                     <GroupStyle.ContainerStyle>
                         <Style TargetType="GroupItem">
@@ -81,7 +125,8 @@
                                         <Expander Header="{Binding Name}">
                                             <ItemsPresenter Margin="20,0,0,0" />
                                         </Expander>
-                                        <!--<Grid>
+                                        -->
+            <!--<Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition/>
                                                 <ColumnDefinition/>
@@ -90,6 +135,7 @@
                                             <TextBlock Text="{Binding Name}"/>
                                             <ItemsPresenter/>
                                         </Grid>-->
+            <!--
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>
@@ -103,65 +149,65 @@
                             </DataTemplate>
                         </GroupStyle.HeaderTemplate>
                     </GroupStyle>
-                </ListView.GroupStyle>
+                </ListView.GroupStyle>-->
 
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="{x:Type ListViewItem}">
-                        <Setter Property="Background" Value="#FFCDD7D9"/>
-                        <Setter Property="BorderBrush" Value="#274472" />
-                        <Setter Property="Foreground" Value="#274472" />
-                        <Setter Property="BorderThickness" Value="2" />
-                        <Setter Property="HorizontalContentAlignment" Value="Center" />
-                    </Style>
-                </ListView.ItemContainerStyle>
-            </ListView>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Setter Property="Background" Value="#FFCDD7D9"/>
+                    <Setter Property="BorderBrush" Value="#274472" />
+                    <Setter Property="Foreground" Value="#274472" />
+                    <Setter Property="BorderThickness" Value="2" />
+                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
 
 
-            <Border Name ="openOptions"  BorderThickness="1"  Grid.Column="1" Grid.Row="1" Margin="148,135,285,134"
+        <Border Name ="openOptions"  BorderThickness="1"  Grid.Column="1" Grid.Row="1" Margin="148,135,285,134"
              Background="#2e3137" CornerRadius="20" >
-                <StackPanel Margin="20">
-                    <Label Name="TitleOptions" Content="Open Bar" Foreground="White" FontSize="25" HorizontalAlignment="Center"/>
-                    <Separator></Separator>
-                    <Label></Label>
-                    <Button Name="OpenParcelView" Content="Open parcel" FontWeight = "DemiBold" Background="#545d6a" Foreground="White" Grid.Column="0"
+            <StackPanel Margin="20">
+                <Label Name="TitleOptions" Content="Open Bar" Foreground="White" FontSize="25" HorizontalAlignment="Center"/>
+                <Separator></Separator>
+                <Label></Label>
+                <Button Name="OpenParcelView" Content="Open parcel" FontWeight = "DemiBold" Background="#545d6a" Foreground="White" Grid.Column="0"
                         HorizontalAlignment="Center" Height="34" Width="206" Click="OpenParcelView_Click">
-                        <Button.Resources>
-                            <Style TargetType="Border">
-                                <Setter Property="CornerRadius" Value="8"/>
-                            </Style>
-                        </Button.Resources>
-                    </Button>
-                    <Label></Label>
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="8"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+                <Label></Label>
 
-                    <Button x:Name="OpenSenderView" Content="Open sender" FontWeight = "DemiBold" Background="#545d6a" Foreground="White" Height="34" Width="206" Click="OpenSenderView_Click">
-                        <Button.Resources>
-                            <Style TargetType="{x:Type Border}">
-                                <Setter Property="CornerRadius" Value="8"/>
-                            </Style>
-                        </Button.Resources>
-                    </Button>
-                    <Label></Label>
-                    <Button Name="OpenTargetView" Content="Open target" FontWeight = "DemiBold" Background="#545d6a" Foreground="White" Height="34" Width="206" Click="OpenTargetView_Click">
-                        <Button.Resources>
-                            <Style TargetType="{x:Type Border}">
-                                <Setter Property="CornerRadius" Value="8"/>
-                            </Style>
-                        </Button.Resources>
-                    </Button>
-                    <Label></Label>
+                <Button x:Name="OpenSenderView" Content="Open sender" FontWeight = "DemiBold" Background="#545d6a" Foreground="White" Height="34" Width="206" Click="OpenSenderView_Click">
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="8"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+                <Label></Label>
+                <Button Name="OpenTargetView" Content="Open target" FontWeight = "DemiBold" Background="#545d6a" Foreground="White" Height="34" Width="206" Click="OpenTargetView_Click">
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="8"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+                <Label></Label>
 
-                    <Button Name="OpenDroneView" Content="Open drone" FontWeight = "DemiBold" Background="#545d6a" Foreground="White" Height="34" Width="206" Click="OpenDroneView_Click">
-                        <Button.Resources>
-                            <Style TargetType="{x:Type Border}">
-                                <Setter Property="CornerRadius" Value="8"/>
-                            </Style>
-                        </Button.Resources>
-                    </Button>
+                <Button Name="OpenDroneView" Content="Open drone" FontWeight = "DemiBold" Background="#545d6a" Foreground="White" Height="34" Width="206" Click="OpenDroneView_Click">
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="8"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
 
-                </StackPanel>
-            </Border>
+            </StackPanel>
+        </Border>
 
 
-        </Grid>
+    </Grid>
 
 </Window>
