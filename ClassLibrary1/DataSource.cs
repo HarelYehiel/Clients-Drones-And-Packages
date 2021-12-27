@@ -1,9 +1,6 @@
-﻿using System;
+﻿using DO;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DO;
 
 namespace DalApi
 {
@@ -47,12 +44,12 @@ namespace DalApi
                     drones.Add(drone);
                     
                 }
-                for (int i = 0; i < 2; i++)//create 5 staitons with random data
+                for (int i = 0; i < 15; i++)//create 15 staitons with random data
                 {
                     Station station = new Station();
                     var rand = new Random();
                     station.id = rand.Next(10000, 99999);
-                    station.name = "sta" + rand.Next(1, 99);
+                    station.name = "sta" + rand.Next(1, 10);
                     Point p = new Point();
                     p.latitude = 31 + rand.NextDouble();
                     p.longitude = 34 + rand.NextDouble();
@@ -60,7 +57,7 @@ namespace DalApi
                     station.ChargeSlots = rand.Next(5, 10);
                     stations.Add(station);
                 }
-                for (int i = 0; i < 2; i++)//create new 10 random coustomers
+                for (int i = 0; i < 10; i++)//create new 10 random coustomers
                 {
                     Customer customer = new Customer();
                     var rand = new Random();
@@ -73,7 +70,7 @@ namespace DalApi
                     customer.location = p;
                     customers.Add(customer);
                 }
-                for (int i = 0; i < 2; i++)//create new 10 parcels with random data
+                for (int i = 0; i < 30; i++)//create new 30 parcels with random data
                 {
                     Parcel parcel = new Parcel();
                     var rand = new Random();

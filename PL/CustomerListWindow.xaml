@@ -29,7 +29,7 @@
             </Button>
             <Button Content="Close"  Margin="819,0,0,23" Click="CloseWindow" HorizontalAlignment="Left" Width="55" Height="18" VerticalAlignment="Bottom" />
         </Grid>
-        <ListView x:Name="CustomersListView" SelectionChanged="CustomersListView_SelectionChanged" Margin="0,45,3,61" Background ="#5885AF" Grid.RowSpan="2">
+        <ListView x:Name="CustomersListView" SelectionChanged="CustomersListView_SelectionChanged" Margin="0,45,3,61" Background ="#5885AF" Grid.RowSpan="2" d:ItemsSource="{d:SampleData}" FontWeight="Bold" SelectionMode="Extended">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="ID" Width="100"  DisplayMemberBinding="{Binding uniqueID}"/>
@@ -65,7 +65,7 @@
         <TextBox x:Name="FilterSANDTextBox"  HorizontalAlignment="Left" Margin="481,48,0,0" Text="Search" Visibility="Hidden" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" TextChanged="AnyFilterTextBox_TextChanged" Height="18" Grid.RowSpan="2"/>
         <TextBox x:Name="FilterReceiveTextBox"  HorizontalAlignment="Left" Margin="649,47,0,0" Text="Search" Visibility="Hidden" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" TextChanged="AnyFilterTextBox_TextChanged" Height="18" Grid.RowSpan="2"/>
         <TextBox x:Name="FilterOTWTextBox"  HorizontalAlignment="Left" Margin="775,49,0,0" Text="Search" Visibility="Hidden" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" TextChanged="AnyFilterTextBox_TextChanged" Height="18" Grid.RowSpan="2"/>
-        <Border Name ="openOptions"  BorderThickness="1" Grid.Row="1" Margin="283,24,285,61"
+        <Border Name ="openOptions"  BorderThickness="1" Grid.Row="1" Margin="283,24,285,61" Visibility="Hidden"
              Background="#2e3137" CornerRadius="20" >
             <StackPanel Margin="20">
                 <Label Name="TitleOptions" Content="Open Bar" Foreground="White" FontSize="25" HorizontalAlignment="Center"/>
