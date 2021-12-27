@@ -19,22 +19,24 @@
                 <ColumnDefinition Width="200"/>
                 <ColumnDefinition Width="200"/>
                 <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="38*"/>
+                <ColumnDefinition Width="127*"/>
             </Grid.ColumnDefinitions >
-            <Button Content="Clear filter" FontWeight = "DemiBold" Grid.Column="2" HorizontalAlignment="Center" Margin="0,43,0,12" Width="120" Click="ClearFilter" Background="#C3E0E5" BorderBrush = "White">
+            <Button Content="Clear filter" FontWeight = "DemiBold" HorizontalAlignment="Left" Margin="29,13,0,42" Width="120" Click="ClearFilter" Background="#C3E0E5" BorderBrush = "White">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="8"/>
                     </Style>
                 </Button.Resources>
             </Button>
-            <Button Content="Add new Drone" FontWeight = "DemiBold"  Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Click="AddingNewDrone" Margin="28,33,0,0" Background="#C3E0E5" BorderBrush = "White" Height="27" Width="124" >
+            <Button Content="Add new Drone" FontWeight = "DemiBold" HorizontalAlignment="Left" VerticalAlignment="Top" Click="AddingNewDrone" Margin="18,4,0,0" Background="#C3E0E5" BorderBrush = "White" Height="27" Width="124" Grid.Column="2" >
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="12"/>
                     </Style>
                 </Button.Resources>
             </Button>
-            <Button Content="Close" Grid.Column="3" Margin="293,10,-147,39" Click="CloseWindow" />
+            <Button Content="Close" Grid.Column="4" Margin="17,10,183,39" Click="CloseWindow" />
             <Button Content="Refresh" FontWeight = "DemiBold" HorizontalAlignment="Left" Margin="30,43,0,0" VerticalAlignment="Top" Width="120" Background="#C3E0E5" BorderBrush = "White" Click="Refresh_Click">
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
@@ -42,10 +44,12 @@
                     </Style>
                 </Button.Resources>
             </Button>
+            <ComboBox Name="GroupByComboBox" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Width="120" Margin="0,37,0,0" Initialized="ComboBox_Initialized" SelectionChanged="ComboBox_SelectionChanged"/>
+            <Label Content="Group By:" Background="BlanchedAlmond" Grid.Column="1" HorizontalAlignment="Center" Margin="0,1,0,0" VerticalAlignment="Top"/>
         </Grid>
         <Grid Margin="10,40,-6,44" Grid.RowSpan="2">
 
-            <ListView x:Name="DronesListView" SelectionChanged="DronesListView_SelectionChanged" Margin="-9,60,5,-33" Background ="#5885AF" d:ItemsSource="{d:SampleData}" Grid.ColumnSpan="5" >
+            <ListView x:Name="DronesListView" SelectionChanged="DronesListView_SelectionChanged" Margin="-9,60,5,-33" Background ="#5885AF" d:ItemsSource="{d:SampleData}" Grid.ColumnSpan="5" FontWeight="Bold" BorderBrush="#FF868C97" Foreground="White" FontFamily="Segoe UI" FontStyle="Normal" >
                 <ListView.View>
                     <GridView >
                         <GridViewColumn Header="Drone ID" Width="100" DisplayMemberBinding="{Binding uniqueID}"/>
@@ -70,7 +74,7 @@
 
             </ListView>
 
-             <Button x:Name="SearchIDButton" Content="s" HorizontalAlignment="Left" Margin="-4,62,0,0" VerticalAlignment="Top" Width="20" Click="SearchIDButton_Click" Height="20"/>
+            <Button x:Name="SearchIDButton" Content="s" HorizontalAlignment="Left" Margin="-4,62,0,0" VerticalAlignment="Top" Width="20" Click="SearchIDButton_Click" Height="20"/>
             <Button x:Name="SearchModelButton" Content="s" HorizontalAlignment="Left" Margin="99,62,0,0" VerticalAlignment="Top" Width="20" Click="SearchModelButton_Click" Height="20"/>
             <Button x:Name="SearchBattryButton" Content="s" Margin="393,62,0,0" VerticalAlignment="Top" Click="SearchBattryButton_Click" Height="20" HorizontalAlignment="Left" Width="19"/>
             <Button x:Name="SearchLocationButton" Content="s" HorizontalAlignment="Left" Margin="505,62,0,0" VerticalAlignment="Top" Width="20" Click="SearchLocationButton_Click" Height="20" />

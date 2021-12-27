@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
+using System.Linq;
 
 namespace PL
 {
@@ -396,6 +397,74 @@ namespace PL
                 SearchWeightButton.Visibility = Visibility.Visible;
             }
 
+        }
+
+        private void ComboBox_Initialized(object sender, EventArgs e)
+        {
+            List<string> l = new List<string>() {
+                "Choose",
+                "Model",
+                "Weight",
+                "Status"
+            };
+            GroupByComboBox.ItemsSource = l;
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            List<DroneToList> l;
+
+            switch (GroupByComboBox.SelectedIndex)
+            {
+
+                case 1:
+
+                    IEnumerable<IGrouping<string, DroneToList>> tsModel = from item in bl.GetTheListOfDrones()
+                                                                          group item by item.Model into gs
+                                                                          select gs;
+
+                    l = new List<DroneToList>();
+                    foreach (var group1 in tsModel)
+                    {
+                        foreach (DroneToList item in group1)
+                        {
+                            l.Add(item);
+                        }
+                    }
+                    DronesListView.ItemsSource = l;
+                    break;
+
+                case 2:
+                    IEnumerable<IGrouping<EnumBO.WeightCategories, DroneToList>> tsweight = from item in bl.GetTheListOfDrones()
+                                                                                            group item by item.weight into gs
+                                                                                            select gs;
+
+                   l = new List<DroneToList>();
+                    foreach (var group1 in tsweight)
+                    {
+                        foreach (DroneToList item in group1)
+                        {
+                            l.Add(item);
+                        }
+                    }
+                    DronesListView.ItemsSource = l;
+                    break;
+                case 3:
+                    IEnumerable<IGrouping<EnumBO.DroneStatus, DroneToList>> tsStatus = from item in bl.GetTheListOfDrones()
+                                                                                       group item by item.status into gs
+                                                                                       select gs;
+                    l = new List<DroneToList>();
+                    foreach (var group1 in tsStatus)
+                    {
+                        foreach (DroneToList item in group1)
+                        {
+                            l.Add(item);
+                        }
+                    }
+                    DronesListView.ItemsSource = l;
+                    break;
+
+            }
         }
     }
 }

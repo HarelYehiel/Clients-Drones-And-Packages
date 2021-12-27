@@ -1,7 +1,8 @@
-﻿using System;
+﻿using BO;
+using System;
 using System.Collections.Generic;
-using System.Windows;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.ComponentModel;
@@ -155,23 +156,111 @@ namespace PL
                 MessageBox.Show("this parcel not assign yet to drone", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
-        private void TextBlock_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        private void ComboBox_Initialized(object sender, EventArgs e)
         {
-            GridViewColumn clickedColumn = (e.OriginalSource as GridViewColumnHeader).Column;
-            if (clickedColumn.Header.ToString() == "Sender")
+            List<string> l = new List<string>() {
+               "Choose",
+                "Sender",
+                "Target",
+                "Prioritiy",
+                "Weight",
+                "Situation"
+            };
+            GroupByComboBox.ItemsSource = l;
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            List<ParcelToList> l;
+
+            switch (GroupByComboBox.SelectedIndex)
             {
-                CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelListView.ItemsSource);
-                view.SortDescriptions.Add(new SortDescription("Sender", ListSortDirection.Ascending));
-            }
-            if (clickedColumn.Header.ToString() == "Target")
-            {
-                CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelListView.ItemsSource);
-                view.SortDescriptions.Add(new SortDescription("Target", ListSortDirection.Ascending));
+
+                case 1://Sender
+
+                    IEnumerable<IGrouping<string, ParcelToList>> tsSender = from item in bl.DisplaysTheListOfParcels()
+                                                                              group item by item.namrSender into gs
+                                                                              select gs;
+
+                    l = new List<ParcelToList>();
+                    foreach (var group1 in tsSender)
+                    {
+                        foreach (ParcelToList item in group1)
+                        {
+                            l.Add(item);
+                        }
+                    }
+                    ParcelListView.ItemsSource = l;
+                    break;
+
+                case 2: // Target
+                    IEnumerable<IGrouping<string, ParcelToList>> tsTarget = from item in bl.DisplaysTheListOfParcels()
+                                                                                group item by item.nameTarget into gs
+                                                                                        select gs;
+
+                    l = new List<ParcelToList>();
+                    foreach (var group1 in tsTarget)
+                    {
+                        foreach (ParcelToList item in group1)
+                        {
+                            l.Add(item);
+                        }
+                    }
+                    ParcelListView.ItemsSource = l;
+                    break;
+
+                case 3: //Prioritiy
+                    IEnumerable<IGrouping<EnumBO.Priorities, ParcelToList>> tsPrioritiy = from item in bl.DisplaysTheListOfParcels()
+                                                                                          group item by item.priority into gs
+                                                                                          select gs;
+                    l = new List<ParcelToList>();
+                    foreach (var group1 in tsPrioritiy)
+                    {
+                        foreach (ParcelToList item in group1)
+                        {
+                            l.Add(item);
+                        }
+                    }
+                    ParcelListView.ItemsSource = l;
+                    break;
+                    
+                    case 4: // Weight
+                    IEnumerable<IGrouping<EnumBO.WeightCategories, ParcelToList>> tsWeight = from item in bl.DisplaysTheListOfParcels()
+                                                                                          group item by item.weight into gs
+                                                                                          select gs;
+                    l = new List<ParcelToList>();
+                    foreach (var group1 in tsWeight)
+                    {
+                        foreach (ParcelToList item in group1)
+                        {
+                            l.Add(item);
+                        }
+                    }
+                    ParcelListView.ItemsSource = l;
+                    break;
+
+                    case 5: //Situation
+                    IEnumerable<IGrouping<EnumBO.Situations, ParcelToList>> tsSituation = from item in bl.DisplaysTheListOfParcels()
+                                                                                          group item by item.parcelsituation into gs
+                                                                                          select gs;
+                    l = new List<ParcelToList>();
+                    foreach (var group1 in tsSituation)
+                    {
+                        foreach (ParcelToList item in group1)
+                        {
+                            l.Add(item);
+                        }
+                    }
+                    ParcelListView.ItemsSource = l;
+                    break;
+
             }
         }
 
-      
+        private void GridViewColumn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
     
 }   

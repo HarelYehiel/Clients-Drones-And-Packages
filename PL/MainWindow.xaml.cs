@@ -23,7 +23,7 @@ namespace PL
             List <DroneToList> droneToList = new List<DroneToList>();
             droneToList = bl.GetTheListOfDrones().ToList();
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 30; i++)
            {
                 try
                 {

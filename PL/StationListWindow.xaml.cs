@@ -5,6 +5,8 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
+using System.Linq;
+
 namespace PL
 {
     /// <summary>
@@ -215,6 +217,73 @@ namespace PL
 
             EnableFiltersWithConditions();
 
+        }
+        private void ComboBox_Initialized(object sender, EventArgs e)
+        {
+            List<string> l = new List<string>() {
+                "Choose",
+                "Name",
+                "Available Charging",
+                "Unavailable Charging"
+            };
+            GroupByComboBox.ItemsSource = l;
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            List<StationToTheList> l;
+
+            switch (GroupByComboBox.SelectedIndex)
+            {
+
+                case 1:
+
+                    IEnumerable<IGrouping<string, StationToTheList>> tsName = from item in bl.GetListOfBaseStations()
+                                                                          group item by item.name into gs
+                                                                          select gs;
+
+                    l = new List<StationToTheList>();
+                    foreach (var group1 in tsName)
+                    {
+                        foreach (StationToTheList item in group1)
+                        {
+                            l.Add(item);
+                        }
+                    }
+                    StationListView.ItemsSource = l;
+                    break;
+
+                case 2:
+                    IEnumerable<IGrouping<int, StationToTheList>> tsAvailableCharging = from item in bl.GetListOfBaseStations()
+                                                                                            group item by item.availableChargingStations into gs
+                                                                                            select gs;
+
+                    l = new List<StationToTheList>();
+                    foreach (var group1 in tsAvailableCharging)
+                    {
+                        foreach (StationToTheList item in group1)
+                        {
+                            l.Add(item);
+                        }
+                    }
+                    StationListView.ItemsSource = l;
+                    break;
+                case 3:
+                    IEnumerable<IGrouping<int, StationToTheList>> tsUnavailableCharging = from item in bl.GetListOfBaseStations()
+                                                                                       group item by item.unAvailableChargingStations into gs
+                                                                                       select gs;
+                    l = new List<StationToTheList>();
+                    foreach (var group1 in tsUnavailableCharging)
+                    {
+                        foreach (StationToTheList item in group1)
+                        {
+                            l.Add(item);
+                        }
+                    }
+                    StationListView.ItemsSource = l;
+                    break;
+
+            }
         }
     }
 }
