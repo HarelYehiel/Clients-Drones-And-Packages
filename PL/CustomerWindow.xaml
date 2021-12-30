@@ -92,6 +92,26 @@
                 </TransformGroup>
             </Grid.RenderTransform>
             <TextBlock x:Name="InfoTextBlock" HorizontalAlignment="Left" Margin="106,91,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="14" Foreground="#FFFF000F" />
+            <Border Name="UpdateBorder" Visibility="Hidden" Background="#2e3137" CornerRadius="20" Margin="29,3,3,12" RenderTransformOrigin="0.5,0.5">
+                <StackPanel Margin="15">
+                    <Button Name="openNewParcel" Content="new parcel" Width="94" FontWeight="Bold" Foreground="Black" Margin="0,13,0,0" Click="newParcelByCustomer" Height="25">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="8"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
+                    
+                    <Button Name="openListOfParcels" Content="My shipment" Width="94" FontWeight="Bold" Foreground="Black" Margin="0,13,0,0" Click="AllparcelsOfThisCust" Height="25">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="8"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
+
+                </StackPanel>
+            </Border>
         </Grid>
         <ListView x:Name="ParcelsListView"  Grid.Row="1" Visibility="Hidden" Background="#5885AF" Margin="322,5,187,20" >
             <ListView.View>

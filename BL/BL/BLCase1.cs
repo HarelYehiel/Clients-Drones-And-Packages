@@ -10,7 +10,6 @@ namespace BlApi
     public partial class BL : IBL
     {
         //public delegate BO.DroneToList Converter<in IDAL.DO.Drone, out BO.DroneToList>(IDAL.DO.Drone input);
-    
         public void AddingBaseStation(int ID,string name,double Latitude,double Longitude, int numSlots)
         {
           /*  BO.station station = new BO.station();
@@ -30,7 +29,8 @@ namespace BlApi
             station1.ChargeSlots = numSlots;
 
             accessIdal.InputTheStationToArray(station1);
-        }
+        } 
+
         public void AddingDrone(int ID,string model,int maxWeight,int staId)
         {
             Station sta = new Station();

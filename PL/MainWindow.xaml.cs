@@ -62,6 +62,7 @@ namespace PL
         {
             if (TitleBox.Content is "Manager - Login")
             {
+
                 if ((txtUsername.Text == "Yoni" || txtUsername.Text == "Harel") && txtPassword.Password == "123456")
                 {
                     Login.Visibility = Visibility.Hidden;
@@ -71,7 +72,10 @@ namespace PL
                     StationListButton.Visibility = Visibility.Visible;
                     txtPassword.Password = "";
                     txtUsername.Text = "";
-
+                }
+                else
+                {
+                    ErrorInput.Visibility = Visibility.Visible;
                 }
             }
             if (TitleBox.Content is "Login")
@@ -111,6 +115,8 @@ namespace PL
         }
         private void situationLogin_Click(object sender, RoutedEventArgs e)
         {
+            ErrorInput.Visibility = Visibility.Hidden;
+
             if (TitleBox.Content is "Manager - Login")
             {
                 // swope to Login of register custoner

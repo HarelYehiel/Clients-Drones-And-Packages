@@ -211,7 +211,7 @@ namespace DalApi
             public IEnumerable<Drone> GetListOfDrones()
             //print all the Drone from DataSource.drones
             {
-                if (DataSource.parcels.Count == 0)
+                if (DataSource.drones.Count == 0)
                     throw new myExceptionDO("Exception from function Displays_list_of_drone", myExceptionDO.Dont_have_any_drone_in_the_list);
 
                 List<Drone> drones = new List<Drone>();

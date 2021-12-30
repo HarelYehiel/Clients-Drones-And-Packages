@@ -13,7 +13,7 @@ namespace ConsoleUI
             static void Main(string[] args)
 
             {
-                IDal temp = DalApi.DalFactory.GetDal("s");
+                IDal temp = DalApi.DalFactory.GetDal("DalObject");
                 Console.WriteLine("Choose one of the following:");
                 int ch, ch1, ch2, ch3, ch4;
                 do

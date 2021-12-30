@@ -5,13 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.2.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\ClassLibrary1\DalFacade.csproj" />
     <ProjectReference Include="..\DalObject\DalObject.csproj" />
-    <ProjectReference Include="..\DalXML\DalXML.csproj" />
   </ItemGroup>
 
 </Project>

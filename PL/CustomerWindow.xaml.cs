@@ -214,10 +214,34 @@ namespace PL
             {
                 int ID = Convert.ToInt32(txtId.Text);
                 bl.UpdateCustomerData( ID, txtName.Text, txtPhone.Text);
-                Close();
+                UpdateBorder.Visibility = Visibility.Visible;
             }
 
 
+        }
+
+        private void newParcelByCustomer(object sender, RoutedEventArgs e)
+        {
+            ParcelWindow parcelWindow = new ParcelWindow(bl);
+            parcelWindow.txtSender.Text = txtId.Text;
+            parcelWindow.txtSender.IsEnabled = false;
+            parcelWindow.Show();
+            UpdateBorder.Visibility = Visibility.Hidden;
+
+
+        }
+
+        private void AllparcelsOfThisCust(object sender, RoutedEventArgs e)
+        {
+            ParclListWindow parclListWindow = new ParclListWindow(bl);
+            parclListWindow.txtFilter.Text = txtName.Text;
+            parclListWindow.txtFilter.IsEnabled = false;
+            parclListWindow.filterCombo.SelectedIndex = 1;
+            parclListWindow.filterCombo.IsEnabled = false;
+            parclListWindow.OpenTargetView.IsEnabled = false;
+            parclListWindow.OpenDroneView.IsEnabled = false;            
+            parclListWindow.Show();
+            UpdateBorder.Visibility = Visibility.Hidden;
         }
     }
 }

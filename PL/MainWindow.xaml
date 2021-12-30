@@ -29,6 +29,7 @@
                     <TextBox Name="txtUsername" Background="#545d6a" Foreground="White" FontSize="18"/>
                     <Label Name ="password" Content="Password" Foreground="White"/>
                     <PasswordBox Name="txtPassword" Background="#545d6a" Foreground="White" FontSize="18"/>
+                    <TextBlock Name="ErrorInput" Text="wrong input, try again!" Foreground="Red" HorizontalAlignment="Center" Visibility="Hidden"/>
                     <Button Name="enter" Content="Enter" Click="enter_Click" Margin="60 10" Background="#545d6a" Foreground="White" FontSize="18"/>
                     <Button x:Name="changeHierarchy" Content="Not manager?" Click="situationLogin_Click" Background="#545d6a" Foreground="White" FontSize="18" Width="208"/>
                 </StackPanel>
