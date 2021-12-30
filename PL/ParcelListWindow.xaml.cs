@@ -261,6 +261,11 @@ namespace PL
         {
 
         }
+        private void CancelOpenBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            ParcelListView.SelectedItem = null;
+            openOptions.Visibility = Visibility.Hidden;
+        }
     }
     
 }   

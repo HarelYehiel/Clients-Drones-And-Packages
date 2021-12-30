@@ -15,10 +15,10 @@ namespace DalApi
             internal static List<Customer> customers = new List<Customer>();
             internal static List<Parcel> parcels = new List<Parcel>();
             //public interface IEnumerable { IEnumerator<DataSource> GetEnumerator(); }
-            static  DalObject dalO{ get; set; }
+            static DalObject dalO { get; set; }
             internal struct Config
             {
-                
+
                 public static double vacant { get; set; }
                 public static double lightWeight { get; set; }
                 public static double mediumWeight { get; set; }
@@ -42,7 +42,7 @@ namespace DalApi
                     drone.MaxWeight = (DO.Enum.WeightCategories)rand.Next(0, 2);
                     drone.droneStatus = DO.Enum.DroneStatus.Avilble;
                     drones.Add(drone);
-                    
+
                 }
                 for (int i = 0; i < 15; i++)//create 15 staitons with random data
                 {
@@ -85,13 +85,15 @@ namespace DalApi
 
                     } while (true);
 
+
                     parcel.weight = (DO.Enum.WeightCategories)rand.Next(0, 2);
                     parcel.priority = (DO.Enum.Priorities)rand.Next(0, 2);
-                    DateTime start = new DateTime(2021, rand.Next(1, 12), rand.Next(1, 31));//crate random time and colculate all the next properties
+
+                    DateTime start = new DateTime(2021, rand.Next(1, 12), rand.Next(1, 30));//crate random time and colculate all the next properties
                     parcel.Requested = start.AddMinutes(rand.Next(1, 240));
                     parcels.Add(parcel);
+
                 }
-                return;
             }
 
         }
