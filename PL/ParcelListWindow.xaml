@@ -125,9 +125,9 @@
             </ListView.ItemContainerStyle>
         </ListView>
 
-        <Border Name ="openOptions"  BorderThickness="1" Visibility="Hidden" Grid.Column="1" Grid.Row="1" Margin="148,135,285,134"
+        <Border Name ="openOptions"  BorderThickness="1" Visibility="Hidden" Grid.Column="1" Grid.Row="1" Margin="148,135,285,99"
              Background="#2e3137" CornerRadius="20" >
-            <StackPanel Margin="20">
+            <StackPanel Margin="20,20,20,12">
                 <Label Name="TitleOptions" Content="Open Bar" Foreground="White" FontSize="25" HorizontalAlignment="Center"/>
                 <Separator></Separator>
                 <Label></Label>
@@ -159,6 +159,15 @@
                 <Label></Label>
 
                 <Button Name="OpenDroneView" Content="Open drone" FontWeight = "DemiBold" Background="#545d6a" Foreground="White" Height="34" Width="206" Click="OpenDroneView_Click">
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="8"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+                <Label></Label>
+
+                <Button x:Name="CancelOpenBarButton" Content="Cancel" FontWeight = "DemiBold" Background="#545d6a" Foreground="White" Height="34" Width="206" Click="CancelOpenBarButton_Click" >
                     <Button.Resources>
                         <Style TargetType="{x:Type Border}">
                             <Setter Property="CornerRadius" Value="8"/>

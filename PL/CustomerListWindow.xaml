@@ -65,9 +65,9 @@
         <TextBox x:Name="FilterSANDTextBox"  HorizontalAlignment="Left" Margin="481,48,0,0" Text="Search" Visibility="Hidden" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" TextChanged="AnyFilterTextBox_TextChanged" Height="18" Grid.RowSpan="2"/>
         <TextBox x:Name="FilterReceiveTextBox"  HorizontalAlignment="Left" Margin="649,47,0,0" Text="Search" Visibility="Hidden" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" TextChanged="AnyFilterTextBox_TextChanged" Height="18" Grid.RowSpan="2"/>
         <TextBox x:Name="FilterOTWTextBox"  HorizontalAlignment="Left" Margin="775,49,0,0" Text="Search" Visibility="Hidden" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" TextChanged="AnyFilterTextBox_TextChanged" Height="18" Grid.RowSpan="2"/>
-        <Border Name ="openOptions"  BorderThickness="1" Grid.Row="1" Margin="283,24,285,61" Visibility="Hidden"
+        <Border Name ="openOptions"  BorderThickness="1" Grid.Row="1" Margin="283,24,285,61" Visibility="Visible"
              Background="#2e3137" CornerRadius="20" >
-            <StackPanel Margin="20">
+            <StackPanel Margin="20,20,20,9">
                 <Label Name="TitleOptions" Content="Open Bar" Foreground="White" FontSize="25" HorizontalAlignment="Center"/>
                 <Separator></Separator>
                 <Label></Label>
@@ -105,6 +105,13 @@
                     </Button.Resources>
                 </Button>
                 <Label></Label>
+                <Button x:Name="CancelOpenBarButton" Content="Cancel" FontWeight = "DemiBold" Background="#545d6a" Foreground="White" Height="34" Width="206" Click="CancelOpenBarButton_Click" >
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="8"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
 
 
 

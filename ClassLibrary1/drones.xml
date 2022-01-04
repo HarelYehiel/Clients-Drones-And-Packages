@@ -25,6 +25,18 @@
     <droneStatus>Avilble</droneStatus>
   </Drone>
   <Drone>
+    <Id>33186</Id>
+    <Model>dro3</Model>
+    <MaxWeight>Light</MaxWeight>
+    <droneStatus>Avilble</droneStatus>
+  </Drone>
+  <Drone>
+    <Id>56625</Id>
+    <Model>dro8</Model>
+    <MaxWeight>Medium</MaxWeight>
+    <droneStatus>Avilble</droneStatus>
+  </Drone>
+  <Drone>
     <Id>18269</Id>
     <Model>dro6</Model>
     <MaxWeight>Light</MaxWeight>
@@ -87,6 +99,18 @@
   <Drone>
     <Id>15234</Id>
     <Model>dro6</Model>
+    <MaxWeight>Medium</MaxWeight>
+    <droneStatus>Avilble</droneStatus>
+  </Drone>
+  <Drone>
+    <Id>22561</Id>
+    <Model>dro7</Model>
+    <MaxWeight>Light</MaxWeight>
+    <droneStatus>Avilble</droneStatus>
+  </Drone>
+  <Drone>
+    <Id>68326</Id>
+    <Model>dro7</Model>
     <MaxWeight>Light</MaxWeight>
     <droneStatus>Avilble</droneStatus>
   </Drone>

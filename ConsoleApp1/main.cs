@@ -10,6 +10,32 @@ namespace ConsoleUI
     {
         class Program
         {
+            public static int giveNumber()
+            {
+                string s;
+                do
+                {
+                    s = Console.ReadLine();
+                    if (isNumber(s))
+                        return Convert.ToInt32(s);
+                    Console.WriteLine("Only numbers should be type to\nGive number\n");
+                } while (true);
+            }
+
+            static bool isNumber(string s)
+            {
+                if (s.Length == 0) return false;
+                for (int i = 0; i < s.Length; i++)
+                {
+                    if ((int)s[i] >= (int)'0' && (int)s[i] <= (int)'9')
+                        continue;
+
+                    return false;
+                }
+
+                return true;
+            }
+
             static void Main(string[] args)
 
             {
@@ -24,7 +50,7 @@ namespace ConsoleUI
                     Console.WriteLine("press 4 to see lists of  objects:");
                     Console.WriteLine("press 5 to more function:");//the bonus part
                     Console.WriteLine("press 6 to exit");
-                    ch = Convert.ToInt32(Console.ReadLine());
+                    ch = giveNumber();
                     switch (ch)
                     {
                         case 1:
@@ -36,7 +62,7 @@ namespace ConsoleUI
                             Console.WriteLine("press 4 to add a new parcel");
                             do
                             {
-                                ch1 = Convert.ToInt32(Console.ReadLine());
+                                ch1 = giveNumber();
                                 functionCase1 temp1 = new functionCase1();
                                 switch (ch1)
                                 {
@@ -70,39 +96,39 @@ namespace ConsoleUI
                                 Console.WriteLine("press 3 to update arrival time");
                                 Console.WriteLine("press 4 to send drone from charge in station ");
                                 Console.WriteLine("press 5 to send drone to charge at station");
-                                ch2 = Convert.ToInt32(Console.ReadLine());
+                                ch2 = giveNumber();
                                 try
                                 {
                                     switch (ch2)
                                     {
                                         case 1://update witch drone is pickUp this parcel
                                             Console.WriteLine("enter parcel ID:");
-                                            int parcelID = Convert.ToInt32(Console.ReadLine());
+                                            int parcelID = giveNumber();
                                             Console.WriteLine("witch drone do you want to take the parcel?(ID)");
-                                            int droneID = Convert.ToInt32(Console.ReadLine());
+                                            int droneID = giveNumber();
                                             temp.AffiliationDroneToParcel(parcelID,droneID);
                                             break;
                                         case 2:
                                             Console.WriteLine("which parcel is picked up?\n enter parcel ID:");
-                                            int PickId = Convert.ToInt32(Console.ReadLine());
+                                            int PickId = giveNumber();
                                             temp.PickUp(PickId);
                                             break;
                                         case 3://update at the Parcel odbject delivered time
                                             Console.WriteLine("which parcel is delivered?\n enter parcel ID:");
-                                            int deliId = Convert.ToInt32(Console.ReadLine());
+                                            int deliId = giveNumber();
                                             temp.Delivered(deliId);
                                             break;
                                         case 4:
                                             Console.WriteLine("enter drone ID:");
-                                            int droneId = Convert.ToInt32(Console.ReadLine());
+                                            int droneId = giveNumber();
                                             temp.SetFreeStation(droneId);
                                             break;
                                         case 5:
                                             Console.WriteLine("enter drone ID:");
-                                            int drId = Convert.ToInt32(Console.ReadLine());
+                                            int drId = giveNumber();
                                             Console.WriteLine("witch station do you want?\nchoose ID from the list of available charging stations:");
                                            // List<IDAL.DO.Station> newList = temp.AvailableChargingStations();//print all the available charging stations
-                                            int statId = Convert.ToInt32(Console.ReadLine());
+                                            int statId = giveNumber();
 
                                             //foreach (IDAL.DO.Station station1 in newList)
                                             //{
@@ -127,9 +153,9 @@ namespace ConsoleUI
                             Console.WriteLine("press 2 to drone View");
                             Console.WriteLine("press 3 to Customer View");
                             Console.WriteLine("press 4 to parcel View ");
-                            ch3 = Convert.ToInt32(Console.ReadLine());
+                            ch3 = giveNumber();
                             Console.WriteLine("Type an ID\n");
-                            int id = Convert.ToInt32(Console.ReadLine());
+                            int id = giveNumber();
                             try
                             {
                                 switch (ch3) //Display
@@ -168,7 +194,7 @@ namespace ConsoleUI
                             Console.WriteLine("press 4 to Displays the list of parcels ");
                             Console.WriteLine("press 5 to displays a list of packages that have not yet been assigned to the glider");
                             Console.WriteLine("press 6 to base stations with available charging stations\n");
-                            ch4 = Convert.ToInt32(Console.ReadLine());
+                            ch4 = giveNumber();
                             switch (ch4)
                             {
                                 case 1:
@@ -227,7 +253,7 @@ namespace ConsoleUI
                             Console.WriteLine("press 0 to back ");
                             Console.WriteLine("press 1 to View on 'sexagesimal' (60sex- based on 'sexagesimal') - of the coordinate point.");
                             Console.WriteLine("Press 2 to get the distance from a client or station from point coordinates.");
-                            ch4 = Convert.ToInt32(Console.ReadLine());
+                            ch4 = giveNumber();
                             try
                             {
                                 functionCase5 temp5 = new functionCase5();

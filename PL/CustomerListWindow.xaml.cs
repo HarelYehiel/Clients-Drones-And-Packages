@@ -314,5 +314,11 @@ namespace PL
             CollectionViewSource.GetDefaultView(CustomersListView.ItemsSource).Refresh();
 
         }
+
+        private void CancelOpenBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            CustomersListView.SelectedItem = null;
+            openOptions.Visibility = Visibility.Hidden;
+        }
     }
 }

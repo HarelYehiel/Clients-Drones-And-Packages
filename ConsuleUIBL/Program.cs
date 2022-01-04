@@ -16,7 +16,8 @@ namespace ConsuleUIBL
                     return Convert.ToInt32(s);
                 Console.WriteLine(MyExeption_BO.Only_numbers_should_be_type_to + "\nGive number");
             } while (true);
-        }public static int giveNumberRang()
+        }
+        public static int giveNumberRang()
         {
             string s;
             BlApi.IBL temp = BlApi.BlFactory.GetBl();

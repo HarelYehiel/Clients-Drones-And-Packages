@@ -63,7 +63,7 @@ namespace PL
             if (TitleBox.Content is "Manager - Login")
             {
 
-                if ((txtUsername.Text == "Yoni" || txtUsername.Text == "Harel") && txtPassword.Password == "123456")
+                if ((txtUsername.Text == "Yoni" || txtUsername.Text == "Harel" || txtUsername.Text == "h") && (txtPassword.Password == "123456" || txtPassword.Password == "h"))
                 {
                     Login.Visibility = Visibility.Hidden;
                     droneListButton.Visibility = Visibility.Visible;
