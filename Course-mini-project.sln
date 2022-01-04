@@ -20,9 +20,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsuleUI_BL", "ConsuleUIBL
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PL", "PL\PL.csproj", "{8B89DF97-75E8-4350-A9E2-9E14FCED2583}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DalObject", "DalObject\DalObject.csproj", "{C7F90D52-B721-4B06-9E95-4C830D329D95}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DalObject", "DalObject\DalObject.csproj", "{C7F90D52-B721-4B06-9E95-4C830D329D95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DalXML", "DalXML\DalXML.csproj", "{ECFC4C35-BED6-410C-924F-874C1183582C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DalXML", "DalXML\DalXML.csproj", "{ECFC4C35-BED6-410C-924F-874C1183582C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "XML", "XML", "{14B4EEF3-D397-4259-8961-62D6B3F1DC43}"
+	ProjectSection(SolutionItems) = preProject
+		dal-config.xml = dal-config.xml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

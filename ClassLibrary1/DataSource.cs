@@ -87,7 +87,7 @@ namespace DalApi
 
                     parcel.weight = (DO.Enum.WeightCategories)rand.Next(0, 2);
                     parcel.priority = (DO.Enum.Priorities)rand.Next(0, 2);
-                    DateTime start = new DateTime(2021, rand.Next(1, 12), rand.Next(1, 31));//crate random time and colculate all the next properties
+                    DateTime start = new DateTime(2021, rand.Next(1, 12), rand.Next(1, 28));//crate random time and colculate all the next properties
                     parcel.Requested = start.AddMinutes(rand.Next(1, 240));
                     parcels.Add(parcel);
                 }

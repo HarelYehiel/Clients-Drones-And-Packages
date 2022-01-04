@@ -6,7 +6,7 @@ using System.Xml.Linq;
 using System.Xml.Serialization;
 using System.IO;
 
-namespace DalXML
+namespace DalXml
 {
     public class dataXml
     {
