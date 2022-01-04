@@ -1,10 +1,13 @@
 ﻿using BO;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
+
 
 namespace PL
 {
@@ -17,6 +20,7 @@ namespace PL
 
         BlApi.IBL bl;
         DateTime? dateTime;
+        BackgroundWorker worker;
 
         private const int GWL_STYLE = -16;
         private const int WS_SYSMENU = 0x80000;
@@ -29,11 +33,13 @@ namespace PL
         {
             bl = bl1;
             InitializeComponent();
+            
 
             // Hide the all tools from view drone.
             FunctionConbo.Visibility = Visibility.Collapsed;
             CharginDroneDatePicker.Visibility = Visibility.Collapsed;
             OkayButton.Visibility = Visibility.Collapsed;
+            Simulator.Visibility = Visibility.Collapsed;
 
         }
         public DroneWindow(BlApi.IBL bl1, DroneToList droneToList1)
@@ -92,9 +98,21 @@ namespace PL
             packageDeliveredTextBox.Text = droneToList.packageDelivered.ToString();
             statusTextBox.IsEnabled = false;
 
+            Simulator.Visibility = Visibility.Visible;
+
+            worker.DoWork += Worker_DoWork;
+
             DroneButton.Content = "Update";
             title.Content = "Update Drone";
         }
+
+        private void Worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            BatteryTextBox.Text = bl.GetDrone(Convert.ToInt32(IDTextBox.Text)).Battery.ToString();
+            Thread.Sleep(1000);
+
+        }
+
         bool isNumber(string s)
         {
             if (s.Length == 0) return false;
@@ -360,6 +378,12 @@ namespace PL
         private void CharginDroneDatePicker_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             dateTime = CharginDroneDatePicker.SelectedDate;
+        }
+
+        private void Simulator_Click(object sender, RoutedEventArgs e)
+        {
+            Func<bool> func = 
+            bl.Simulator(Convert.ToInt32(IDTextBox), func)
         }
     }
 }

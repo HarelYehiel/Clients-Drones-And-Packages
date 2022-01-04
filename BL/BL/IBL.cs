@@ -7,7 +7,7 @@ using BO;
 
 namespace BlApi
 {
-    
+
     public interface IBL
     {
         public void InsertOptions();
@@ -29,11 +29,11 @@ namespace BlApi
         public void RemoveAllSkimmersFromTheStation(int ID);
 
         public void SendingDroneToCharging(int ID);
-        public void ReleaseDroneFromCharging(int ID,double min);
+        public void ReleaseDroneFromCharging(int ID, double min);
         public void AssignPackageToDrone(int droneId);
         public void CollectionOfPackageByDrone(int droneId);
         public void DeliveryOfPackageByDrone(int droneId);
-        public void updateParcel(int parcelID,int choise);
+        public void updateParcel(int parcelID, int choise);
         /* Until here */
 
         public void EntityDisplayOptions();
@@ -57,7 +57,7 @@ namespace BlApi
         public IEnumerable<BO.DroneToList> GetTheListOfDrones();
         public IEnumerable<BO.CustomerToList> GetListOfCustomers();
         public IEnumerable<BO.ParcelToList> DisplaysTheListOfParcels();
-        
+
         public IEnumerable<BO.DroneToList> GetAllDronesBy(System.Predicate<BO.DroneToList> filter);
         public IEnumerable<StationToTheList> GetAllStaionsBy(System.Predicate<DO.Station> filter);
         public IEnumerable<DroneInCharging> GetAllDronesInCharging(System.Predicate<DO.DroneCharge> filter);
@@ -68,6 +68,7 @@ namespace BlApi
         public bool IsDigitsOnly(string str);
         public void InitializeAndUpdateTheListsInIBL();
         public void DelParcel(int ID);
+        public void Simulator(int droneId, Func<bool> f1, Action action);
 
     }
 }

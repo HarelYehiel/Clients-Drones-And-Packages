@@ -1,11 +1,13 @@
 ﻿using BO;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
-using System.Linq;
 
 namespace PL
 {
@@ -16,6 +18,8 @@ namespace PL
     {
         BlApi.IBL bl;
         List<DroneToList> dronesToTheLists;
+        BackgroundWorker worker;
+
 
         // When true allows the 'filters' function to be activated, otherwise there is no access.
         //We usually use this when initializing or resetting the TextBox.
@@ -37,15 +41,23 @@ namespace PL
             InitializeComponent();
             TurnOnFunctionFilters = true;
 
+            worker.DoWork += Worker_DoWork;
+
             DronesListView.ItemsSource = dronesToTheLists;
+        }
+        private void Worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            EnableFiltersWithConditions();
+            Thread.Sleep(1000);
+
         }
         private void StatusDroneWeight(object sender, SelectionChangedEventArgs e)
         {
-            Filters();
+            EnableFiltersWithConditions();
         }
         private void StatusDroneSituation(object sender, SelectionChangedEventArgs e)
         {
-            Filters();
+            EnableFiltersWithConditions();
 
         }
         private void WieghtCombo_Initialized(object sender, EventArgs e)

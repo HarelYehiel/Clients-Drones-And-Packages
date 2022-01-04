@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DO;
 using BO;
-using DalXML;
+using DalXml;
 using BlApi;
 
 namespace BlApi
@@ -20,9 +20,13 @@ namespace BlApi
         private BL()
         {
             InitializeAndUpdateTheListsInIBL();
-
         }
-            public void InitializeAndUpdateTheListsInIBL()
+        public void SimulatorStart(int droneId, Func<bool> f1, Action action)
+        {
+            BlApi.Simulator simu = new Simulator(Instance, droneId, f1 );
+        }
+
+        public void InitializeAndUpdateTheListsInIBL()
         // Do initialize if data sourse and update the list listDrons of IBL.
         {
             dataXml.initilaizeXml();            
