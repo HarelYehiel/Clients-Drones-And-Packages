@@ -12,8 +12,8 @@ namespace DalXml
     public class GetXml : IDal
     {
         // make the access to DalObject by singelton way
-        //static readonly GetXml instance = new GetXml();
-        //internal static GetXml Instance { get { return instance; } }
+        static readonly GetXml instance = new GetXml();
+        internal static GetXml Instance { get { return instance; } }
 
         string dirPath = @"..\..\..\..\DalXML\";
         string configDataPath = @"dronesXml.xml";
@@ -21,6 +21,8 @@ namespace DalXml
         string customersPath = @"customersXml.xml";
         string parcelsPath = @"parcelsXml.xml";
         string dronesPath = @"dronesXml.xml";
+        string dronesChargePath = @"dronesXml.xml";
+
         public List<double> PowerConsumptionBySkimmer()
         {
 
@@ -36,15 +38,18 @@ namespace DalXml
         {
             par.runNumber++;
         }
-
+        #region get personal item
         public Station GetStation(int stationId)
         // Return the station with stationId
         {
             FileStream stream = File.OpenRead(dirPath + stationsPath);
-            XmlSerializer serializer = new XmlSerializer(typeof(IEnumerable<Station>));
+            XmlSerializer serializer = new XmlSerializer(typeof(List<Station>));
 
-            IEnumerable<Station> stations = (IEnumerable<Station>)serializer.Deserialize(stream);
+            List<Station> stations = (List<Station>)serializer.Deserialize(stream);
+            stream.Close();
+
             // IEnumerable<station> stations  = DataSource.stations;
+            
             foreach (Station station in stations)
             {
                 if (station.id == stationId)
@@ -53,364 +58,393 @@ namespace DalXml
             throw new myExceptionDO("Exception from function GetStation", myExceptionDO.There_is_no_variable_with_this_ID);
         }
 
-        #region
+        
 
         public Drone GetDrone(int droneId)
 
         {
             FileStream stream = File.OpenRead(dirPath + dronesPath);
-            XmlSerializer serializer = new XmlSerializer(typeof(IEnumerable<Drone>));
+            XmlSerializer serializer = new XmlSerializer(typeof(List<Drone>));
 
-            IEnumerable<Drone> drones = (IEnumerable<Drone>)serializer.Deserialize(stream);
+            List<Drone> drones = (List<Drone>)serializer.Deserialize(stream);
             // IEnumerable<station> stations  = DataSource.stations;
+
+            stream.Close();
             foreach (Drone drone in drones)
             {
                 if (drone.Id == droneId)
                     return drone;
             }
-            throw new myExceptionDO("Exception from function GetStation", myExceptionDO.There_is_no_variable_with_this_ID);
 
-            //return new Drone();
-            //foreach (Drone drone in DataSource.drones)
-            //{
-            //    if (drone.Id == droneId)
-            //        return drone;
-            //}
-            //throw new myExceptionDO("Exception from function GetDrone", myExceptionDO.There_is_no_variable_with_this_ID);
+            throw new myExceptionDO("Exception from function GetDrone", myExceptionDO.There_is_no_variable_with_this_ID);
         }
 
 
         public Customer GetCustomer(int CustomerId)
 
         {
-            foreach (Customer customer in DataSource.customers)
+            FileStream stream = File.OpenRead(dirPath + customersPath);
+            XmlSerializer serializer = new XmlSerializer(typeof(List<Customer>));
+
+            List<Customer> customers = (List<Customer>)serializer.Deserialize(stream);
+            stream.Close();
+            foreach (Customer customer in customers)
             {
                 if (customer.Id == CustomerId)
                     return customer;
             }
             throw new myExceptionDO("Exception from function GetCustomer", myExceptionDO.There_is_no_variable_with_this_ID);
-
         }
-
         public Parcel GetParcel(int ParcelId)
 
         // Return the parcel with parcelId
         {
-            for (int i = 0; i < DataSource.parcels.Count; i++)
-            {
-                if (DataSource.parcels[i].Id == ParcelId)
-                    return DataSource.parcels[i];
+            FileStream stream = File.OpenRead(dirPath + parcelsPath);
+            XmlSerializer serializer = new XmlSerializer(typeof(List<Parcel>));
 
+            List<Parcel> parcels = (List<Parcel>)serializer.Deserialize(stream);
+            stream.Close();
+
+            foreach (Parcel parcel in parcels)
+            {
+                if (parcel.Id == ParcelId)
+                    return parcel;
             }
             throw new myExceptionDO("Exception from function GetParcel", myExceptionDO.There_is_no_variable_with_this_ID);
         }
+        #endregion
+        #region delete personal item
         public void DelParcel(int ID)
         {
-            Parcel parcelToRemove = new Parcel();
-            foreach (var par in DataSource.parcels)
+            Parcel parcel = GetParcel(ID);
+            if (parcel.Requested != null) //if the parcel is exist
             {
-                if (par.Id == ID)
-                    parcelToRemove = par;
+                List<Parcel> tempList = GetListOfParcels().ToList();
+                tempList.Remove(parcel);
+                SaveListToXmlSerializer<Parcel>(tempList, dirPath + parcelsPath);
+
             }
-            if (parcelToRemove.Requested != null)
-                DataSource.parcels.Remove(parcelToRemove);
+
 
         }
 
         public void DelStation(int ID)
         {
-            foreach (var station in DataSource.stations)
-            {
-                if (station.id == ID)
-                    DataSource.stations.Remove(station);
-            }
+            throw new Exception();
         }
 
         public void DelCustomer(int ID)
         {
-            foreach (var customer in DataSource.customers)
-            {
-                if (customer.Id == ID)
-                    DataSource.customers.Remove(customer);
-            }
+            throw new Exception();
         }
 
         public void DelDrone(int ID)
         {
-            foreach (var drone in DataSource.drones)
-            {
-                if (drone.Id == ID)
-                    DataSource.drones.Remove(drone);
-            }
+            throw new Exception();
         }
-        public void InputTheStationToArray(Station station)
+        #endregion
+        #region add item to xml file
+        public void InputTheStation(Station station)
         {
-            DataSource.stations.Add(station);
+            List<Station> tempList = GetListOfStations().ToList();
+            tempList.Add(station);
+            SaveListToXmlSerializer<Station>(tempList, dirPath + stationsPath);
         }
-        public void InputTheDroneChargeToArray(DroneCharge droneCharge)
+        public void InputTheDroneCharge(DroneCharge droneCharge)
         {
-            DataSource.dronesCharge.Add(droneCharge);
+            List<DroneCharge> tempList = GetListOfDronesInCharging().ToList();
+            tempList.Add(droneCharge);
+            SaveListToXmlSerializer<DroneCharge>(tempList, dirPath + dronesChargePath);
         }
-        public void InputTheParcelToArray(Parcel par)
+        public void InputTheParcel(Parcel par)
         {
-            DataSource.parcels.Add(par);
-            AddParcel(par);//update the run-number serial
+            List<Parcel> tempList = GetListOfParcels().ToList();
+            tempList.Add(par);
+            SaveListToXmlSerializer<Parcel>(tempList, dirPath + parcelsPath);
         }
-        public void InputTheCustomerToArray(Customer cust)
+        public void InputTheCustomer(Customer cust)
         {
-            DataSource.customers.Add(cust);
-        }
-        public void InputTheDroneToArray(Drone drone)
-        {
-            DataSource.drones.Add(drone);
-        }
 
+            List<Customer> templist = GetListOfCustmers().ToList();
+            templist.Add(cust);
+            SaveListToXmlSerializer<Customer>(templist, dirPath + customersPath);
+        }
+        public void InputTheDrone(Drone drone)
+        {
+            //XDocument dronesFile = new XDocument(dirPath + dronesPath);
+            //dronesFile.Add(drone);
+            //dronesFile.Save(dirPath + dronesPath);
+            List <Drone> lst = GetListOfDrones().ToList();
+            lst.Add(drone);
+            SaveListToXmlSerializer<Drone>(lst, dirPath + dronesPath);
+        }
+        #endregion
+        #region get list of items
         public IEnumerable<DroneCharge> GetListOfDroneCharge()
         {
-            List<DroneCharge> droneCharges = new List<DroneCharge>();
-
-            foreach (var item in DataSource.dronesCharge)
-            {
-                droneCharges.Add(item);
-            }
-            return droneCharges;
+            return LoadListFromXmlSerializer<DroneCharge>(dirPath + dronesChargePath);
         }
 
         public IEnumerable<Station> GetListOfStations()
         //return all the station from DataSource.stations
 
         {
-            if (DataSource.stations.Count == 0)
-                throw new myExceptionDO("Exception from function Displays_list_of_stations", myExceptionDO.Dont_have_any_station_in_the_list);
-
-            List<Station> stations = new List<Station>();
-            foreach (Station station in DataSource.stations)
-                stations.Add(station);
-            return stations;
+            return LoadListFromXmlSerializer<Station>(dirPath + stationsPath);
         }
 
-        public IEnumerable<Customer> DisplaysListOfCustmers()
+        public IEnumerable<Customer> GetListOfCustmers()
         //return all the customer from DataSource.customers
         {
-            if (DataSource.parcels.Count == 0)
-                throw new myExceptionDO("Exception from function Displays_list_of_custmers", myExceptionDO.Dont_have_any_customer_in_the_list);
-
-            List<Customer> customers = new List<Customer>();
-            foreach (Customer customer in DataSource.customers)
-                customers.Add(customer);
-            return customers;
+            return LoadListFromXmlSerializer<Customer>(dirPath + customersPath);
         }
         public IEnumerable<DroneCharge> GetListOfDronesInCharging()
         {
-            if (DataSource.dronesCharge.Count == 0)
-                throw new myExceptionDO("Don't have drones in charging", myExceptionDO.Dont_have_any_parcel_in_the_list);
-
-            List<DroneCharge> Drones = new List<DroneCharge>();
-            foreach (DroneCharge parcel in DataSource.dronesCharge)
-            {
-                Drones.Add(parcel);
-            }
-            return Drones;
+            return LoadListFromXmlSerializer<DroneCharge>(dirPath + dronesChargePath);
         }
 
         public IEnumerable<Parcel> GetListOfParcels()
         //print all the Parcel from DataSource.parcels
 
         {
-            if (DataSource.parcels.Count == 0)
-                throw new myExceptionDO("Exception from function Displays_list_of_Parcels", myExceptionDO.Dont_have_any_parcel_in_the_list);
-
-            List<Parcel> parcels = new List<Parcel>();
-            foreach (Parcel parcel in DataSource.parcels)
-            {
-                parcels.Add(parcel);
-            }
-            return parcels;
+            return LoadListFromXmlSerializer<Parcel>(dirPath + parcelsPath);
         }
         public IEnumerable<Drone> GetListOfDrones()
         //print all the Drone from DataSource.drones
         {
-            if (DataSource.drones.Count == 0)
-                throw new myExceptionDO("Exception from function Displays_list_of_drone", myExceptionDO.Dont_have_any_drone_in_the_list);
-
-            List<Drone> drones = new List<Drone>();
-            foreach (Drone drone in DataSource.drones)
-            {
-                drones.Add(drone);
-            }
+            /*
+            //XElement root = XElement.Load(dirPath + dronesPath);
+            List<Drone> drones;
+            //try
+            //{
+            XmlSerializer xmlOpen = new XmlSerializer(typeof(List<Drone>));
+            FileStream fs = new FileStream(dirPath + dronesPath, FileMode.Open);
+            Console.WriteLine(fs);
+            drones = (List<Drone>)xmlOpen.Deserialize(fs);
+            fs.Close();
             return drones;
+            */
+            return LoadListFromXmlSerializer<Drone>(dirPath + dronesPath);
+
+
+
+            //    drones = (from d in root.Elements()
+            //              select new Drone
+            //              {
+            //                  Id = Convert.ToInt32(d.Element("Id").Value),
+            //                  Model = (d.Element("Model").Value),
+            //                  MaxWeight = (DO.Enum.WeightCategories)Convert.ToInt32(d.Element("MaxWeight").Value),
+            //                  droneStatus = (DO.Enum.DroneStatus)Convert.ToInt32(d.Element("droneStatus").Value)
+            //              }).ToList();
+            //}
+            //catch
+            //{
+            //    drones = null;
+            //}
+            //return drones;
+
         }
+        #endregion
         public IEnumerable<Parcel> DisplaysParcelsDontHaveDrone()
 
         // Print the details of all the parcels don't have An associated skimmer (Selected_drone == 0).
         {
-            if (DataSource.parcels.Count == 0)
-                throw new myExceptionDO("Exception from function displaysParcelsDontHaveDrone", myExceptionDO.Dont_have_any_parcel_in_the_list);
-
-            List<Parcel> par = new();
-            foreach (Parcel parcel in DataSource.parcels)
+            try
             {
-                if (parcel.Id != 0 && parcel.DroneId == 0)
-                    par.Add(parcel);
+                IEnumerable<Parcel> parcels = GetListOfParcels();
+                List<Parcel> parcelsWithoutDrone = new List<Parcel>();
+                foreach (Parcel parcel in parcels)
+                {
+                    if (parcel.Id != 0 && parcel.DroneId == 0)
+                        parcelsWithoutDrone.Add(parcel);
+                }
+                return parcelsWithoutDrone;
             }
-            return par;
+            catch
+            {
+                throw new myExceptionDO("Exception from function displaysParcelsDontHaveDrone", myExceptionDO.Dont_have_any_parcel_in_the_list);
+            }
         }
 
         public IEnumerable<Station> AvailableChargingStations()
 
         //Print the all stations that have DroneCharge available
         {
-            if (DataSource.stations.Count == 0)
+            try
+            {
+                List<Station> stat = new();
+                foreach (Station station in GetListOfStations())
+                {
+                    if (station.ChargeSlots != 0)
+                        stat.Add(station);
+                }
+                return stat;
+            }
+            catch
+            {
                 throw new myExceptionDO("Exception from function AvailableChargingStations", myExceptionDO.Dont_have_any_station_in_the_list);
 
-            List<Station> stat = new();
-            IEnumerator iter = DataSource.stations.GetEnumerator();
-            foreach (Station station in DataSource.stations)
-            {
-                if (station.ChargeSlots != 0)
-                    stat.Add(station);
             }
-            return stat;
         }
         public string MinimumFromCustomer(double minDistance, Point p)
 
         {
-            if (DataSource.customers.Count == 0)
-                throw new myExceptionDO("Exception from function MinimumFromCustomer", myExceptionDO.Dont_have_any_customer_in_the_list);
-
-            int saveTheI = 0;// save the index with minimum destance from the point p
-            foreach (Customer customer in DataSource.customers)// (int i = 1; i < IDAL.DalObject.DataSource.Config.customersIndex; i++)
+            try
             {
-                double distance = customer.location.distancePointToPoint(p);
-                if (minDistance > distance)
+
+                int id;
+                foreach (Customer customer in GetListOfCustmers())
                 {
-                    saveTheI++;
-                    minDistance = distance;
+                    double distance = customer.location.distancePointToPoint(p);
+                    if (minDistance > distance)
+                    {
+                        id = customer.Id;
+                        minDistance = distance;
+                    }
                 }
+                return ("The minimum distancefrom the point is: " + minDistance +
+                   "\nThe id of customer is: ");
             }
-            return ("The minimum distancefrom the point is: " + minDistance +
-               "\nThe id of customer is: " + DataSource.customers[saveTheI].Id);
+            catch
+            {
+                throw new myExceptionDO("Exception from function MinimumFromCustomer", myExceptionDO.Dont_have_any_customer_in_the_list);
+            }
         }
         public string MinimumFromStation(double minDistance, Point p)
         {
+            try
+            {
 
-            if (DataSource.customers.Count == 0)
+                int id = 0;
+                foreach (Station station in GetListOfStations())
+                {
+                    double distance = station.Location.distancePointToPoint(p);
+                    if (minDistance > distance)
+                    {
+                        id = station.id;
+                        minDistance = distance;
+                    }
+                }
+                return ("The minimum distance from the point is: " + minDistance +
+                    "\nThe id of station is: " + id.ToString());
+            }
+            catch
+            {
                 throw new myExceptionDO("Exception from function MinimumFromStation", myExceptionDO.Dont_have_any_station_in_the_list);
 
-            int saveTheI = 0;// save the index with minimum destance from the point p
-            IEnumerator iter = DataSource.stations.GetEnumerator();
-            foreach (Station station in DataSource.stations)
-            {
-                double distance = station.Location.distancePointToPoint(p);
-                if (minDistance > distance)
-                {
-                    saveTheI++;
-                    minDistance = distance;
-                }
             }
-            return ("The minimum distance from the point is: " + minDistance +
-                "\nThe id of station is: " + DataSource.stations[saveTheI].id);
-
         }
         public void AffiliationDroneToParcel(int parcelID, int droneID)
         {
-            if (DataSource.parcels.Count == 0)
+            if (GetListOfParcels().Count() == 0)
                 throw new myExceptionDO("Exception from function AffiliationDroneToParcel", myExceptionDO.Dont_have_any_parcel_in_the_list);
-
-            Parcel parcel = new Parcel();
-            for (int i = 0; i < DataSource.parcels.Count(); i++)
+            try
             {
-                if (DataSource.parcels[i].Id == parcelID)
+                Parcel tempParcel = new Parcel();
+                foreach (Parcel parcel in GetListOfParcels())
                 {
-                    parcel = DataSource.parcels[i];
-                    parcel.DroneId = droneID;
-                    DataSource.parcels[i] = parcel;
-                    break;
+                    if (parcel.Id == parcelID)
+                    {
+                        tempParcel = parcel;
+                        tempParcel.DroneId = droneID;
+                        updateParcel(tempParcel);
+                        break;
+                    }
                 }
             }
-
-            throw new myExceptionDO("Exception from function AffiliationDroneToParcel", myExceptionDO.There_is_no_variable_with_this_ID);
+            catch
+            {
+                throw new myExceptionDO("Exception from function AffiliationDroneToParcel", myExceptionDO.There_is_no_variable_with_this_ID);
+            }
         }
         public void PickUp(int parcelId)
         {
-            if (DataSource.parcels.Count == 0)
+            if (GetListOfParcels().Count() == 0)
                 throw new myExceptionDO("Exception from function pickUp", myExceptionDO.Dont_have_any_parcel_in_the_list);
 
-            Parcel parcel = new Parcel();
-            for (int i = 0; i < DataSource.parcels.Count(); i++)
+            try
             {
-                if (DataSource.parcels[i].Id == parcelId)
+                Parcel tempParcel = new Parcel();
+                foreach (Parcel parcel in GetListOfParcels())
                 {
-                    parcel = DataSource.parcels[i];
-                    parcel.PickedUp = DateTime.Now;
-                    DataSource.parcels[i] = parcel;
-                    break;
+                    if (parcel.Id == parcelId)
+                    {
+                        tempParcel = parcel;
+                        tempParcel.PickedUp = DateTime.Now;
+                        updateParcel(tempParcel);
+                        break;
+                    }
                 }
             }
-
-            throw new myExceptionDO("Exception from function pickUp", myExceptionDO.There_is_no_variable_with_this_ID); ;
+            catch
+            {
+                throw new myExceptionDO("Exception from function pickUp", myExceptionDO.There_is_no_variable_with_this_ID); ;
+            }
         }
-        public void Delivered(int deliId)
+        public void Delivered(int parcelID)
         {
-            if (DataSource.parcels.Count == 0)
+            if (GetListOfParcels().Count() == 0)
                 throw new myExceptionDO("Exception from function delivered", myExceptionDO.Dont_have_any_parcel_in_the_list);
 
-            Parcel tempParcel = new Parcel();
-            for (int i = 0; i < DataSource.parcels.Count(); i++)
+            try
             {
-                if (DataSource.parcels[i].Id == deliId)
+                Parcel tempParcel = new Parcel();
+                foreach (Parcel parcel in GetListOfParcels())
                 {
-                    tempParcel = DataSource.parcels[i];
-                    tempParcel.Delivered = DateTime.Now;
-                    DataSource.parcels[i] = tempParcel;
-                    break;
+                    if (parcel.Id == parcelID)
+                    {
+                        tempParcel = parcel;
+                        tempParcel.Delivered = DateTime.Now;
+                        updateParcel(tempParcel);
+                        break;
+                    }
                 }
             }
-
-            throw new myExceptionDO("Exception from function delivered", myExceptionDO.There_is_no_variable_with_this_ID);
-
+            catch
+            {
+                throw new myExceptionDO("Exception from function delivered", myExceptionDO.There_is_no_variable_with_this_ID);
+            }
         }
         public void SetFreeStation(int droneId)
         {
-            if (DataSource.stations.Count == 0)
+            if (GetListOfStations().Count() == 0)
                 throw new myExceptionDO("Exception from function setFreeStation", myExceptionDO.Dont_have_any_station_in_the_list);
-            if (DataSource.drones.Count == 0)
+            if (GetListOfDrones().Count() == 0)
                 throw new myExceptionDO("Exception from function setFreeStation", myExceptionDO.Dont_have_any_drone_in_the_list);
-
-            for (int i = 0; i < DataSource.dronesCharge.Count(); i++)
+            try
             {
-                if (DataSource.dronesCharge[i].DroneId == droneId)
+                foreach (DroneCharge droneCharge in GetListOfDronesInCharging())
                 {
-
-                    for (int j = 0; j < DataSource.stations.Count; j++)
+                    if (droneCharge.DroneId == droneId)
                     {
-                        if (DataSource.stations[j].id == DataSource.dronesCharge[i].staitionId)
+                        foreach (Station station1 in GetListOfStations())
                         {
-                            Station station = new Station();
-                            station = DataSource.stations[j];
-                            station.ChargeSlots++;
-                            DataSource.stations[j] = station;
+                            if (station1.id == droneCharge.staitionId)
+                            {
+                                Station station = new Station();
+                                station = station1;
+                                station.ChargeSlots++;
+                                updateStation(station);
+                            }
                         }
-                        else if (j == DataSource.stations.Count() - 1)
-                            throw new myExceptionDO(myExceptionDO.We_ge_to_the_end_of_list_and_dont_find_the_station);
+                        //////////////////////////////////////////////////////////למחוק מהקובץ את הרחפן הזה
+                        updateDroneCharge(droneCharge);
+                        break;
                     }
-
-                    DataSource.dronesCharge.RemoveAt(i);
-
-                    break;
                 }
-                else if (i == DataSource.drones.Count() - 1)
-                    throw new myExceptionDO("Exception from function setFreeStation", myExceptionDO.We_ge_to_the_end_of_list_and_dont_find_the_drone);
+            }
+            catch
+            {
+                throw new myExceptionDO("Exception from function setFreeStation", myExceptionDO.We_ge_to_the_end_of_list_and_dont_find_the_drone);
             }
         }
         public void DroneToCharge(int droneId, int stationId)
         {
-            if (DataSource.stations.Count == 0)
+            if (GetListOfStations().Count() == 0)
                 throw new myExceptionDO("Exception from function droneToCharge", myExceptionDO.Dont_have_any_station_in_the_list);
-            if (DataSource.drones.Count == 0)
+            if (GetListOfDrones().Count() == 0)
                 throw new myExceptionDO("Exception from function droneToCharge", myExceptionDO.Dont_have_any_drone_in_the_list);
 
-            foreach (var droneCharging in DataSource.dronesCharge) // Check if The drone already is in charge  
+            foreach (DroneCharge droneCharging in GetListOfDronesInCharging()) // Check if The drone already is in charge  
             {
                 if (droneCharging.DroneId == droneId)
                 {
@@ -418,35 +452,91 @@ namespace DalXml
                 }
             }
 
-            for (int i = 0; i < DataSource.stations.Count; i++) // Find if the station exists
+            foreach (Station station1 in GetListOfStations()) // Find if the station exists
             {
-                if (DataSource.stations[i].id == stationId)
+                if (station1.id == stationId)
                 {
                     DroneCharge droneCharge = new DroneCharge();
                     droneCharge.DroneId = droneId;
                     droneCharge.staitionId = stationId;
-                    DataSource.dronesCharge.Add(droneCharge);
+                    updateDroneCharge(droneCharge);
 
                     Station station = new Station();
-                    station = DataSource.stations[i];
+                    station = station1;
                     station.ChargeSlots--;
-                    DataSource.stations[i] = station;
+                    updateStation(station);
 
                 }
             }
 
         }
-        public void updateParcel(DO.Parcel parcel)
+        public void updateParcel(Parcel parcel)
         {
-            for (int i = 0; i < DataSource.parcels.Count; i++)
+            //List<Parcel> parcels = GetListOfParcels().ToList();
+            //Parcel parcelToRemove = GetParcel(parcel.Id);
+            //parcels.Remove(parcelToRemove);
+            //parcels.Add(parcel);
+            XDocument parcels = XDocument.Load(dirPath + parcelsPath);
+            var root = parcels.Root.Descendants("Parcel").FirstOrDefault(p => p.Attribute("id").Value == parcel.Id.ToString());
+            root.Remove();
+            parcels.Add(parcel);
+            parcels.Save(dirPath + parcelsPath);
+
+        }
+        void updateStation(Station station)
+        {
+            XDocument stations = XDocument.Load(dirPath + stationsPath);
+            var root = stations.Root.Descendants("Station").FirstOrDefault(p => p.Attribute("id").Value == station.id.ToString());
+            root.Remove();
+            stations.Add(station);
+            stations.Save(dirPath + parcelsPath);
+        }
+        void updateDroneCharge(DroneCharge droneCharge)
+        {
+            //if the drone is not exist add him' and if he is exsist remove
+            XDocument dronCharges = XDocument.Load(dirPath + dronesChargePath);
+            var root = dronCharges.Root.Descendants("Parcel").FirstOrDefault(p => p.Attribute("id").Value == droneCharge.DroneId.ToString());
+            if (root.Attribute("DroneId").Value == "0")
+                root.Remove();
+            else
+                dronCharges.Add(droneCharge);
+            dronCharges.Save(dirPath + parcelsPath);
+        }
+        void SaveListToXmlSerializer<T>(List<T> list, string filePath)
+        {
+            try
             {
-                if (DataSource.parcels[i].Id == parcel.Id)
+                FileStream file = new(filePath, FileMode.Create);
+                XmlSerializer x = new(list.GetType());
+                x.Serialize(file, list);
+                file.Close();
+            }
+            catch 
+            {
+            //dont do anything
+            }
+        }
+        static List<T> LoadListFromXmlSerializer<T>(string filePath)
+        {
+            try
+            {
+                if (File.Exists(filePath))
                 {
-                    DataSource.parcels[i] = parcel;
+                    List<T> list;
+                    XmlSerializer x = new(typeof(List<T>));
+                    FileStream file = new(filePath, FileMode.Open);
+                    list = (List<T>)x.Deserialize(file);
+                    file.Close();
+                    return list;
                 }
+                else
+                    return new List<T>();
+            }
+            catch
+            {
+                return new List<T>();
             }
         }
 
-        #endregion
     }
 }

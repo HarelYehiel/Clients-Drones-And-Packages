@@ -28,13 +28,13 @@ namespace BlApi
             station1.Location = loc;
             station1.ChargeSlots = numSlots;
 
-            accessIdal.InputTheStationToArray(station1);
+            accessDal.InputTheStation(station1);
         } 
 
         public void AddingDrone(int ID,string model,int maxWeight,int staId)
         {
             Station sta = new Station();
-            sta = accessIdal.GetStation(staId);
+            sta = accessDal.GetStation(staId);
 
             BO.DroneToList drone = new BO.DroneToList();
             drone.uniqueID = ID;
@@ -55,7 +55,7 @@ namespace BlApi
             drone1.Id = ID;
             drone1.Model = model;
             drone1.MaxWeight = (DO.Enum.WeightCategories)maxWeight;
-            accessIdal.InputTheDroneToArray(drone1);
+            accessDal.InputTheDrone(drone1);
             this.ListDroneToList.Add(drone);
 
         }
@@ -78,7 +78,7 @@ namespace BlApi
             point.latitude = Latitude;
             point.longitude = Longitude;
             customer1.location = point;
-            accessIdal.InputTheCustomerToArray(customer1);
+            accessDal.InputTheCustomer(customer1);
         }
         public void ReceiptOfPackageForDelivery(int parcelID, int senderName, int targetName, int maxWeight, int prioerity)
         {
@@ -103,7 +103,7 @@ namespace BlApi
             parcel1.Scheduled = def;
             parcel1.Delivered = def;
 
-            accessIdal.InputTheParcelToArray(parcel1);
+            accessDal.InputTheParcel(parcel1);
         }
     }
 }

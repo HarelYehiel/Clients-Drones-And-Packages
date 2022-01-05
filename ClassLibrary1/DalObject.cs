@@ -124,24 +124,24 @@ namespace DalApi
                         DataSource.drones.Remove(drone);
                 }
             }
-            public void InputTheStationToArray(Station station)
+            public void InputTheStation(Station station)
             {
                 DataSource.stations.Add(station);
             }
-            public void InputTheDroneChargeToArray(DroneCharge droneCharge)
+            public void InputTheDroneCharge(DroneCharge droneCharge)
             {
                 DataSource.dronesCharge.Add(droneCharge);
             }
-            public void InputTheParcelToArray(Parcel par)
+            public void InputTheParcel(Parcel par)
             {
                 DataSource.parcels.Add(par);
                 AddParcel(par);//update the run-number serial
             }
-            public void InputTheCustomerToArray(Customer cust)
+            public void InputTheCustomer(Customer cust)
             {
                 DataSource.customers.Add(cust);
             }
-            public void InputTheDroneToArray(Drone drone)
+            public void InputTheDrone(Drone drone)
             {             
                 DataSource.drones.Add(drone);
             }
@@ -170,7 +170,7 @@ namespace DalApi
                 return stations;
             }
 
-            public IEnumerable<Customer> DisplaysListOfCustmers()
+            public IEnumerable<Customer> GetListOfCustmers()
             //return all the customer from DataSource.customers
             {
                 if (DataSource.parcels.Count == 0)

@@ -36,7 +36,7 @@ namespace BlApi
                 DO.Customer customerDO = new DO.Customer();
                 BO.CustomerInParcel customerInParcelBO = new BO.CustomerInParcel();
 
-                customerDO = accessIdal.GetCustomer(id);
+                customerDO = accessDal.GetCustomer(id);
 
                 customerInParcelBO.uniqueID = customerDO.Id;
                 customerInParcelBO.name = customerDO.name;
@@ -61,7 +61,7 @@ namespace BlApi
                 DO.Parcel parcelDO = new DO.Parcel();
                 BO.parcelAtCustomer parcelToCustomerBO = new BO.parcelAtCustomer();
 
-                parcelDO = accessIdal.GetParcel(id_parcel);
+                parcelDO = accessDal.GetParcel(id_parcel);
 
                 parcelToCustomerBO.uniqueID = parcelDO.Id;
                 parcelToCustomerBO.weight = (BO.EnumBO.WeightCategories)parcelDO.weight;
@@ -101,7 +101,7 @@ namespace BlApi
                 DO.Station stationDO = new DO.Station();
                 BO.station stationBO = new BO.station();
 
-                stationDO = accessIdal.GetStation(id);
+                stationDO = accessDal.GetStation(id);
 
                 stationBO.uniqueID = stationDO.id;
                 stationBO.name = stationDO.name;
@@ -115,7 +115,7 @@ namespace BlApi
                 //The all drones that charging in this station.
                 BO.DroneInCharging droneInCharging_BO = new BO.DroneInCharging();
                 stationBO.dronesInCharging = new List<BO.DroneInCharging>();
-                foreach (DO.DroneCharge item in accessIdal.GetListOfDroneCharge()) // IDAL.DalObject.DataSource.dronesCharge
+                foreach (DO.DroneCharge item in accessDal.GetListOfDroneCharge()) // IDAL.DalObject.DataSource.dronesCharge
                 {
                     if (item.DroneId == id)
                     {
@@ -145,7 +145,7 @@ namespace BlApi
             {
                 BO.ParcelByTransfer parcelByTransfer = new BO.ParcelByTransfer();
 
-                foreach (var item in accessIdal.GetListOfParcels())
+                foreach (var item in accessDal.GetListOfParcels())
                 {
                     if (item.Id == id)
                     {
@@ -153,13 +153,13 @@ namespace BlApi
                         parcelByTransfer.priority = (BO.EnumBO.Priorities)item.priority;
                         parcelByTransfer.weight = (BO.EnumBO.WeightCategories)item.weight;
                         
-                        DO.Customer customer_DO = accessIdal.GetCustomer(item.SenderId);
+                        DO.Customer customer_DO = accessDal.GetCustomer(item.SenderId);
                         BO.Location l = new BO.Location();
                         l.latitude = customer_DO.location.latitude;
                         l.longitude = customer_DO.location.longitude;
                         parcelByTransfer.collectionLocation = l;
 
-                        customer_DO = accessIdal.GetCustomer(item.TargetId);
+                        customer_DO = accessDal.GetCustomer(item.TargetId);
                         l = new BO.Location();
                         l.latitude = customer_DO.location.latitude;
                         l.longitude = customer_DO.location.longitude;
@@ -173,7 +173,7 @@ namespace BlApi
 
 
                         // Is wait for collection ?
-                        if (accessIdal.GetParcel(id).PickedUp != null) // The parcel PickedUp
+                        if (accessDal.GetParcel(id).PickedUp != null) // The parcel PickedUp
                             parcelByTransfer.isWaitForCollection = false; // The parcel don't wait to PickedUp, it in transfer
                         else
                             parcelByTransfer.isWaitForCollection = true; // The parcel wait to PickedUp
@@ -223,7 +223,7 @@ namespace BlApi
                 DO.Customer customerDO = new DO.Customer();
                 BO.Customer customerBO = new BO.Customer();
 
-                customerDO = accessIdal.GetCustomer(id);
+                customerDO = accessDal.GetCustomer(id);
 
                 customerBO.uniqueID = customerDO.Id;
                 customerBO.name = customerDO.name;
@@ -236,7 +236,7 @@ namespace BlApi
 
                 customerBO.fromTheCustomer = new List<BO.parcelAtCustomer>();
                 customerBO.toTheCustomer = new List<BO.parcelAtCustomer>();
-                foreach (DO.Parcel item in accessIdal.GetListOfParcels())
+                foreach (DO.Parcel item in accessDal.GetListOfParcels())
                 {
                     if (item.SenderId == id)
                     {
@@ -265,7 +265,7 @@ namespace BlApi
                 DO.Parcel parcelDO = new DO.Parcel();
                 BO.Parcel parcelBO = new BO.Parcel();
 
-                parcelDO = accessIdal.GetParcel(id);
+                parcelDO = accessDal.GetParcel(id);
 
                 parcelBO.uniqueID = parcelDO.Id;
                 parcelBO.customerInParcelSender = GetCustomerInParcel(parcelDO.SenderId);
@@ -294,7 +294,7 @@ namespace BlApi
             try
             {
                BO.DroneInCharging droneCharge = new BO.DroneInCharging();
-                List<DO.DroneCharge> droneCharges = accessIdal.GetListOfDroneCharge().ToList();
+                List<DO.DroneCharge> droneCharges = accessDal.GetListOfDroneCharge().ToList();
                 for (int i = 0; i < droneCharges.Count(); i++)
                 {
                     if(droneCharges[i].DroneId == ID)

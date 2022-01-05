@@ -22,16 +22,16 @@ using System.Threading.Tasks;
             public Parcel GetParcel(int ParcelId);
             // Return the parcel with parcelId
 
-            public void InputTheStationToArray(Station station);
-            public void InputTheDroneChargeToArray(DroneCharge droneCharge);
-            public void InputTheParcelToArray(Parcel par);
+            public void InputTheStation(Station station);
+            public void InputTheDroneCharge(DroneCharge droneCharge);
+            public void InputTheParcel(Parcel par);
 
-            public void InputTheCustomerToArray(Customer cust);
+            public void InputTheCustomer(Customer cust);
 
-            public void InputTheDroneToArray(Drone dro);
+            public void InputTheDrone(Drone dro);
             public IEnumerable<Station> GetListOfStations();
 
-            public IEnumerable<Customer> DisplaysListOfCustmers();
+            public IEnumerable<Customer> GetListOfCustmers();
 
             public IEnumerable<Parcel> GetListOfParcels();
             //Copy all the Parcel from DataSource.parcels[] to new_array_parcels.

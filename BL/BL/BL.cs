@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DO;
 using BO;
-using DalXML;
+using DalXml;
 using BlApi;
 
 namespace BlApi
@@ -15,7 +15,8 @@ namespace BlApi
     {
         static readonly BL instance = new BL();
         internal static BL Instance { get { return instance; } }
-        IDal accessIdal = DalApi.DalFactory.GetDal("DalObject");
+        IDal accessDal = DalApi.DalFactory.GetDal("DalXml");
+        //IDal accessDalXml = DalApi.DalFactory.GetDal("DalXml");
         List<DroneToList> ListDroneToList = new List<DroneToList>();
         private BL()
         {
@@ -25,21 +26,25 @@ namespace BlApi
             public void InitializeAndUpdateTheListsInIBL()
         // Do initialize if data sourse and update the list listDrons of IBL.
         {
-            dataXml.initilaizeXml();            
 
-            DalApi.DalObject.DataSource.Initialize();
+           // DalApi.DalObject.DataSource.Initialize();
+
+           //inaitilaize the lists by get the values from xml files
+           // dataXml.initilaizeXml(accessDal);     
+
             BO.DroneToList droneToListBO;
+            IEnumerable<DO.Drone> tempList = accessDal.GetListOfDrones();
 
-            foreach (var item in accessIdal.GetListOfDrones()) // Update the list in listDrons of IBL
+            foreach (DO.Drone drone in tempList) // Update the list in listDrons of IBL
             {
                 var rand = new Random();
                 droneToListBO = new BO.DroneToList();
 
-                droneToListBO.uniqueID = item.Id;
-                droneToListBO.Model = item.Model;
+                droneToListBO.uniqueID = drone.Id;
+                droneToListBO.Model = drone.Model;
                 droneToListBO.Battery = rand.Next(20, 80);
-                droneToListBO.weight = (BO.EnumBO.WeightCategories)item.MaxWeight;
-                droneToListBO.status = (BO.EnumBO.DroneStatus)item.droneStatus;
+                droneToListBO.weight = (BO.EnumBO.WeightCategories)drone.MaxWeight;
+                droneToListBO.status = (BO.EnumBO.DroneStatus)drone.droneStatus;
 
                 BO.Location l = new BO.Location();
                 l.latitude = 31 + rand.NextDouble();
@@ -49,6 +54,7 @@ namespace BlApi
 
                 ListDroneToList.Add(droneToListBO);
 
+            
             }
 
         }
@@ -111,7 +117,7 @@ namespace BlApi
         //***********new cases for PL*************
         public void DelParcel(int ID)
         {
-            accessIdal.DelParcel(ID);
+            accessDal.DelParcel(ID);
         }
 
     }

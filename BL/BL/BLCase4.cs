@@ -58,7 +58,7 @@ namespace BlApi
         {
             List<ParcelToList> parcelsToLists = new List<ParcelToList>();
 
-            parcelsToLists.AddRange(accessIdal.GetListOfParcels() // Get IEnumerable of all parcels.
+            parcelsToLists.AddRange(accessDal.GetListOfParcels() // Get IEnumerable of all parcels.
                 .ToList() // Comvert from IEnumerable to list.
                 .FindAll(filter) // Filter the list by the filter.
                 .ConvertAll(convertParcelDoToParcelBo));// Convert parcel_do to parcel_bo
@@ -69,7 +69,7 @@ namespace BlApi
         {
             List<StationToTheList> StationsToTheList = new List<StationToTheList>();
 
-            StationsToTheList.AddRange(accessIdal.GetListOfStations() // Get IEnumerable of all stations.
+            StationsToTheList.AddRange(accessDal.GetListOfStations() // Get IEnumerable of all stations.
                 .ToList() // Comvert from IEnumerable to list.
                 .FindAll(filter) // Filter the list by the 'filter'.
                 .ConvertAll(convertStaionDoToStaionBo));// convert station_do to station_bo
@@ -82,7 +82,7 @@ namespace BlApi
         {
             List<CustomerToList> customersToList = new List<CustomerToList>();
 
-            customersToList.AddRange(accessIdal.DisplaysListOfCustmers() // Get IEnumerable of all customers.
+            customersToList.AddRange(accessDal.GetListOfCustmers() // Get IEnumerable of all customers.
                      .ToList() // Comvert from IEnumerable to list.
                 .FindAll(filter) // Filter the list by the 'filter'.
                 .ConvertAll(convertCustomerDoToCustomerBo));// convert customer_do to customer_bo
@@ -93,7 +93,7 @@ namespace BlApi
         {
             List<DroneInCharging> DronesToList = new List<DroneInCharging>();
 
-            DronesToList.AddRange(accessIdal.GetListOfDronesInCharging().ToList() // List of all drones in BO.
+            DronesToList.AddRange(accessDal.GetListOfDronesInCharging().ToList() // List of all drones in BO.
                 .FindAll(filter).ConvertAll(convertDroneChargeDoToDroneInChargingBo)); // Filter the list by the 'filter'.
 
             return DronesToList;
@@ -124,8 +124,8 @@ namespace BlApi
 
                 ParcelToListBO = new ParcelToList();
                 ParcelToListBO.uniqueID = item.Id;
-                ParcelToListBO.nameTarget = accessIdal.GetCustomer(item.TargetId).name;
-                ParcelToListBO.namrSender = accessIdal.GetCustomer(item.SenderId).name;
+                ParcelToListBO.nameTarget = accessDal.GetCustomer(item.TargetId).name;
+                ParcelToListBO.namrSender = accessDal.GetCustomer(item.SenderId).name;
                 ParcelToListBO.priority = (BO.EnumBO.Priorities)(int)item.priority;
                 ParcelToListBO.weight = (BO.EnumBO.WeightCategories)(int)item.weight;
                 ParcelToListBO.parcelsituation = FunParcelSituation(item);
@@ -149,7 +149,7 @@ namespace BlApi
             stationForTheList.name = staion.name;
             stationForTheList.availableChargingStations = staion.ChargeSlots;
 
-            stationForTheList.unAvailableChargingStations = accessIdal.GetListOfDroneCharge()
+            stationForTheList.unAvailableChargingStations = accessDal.GetListOfDroneCharge()
                 .ToList() // Comvert from IEnumerable to list.
                .FindAll(droneCarge_DO => droneCarge_DO.staitionId == staion.id) // Return list with all the droneCarge_DO == staion.id 
                 .Count(); // Return count of item in the list.
@@ -167,7 +167,7 @@ namespace BlApi
 
 
             // Run on the list parcel and find the parcels the related him (the customer).
-            accessIdal.GetListOfParcels().ToList().ForEach(delegate (DO.Parcel parcel)
+            accessDal.GetListOfParcels().ToList().ForEach(delegate (DO.Parcel parcel)
             {
 
                 // packages sent and delivered

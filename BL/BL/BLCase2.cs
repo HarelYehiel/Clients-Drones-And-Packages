@@ -23,7 +23,7 @@ namespace BlApi
         {
             try
             {
-                Drone drone = accessIdal.GetDrone(ID);
+                Drone drone = accessDal.GetDrone(ID);
                 drone.Model = newModel;
                 updateDataSourceFun.updateDrone(drone);
                 BO.DroneToList droneToList_BO;
@@ -52,7 +52,7 @@ namespace BlApi
                 if (name == "" && numSlots == 0)
                     return; // Don't do nathing.
 
-                Station station = accessIdal.GetStation(ID);
+                Station station = accessDal.GetStation(ID);
                 if (name != "")
                     station.name = name;
                 if (numSlots != 0)
@@ -94,7 +94,7 @@ namespace BlApi
         {
             try
             {
-                Customer customer = accessIdal.GetCustomer(ID);
+                Customer customer = accessDal.GetCustomer(ID);
                 if (name != "")
                     customer.name = name;
                 if (phoneNumber != "")
@@ -112,7 +112,7 @@ namespace BlApi
         {
             try
             {
-                Drone drone = accessIdal.GetDrone(ID);
+                Drone drone = accessDal.GetDrone(ID);
                 BO.DroneToList droneToListBo = GetDroneToListBO(ID);
                 //-----check drone status, only if he is free check the next condition-----
                 if (drone.droneStatus == DO.Enum.DroneStatus.Avilble)
@@ -177,12 +177,12 @@ namespace BlApi
         {
             try
             {
-                Drone drone = accessIdal.GetDrone(ID);
+                Drone drone = accessDal.GetDrone(ID);
                 if (drone.droneStatus == DO.Enum.DroneStatus.Baintenance)
                 {
                     //------gett data of this dron from BL drone list-----------
                     BO.DroneToList droneBo = GetDroneToListBO(ID);// new BO.DroneToList();
-                    List<double> getConfig = accessIdal.PowerConsumptionBySkimmer();
+                    List<double> getConfig = accessDal.PowerConsumptionBySkimmer();
                     //update drone in BL list
                     droneBo.Battery = droneBo.Battery + (min * getConfig[4]);//every minute in charge is 1% more
                     if (droneBo.Battery > 100)
@@ -227,7 +227,7 @@ namespace BlApi
             try
             {
                 //get the data of the specific drone from DAL(data source)
-                Drone drone = accessIdal.GetDrone(droneId);
+                Drone drone = accessDal.GetDrone(droneId);
                 //get the data of the specific drone at BO
                 BO.DroneToList droneBo = GetDroneToListBO(droneId);
                 Parcel parcelDO = new Parcel();
@@ -248,7 +248,7 @@ namespace BlApi
                             flag = serchForRelevantParcel(parcel, drone, droneBo, droneId);
                             if (!flag)
                             {
-                                parcelDO = accessIdal.GetParcel(parcel.uniqueID);
+                                parcelDO = accessDal.GetParcel(parcel.uniqueID);
                                 break;
                             }
                         }
@@ -281,7 +281,7 @@ namespace BlApi
         {
             try
             {
-                Drone drone = accessIdal.GetDrone(ID);
+                Drone drone = accessDal.GetDrone(ID);
                 Parcel parcel = new Parcel();
                 if (drone.droneStatus == DO.Enum.DroneStatus.Delivery)
                 {
@@ -307,7 +307,7 @@ namespace BlApi
                                 //if (parcelFromUser == 0)
                                 //    parcel = accessIdal.GetParcel(parcelFromUser);
                                 //else
-                                    parcel = accessIdal.GetParcel(parcels[i].uniqueID);
+                                    parcel = accessDal.GetParcel(parcels[i].uniqueID);
                                 parcel.PickedUp = DateTime.Now;
                                 updateDataSourceFun.updateParcel(parcel);
 
@@ -335,7 +335,7 @@ namespace BlApi
         {
             try
             {
-                Drone drone = accessIdal.GetDrone(ID);
+                Drone drone = accessDal.GetDrone(ID);
                 if (drone.droneStatus == DO.Enum.DroneStatus.Delivery)
                 {
                     List<BO.Parcel> parcels = DisplaysTheListOfParcels().ToList().ConvertAll(convertToParcelNotList);//GetAllParcelsBy(p => true).ToList();
@@ -363,7 +363,7 @@ namespace BlApi
                                         ListDroneToList[j] = droneToList_Bo;
                                     }
                                 }
-                                Parcel parcel = accessIdal.GetParcel(parcels[i].uniqueID);
+                                Parcel parcel = accessDal.GetParcel(parcels[i].uniqueID);
                                 parcel.Delivered = DateTime.Now;
                                 drone.droneStatus = DO.Enum.DroneStatus.Avilble;
 
@@ -427,7 +427,7 @@ namespace BlApi
             station.uniqueID = stationToTheList.uniqueID;
             station.name = stationToTheList.name;
             station.availableChargingStations = stationToTheList.availableChargingStations;
-            accessIdal.GetListOfStations().ToList().ForEach(delegate (Station stationDO)
+            accessDal.GetListOfStations().ToList().ForEach(delegate (Station stationDO)
             {
                 if (station.uniqueID == stationDO.id)
                 {
@@ -451,7 +451,7 @@ namespace BlApi
             // tempCust.name = parcelToList.nameTarget; ;
             parcel.priority = parcelToList.priority;
             parcel.weight = parcelToList.weight;
-            accessIdal.GetListOfParcels().ToList().ForEach(delegate (Parcel parcelDO)
+            accessDal.GetListOfParcels().ToList().ForEach(delegate (Parcel parcelDO)
             {
                 if (parcel.uniqueID == parcelDO.Id)
                 {
@@ -476,7 +476,7 @@ namespace BlApi
         {
             BO.Drone drone = GetDrone(ID);
             double minus = 0;
-            List<double> configStatus = accessIdal.PowerConsumptionBySkimmer();
+            List<double> configStatus = accessDal.PowerConsumptionBySkimmer();
             double distance = point1.distancePointToPoint(point2);
             if (drone.weight == BO.EnumBO.WeightCategories.Light)
             {
@@ -498,7 +498,7 @@ namespace BlApi
         public void updateParcel(int parcelID, int choise) 
         {
             // In the object "ParcelToList" no have drone Id paraneter, so we take it from DO.Parcel
-            DO.Parcel parcel1 = accessIdal.GetParcel(parcelID);
+            DO.Parcel parcel1 = accessDal.GetParcel(parcelID);
             if(choise == 1)
             // After that we have droneID update collection parcel by this drone 
                 CollectionOfPackageByDrone(parcel1.DroneId);

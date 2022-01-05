@@ -14,8 +14,8 @@ namespace DalApi
         {
             if (s == "DalObject")
                 return DalObject.DalObject.Instance;
-            //if (s == "DalXml")
-            //    return DalXml.GetXml.Instance;
+            if (s == "DalXml")
+                return DalXml.GetXml.Instance;
 
             else
                 throw new myExceptionDO("Exception from function DalFactory.GetDal", myExceptionDO.Get_wrong_string_for_geting_access_to_DalObject);
