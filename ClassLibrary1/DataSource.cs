@@ -28,10 +28,10 @@ namespace DalApi
 
             public static void Initialize()
             {
-                Config.vacant = 0.3;
-                Config.lightWeight = 1;
-                Config.mediumWeight = 0.8;
-                Config.heavyWeight = 0.5;
+                Config.vacant = 3;
+                Config.lightWeight = 10;
+                Config.mediumWeight = 8;
+                Config.heavyWeight = 5;
                 Config.droneLoadingRate = (double) 1 / 120;//all 1 second is charge the drone at 2%
                 for (int i = 0; i < 30; i++)//create 5 drones with random data
                 {

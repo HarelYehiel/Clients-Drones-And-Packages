@@ -41,6 +41,7 @@ namespace PL
             InitializeComponent();
             TurnOnFunctionFilters = true;
 
+            worker = new BackgroundWorker();
             worker.DoWork += Worker_DoWork;
 
             DronesListView.ItemsSource = dronesToTheLists;
@@ -75,15 +76,15 @@ namespace PL
 
             HideAndReseteAllTextBox();
         }
-        private void AllFilters(object sender, RoutedEventArgs e)
-        {
-            if (StatusCombo.SelectedIndex == -1 || WieghtCombo.SelectedIndex == -1)
-                MessageBox.Show("One of the filters was not selected", "Error", MessageBoxButton.OK);
-            else if (StatusCombo.SelectedItem != Enum.GetValues(typeof(EnumBO.Situations)) && WieghtCombo.SelectedItem != Enum.GetValues(typeof(EnumBO.WeightCategories)))
-                DronesListView.ItemsSource = bl.GetAllDronesBy
-                    (D => D.status == (EnumBO.DroneStatus)StatusCombo.SelectedItem
-                    && D.weight == (EnumBO.WeightCategories)WieghtCombo.SelectedItem);
-        }
+        //private void AllFilters(object sender, RoutedEventArgs e)
+        //{
+        //    if (StatusCombo.SelectedIndex == -1 || WieghtCombo.SelectedIndex == -1)
+        //        MessageBox.Show("One of the filters was not selected", "Error", MessageBoxButton.OK);
+        //    else if (StatusCombo.SelectedItem != Enum.GetValues(typeof(EnumBO.Situations)) && WieghtCombo.SelectedItem != Enum.GetValues(typeof(EnumBO.WeightCategories)))
+        //        DronesListView.ItemsSource = bl.GetAllDronesBy
+        //            (D => D.status == (EnumBO.DroneStatus)StatusCombo.SelectedItem
+        //            && D.weight == (EnumBO.WeightCategories)WieghtCombo.SelectedItem);
+        //}
         private void DronesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             HideOrVisibleDronesListViewAndOpenOptionsTheOpposite();
@@ -177,7 +178,7 @@ namespace PL
             {
                 DronesListView.ItemsSource = null;
                 dronesToTheLists.Clear();
-                dronesToTheLists.AddRange(bl.GetTheListOfDrones());
+                lock (bl) { dronesToTheLists.AddRange(bl.GetTheListOfDrones()); }
 
                 if (isNumber(FilterIDTextBox.Text)) // Filter ID
                 {

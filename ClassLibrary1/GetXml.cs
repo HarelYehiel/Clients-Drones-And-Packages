@@ -1,11 +1,11 @@
-﻿//using System;
-//using System.Collections;
-//using System.Collections.Generic;
-//using System.IO;
-//using System.Linq;
-//using System.Xml.Linq;
-//using System.Xml.Serialization;
-//using DO;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Xml.Linq;
+using System.Xml.Serialization;
+using DO;
 
 namespace DalXml
 {
@@ -16,7 +16,7 @@ namespace DalXml
         internal static GetXml Instance { get { return instance; } }
 
         string dirPath = @"..\..\..\..\DalXML\";
-        string configDataPath = @"dronesXml.xml";
+        string configDataPath = @"configXml.xml";
         string stationsPath = @"stationsXml.xml";
         string customersPath = @"customersXml.xml";
         string parcelsPath = @"parcelsXml.xml";
@@ -26,14 +26,14 @@ namespace DalXml
         public List<double> PowerConsumptionBySkimmer()
         {
 
-//            FileStream stream = File.OpenRead(dirPath + configDataPath);
-//            XmlSerializer serializer = new XmlSerializer(typeof(List<double>));
+            FileStream stream = File.OpenRead(dirPath + configDataPath);
+            XmlSerializer serializer = new XmlSerializer(typeof(List<double>));
 
-//            List<double> dou = (List<double>)serializer.Deserialize(stream);
-//            return dou;
+            List<double> dou = (List<double>)serializer.Deserialize(stream);
+            return dou;
 
-//        }
-//        public void AddParcel(Parcel par)
+        }
+        public void AddParcel(Parcel par)
 
         {
             par.runNumber++;
@@ -49,7 +49,7 @@ namespace DalXml
             stream.Close();
 
             // IEnumerable<station> stations  = DataSource.stations;
-            
+
             foreach (Station station in stations)
             {
                 if (station.id == stationId)
@@ -58,7 +58,7 @@ namespace DalXml
             throw new myExceptionDO("Exception from function GetStation", myExceptionDO.There_is_no_variable_with_this_ID);
         }
 
-        
+
 
         public Drone GetDrone(int droneId)
 
@@ -80,7 +80,7 @@ namespace DalXml
         }
 
 
-//        public Customer GetCustomer(int CustomerId)
+        public Customer GetCustomer(int CustomerId)
 
         {
             FileStream stream = File.OpenRead(dirPath + customersPath);
@@ -174,7 +174,7 @@ namespace DalXml
             //XDocument dronesFile = new XDocument(dirPath + dronesPath);
             //dronesFile.Add(drone);
             //dronesFile.Save(dirPath + dronesPath);
-            List <Drone> lst = GetListOfDrones().ToList();
+            List<Drone> lst = GetListOfDrones().ToList();
             lst.Add(drone);
             SaveListToXmlSerializer<Drone>(lst, dirPath + dronesPath);
         }
@@ -185,8 +185,8 @@ namespace DalXml
             return LoadListFromXmlSerializer<DroneCharge>(dirPath + dronesChargePath);
         }
 
-//        public IEnumerable<Station> GetListOfStations()
-//        //return all the station from DataSource.stations
+        public IEnumerable<Station> GetListOfStations()
+        //return all the station from DataSource.stations
 
         {
             return LoadListFromXmlSerializer<Station>(dirPath + stationsPath);
@@ -202,8 +202,8 @@ namespace DalXml
             return LoadListFromXmlSerializer<DroneCharge>(dirPath + dronesChargePath);
         }
 
-//        public IEnumerable<Parcel> GetListOfParcels()
-//        //print all the Parcel from DataSource.parcels
+        public IEnumerable<Parcel> GetListOfParcels()
+        //print all the Parcel from DataSource.parcels
 
         {
             return LoadListFromXmlSerializer<Parcel>(dirPath + parcelsPath);
@@ -211,39 +211,10 @@ namespace DalXml
         public IEnumerable<Drone> GetListOfDrones()
         //print all the Drone from DataSource.drones
         {
-            /*
-            //XElement root = XElement.Load(dirPath + dronesPath);
-            List<Drone> drones;
-            //try
-            //{
-            XmlSerializer xmlOpen = new XmlSerializer(typeof(List<Drone>));
-            FileStream fs = new FileStream(dirPath + dronesPath, FileMode.Open);
-            Console.WriteLine(fs);
-            drones = (List<Drone>)xmlOpen.Deserialize(fs);
-            fs.Close();
-            return drones;
-            */
             return LoadListFromXmlSerializer<Drone>(dirPath + dronesPath);
 
-
-
-            //    drones = (from d in root.Elements()
-            //              select new Drone
-            //              {
-            //                  Id = Convert.ToInt32(d.Element("Id").Value),
-            //                  Model = (d.Element("Model").Value),
-            //                  MaxWeight = (DO.Enum.WeightCategories)Convert.ToInt32(d.Element("MaxWeight").Value),
-            //                  droneStatus = (DO.Enum.DroneStatus)Convert.ToInt32(d.Element("droneStatus").Value)
-            //              }).ToList();
-            //}
-            //catch
-            //{
-            //    drones = null;
-            //}
-            //return drones;
-
         }
-        #endregion
+        #region specific filter of list
         public IEnumerable<Parcel> DisplaysParcelsDontHaveDrone()
 
         // Print the details of all the parcels don't have An associated skimmer (Selected_drone == 0).
@@ -264,8 +235,10 @@ namespace DalXml
                 throw new myExceptionDO("Exception from function displaysParcelsDontHaveDrone", myExceptionDO.Dont_have_any_parcel_in_the_list);
             }
         }
-
-//        public IEnumerable<Station> AvailableChargingStations()
+        #endregion
+        #endregion
+        #region implementaion of intarface IDal
+        public IEnumerable<Station> AvailableChargingStations()
 
         //Print the all stations that have DroneCharge available
         {
@@ -333,6 +306,8 @@ namespace DalXml
 
             }
         }
+        #endregion
+        #region update methods
         public void AffiliationDroneToParcel(int parcelID, int droneID)
         {
             if (GetListOfParcels().Count() == 0)
@@ -426,7 +401,7 @@ namespace DalXml
                                 updateStation(station);
                             }
                         }
-                        //////////////////////////////////////////////////////////למחוק מהקובץ את הרחפן הזה
+
                         updateDroneCharge(droneCharge);
                         break;
                     }
@@ -470,38 +445,45 @@ namespace DalXml
             }
 
         }
-        public void updateParcel(Parcel parcel)
+        public void updateParcel(Parcel updatedParcel)
         {
-            //List<Parcel> parcels = GetListOfParcels().ToList();
-            //Parcel parcelToRemove = GetParcel(parcel.Id);
-            //parcels.Remove(parcelToRemove);
-            //parcels.Add(parcel);
-            XDocument parcels = XDocument.Load(dirPath + parcelsPath);
-            var root = parcels.Root.Descendants("Parcel").FirstOrDefault(p => p.Attribute("id").Value == parcel.Id.ToString());
-            root.Remove();
-            parcels.Add(parcel);
-            parcels.Save(dirPath + parcelsPath);
+            // get the new update station, remove the older and save the new
+            List<Parcel> parcels = GetListOfParcels().ToList();
+            Parcel ParcelToRemove = GetParcel(updatedParcel.Id);
+            parcels.Remove(ParcelToRemove);
+            parcels.Add(updatedParcel);
+            SaveListToXmlSerializer<Parcel>(parcels, dirPath + parcelsPath);
 
         }
-        void updateStation(Station station)
+        void updateStation(Station updatedStation)
         {
-            XDocument stations = XDocument.Load(dirPath + stationsPath);
-            var root = stations.Root.Descendants("Station").FirstOrDefault(p => p.Attribute("id").Value == station.id.ToString());
-            root.Remove();
-            stations.Add(station);
-            stations.Save(dirPath + parcelsPath);
+            // get the new update station, remove the older and save the new
+            List<Station> stations = GetListOfStations().ToList();
+            Station stationToRemove = GetStation(updatedStation.id);
+            stations.Remove(stationToRemove);
+            stations.Add(updatedStation);
+            SaveListToXmlSerializer<Station>(stations, dirPath + parcelsPath);
         }
         void updateDroneCharge(DroneCharge droneCharge)
         {
-            //if the drone is not exist add him' and if he is exsist remove
-            XDocument dronCharges = XDocument.Load(dirPath + dronesChargePath);
-            var root = dronCharges.Root.Descendants("Parcel").FirstOrDefault(p => p.Attribute("id").Value == droneCharge.DroneId.ToString());
-            if (root.Attribute("DroneId").Value == "0")
-                root.Remove();
+            //if the drone is not exist add him, and if he is exsist remove
+            List<DroneCharge> droneCharges = GetListOfDroneCharge().ToList();
+            bool exists = false;
+            for (int i = 0; i < droneCharges.Count; i++)
+            {
+                if (droneCharges[i].DroneId == droneCharge.DroneId)
+                {
+                    exists = true;
+                }
+
+            }
+            if (exists)
+                droneCharges.Remove(droneCharge);
             else
-                dronCharges.Add(droneCharge);
-            dronCharges.Save(dirPath + parcelsPath);
+                droneCharges.Add(droneCharge);
+            SaveListToXmlSerializer<DroneCharge>(droneCharges, dirPath + dronesChargePath);
         }
+        #endregion
         void SaveListToXmlSerializer<T>(List<T> list, string filePath)
         {
             try
@@ -511,9 +493,9 @@ namespace DalXml
                 x.Serialize(file, list);
                 file.Close();
             }
-            catch 
+            catch
             {
-            //dont do anything
+                //dont do anything
             }
         }
         static List<T> LoadListFromXmlSerializer<T>(string filePath)
@@ -537,6 +519,5 @@ namespace DalXml
                 return new List<T>();
             }
         }
-
     }
 }

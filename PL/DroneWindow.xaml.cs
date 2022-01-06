@@ -21,6 +21,8 @@ namespace PL
         BlApi.IBL bl;
         DateTime? dateTime;
         BackgroundWorker worker;
+        bool startOrStopSimulter = true; // click on the button to start the simulator.
+
 
         private const int GWL_STYLE = -16;
         private const int WS_SYSMENU = 0x80000;
@@ -33,7 +35,7 @@ namespace PL
         {
             bl = bl1;
             InitializeComponent();
-            
+
 
             // Hide the all tools from view drone.
             FunctionConbo.Visibility = Visibility.Collapsed;
@@ -100,9 +102,11 @@ namespace PL
 
             Simulator.Visibility = Visibility.Visible;
 
+            worker = new BackgroundWorker();
             worker.DoWork += Worker_DoWork;
             worker.ProgressChanged += Worker_ProgressChanged;
             worker.WorkerReportsProgress = true;
+            worker.WorkerSupportsCancellation = true;
 
             DroneButton.Content = "Update";
             title.Content = "Update Drone";
@@ -110,17 +114,35 @@ namespace PL
 
         private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            BatteryTextBox.Text = bl.GetDrone(Convert.ToInt32(IDTextBox.Text)).Battery.ToString();
-            Thread.Sleep(1000);
-        }
+            
 
+
+                lock (bl)
+                {
+                    Drone drone = bl.GetDrone(Convert.ToInt32(IDTextBox.Text));
+
+                    // Dispatcher to main thread to update the window drone.
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        BatteryTextBox.Text = drone.Battery.ToString();
+                        statusTextBox.Text = drone.Status.ToString();
+                    });
+                    Thread.Sleep(1000);
+                }
+            
+        }
+        bool StopTest()
+        {
+            // return true if some where launch the activate the function worker.CancelAsync 
+            return !worker.CancellationPending;
+        }
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
 
-            Func<bool> func = null;
-            Action action = () => worker.ReportProgress(50);
-
-            bl.SimulatorStart(Convert.ToInt32(IDTextBox), func, action);
+            Func<bool> func = StopTest;
+            Action action = () => worker.ReportProgress(0);
+            int idDrone = this.Dispatcher.Invoke<int>(() => { return Convert.ToInt32(IDTextBox.Text); });
+            bl.SimulatorStart(idDrone, func, action);
         }
 
         bool isNumber(string s)
@@ -225,7 +247,7 @@ namespace PL
             else if (DroneButton.Content.ToString() == "Update")
             {
                 openOptions.Visibility = Visibility.Visible;
-            //    UpdateDrone(sender, e);
+                //    UpdateDrone(sender, e);
             }
         }
         private void Okay(object sender, RoutedEventArgs e)
@@ -284,7 +306,7 @@ namespace PL
             }
         }
         void UpdateDroneData()
-            // Update the view drone data after click the Update button.
+        // Update the view drone data after click the Update button.
         {
             DroneToList droneToList = bl.GetDroneToTheList(Convert.ToInt32(IDTextBox.Text));
 
@@ -417,8 +439,22 @@ namespace PL
 
         private void Simulator_Click(object sender, RoutedEventArgs e)
         {
-            worker.RunWorkerAsync();
-          
+
+            if (startOrStopSimulter)
+            {
+                BatteryTextBox.IsEnabled = true;
+                statusTextBox.IsEnabled = true;
+                startOrStopSimulter = false; //start simultor, next click on the button is  stop the simulator.
+                worker.RunWorkerAsync();
+            }
+            else
+            {
+                startOrStopSimulter = true;//Stop simultor, next click on the button is start the simulator.
+                worker.CancelAsync();
+                BatteryTextBox.IsEnabled = false;
+                statusTextBox.IsEnabled = false;
+            }
+
         }
     }
 }
