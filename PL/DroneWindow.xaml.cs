@@ -223,7 +223,10 @@ namespace PL
             if (DroneButton.Content.ToString() == "Add Drone")
                 AddDrone(sender, e);
             else if (DroneButton.Content.ToString() == "Update")
-                UpdateDrone(sender, e);
+            {
+                openOptions.Visibility = Visibility.Visible;
+            //    UpdateDrone(sender, e);
+            }
         }
         private void Okay(object sender, RoutedEventArgs e)
         {
@@ -388,6 +391,28 @@ namespace PL
         private void CharginDroneDatePicker_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             dateTime = CharginDroneDatePicker.SelectedDate;
+        }
+
+        private void sendToCharge_click(object sender, RoutedEventArgs e)
+        {
+            bl.SendingDroneToCharging(Convert.ToInt32(IDTextBox.Text));
+        }
+
+        private void ReleaseCharge_Click(object sender, RoutedEventArgs e)
+        {
+            bl.ReleaseDroneFromCharging(Convert.ToInt32(IDTextBox.Text), 30);
+            /////////////////////////////////////////////////////////////////////////////////////////////לפתור את הבעיה של זמנים, זה אמור להתעדכן לפי זמן נוכחי אבל אין זמן התחלה שבו הוא נכנס לטעינה
+        }
+
+        private void AssignParcel_Click(object sender, RoutedEventArgs e)
+        {
+            bl.AssignPackageToDrone(Convert.ToInt32(IDTextBox.Text));
+
+        }
+
+        private void CancelOpenBarButton_Click(object sender, RoutedEventArgs e)
+        {
+            openOptions.Visibility = Visibility.Hidden;
         }
 
         private void Simulator_Click(object sender, RoutedEventArgs e)

@@ -1,93 +1,111 @@
 <?xml version="1.0"?>
 <ArrayOfCustomer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Customer>
-    <Id>92240</Id>
-    <name>cust82</name>
-    <phone>0592926560</phone>
-    <location>
-      <longitude>34.74027067084809</longitude>
-      <latitude>31.18199026639666</latitude>
-    </location>
-  </Customer>
-  <Customer>
-    <Id>96028</Id>
-    <name>cust35</name>
-    <phone>0579857378</phone>
-    <location>
-      <longitude>34.65841027473026</longitude>
-      <latitude>31.17973897195409</latitude>
-    </location>
-  </Customer>
-  <Customer>
-    <Id>17485</Id>
-    <name>cust3</name>
-    <phone>0569507567</phone>
-    <location>
-      <longitude>34.944435554065016</longitude>
-      <latitude>31.428497674143173</latitude>
-    </location>
-  </Customer>
-  <Customer>
-    <Id>92516</Id>
-    <name>cust55</name>
-    <phone>0521782107</phone>
-    <location>
-      <longitude>34.428076729843426</longitude>
-      <latitude>31.46475317397376</latitude>
-    </location>
-  </Customer>
-  <Customer>
-    <Id>18607</Id>
+    <Id>34605</Id>
     <name>cust90</name>
-    <phone>0595953851</phone>
+    <phone>0596780478</phone>
     <location>
-      <longitude>34.23369601193522</longitude>
-      <latitude>31.22833864820578</latitude>
+      <longitude>34.0307063833022</longitude>
+      <latitude>31.823248638223507</latitude>
     </location>
   </Customer>
   <Customer>
-    <Id>85764</Id>
-    <name>cust89</name>
-    <phone>0559116728</phone>
-    <location>
-      <longitude>34.892617598126</longitude>
-      <latitude>31.08379816454081</latitude>
-    </location>
-  </Customer>
-  <Customer>
-    <Id>95908</Id>
-    <name>cust17</name>
-    <phone>0527605980</phone>
-    <location>
-      <longitude>34.79712875457347</longitude>
-      <latitude>31.96855875941392</latitude>
-    </location>
-  </Customer>
-  <Customer>
-    <Id>66120</Id>
+    <Id>25573</Id>
     <name>cust59</name>
-    <phone>0579651696</phone>
+    <phone>0585402315</phone>
     <location>
-      <longitude>34.5144933413316</longitude>
-      <latitude>31.694156230750565</latitude>
+      <longitude>34.73480417939592</longitude>
+      <latitude>31.662709346349683</latitude>
     </location>
   </Customer>
   <Customer>
-    <Id>41445</Id>
-    <name>cust11</name>
-    <phone>0572163246</phone>
+    <Id>65813</Id>
+    <name>cust44</name>
+    <phone>0533730650</phone>
     <location>
-      <longitude>34.495493820633506</longitude>
-      <latitude>31.099060712428326</latitude>
+      <longitude>34.72230603253576</longitude>
+      <latitude>31.935879681695198</latitude>
     </location>
   </Customer>
   <Customer>
-    <Id>24942</Id>
+    <Id>29269</Id>
+    <name>cust55</name>
+    <phone>0563763403</phone>
+    <location>
+      <longitude>34.93805821656159</longitude>
+      <latitude>31.267554387109147</latitude>
+    </location>
+  </Customer>
+  <Customer>
+    <Id>89994</Id>
+    <name>cust27</name>
+    <phone>0542307487</phone>
+    <location>
+      <longitude>34.98041822806952</longitude>
+      <latitude>31.112690336589093</latitude>
+    </location>
+  </Customer>
+  <Customer>
+    <Id>58327</Id>
+    <name>cust13</name>
+    <phone>0538570084</phone>
+    <location>
+      <longitude>34.38283901306933</longitude>
+      <latitude>31.749466077773583</latitude>
+    </location>
+  </Customer>
+  <Customer>
+    <Id>56283</Id>
     <name>cust6</name>
-    <phone>0529290679</phone>
+    <phone>0539306105</phone>
     <location>
-      <longitude>34.117034894934406</longitude>
-      <latitude>31.983831055920493</latitude>
+      <longitude>34.093533039602235</longitude>
+      <latitude>31.605855489897476</latitude>
+    </location>
+  </Customer>
+  <Customer>
+    <Id>53550</Id>
+    <name>cust45</name>
+    <phone>0546932818</phone>
+    <location>
+      <longitude>34.95875735020207</longitude>
+      <latitude>31.58741684285338</latitude>
+    </location>
+  </Customer>
+  <Customer>
+    <Id>97798</Id>
+    <name>cust52</name>
+    <phone>0537323816</phone>
+    <location>
+      <longitude>34.38200808706787</longitude>
+      <latitude>31.714287459251604</latitude>
+    </location>
+  </Customer>
+  <Customer>
+    <Id>36139</Id>
+    <name>cust32</name>
+    <phone>0599492767</phone>
+    <location>
+      <longitude>34.024374520883136</longitude>
+      <latitude>31.944465986892798</latitude>
+    </location>
+  </Customer>
+  <Customer>
+    <Id>12345</Id>
+    <name>Jhon</name>
+    <phone>0523607900</phone>
+    <location>
+      <longitude>34.123456</longitude>
+      <latitude>31.236544</latitude>
+    </location>
+  </Customer>
+  <Customer>
+    <Id>11111</Id>
+    <name>Harel Yehiel</name>
+    <phone>0546325145</phone>
+    <location>
+      <longitude>31.999999</longitude>
+      <latitude>34.123456</latitude>
     </location>
   </Customer>
 </ArrayOfCustomer>

@@ -57,7 +57,7 @@ namespace DalApi
                 droneCharge.DroneId = droneId;
                 droneCharge.staitionId = stationId;
                 droneCharge.startCharge = DateTime.Now;
-                temp.InputTheDroneChargeToArray(droneCharge);
+                temp.InputTheDroneCharge(droneCharge);
             }
             public void updateRelaseDroneFromCharge(int droneId, double longi, double lati, double min)
             {

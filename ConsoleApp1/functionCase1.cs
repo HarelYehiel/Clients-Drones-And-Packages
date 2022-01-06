@@ -23,7 +23,7 @@ namespace ConsoleUI
             p.longitude = giveDouble();//user input Longitude
             item.Location = p;
             item.ChargeSlots = 10;//all station have only 10 charge slots 
-            temp.InputTheStationToArray(item);//this function is using at the data base so she must to be in DAL project
+            temp.InputTheStation(item);//this function is using at the data base so she must to be in DAL project
           
         }
         public void addParcel1()
@@ -50,7 +50,7 @@ namespace ConsoleUI
             par.priority = (DO.Enum.Priorities)parPriority;
             par.Requested = DateTime.Now;//the requestsd time is now
             //par.Scheduled = par.Requested.AddMinutes(5);//the parcel find drone at 5 minutes
-            temp.InputTheParcelToArray(par);
+            temp.InputTheParcel(par);
         }
 
         public void addCustomer()
@@ -72,7 +72,7 @@ namespace ConsoleUI
             Console.WriteLine("enter Longitude:");
             P.longitude = giveDouble();//user input Longitude
             cust.location = P;
-            temp.InputTheCustomerToArray(cust);
+            temp.InputTheCustomer(cust);
         }
 
         public void addDrone()
@@ -89,7 +89,7 @@ namespace ConsoleUI
             Console.WriteLine("enter drone weight:\nLight = 0, Medium = 1, Heavy = 2");
             int weightChoose = giveNumber();//user input weight
             dro.MaxWeight = (DO.Enum.WeightCategories)weightChoose;//convert the choose to WeightCategories
-            temp.InputTheDroneToArray(dro);
+            temp.InputTheDrone(dro);
             
         }
 
