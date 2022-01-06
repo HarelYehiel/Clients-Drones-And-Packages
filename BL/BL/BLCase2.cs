@@ -173,6 +173,38 @@ namespace BlApi
             }
 
         }
+        public void UpdateBatteryInReelTime(int idDrone, double distance)
+        {
+
+            BO.DroneToList droneToList_BO = GetDroneToListBO(idDrone);
+            List<double> configStatus = accessIdal.PowerConsumptionBySkimmer();
+
+            switch (droneToList_BO.weight)
+            {
+                case BO.EnumBO.WeightCategories.Light:
+                    droneToList_BO.Battery -= distance * configStatus[1];
+                    break;
+                case BO.EnumBO.WeightCategories.Medium:
+                    droneToList_BO.Battery -= distance * configStatus[2];
+
+                    break;
+                case BO.EnumBO.WeightCategories.Heavy:
+                    droneToList_BO.Battery -= distance * configStatus[3];
+
+                    break;
+
+            }
+
+            for (int i = 0; i < ListDroneToList.Count; i++)
+            {
+                if (ListDroneToList[i].uniqueID == idDrone)
+                {
+                    ListDroneToList[i] = droneToList_BO;
+                }
+            }
+
+        }
+
         public void ReleaseDroneFromCharging(int ID, double min)
         {
             try
@@ -480,18 +512,18 @@ namespace BlApi
             double distance = point1.distancePointToPoint(point2);
             if (drone.weight == BO.EnumBO.WeightCategories.Light)
             {
-                //all 1500 meters is minus 1% battery
-                minus = distance / configStatus[1];
+                //all 10 KM is minus 1% battery
+                minus = distance * configStatus[1];
             }
             if (drone.weight == BO.EnumBO.WeightCategories.Medium)
             {
-                //all 1000 meters is minus 1% battery
-                minus = distance / configStatus[2];
+                //all 8 KM is minus 1% battery
+                minus = distance * configStatus[2];
             }
             if (drone.weight == BO.EnumBO.WeightCategories.Heavy)
             {
-                //All 850 meters is minus 1% battery
-                minus = distance / configStatus[3];
+                //All 5 KM is minus 1% battery
+                minus = distance * configStatus[3];
             }
             return minus;
         }

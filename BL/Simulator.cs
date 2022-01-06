@@ -8,18 +8,30 @@ using System.Threading;
 using static BlApi.BL;
 using System.Linq;
 using System.Diagnostics;
+using BO;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.InteropServices;
+using System.Threading;
+using System.Windows;
+
 
 namespace BlApi
 {
     public class Simulator
     {
-        double speedDrone;
+        double speedDrone = 15; // 3 KM per 1 second. 
         private Stopwatch stopwatch;
-        public Simulator(BlApi.BL bl, int droneId, Func<bool> func)
+        BlApi.BL bl;
+        public Simulator(BlApi.BL bl1, int droneId, Func<bool> func, Action action)
         {
+            bl = bl1;
             stopwatch.Start();
             double? HowMuchTimeMissingToBatteryFull = null;
             Drone drone = bl.GetDrone(droneId);
+            double distance; // Dictance from the client oe station.
+            double HowLongToArrive; // How long to arrive to collect/ delivered parcel or arrive to station. (in second)
 
             while (func())
             {
@@ -28,14 +40,24 @@ namespace BlApi
                     case EnumBO.DroneStatus.Avilble:
                         try
                         {
-                            bl.AssignPackageToDrone(drone.uniqueID);
-                            drone.Status = EnumBO.DroneStatus.Delivery;
-                            Thread.Sleep(500); // Wait for drone collection the package.
-                            bl.CollectionOfPackageByDrone(drone.uniqueID);
+                            lock (bl) { bl.AssignPackageToDrone(drone.uniqueID); }
+                            action();
+                            drone = bl.GetDrone(drone.uniqueID);
+                            distance = bl.distance(drone.location, drone.parcelByTransfer.collectionLocation);
+                            HowLongToArrive = distance / speedDrone;
+                            updateInRealTime(drone.uniqueID, HowLongToArrive, action);
+
+
+                            lock (bl)
+                            {
+                                bl.CollectionOfPackageByDrone(drone.uniqueID);
+                            }
                             Thread.Sleep(500); // Wait for drone delivery the package.
                             bl.DeliveryOfPackageByDrone(drone.uniqueID);
                             drone.Status = EnumBO.DroneStatus.Avilble;
                             drone = bl.GetDrone(drone.uniqueID);
+
+
                         }
                         catch (Exception e)
                         {
@@ -87,6 +109,18 @@ namespace BlApi
                         break;
 
                 }
+            }
+        }
+        public void updateInRealTime(int droneId, double HowLongToArrive, Action action)
+        // How long to arrive to collect / delivered parcel or arrive to station (in second).
+        // Dictance from the client oe station (meter).
+        {
+
+            for (int i = 1; i <= HowLongToArrive; i++)
+            {
+                lock (bl) { bl.UpdateBatteryInReelTime(droneId, speedDrone); }
+                action();
+                Thread.Sleep(1000);
             }
         }
     }

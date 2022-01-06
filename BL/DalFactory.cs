@@ -12,7 +12,7 @@ namespace DalApi
         //לחזור לפה להבין מה המחלקה אמורה להחזיר ומה היא אמורה לזרוק
         static public IDal GetDal(string s)
         {
-            /// ???????????/
+            if
 
             else
                 throw new myExceptionDO("Exception from function DalFactory.GetDal", myExceptionDO.Get_wrong_string_for_geting_access_to_DalObject);

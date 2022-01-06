@@ -101,16 +101,26 @@ namespace PL
             Simulator.Visibility = Visibility.Visible;
 
             worker.DoWork += Worker_DoWork;
+            worker.ProgressChanged += Worker_ProgressChanged;
+            worker.WorkerReportsProgress = true;
 
             DroneButton.Content = "Update";
             title.Content = "Update Drone";
         }
 
-        private void Worker_DoWork(object sender, DoWorkEventArgs e)
+        private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             BatteryTextBox.Text = bl.GetDrone(Convert.ToInt32(IDTextBox.Text)).Battery.ToString();
             Thread.Sleep(1000);
+        }
 
+        private void Worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+
+            Func<bool> func = null;
+            Action action = () => worker.ReportProgress(50);
+
+            bl.SimulatorStart(Convert.ToInt32(IDTextBox), func, action);
         }
 
         bool isNumber(string s)
@@ -382,8 +392,8 @@ namespace PL
 
         private void Simulator_Click(object sender, RoutedEventArgs e)
         {
-            Func<bool> func = 
-            bl.Simulator(Convert.ToInt32(IDTextBox), func)
+            worker.RunWorkerAsync();
+          
         }
     }
 }

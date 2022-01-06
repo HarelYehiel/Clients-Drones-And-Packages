@@ -68,7 +68,7 @@ namespace BlApi
         public bool IsDigitsOnly(string str);
         public void InitializeAndUpdateTheListsInIBL();
         public void DelParcel(int ID);
-        public void Simulator(int droneId, Func<bool> f1, Action action);
+        public void SimulatorStart(int droneId, Func<bool> f1, Action action);
 
     }
 }

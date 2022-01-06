@@ -23,7 +23,7 @@ namespace BlApi
         }
         public void SimulatorStart(int droneId, Func<bool> f1, Action action)
         {
-            BlApi.Simulator simu = new Simulator(Instance, droneId, f1 );
+           new Simulator(Instance, droneId, f1, action );
         }
 
         public void InitializeAndUpdateTheListsInIBL()
