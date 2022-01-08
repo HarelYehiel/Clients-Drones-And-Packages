@@ -9,9 +9,9 @@ namespace BlApi
 {
     public partial class BL : IBL
     {
-        DalApi.DalObject.UpdateClass updateDataSourceFun = new DalApi.DalObject.UpdateClass();
+       // DalApi.DalObject.UpdateClass updateDataSourceFun = new DalApi.DalObject.UpdateClass();
+        
         public delegate bool Predicate<in T>(T obj);
-
         public delegate BO.Parcel Converter<in ParcelToList, out Parcel>(BO.ParcelToList input);
 
 
@@ -25,7 +25,7 @@ namespace BlApi
             {
                 Drone drone = accessDal.GetDrone(ID);
                 drone.Model = newModel;
-                updateDataSourceFun.updateDrone(drone);
+                accessDal.updateDrone(drone);
                 BO.DroneToList droneToList_BO;
                 droneToList_BO = GetDroneToListBO(ID);
                 droneToList_BO.Model = newModel;
@@ -64,7 +64,7 @@ namespace BlApi
                     else
                         station.ChargeSlots = numSlots;
                 }
-                updateDataSourceFun.updateStation(station);
+                accessDal.updateStation(station);
             }
             catch (Exception e)
             {
@@ -87,7 +87,7 @@ namespace BlApi
                 double d = 1;//= ( DateTime.Now - item.startCharge)
                 DateTime dateTime = new DateTime();
                 dateTime = DateTime.Now;
-                ReleaseDroneFromCharging(item.uniqueID, d);
+                ReleaseDroneFromCharging(item.uniqueID, dateTime);
             }
         }
         public void UpdateCustomerData(int ID, string name, string phoneNumber)
@@ -99,7 +99,7 @@ namespace BlApi
                     customer.name = name;
                 if (phoneNumber != "")
                     customer.phone = phoneNumber;
-                updateDataSourceFun.updateCustomer(customer);
+                accessDal.updateCustomer(customer);
             }
             catch (Exception e)
             {
@@ -154,7 +154,12 @@ namespace BlApi
                                 //update station data in DataSource
                                 UpdateStationData(station.uniqueID, station.name, station.availableChargingStations);
                                 //update all the changes data
-                                updateDataSourceFun.updateDroneToCharge(ID, station.uniqueID);
+                                DroneCharge droneCharge = new DroneCharge{
+                                    DroneId = ID,
+                                    staitionId = station.uniqueID,
+                                    startCharge = DateTime.Now,                                 
+                                };
+                                accessDal.updateDroneToCharge(droneCharge);
                             }
                         }
 
@@ -173,7 +178,7 @@ namespace BlApi
             }
 
         }
-        public void ReleaseDroneFromCharging(int ID, double min)
+        public void ReleaseDroneFromCharging(int ID, DateTime updateTime)
         {
             try
             {
@@ -183,6 +188,8 @@ namespace BlApi
                     //------gett data of this dron from BL drone list-----------
                     BO.DroneToList droneBo = GetDroneToListBO(ID);// new BO.DroneToList();
                     List<double> getConfig = accessDal.PowerConsumptionBySkimmer();
+                    BO.DroneInCharging droneCharge = GetDroneInCharging(ID);
+                    double min = (updateTime - droneCharge.startCharge).TotalMinutes;
                     //update drone in BL list
                     droneBo.Battery = droneBo.Battery + (min * getConfig[4]);//every minute in charge is 1% more
                     if (droneBo.Battery > 100)
@@ -199,7 +206,7 @@ namespace BlApi
                     }
                     //update data in dataSource
                     BO.Location point = droneBo.location;
-                    updateDataSourceFun.updateRelaseDroneFromCharge(ID, point.longitude, point.latitude, min);
+                    accessDal.updateRelaseDroneFromCharge(ID, point.longitude, point.latitude, min);
 
                     //update all the changes data at the stations list
                     Station sta = new Station();
@@ -209,7 +216,7 @@ namespace BlApi
                         if (station.location == point)
                             sta.ChargeSlots++;
                     }
-                    updateDataSourceFun.updateStation(sta);
+                    accessDal.updateStation(sta);
                 }
                 else
                     throw new BO.MyExeption_BO("The drone is not maintained at all");
@@ -258,10 +265,10 @@ namespace BlApi
                     {
                         parcelDO.Scheduled = DateTime.Now;
                         parcelDO.DroneId = drone.Id;
-                        updateDataSourceFun.updateParcel(parcelDO);
+                        accessDal.updateParcel(parcelDO);
 
                         drone.droneStatus = DO.Enum.DroneStatus.Delivery;
-                        updateDataSourceFun.updateDrone(drone);
+                        accessDal.updateDrone(drone);
 
                         droneBo.status = BO.EnumBO.DroneStatus.Delivery;
                         droneBo.packageDelivered = parcelDO.Id;
@@ -290,7 +297,6 @@ namespace BlApi
                     {
                         if (parcels[i].droneInParcel.uniqueID == ID)
                         {
-                            /////////////////////////////////////////////////////////////בעצם להכניס לפה את האפשרות לקבל חבילה ולעדכן אותה כמשוייכת לרחפן הזה
                             //if the parcel not picked up yet the PickUp time will be defult
                             if (parcels[i].pickedUp == null)
                             {
@@ -309,7 +315,7 @@ namespace BlApi
                                 //else
                                     parcel = accessDal.GetParcel(parcels[i].uniqueID);
                                 parcel.PickedUp = DateTime.Now;
-                                updateDataSourceFun.updateParcel(parcel);
+                                accessDal.updateParcel(parcel);
 
                                 for (int j = 0; j < ListDroneToList.Count; j++)
                                 {
@@ -368,8 +374,8 @@ namespace BlApi
                                 drone.droneStatus = DO.Enum.DroneStatus.Avilble;
 
                                 //update changes in DataSource
-                                updateDataSourceFun.updateDrone(drone);
-                                updateDataSourceFun.updateParcel(parcel);
+                                accessDal.updateDrone(drone);
+                                accessDal.updateParcel(parcel);
                                 break;
                             }
                         }
@@ -410,7 +416,31 @@ namespace BlApi
                 //check if drone have enough battery to get up to the sender and than go up to target with the parcel
                 if (droneBo.Battery - colculateBatteryBO(point1, point2, droneId) - colculateBatteryBO(point1, point3, droneId) > 0)
                 {
-                    //we found a parcel! return false for 
+                    //we found a parcel! return false for
+                    List<BO.StationToTheList> test = GetListOfBaseStations().ToList();
+                    AddingDrone(12345, "check", 0, test[0].uniqueID);
+                    for(int i = 0; i < ListDroneToList.Count; i++)
+                    {
+                        if (ListDroneToList[i].uniqueID == 12345)
+                        {
+                            ListDroneToList[i].location = point3;
+                            ListDroneToList[i].Battery = droneBo.Battery - colculateBatteryBO(point1, point2, droneId) - colculateBatteryBO(point1, point3, droneId);
+                            break;
+                        }
+                    }
+                    // we crate test drone in the location of the target, and try to send him to charge at station,
+                    // if its will succseed return false, else delete this test and return true 
+                    try
+                    {
+                        SendingDroneToCharging(12345);
+                    }
+                    catch 
+                    {
+                        DelDrone(12345);
+                        return true;
+                    }
+                    // delete this test and return false 
+                    DelDrone(12345);
                     return false;
                 }
                 return true;

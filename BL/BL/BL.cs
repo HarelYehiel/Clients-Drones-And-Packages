@@ -123,6 +123,10 @@ namespace BlApi
         {
             accessDal.DelParcel(ID);
         }
+        public void DelDrone(int ID)
+        {
+            accessDal.DelDrone(ID);
+        }
 
     }
 }

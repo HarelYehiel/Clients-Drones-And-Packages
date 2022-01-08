@@ -49,7 +49,7 @@ namespace DalXml
             stream.Close();
 
             // IEnumerable<station> stations  = DataSource.stations;
-            
+
             foreach (Station station in stations)
             {
                 if (station.id == stationId)
@@ -58,7 +58,7 @@ namespace DalXml
             throw new myExceptionDO("Exception from function GetStation", myExceptionDO.There_is_no_variable_with_this_ID);
         }
 
-        
+
 
         public Drone GetDrone(int droneId)
 
@@ -74,6 +74,24 @@ namespace DalXml
             {
                 if (drone.Id == droneId)
                     return drone;
+            }
+
+            throw new myExceptionDO("Exception from function GetDrone", myExceptionDO.There_is_no_variable_with_this_ID);
+        }
+        DroneCharge GetDroneCharge(int droneId)
+
+        {
+            FileStream stream = File.OpenRead(dirPath + dronesChargePath);
+            XmlSerializer serializer = new XmlSerializer(typeof(List<DroneCharge>));
+
+            List<DroneCharge> droneCharges = (List<DroneCharge>)serializer.Deserialize(stream);
+            // IEnumerable<station> stations  = DataSource.stations;
+
+            stream.Close();
+            foreach (DroneCharge ob in droneCharges)
+            {
+                if (ob.DroneId == droneId)
+                    return ob;
             }
 
             throw new myExceptionDO("Exception from function GetDrone", myExceptionDO.There_is_no_variable_with_this_ID);
@@ -140,7 +158,18 @@ namespace DalXml
 
         public void DelDrone(int ID)
         {
-            throw new Exception();
+            try
+            {
+                Drone drone = GetDrone(ID);
+                List<Drone> tempList = GetListOfDrones().ToList();
+                tempList.Remove(drone);
+                SaveListToXmlSerializer<Drone>(tempList, dirPath + dronesPath);
+
+            }
+            catch
+            {
+                //nothing
+            }
         }
         #endregion
         #region add item to xml file
@@ -174,7 +203,7 @@ namespace DalXml
             //XDocument dronesFile = new XDocument(dirPath + dronesPath);
             //dronesFile.Add(drone);
             //dronesFile.Save(dirPath + dronesPath);
-            List <Drone> lst = GetListOfDrones().ToList();
+            List<Drone> lst = GetListOfDrones().ToList();
             lst.Add(drone);
             SaveListToXmlSerializer<Drone>(lst, dirPath + dronesPath);
         }
@@ -211,39 +240,10 @@ namespace DalXml
         public IEnumerable<Drone> GetListOfDrones()
         //print all the Drone from DataSource.drones
         {
-            /*
-            //XElement root = XElement.Load(dirPath + dronesPath);
-            List<Drone> drones;
-            //try
-            //{
-            XmlSerializer xmlOpen = new XmlSerializer(typeof(List<Drone>));
-            FileStream fs = new FileStream(dirPath + dronesPath, FileMode.Open);
-            Console.WriteLine(fs);
-            drones = (List<Drone>)xmlOpen.Deserialize(fs);
-            fs.Close();
-            return drones;
-            */
             return LoadListFromXmlSerializer<Drone>(dirPath + dronesPath);
 
-
-
-            //    drones = (from d in root.Elements()
-            //              select new Drone
-            //              {
-            //                  Id = Convert.ToInt32(d.Element("Id").Value),
-            //                  Model = (d.Element("Model").Value),
-            //                  MaxWeight = (DO.Enum.WeightCategories)Convert.ToInt32(d.Element("MaxWeight").Value),
-            //                  droneStatus = (DO.Enum.DroneStatus)Convert.ToInt32(d.Element("droneStatus").Value)
-            //              }).ToList();
-            //}
-            //catch
-            //{
-            //    drones = null;
-            //}
-            //return drones;
-
         }
-        #endregion
+        #region specific filter of list
         public IEnumerable<Parcel> DisplaysParcelsDontHaveDrone()
 
         // Print the details of all the parcels don't have An associated skimmer (Selected_drone == 0).
@@ -264,7 +264,9 @@ namespace DalXml
                 throw new myExceptionDO("Exception from function displaysParcelsDontHaveDrone", myExceptionDO.Dont_have_any_parcel_in_the_list);
             }
         }
-
+        #endregion
+        #endregion
+        #region implementaion of intarface IDal
         public IEnumerable<Station> AvailableChargingStations()
 
         //Print the all stations that have DroneCharge available
@@ -333,6 +335,8 @@ namespace DalXml
 
             }
         }
+        #endregion
+        #region update methods
         public void AffiliationDroneToParcel(int parcelID, int droneID)
         {
             if (GetListOfParcels().Count() == 0)
@@ -426,8 +430,8 @@ namespace DalXml
                                 updateStation(station);
                             }
                         }
-                        //////////////////////////////////////////////////////////למחוק מהקובץ את הרחפן הזה
-                        updateDroneCharge(droneCharge);
+
+                        updateDroneToCharge(droneCharge);
                         break;
                     }
                 }
@@ -459,7 +463,7 @@ namespace DalXml
                     DroneCharge droneCharge = new DroneCharge();
                     droneCharge.DroneId = droneId;
                     droneCharge.staitionId = stationId;
-                    updateDroneCharge(droneCharge);
+                    updateDroneToCharge(droneCharge);
 
                     Station station = new Station();
                     station = station1;
@@ -470,38 +474,88 @@ namespace DalXml
             }
 
         }
-        public void updateParcel(Parcel parcel)
+        public void updateParcel(Parcel updatedParcel)
         {
-            //List<Parcel> parcels = GetListOfParcels().ToList();
-            //Parcel parcelToRemove = GetParcel(parcel.Id);
-            //parcels.Remove(parcelToRemove);
-            //parcels.Add(parcel);
-            XDocument parcels = XDocument.Load(dirPath + parcelsPath);
-            var root = parcels.Root.Descendants("Parcel").FirstOrDefault(p => p.Attribute("id").Value == parcel.Id.ToString());
-            root.Remove();
-            parcels.Add(parcel);
-            parcels.Save(dirPath + parcelsPath);
+            // get the new update station, remove the older and save the new
+            List<Parcel> parcels = GetListOfParcels().ToList();
+            Parcel ParcelToRemove = GetParcel(updatedParcel.Id);
+            parcels.Remove(ParcelToRemove);
+            parcels.Add(updatedParcel);
+            SaveListToXmlSerializer<Parcel>(parcels, dirPath + parcelsPath);
 
         }
-        void updateStation(Station station)
+        public void updateStation(Station updatedStation)
         {
-            XDocument stations = XDocument.Load(dirPath + stationsPath);
-            var root = stations.Root.Descendants("Station").FirstOrDefault(p => p.Attribute("id").Value == station.id.ToString());
-            root.Remove();
-            stations.Add(station);
-            stations.Save(dirPath + parcelsPath);
+            // get the new update station, remove the older and save the new
+            List<Station> stations = GetListOfStations().ToList();
+            Station stationToRemove = GetStation(updatedStation.id);
+            stations.Remove(stationToRemove);
+            stations.Add(updatedStation);
+            SaveListToXmlSerializer<Station>(stations, dirPath + parcelsPath);
         }
-        void updateDroneCharge(DroneCharge droneCharge)
+        public void updateDroneToCharge(DroneCharge droneCharge)
         {
-            //if the drone is not exist add him' and if he is exsist remove
-            XDocument dronCharges = XDocument.Load(dirPath + dronesChargePath);
-            var root = dronCharges.Root.Descendants("Parcel").FirstOrDefault(p => p.Attribute("id").Value == droneCharge.DroneId.ToString());
-            if (root.Attribute("DroneId").Value == "0")
-                root.Remove();
-            else
-                dronCharges.Add(droneCharge);
-            dronCharges.Save(dirPath + parcelsPath);
+            //if the drone is not exist add him
+            List<DroneCharge> droneCharges = GetListOfDroneCharge().ToList();
+            bool exists = false;
+            for (int i = 0; i < droneCharges.Count; i++)
+            {
+                if (droneCharges[i].DroneId == droneCharge.DroneId)
+                {
+                    exists = true;
+                }
+
+            }
+            if (!exists)
+                droneCharges.Add(droneCharge);
+            SaveListToXmlSerializer<DroneCharge>(droneCharges, dirPath + dronesChargePath);
         }
+        public void updateDrone(DO.Drone drone)
+        {
+            // get the new update drone, remove the older and save the new
+            List<Drone> drones = GetListOfDrones().ToList();
+            Drone DroneToRemove = GetDrone(drone.Id);
+            drones.Remove(DroneToRemove);
+            drones.Add(drone);
+            SaveListToXmlSerializer<Drone>(drones, dirPath + dronesPath);
+        }
+        public void updateCustomer(DO.Customer customer)
+        {
+            // get the new update customer, remove the older and save the new
+            List<Customer> customers = GetListOfCustmers().ToList();
+            Customer customerToRemove = GetCustomer(customer.Id);
+            customers.Remove(customerToRemove);
+            customers.Add(customer);
+            SaveListToXmlSerializer<Customer>(customers, dirPath + customersPath);
+        }
+        public void updateRelaseDroneFromCharge(int droneId, double longi, double lati, double min)
+        {
+            //   DO.Point stationLocation = new DO.Point({ latitude = lati, longitude = longi, });
+
+
+            List<DroneCharge> droneCharges = GetListOfDroneCharge().ToList();
+            foreach (DroneCharge droneCharge in droneCharges)
+            {
+                if (droneCharge.DroneId == droneId)
+                {
+                    //the drone is release so the staition have more free slot
+                    Station station = GetStation(droneCharge.staitionId);
+                    station.ChargeSlots++;
+                    updateStation(station);
+                    // update the status of drone
+                    Drone drone = GetDrone(droneId);
+                    drone.droneStatus = (DO.Enum.DroneStatus)0;
+                    updateDrone(drone);
+                    //remove this object from list
+                    droneCharges.Remove(droneCharge);
+                    SaveListToXmlSerializer<DroneCharge>(droneCharges, dirPath + dronesChargePath);
+                    break;
+                }
+            }
+
+
+        }
+        #endregion
         void SaveListToXmlSerializer<T>(List<T> list, string filePath)
         {
             try
@@ -511,9 +565,9 @@ namespace DalXml
                 x.Serialize(file, list);
                 file.Close();
             }
-            catch 
+            catch
             {
-            //dont do anything
+                //dont do anything
             }
         }
         static List<T> LoadListFromXmlSerializer<T>(string filePath)
@@ -537,6 +591,5 @@ namespace DalXml
                 return new List<T>();
             }
         }
-
     }
 }

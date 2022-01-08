@@ -157,7 +157,7 @@ namespace ConsuleUIBL
                                         Console.WriteLine("how many time?(minuets)");
                                         ID = giveNumber();
                                         int min = Convert.ToInt32(Console.ReadLine());
-                                        temp.ReleaseDroneFromCharging(ID, min);
+                                        temp.ReleaseDroneFromCharging(ID, DateTime.Now);
                                         break;
                                     case 6:
                                         Console.WriteLine("witch drone you want to get the parcel?(ID)");

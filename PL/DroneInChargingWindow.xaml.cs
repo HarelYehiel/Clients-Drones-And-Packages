@@ -196,10 +196,9 @@ namespace PL
             try
             {
                 int IDDrone = (DronesInChargingListView.SelectedItem as DroneInCharging).uniqueID;
-                TimeSpan timeSpan = DateTime.Now - bl.GetDroneInCharging(Convert.ToInt32(IDDrone)).startCharge;
 
                 if (DronesInChargingListView.ItemsSource != null)
-                    bl.ReleaseDroneFromCharging(IDDrone , timeSpan.TotalMinutes);
+                    bl.ReleaseDroneFromCharging(IDDrone , DateTime.Now);
 
                 DronesInChargingListView.SelectedItem = null;
                 EnableFiltersWithConditions();

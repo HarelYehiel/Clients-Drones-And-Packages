@@ -245,8 +245,7 @@ namespace PL
                         BO.DroneInCharging droneInCharging = bl.GetDroneInCharging(Convert.ToInt32(IDTextBox.Text));
 
                         // Calculate the range between the times
-                        TimeSpan timeSpan = CharginDroneDatePicker.SelectedDate.Value - droneInCharging.startCharge;
-                        bl.ReleaseDroneFromCharging(Convert.ToInt32(IDTextBox.Text), timeSpan.TotalMinutes);
+                        bl.ReleaseDroneFromCharging(Convert.ToInt32(IDTextBox.Text), DateTime.Now);
 
                     }
                     catch (Exception)
@@ -390,7 +389,7 @@ namespace PL
 
         private void ReleaseCharge_Click(object sender, RoutedEventArgs e)
         {
-            bl.ReleaseDroneFromCharging(Convert.ToInt32(IDTextBox.Text), 30);
+            bl.ReleaseDroneFromCharging(Convert.ToInt32(IDTextBox.Text), DateTime.Now);
             /////////////////////////////////////////////////////////////////////////////////////////////לפתור את הבעיה של זמנים, זה אמור להתעדכן לפי זמן נוכחי אבל אין זמן התחלה שבו הוא נכנס לטעינה
         }
 
@@ -407,8 +406,8 @@ namespace PL
 
         private void Simulator_Click(object sender, RoutedEventArgs e)
         {
-            Func<bool> func = 
-            bl.Simulator(Convert.ToInt32(IDTextBox), func)
+            Func<bool> func =
+            bl.Simulator(Convert.ToInt32(IDTextBox), func);
         }
     }
 }
