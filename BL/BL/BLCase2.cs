@@ -9,8 +9,8 @@ namespace BlApi
 {
     public partial class BL : IBL
     {
-       // DalApi.DalObject.UpdateClass updateDataSourceFun = new DalApi.DalObject.UpdateClass();
-        
+        // DalApi.DalObject.UpdateClass updateDataSourceFun = new DalApi.DalObject.UpdateClass();
+
         public delegate bool Predicate<in T>(T obj);
         public delegate BO.Parcel Converter<in ParcelToList, out Parcel>(BO.ParcelToList input);
 
@@ -154,12 +154,13 @@ namespace BlApi
                                 //update station data in DataSource
                                 UpdateStationData(station.uniqueID, station.name, station.availableChargingStations);
                                 //update all the changes data
-                                DroneCharge droneCharge = new DroneCharge{
+                                DroneCharge droneCharge = new DroneCharge
+                                {
                                     DroneId = ID,
                                     staitionId = station.uniqueID,
-                                    startCharge = DateTime.Now,                                 
+                                    startCharge = DateTime.Now,
                                 };
-                                accessDal.updateDroneToCharge(droneCharge);
+                                accessDal.InputTheDroneCharge(droneCharge);
                             }
                         }
 
@@ -224,15 +225,16 @@ namespace BlApi
             try
             {
                 Drone drone = accessDal.GetDrone(ID);
-                if (drone.droneStatus == DO.Enum.DroneStatus.Baintenance)
+                BO.DroneToList droneBo = GetDroneToListBO(ID);// new BO.DroneToList();
+
+                if (droneBo.status == BO.EnumBO.DroneStatus.Baintenance)
                 {
                     //------gett data of this dron from BL drone list-----------
-                    BO.DroneToList droneBo = GetDroneToListBO(ID);// new BO.DroneToList();
                     List<double> getConfig = accessDal.PowerConsumptionBySkimmer();
                     BO.DroneInCharging droneCharge = GetDroneInCharging(ID);
-                    double min = (updateTime - droneCharge.startCharge).TotalMinutes;
+                    double timInCharge = (updateTime - droneCharge.startCharge).TotalSeconds;
                     //update drone in BL list
-                    droneBo.Battery = droneBo.Battery + (min * getConfig[4]);//every minute in charge is 1% more
+                    droneBo.Battery = droneBo.Battery + (timInCharge * getConfig[4]);//update the battery according to config
                     if (droneBo.Battery > 100)
                         droneBo.Battery = 100;
                     droneBo.status = BO.EnumBO.DroneStatus.Avilble;
@@ -247,17 +249,20 @@ namespace BlApi
                     }
                     //update data in dataSource
                     BO.Location point = droneBo.location;
-                    accessDal.updateRelaseDroneFromCharge(ID, point.longitude, point.latitude, min);
+                    accessDal.updateRelaseDroneFromCharge(ID, point.longitude, point.latitude, timInCharge);
 
                     //update all the changes data at the stations list
-                    Station sta = new Station();
-                    List<BO.station> stations = GetListOfBaseStations().ToList().ConvertAll(convertToStationNotList);
-                    foreach (var station in stations)
-                    {
-                        if (station.location == point)
-                            sta.ChargeSlots++;
-                    }
-                    accessDal.updateStation(sta);
+                    //Station sta = new Station();
+                    //List<BO.station> stations = GetListOfBaseStations().ToList().ConvertAll(convertToStationNotList);
+                    //foreach (var station in stations)
+                    //{
+                    //    if (station.location == point)
+                    //    {
+                    //        sta.ChargeSlots++;
+                    //        accessDal.updateStation(sta);
+                    //    }
+
+                    //}
                 }
                 else
                     throw new BO.MyExeption_BO("The drone is not maintained at all");
@@ -283,7 +288,7 @@ namespace BlApi
 
                 bool flag = true;
                 //---------------first of all - check if the drone is avilble----------------------
-                if (drone.droneStatus == DO.Enum.DroneStatus.Avilble)
+                if (droneBo.status == BO.EnumBO.DroneStatus.Avilble)
                 {
                     //-----------we always prefere to take care by priority order---------------
                     List<BO.ParcelToList> newList = GetAllParcelsBy(findEmergency).ToList();
@@ -460,7 +465,7 @@ namespace BlApi
                     //we found a parcel! return false for
                     List<BO.StationToTheList> test = GetListOfBaseStations().ToList();
                     AddingDrone(12345, "check", 0, test[0].uniqueID);
-                    for(int i = 0; i < ListDroneToList.Count; i++)
+                    for (int i = 0; i < ListDroneToList.Count; i++)
                     {
                         if (ListDroneToList[i].uniqueID == 12345)
                         {
@@ -475,7 +480,7 @@ namespace BlApi
                     {
                         SendingDroneToCharging(12345);
                     }
-                    catch 
+                    catch
                     {
                         DelDrone(12345);
                         return true;
@@ -541,7 +546,7 @@ namespace BlApi
         }
         public double distance(BO.Location p1, BO.Location p2)
         {
-            return 1000 * Math.Sqrt((Math.Pow(p1.latitude - p2.latitude, 2) + Math.Pow(p1.longitude - p2.longitude, 2)));
+            return 100000 * Math.Sqrt((Math.Pow(p1.latitude - p2.latitude, 2) + Math.Pow(p1.longitude - p2.longitude, 2)));
         }
         public double colculateBatteryBO(BO.Location point1, BO.Location point2, int ID)
         {

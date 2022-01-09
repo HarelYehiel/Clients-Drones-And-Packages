@@ -21,7 +21,7 @@ namespace DalXml
         string customersPath = @"customersXml.xml";
         string parcelsPath = @"parcelsXml.xml";
         string dronesPath = @"dronesXml.xml";
-        string dronesChargePath = @"dronesXml.xml";
+        string dronesChargePath = @"droneChargesXml.xml";
 
         public List<double> PowerConsumptionBySkimmer()
         {
@@ -491,7 +491,7 @@ namespace DalXml
             Station stationToRemove = GetStation(updatedStation.id);
             stations.Remove(stationToRemove);
             stations.Add(updatedStation);
-            SaveListToXmlSerializer<Station>(stations, dirPath + parcelsPath);
+            SaveListToXmlSerializer<Station>(stations, dirPath + stationsPath);
         }
         public void updateDroneToCharge(DroneCharge droneCharge)
         {

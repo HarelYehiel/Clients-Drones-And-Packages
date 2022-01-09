@@ -105,5 +105,10 @@ namespace BlApi
 
             accessDal.InputTheParcel(parcel1);
         }
+
+        public void Simulator(int droneId, Func<bool> f1, Action action)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

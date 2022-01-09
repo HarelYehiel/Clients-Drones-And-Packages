@@ -15,8 +15,8 @@ namespace BlApi
     {
         static readonly BL instance = new BL();
         internal static BL Instance { get { return instance; } }
-        IDal accessDal = DalApi.DalFactory.GetDal("DalObject");
-        //IDal accessDalXml = DalApi.DalFactory.GetDal("DalXml");
+        //IDal accessDal = DalApi.DalFactory.GetDal("DalObject");
+        IDal accessDal = DalApi.DalFactory.GetDal("DalXml");
         List<DroneToList> ListDroneToList = new List<DroneToList>();
         private BL()
         {
@@ -34,7 +34,7 @@ namespace BlApi
            // DalApi.DalObject.DataSource.Initialize();
 
            //inaitilaize the lists by get the values from xml files
-           // dataXml.initilaizeXml(accessDal);     
+            //dataXml.initilaizeXml(accessDal);     
 
             BO.DroneToList droneToListBO;
             IEnumerable<DO.Drone> tempList = accessDal.GetListOfDrones();
