@@ -46,7 +46,7 @@ namespace BlApi
                             }
                             catch (Exception e)
                             {
-                                if (drone.Battery <= 30 && e.ToString().Contains("This drone can't take any parecl"))
+                                if (drone.Battery <= 30 || e.ToString().Contains("This drone can't take any parecl"))
                                 {
                                     sendToCharging(droneId, drone.Battery);
 
@@ -135,7 +135,7 @@ namespace BlApi
 
                                 throw;
                             }
-                            Thread.Sleep(500); // Wait half minute for the good feeling :-) .
+                            //Thread.Sleep(500); // Wait half minute for the good feeling :-) .
 
                             break;
 

@@ -43,7 +43,7 @@
       <longitude>34.060671934886216</longitude>
       <latitude>31.217986147020937</latitude>
     </Location>
-    <ChargeSlots>7</ChargeSlots>
+    <ChargeSlots>5</ChargeSlots>
   </Station>
   <Station>
     <id>10364</id>
@@ -70,7 +70,7 @@
       <longitude>34.2169742692341</longitude>
       <latitude>31.928041205707956</latitude>
     </Location>
-    <ChargeSlots>5</ChargeSlots>
+    <ChargeSlots>3</ChargeSlots>
   </Station>
   <Station>
     <id>89219</id>
