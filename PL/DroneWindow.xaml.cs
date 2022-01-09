@@ -7,6 +7,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
+using System.Windows.Media;
 
 
 namespace PL
@@ -111,27 +112,30 @@ namespace PL
             DroneButton.Content = "Update";
             title.Content = "Update Drone";
         }
-
-        private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        void d(double droneBattery, EnumBO.DroneStatus droneStatus)
         {
-            
-
-
-                lock (bl)
-                {
-                    Drone drone = bl.GetDrone(Convert.ToInt32(IDTextBox.Text));
-
-                    // Dispatcher to main thread to update the window drone.
-                    this.Dispatcher.Invoke(() =>
-                    {
-                        BatteryTextBox.Text = drone.Battery.ToString();
-                        statusTextBox.Text = drone.Status.ToString();
-                    });
-                    Thread.Sleep(1000);
-                }
+           
+                BatteryTextBox.Text = droneBattery.ToString();
+                statusTextBox.Text = droneStatus.ToString();
             
         }
-        bool StopTest()
+
+        delegate void asd(double droneBattery, EnumBO.DroneStatus droneStatus);
+        private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+
+            lock (bl)
+            {
+                Drone drone;
+                lock (bl) { drone = bl.GetDrone(Convert.ToInt32(IDTextBox.Text)); }
+                Action<double, EnumBO.DroneStatus> asd1 = d;
+                // Dispatcher to main thread to update the window drone.
+                BatteryTextBox.Dispatcher.BeginInvoke(asd1, drone.Battery, drone.Status);
+                Thread.Sleep(200);
+            }
+
+        }
+        bool StopSimulator()
         {
             // return true if some where launch the activate the function worker.CancelAsync 
             return !worker.CancellationPending;
@@ -139,8 +143,8 @@ namespace PL
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
 
-            Func<bool> func = StopTest;
-            Action action = () => worker.ReportProgress(0);
+            Func<bool> func = StopSimulator;
+            Action action = () => { worker.ReportProgress(1); };
             int idDrone = this.Dispatcher.Invoke<int>(() => { return Convert.ToInt32(IDTextBox.Text); });
             bl.SimulatorStart(idDrone, func, action);
         }
@@ -446,15 +450,22 @@ namespace PL
             {
                 BatteryTextBox.IsEnabled = true;
                 statusTextBox.IsEnabled = true;
+
+                Simulator.IsEnabled = true;
+                Simulator.Content = "Stop Simulator";
+                Simulator.Background = Brushes.Red;
+
                 startOrStopSimulter = false; //start simultor, next click on the button is  stop the simulator.
                 worker.RunWorkerAsync();
             }
             else
             {
                 startOrStopSimulter = true;//Stop simultor, next click on the button is start the simulator.
-                worker.CancelAsync();
+                Simulator.Content = "Start Simulator";
+                Simulator.Background = Brushes.Green;
                 BatteryTextBox.IsEnabled = false;
                 statusTextBox.IsEnabled = false;
+                worker.CancelAsync();
             }
 
         }

@@ -179,29 +179,36 @@ namespace BlApi
             }
 
         }
-        public void UpdateBatteryInReelTime(int idDrone, double distance)
+        public void UpdateBatteryInReelTime(int idDrone, double distance,
+            char AddOrSubtractToBattery /*'-' or '+'*/)
         {
 
             BO.DroneToList droneToList_BO = GetDroneToListBO(idDrone);
             List<double> configStatus = accessDal.PowerConsumptionBySkimmer();
 
-            switch (droneToList_BO.weight)
+            if (AddOrSubtractToBattery == '-')
+                switch (droneToList_BO.weight)
+                {
+                    case BO.EnumBO.WeightCategories.Light:
+                        droneToList_BO.Battery -= distance / configStatus[1];
+                        break;
+                    case BO.EnumBO.WeightCategories.Medium:
+                        droneToList_BO.Battery -= distance / configStatus[2];
+
+                        break;
+                    case BO.EnumBO.WeightCategories.Heavy:
+                        droneToList_BO.Battery -= distance / configStatus[3];
+
+                        break;
+
+                }
+            else if (AddOrSubtractToBattery == '-')
             {
-                case BO.EnumBO.WeightCategories.Light:
-                    droneToList_BO.Battery -= distance / configStatus[1];
-                    break;
-                case BO.EnumBO.WeightCategories.Medium:
-                    droneToList_BO.Battery -= distance / configStatus[2];
-
-                    break;
-                case BO.EnumBO.WeightCategories.Heavy:
-                    droneToList_BO.Battery -= distance / configStatus[3];
-
-                    break;
-
+                droneToList_BO.Battery += configStatus[4];
             }
 
             if (droneToList_BO.Battery < 0) droneToList_BO.Battery = 0;
+            if (droneToList_BO.Battery > 100) droneToList_BO.Battery = 100;
 
             for (int i = 0; i < ListDroneToList.Count; i++)
             {

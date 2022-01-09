@@ -70,7 +70,7 @@ namespace DalApi
                     customer.location = p;
                     customers.Add(customer);
                 }
-                for (int i = 0; i < 30; i++)//create new 30 parcels with random data
+                for (int i = 0; i < 100; i++)//create new 30 parcels with random data
                 {
                     Parcel parcel = new Parcel();
                     var rand = new Random();
