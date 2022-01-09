@@ -14,7 +14,7 @@
         </Grid.ColumnDefinitions>
         <ComboBox x:Name="FunctionConbo" HorizontalAlignment="Left" Visibility="Collapsed"  IsEditable ="true" IsReadOnly="True" Text="Choose function" Margin="146,160,0,0" VerticalAlignment="Top" Width="120" Height="29" RenderTransformOrigin="0.491,1.082" SelectionChanged="FunctionConbo_SelectionChanged" Initialized="FunctionConbo_Initialized" Grid.Column="1"/>
         <TextBlock x:Name="FunctionsTextBlock" Text="Don't choose ant function" TextWrapping="Wrap" Visibility="Collapsed" Foreground="#FFFF000F" FontSize="14" Margin="146,194,0,0" HorizontalAlignment="Left" Width="180" Height="26" VerticalAlignment="Top" Grid.Column="1" />
-        <Button x:Name="Simulator" Content="Simulator" HorizontalAlignment="Left" Margin="14,304,0,0" VerticalAlignment="Top" FontWeight = "DemiBold" BorderBrush = "White"  Grid.Column="1" Width="52" Click="Simulator_Click" RenderTransformOrigin="1.327,13.073">
+        <Button x:Name="Simulator" Content="Start Simulator" Background="Green" HorizontalAlignment="Left" Margin="14,304,0,0" VerticalAlignment="Top" FontWeight = "DemiBold" BorderBrush = "White"  Grid.Column="1" Click="Simulator_Click" RenderTransformOrigin="1.327,13.073">
             <Button.Resources>
                 <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="15"/>

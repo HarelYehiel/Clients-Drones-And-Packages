@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DO;
-using BO;
+    using DO;
+    using BO;
 using DalXml;
 using BlApi;
 
@@ -24,7 +24,7 @@ namespace BlApi
         }
         public void SimulatorStart(int droneId, Func<bool> f1, Action action)
         {
-           new Simulator(Instance, droneId, f1, action );
+           new Simulator(Instance, droneId, f1, action, accessDal);
         }
 
         public void InitializeAndUpdateTheListsInIBL()
@@ -46,7 +46,7 @@ namespace BlApi
 
                 droneToListBO.uniqueID = drone.Id;
                 droneToListBO.Model = drone.Model;
-                droneToListBO.Battery = rand.Next(20, 80);
+                droneToListBO.Battery = 100; //rand.Next(20, 80);
                 droneToListBO.weight = (BO.EnumBO.WeightCategories)drone.MaxWeight;
                 droneToListBO.status = (BO.EnumBO.DroneStatus)drone.droneStatus;
 

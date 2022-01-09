@@ -24,16 +24,24 @@ namespace BlApi
         double speedDrone = 15; // 3 KM per 1 second. 
         private Stopwatch stopwatch;
         BlApi.BL bl;
-        public Simulator(BlApi.BL bl1, int droneId, Func<bool> func, Action action)
+        double HowMuchTimeMissingToBatteryFull = 0;
+        Drone drone;
+        DO.IDal accessDal;
+        Action action;
+
+        public Simulator(BlApi.BL bl1, int droneId, Func<bool> func, Action action1, DO.IDal accessDal1)
         {
+
+
             try
             {
+                action = action1;
                 bl = bl1;
                 stopwatch = new Stopwatch();
                 stopwatch.Start();
-                double? HowMuchTimeMissingToBatteryFull = null;
-                Drone drone = bl.GetDrone(droneId);
-          
+                drone = bl.GetDrone(droneId);
+                accessDal = accessDal1;
+
                 while (func())
                 {
                     switch (drone.Status)
@@ -41,67 +49,86 @@ namespace BlApi
                         case EnumBO.DroneStatus.Avilble:
                             try
                             {
-                                lock (bl) { bl.AssignPackageToDrone(drone.uniqueID); }
-                                f(droneId, action);
-
-
                                 lock (bl)
                                 {
-                                    bl.CollectionOfPackageByDrone(drone.uniqueID);
+                                    bl.AssignPackageToDrone(droneId);
+                                    drone = bl.GetDrone(droneId);
                                 }
-                                Thread.Sleep(500); // Wait for drone delivery the package.
-                                bl.DeliveryOfPackageByDrone(drone.uniqueID);
-                                drone.Status = EnumBO.DroneStatus.Avilble;
-                                drone = bl.GetDrone(drone.uniqueID);
-
 
                             }
                             catch (Exception e)
                             {
-                                try
+                                if (drone.Battery <= 30 && e.ToString().Contains("This drone can't take any parecl"))
                                 {
-                                    if (drone.Battery <= 30 && e.ToString().Contains("This drone can't take any parecl"))
-                                    {
-                                        lock (bl)
-                                            bl.SendingDroneToCharging(drone.uniqueID);
-                                        // Get drone with correct battery.
-                                        drone = bl.GetDrone(drone.uniqueID);
-                                        stopwatch.Start(); // Counting charging time.
-                                                           //How much time is missing until the battery is full (in milliseaconds).
-                                        HowMuchTimeMissingToBatteryFull = (double)((100 - drone.Battery) / 2) / 1000;
-                                        drone.Status = EnumBO.DroneStatus.Baintenance;
-                                        Thread.Sleep((int)HowMuchTimeMissingToBatteryFull); // Wait for drone finish the charge.
-                                    }
-                                    else
-                                        Thread.Sleep(1000); // Wait for parcel the drone can to take.
+                                    sendToCharging(droneId, drone.Battery);
 
                                 }
-                                catch (Exception e1)
-                                {
-                                    if (e1.Message.Contains("He does not have enough battery to get to the station"))
-                                        Thread.Sleep(1000); // Wait for drone out from charging.
-
-                                }
-
+                                else
+                                    Thread.Sleep(1000); // Wait for new parcel.
 
                             }
-
-
                             break;
 
                         case EnumBO.DroneStatus.Baintenance:
 
-                            if (HowMuchTimeMissingToBatteryFull <= stopwatch.ElapsedMilliseconds)
+                            try
                             {
-                                stopwatch.Stop();
-                                bl.ReleaseDroneFromCharging(drone.uniqueID, stopwatch.ElapsedMilliseconds);
-                                drone.Status = EnumBO.DroneStatus.Avilble;
-                                drone.Battery = 100;
-                                Thread.Sleep(1000); // Wait one minute for the good feeling :-) .
+                                // The simulter send him to charging.
+                                if (stopwatch.IsRunning)
+                                {
+                                    stopwatch.Stop();
+                                    drone.Status = EnumBO.DroneStatus.Avilble;
+                                    drone.Battery = 100;
+                                    Thread.Sleep(1000); // Wait one minute for the good feeling :-) .
+                                }
+                                // Arrived that drone was charging.
+                                else
+                                {
+                                    stopwatch.Start(); // Counting charging time.
+                                                       //How much time is missing until the battery is full.
+
+                                    List<double> configStatus = accessDal.PowerConsumptionBySkimmer();
+
+                                    HowMuchTimeMissingToBatteryFull = Math.Ceiling((100 - drone.Battery) / configStatus[4]);
+                                    updateInRealTime(droneId, HowMuchTimeMissingToBatteryFull, '+');
+                                }
+                                break;
+
                             }
-                            break;
+                            catch (Exception)
+                            {
+
+                                throw;
+                            }
 
                         case EnumBO.DroneStatus.Delivery:
+                            try
+                            {
+                                Parcel parcel = bl.GetParcel(drone.parcelByTransfer.uniqueID);
+
+                                // Check if drone arrived to simulator in delivery pick up. 
+                                if (parcel.pickedUp == null) // Pick up ?
+                                {
+                                    // Update the details of drone in real time from drone's location to destination's Location.
+                                    startUpdateInRealTime(droneId,
+                                       drone.location, drone.parcelByTransfer.collectionLocation);
+
+                                    lock (bl) { bl.CollectionOfPackageByDrone(droneId); }
+                                }
+
+                                // Update the details of drone in real time from collection's Location to destination's Location.
+                                startUpdateInRealTime(droneId,
+                                    drone.parcelByTransfer.collectionLocation, drone.parcelByTransfer.destinationLocation);
+
+                                lock (bl) { bl.DeliveryOfPackageByDrone(droneId); }
+
+                                drone = bl.GetDrone(droneId);
+                            }
+                            catch (Exception)
+                            {
+
+                                throw;
+                            }
                             Thread.Sleep(500); // Wait half minute for the good feeling :-) .
 
                             break;
@@ -115,27 +142,64 @@ namespace BlApi
             }
 
         }
-
-        void f(int idDrone, Action action)
+        void sendToCharging(int droneId, double droneBattery)
+        // Send the drone to charging.
+        // If don't have place, try all one second.
         {
-            double distance; // Dictance from the client oe station.
-            double HowLongToArrive; // How long to arrive to collect/ delivered parcel or arrive to station. (in second)
+            while (true)
+            {
+                try
+                {
 
-            Drone drone = bl.GetDrone(idDrone);
-            distance = bl.distance(drone.location, drone.parcelByTransfer.collectionLocation);
-            HowLongToArrive = distance / speedDrone;
-            updateInRealTime(drone.uniqueID, HowLongToArrive, action);
+                    lock (bl) { bl.SendingDroneToCharging(droneId); }
+                    stopwatch.Start(); // Counting charging time.
+                                       //How much time is missing until the battery is full.
+
+                    drone.Status = EnumBO.DroneStatus.Baintenance;
+                    List<double> configStatus;
+                    lock (accessDal) { configStatus = accessDal.PowerConsumptionBySkimmer(); }
+
+                    HowMuchTimeMissingToBatteryFull = Math.Ceiling((100 - droneBattery) / configStatus[4]);
+                    updateInRealTime(droneId, HowMuchTimeMissingToBatteryFull, '+');
+
+                    bl.ReleaseDroneFromCharging(droneId, 0);
+                    break;
+                }
+                catch (Exception e)
+                {
+                    if (e.Message.Contains("He does not have enough battery to get to the station"))
+                        Thread.Sleep(1000); // Wait for drone out from charging.
+                }
+            }
+
         }
-        public void updateInRealTime(int droneId, double HowLongToArrive, Action action)
+        void startUpdateInRealTime(int droneID, Location location1, Location location2)
+        {
+            // Dictance from the client oe station.
+            double distance;
+            lock (bl) { distance = bl.distance(location1, location2); }
+
+            // How long to arrive to collect/ delivered parcel or arrive to station. (in second)
+            double HowLongToArrive = distance / speedDrone;
+
+            updateInRealTime(droneID, HowLongToArrive, '-');
+        }
+        public void updateInRealTime(int droneId, double HowLongToTime, char AddOrSubtractToBattery)
+        // AddOrSubtractToBattery = what the action you want to do add(+) or subtract(-) to battery.
         // How long to arrive to collect / delivered parcel or arrive to station (in second).
         // Dictance from the client oe station (meter).
         {
 
-            for (int i = 1; i <= HowLongToArrive; i++)
+            for (int i = 1; i <= HowLongToTime; i++)
             {
-                lock (bl) { bl.UpdateBatteryInReelTime(droneId, speedDrone); }
-                action();
-                Thread.Sleep(1000);
+                try
+                {
+                    lock (bl) { bl.UpdateBatteryInReelTime(droneId, speedDrone, AddOrSubtractToBattery); }
+                    action();
+                    Thread.Sleep(200);
+                }
+                catch (Exception) { }
+
             }
         }
     }
