@@ -417,12 +417,15 @@ namespace PL
         private void sendToCharge_click(object sender, RoutedEventArgs e)
         {
             bl.SendingDroneToCharging(Convert.ToInt32(IDTextBox.Text));
+            MessageBox.Show("The drone is in Charging!","Information",MessageBoxButton.OK,MessageBoxImage.Information);
+            openOptions.Visibility = Visibility.Hidden;
         }
 
         private void ReleaseCharge_Click(object sender, RoutedEventArgs e)
         {
             bl.ReleaseDroneFromCharging(Convert.ToInt32(IDTextBox.Text), DateTime.Now);
-            /////////////////////////////////////////////////////////////////////////////////////////////לפתור את הבעיה של זמנים, זה אמור להתעדכן לפי זמן נוכחי אבל אין זמן התחלה שבו הוא נכנס לטעינה
+            MessageBox.Show("The drone  relaese from Charging!", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            openOptions.Visibility = Visibility.Hidden;
         }
 
         private void AssignParcel_Click(object sender, RoutedEventArgs e)

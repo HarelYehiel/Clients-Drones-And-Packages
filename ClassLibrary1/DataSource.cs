@@ -32,7 +32,7 @@ namespace DalApi
                 Config.lightWeight = 10;
                 Config.mediumWeight = 8;
                 Config.heavyWeight = 5;
-                Config.droneLoadingRate = (double) 1 / 120;//all 1 second is charge the drone at 2%
+                Config.droneLoadingRate = (double) 2;//all 1 second is charge the drone at 2%
                 for (int i = 0; i < 30; i++)//create 5 drones with random data
                 {
                     Drone drone = new Drone();

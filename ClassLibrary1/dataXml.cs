@@ -17,12 +17,12 @@ namespace DalXml
         public static void initilaizeXml(IDal temp)
         {
             string dirPath = @"..\..\..\..\DalXML\";
-            string configDataPath = @"dronesXml.xml";
+            string configDataPath = @"configXml.xml";
             string stationsPath = @"stationsXml.xml";
             string customersPath = @"customersXml.xml";
             string parcelsPath = @"parcelsXml.xml";
             string dronesPath = @"dronesXml.xml";
-            string dronesChargePath = @"dronesXml.xml";
+            string dronesChargePath = @"droneChargesXml.xml";
 
             //  IDal temp = DalApi.DalFactory.GetDal("DalObject");
 

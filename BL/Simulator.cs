@@ -94,7 +94,7 @@ namespace BlApi
                             if (HowMuchTimeMissingToBatteryFull <= stopwatch.ElapsedMilliseconds)
                             {
                                 stopwatch.Stop();
-                                bl.ReleaseDroneFromCharging(drone.uniqueID, stopwatch.ElapsedMilliseconds);
+                                bl.ReleaseDroneFromCharging(drone.uniqueID,DateTime.Now/* stopwatch.ElapsedMilliseconds*/);
                                 drone.Status = EnumBO.DroneStatus.Avilble;
                                 drone.Battery = 100;
                                 Thread.Sleep(1000); // Wait one minute for the good feeling :-) .

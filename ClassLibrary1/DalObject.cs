@@ -130,7 +130,7 @@ namespace DalApi
             }
             public void InputTheDroneCharge(DroneCharge droneCharge)
             {
-                DataSource.dronesCharge.Add(droneCharge);
+                    DataSource.dronesCharge.Add(droneCharge);
             }
             public void InputTheParcel(Parcel par)
             {
