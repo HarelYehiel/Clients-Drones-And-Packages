@@ -162,7 +162,7 @@ namespace BlApi
                     HowMuchTimeMissingToBatteryFull = Math.Ceiling((100 - droneBattery) / configStatus[4]);
                     updateInRealTime(droneId, HowMuchTimeMissingToBatteryFull, '+');
 
-                    bl.ReleaseDroneFromCharging(droneId, 0);
+                    bl.ReleaseDroneFromCharging(droneId,DateTime.Now);
                     break;
                 }
                 catch (Exception e)

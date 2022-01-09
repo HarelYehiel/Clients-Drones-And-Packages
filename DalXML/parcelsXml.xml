@@ -1,380 +1,138 @@
 <?xml version="1.0"?>
-<ArrayOfParcel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Parcel>
-    <Id>11436</Id>
-    <SenderId>58327</SenderId>
-    <TargetId>89994</TargetId>
-    <DroneId>0</DroneId>
-    <priority>Fast</priority>
-    <weight>Medium</weight>
-    <Requested>2021-10-07T00:07:00</Requested>
-    <Scheduled xsi:nil="true" />
-    <PickedUp xsi:nil="true" />
-    <Delivered xsi:nil="true" />
-    <runNumber>0</runNumber>
-  </Parcel>
-  <Parcel>
-    <Id>38807</Id>
-    <SenderId>53550</SenderId>
-    <TargetId>25573</TargetId>
-    <DroneId>0</DroneId>
-    <priority>Fast</priority>
-    <weight>Medium</weight>
-    <Requested>2021-11-14T00:06:00</Requested>
-    <Scheduled xsi:nil="true" />
-    <PickedUp xsi:nil="true" />
-    <Delivered xsi:nil="true" />
-    <runNumber>0</runNumber>
-  </Parcel>
-  <Parcel>
-    <Id>24628</Id>
-    <SenderId>65813</SenderId>
-    <TargetId>34605</TargetId>
-    <DroneId>0</DroneId>
-    <priority>Fast</priority>
-    <weight>Light</weight>
-    <Requested>2021-03-27T01:07:00</Requested>
-    <Scheduled xsi:nil="true" />
-    <PickedUp xsi:nil="true" />
-    <Delivered xsi:nil="true" />
-    <runNumber>0</runNumber>
-  </Parcel>
-  <Parcel>
-    <Id>59307</Id>
-    <SenderId>29269</SenderId>
-    <TargetId>34605</TargetId>
-    <DroneId>0</DroneId>
-    <priority>Fast</priority>
-    <weight>Light</weight>
-    <Requested>2021-07-02T03:05:00</Requested>
-    <Scheduled xsi:nil="true" />
-    <PickedUp xsi:nil="true" />
-    <Delivered xsi:nil="true" />
-    <runNumber>0</runNumber>
-  </Parcel>
-  <Parcel>
-    <Id>85597</Id>
-    <SenderId>97798</SenderId>
-    <TargetId>53550</TargetId>
-    <DroneId>0</DroneId>
-    <priority>Normal</priority>
-    <weight>Light</weight>
-    <Requested>2021-04-21T01:31:00</Requested>
-    <Scheduled xsi:nil="true" />
-    <PickedUp xsi:nil="true" />
-    <Delivered xsi:nil="true" />
-    <runNumber>0</runNumber>
-  </Parcel>
-  <Parcel>
-    <Id>86202</Id>
-    <SenderId>25573</SenderId>
-    <TargetId>29269</TargetId>
-    <DroneId>0</DroneId>
-    <priority>Normal</priority>
-    <weight>Medium</weight>
-    <Requested>2021-02-24T03:52:00</Requested>
-    <Scheduled xsi:nil="true" />
-    <PickedUp xsi:nil="true" />
-    <Delivered xsi:nil="true" />
-    <runNumber>0</runNumber>
-  </Parcel>
-  <Parcel>
-    <Id>97785</Id>
-    <SenderId>36139</SenderId>
-    <TargetId>58327</TargetId>
-    <DroneId>0</DroneId>
-    <priority>Normal</priority>
-    <weight>Light</weight>
-    <Requested>2021-01-01T02:22:00</Requested>
-    <Scheduled xsi:nil="true" />
-    <PickedUp xsi:nil="true" />
-    <Delivered xsi:nil="true" />
-    <runNumber>0</runNumber>
-  </Parcel>
-  <Parcel>
-    <Id>86486</Id>
-    <SenderId>29269</SenderId>
-    <TargetId>56283</TargetId>
-    <DroneId>0</DroneId>
-    <priority>Normal</priority>
-    <weight>Medium</weight>
-    <Requested>2021-04-01T00:28:00</Requested>
-    <Scheduled xsi:nil="true" />
-    <PickedUp xsi:nil="true" />
-    <Delivered xsi:nil="true" />
-    <runNumber>0</runNumber>
-  </Parcel>
-  <Parcel>
-    <Id>68817</Id>
-    <SenderId>25573</SenderId>
-    <TargetId>56283</TargetId>
-    <DroneId>0</DroneId>
-    <priority>Fast</priority>
-    <weight>Light</weight>
-    <Requested>2021-03-22T03:55:00</Requested>
-    <Scheduled xsi:nil="true" />
-    <PickedUp xsi:nil="true" />
-    <Delivered xsi:nil="true" />
-    <runNumber>0</runNumber>
-  </Parcel>
-  <Parcel>
-    <Id>23192</Id>
-    <SenderId>58327</SenderId>
-    <TargetId>25573</TargetId>
-    <DroneId>0</DroneId>
-    <priority>Fast</priority>
-    <weight>Light</weight>
-    <Requested>2021-07-17T02:42:00</Requested>
-    <Scheduled xsi:nil="true" />
-    <PickedUp xsi:nil="true" />
-    <Delivered xsi:nil="true" />
-    <runNumber>0</runNumber>
-  </Parcel>
-  <Parcel>
-    <Id>14801</Id>
-    <SenderId>56283</SenderId>
-    <TargetId>58327</TargetId>
-    <DroneId>0</DroneId>
-    <priority>Normal</priority>
-    <weight>Light</weight>
-    <Requested>2021-10-12T01:52:00</Requested>
-    <Scheduled xsi:nil="true" />
-    <PickedUp xsi:nil="true" />
-    <Delivered xsi:nil="true" />
-    <runNumber>0</runNumber>
-  </Parcel>
-  <Parcel>
-    <Id>37594</Id>
-    <SenderId>34605</SenderId>
-    <TargetId>89994</TargetId>
-    <DroneId>0</DroneId>
-    <priority>Normal</priority>
-    <weight>Light</weight>
-    <Requested>2021-04-14T02:48:00</Requested>
-    <Scheduled xsi:nil="true" />
-    <PickedUp xsi:nil="true" />
-    <Delivered xsi:nil="true" />
-    <runNumber>0</runNumber>
-  </Parcel>
-  <Parcel>
-    <Id>13411</Id>
-    <SenderId>56283</SenderId>
-    <TargetId>36139</TargetId>
-    <DroneId>0</DroneId>
-    <priority>Fast</priority>
-    <weight>Light</weight>
-    <Requested>2021-11-15T02:47:00</Requested>
-    <Scheduled xsi:nil="true" />
-    <PickedUp xsi:nil="true" />
-    <Delivered xsi:nil="true" />
-    <runNumber>0</runNumber>
-  </Parcel>
-  <Parcel>
-    <Id>40564</Id>
-    <SenderId>36139</SenderId>
-    <TargetId>34605</TargetId>
-    <DroneId>0</DroneId>
-    <priority>Normal</priority>
-    <weight>Medium</weight>
-    <Requested>2021-01-15T03:02:00</Requested>
-    <Scheduled xsi:nil="true" />
-    <PickedUp xsi:nil="true" />
-    <Delivered xsi:nil="true" />
-    <runNumber>0</runNumber>
-  </Parcel>
-  <Parcel>
-    <Id>60246</Id>
-    <SenderId>53550</SenderId>
-    <TargetId>89994</TargetId>
-    <DroneId>0</DroneId>
-    <priority>Fast</priority>
-    <weight>Medium</weight>
-    <Requested>2021-01-15T02:39:00</Requested>
-    <Scheduled xsi:nil="true" />
-    <PickedUp xsi:nil="true" />
-    <Delivered xsi:nil="true" />
-    <runNumber>0</runNumber>
-  </Parcel>
-  <Parcel>
-    <Id>78263</Id>
-    <SenderId>56283</SenderId>
-    <TargetId>53550</TargetId>
-    <DroneId>0</DroneId>
-    <priority>Normal</priority>
-    <weight>Light</weight>
-    <Requested>2021-10-08T02:50:00</Requested>
-    <Scheduled xsi:nil="true" />
-    <PickedUp xsi:nil="true" />
-    <Delivered xsi:nil="true" />
-    <runNumber>0</runNumber>
-  </Parcel>
-  <Parcel>
-    <Id>86222</Id>
-    <SenderId>97798</SenderId>
-    <TargetId>53550</TargetId>
-    <DroneId>0</DroneId>
-    <priority>Fast</priority>
-    <weight>Medium</weight>
-    <Requested>2021-03-09T02:44:00</Requested>
-    <Scheduled xsi:nil="true" />
-    <PickedUp xsi:nil="true" />
-    <Delivered xsi:nil="true" />
-    <runNumber>0</runNumber>
-  </Parcel>
-  <Parcel>
-    <Id>67170</Id>
-    <SenderId>56283</SenderId>
-    <TargetId>29269</TargetId>
-    <DroneId>0</DroneId>
-    <priority>Normal</priority>
-    <weight>Light</weight>
-    <Requested>2021-03-16T00:50:00</Requested>
-    <Scheduled xsi:nil="true" />
-    <PickedUp xsi:nil="true" />
-    <Delivered xsi:nil="true" />
-    <runNumber>0</runNumber>
-  </Parcel>
-  <Parcel>
-    <Id>95766</Id>
-    <SenderId>53550</SenderId>
-    <TargetId>58327</TargetId>
-    <DroneId>0</DroneId>
-    <priority>Fast</priority>
-    <weight>Medium</weight>
-    <Requested>2021-04-24T01:07:00</Requested>
-    <Scheduled xsi:nil="true" />
-    <PickedUp xsi:nil="true" />
-    <Delivered xsi:nil="true" />
-    <runNumber>0</runNumber>
-  </Parcel>
-  <Parcel>
-    <Id>45330</Id>
-    <SenderId>56283</SenderId>
-    <TargetId>65813</TargetId>
-    <DroneId>0</DroneId>
-    <priority>Normal</priority>
-    <weight>Medium</weight>
-    <Requested>2021-06-27T00:25:00</Requested>
-    <Scheduled xsi:nil="true" />
-    <PickedUp xsi:nil="true" />
-    <Delivered xsi:nil="true" />
-    <runNumber>0</runNumber>
-  </Parcel>
-  <Parcel>
-    <Id>31114</Id>
-    <SenderId>56283</SenderId>
-    <TargetId>65813</TargetId>
-    <DroneId>0</DroneId>
-    <priority>Normal</priority>
-    <weight>Medium</weight>
-    <Requested>2021-09-04T00:38:00</Requested>
-    <Scheduled xsi:nil="true" />
-    <PickedUp xsi:nil="true" />
-    <Delivered xsi:nil="true" />
-    <runNumber>0</runNumber>
-  </Parcel>
-  <Parcel>
-    <Id>40807</Id>
-    <SenderId>36139</SenderId>
-    <TargetId>25573</TargetId>
-    <DroneId>0</DroneId>
-    <priority>Normal</priority>
-    <weight>Medium</weight>
-    <Requested>2021-04-26T01:47:00</Requested>
-    <Scheduled xsi:nil="true" />
-    <PickedUp xsi:nil="true" />
-    <Delivered xsi:nil="true" />
-    <runNumber>0</runNumber>
-  </Parcel>
-  <Parcel>
-    <Id>61962</Id>
-    <SenderId>56283</SenderId>
-    <TargetId>58327</TargetId>
-    <DroneId>0</DroneId>
-    <priority>Normal</priority>
-    <weight>Light</weight>
-    <Requested>2021-04-19T03:46:00</Requested>
-    <Scheduled xsi:nil="true" />
-    <PickedUp xsi:nil="true" />
-    <Delivered xsi:nil="true" />
-    <runNumber>0</runNumber>
-  </Parcel>
-  <Parcel>
-    <Id>90323</Id>
-    <SenderId>29269</SenderId>
-    <TargetId>58327</TargetId>
-    <DroneId>0</DroneId>
-    <priority>Fast</priority>
-    <weight>Medium</weight>
-    <Requested>2021-11-25T02:41:00</Requested>
-    <Scheduled xsi:nil="true" />
-    <PickedUp xsi:nil="true" />
-    <Delivered xsi:nil="true" />
-    <runNumber>0</runNumber>
-  </Parcel>
-  <Parcel>
-    <Id>44967</Id>
-    <SenderId>34605</SenderId>
-    <TargetId>25573</TargetId>
-    <DroneId>0</DroneId>
-    <priority>Fast</priority>
-    <weight>Light</weight>
-    <Requested>2021-05-23T02:50:00</Requested>
-    <Scheduled xsi:nil="true" />
-    <PickedUp xsi:nil="true" />
-    <Delivered xsi:nil="true" />
-    <runNumber>0</runNumber>
-  </Parcel>
-  <Parcel>
-    <Id>61960</Id>
-    <SenderId>36139</SenderId>
-    <TargetId>34605</TargetId>
-    <DroneId>0</DroneId>
-    <priority>Normal</priority>
-    <weight>Medium</weight>
-    <Requested>2021-03-24T03:03:00</Requested>
-    <Scheduled xsi:nil="true" />
-    <PickedUp xsi:nil="true" />
-    <Delivered xsi:nil="true" />
-    <runNumber>0</runNumber>
-  </Parcel>
-  <Parcel>
-    <Id>51604</Id>
-    <SenderId>29269</SenderId>
-    <TargetId>65813</TargetId>
-    <DroneId>0</DroneId>
-    <priority>Normal</priority>
-    <weight>Light</weight>
-    <Requested>2021-11-19T02:54:00</Requested>
-    <Scheduled xsi:nil="true" />
-    <PickedUp xsi:nil="true" />
-    <Delivered xsi:nil="true" />
-    <runNumber>0</runNumber>
-  </Parcel>
-  <Parcel>
-    <Id>78859</Id>
-    <SenderId>29269</SenderId>
-    <TargetId>56283</TargetId>
-    <DroneId>0</DroneId>
-    <priority>Normal</priority>
-    <weight>Light</weight>
-    <Requested>2021-08-16T01:17:00</Requested>
-    <Scheduled xsi:nil="true" />
-    <PickedUp xsi:nil="true" />
-    <Delivered xsi:nil="true" />
-    <runNumber>0</runNumber>
-  </Parcel>
-  <Parcel>
-    <Id>46000</Id>
-    <SenderId>34605</SenderId>
-    <TargetId>89994</TargetId>
-    <DroneId>0</DroneId>
-    <priority>Fast</priority>
-    <weight>Medium</weight>
-    <Requested>2021-01-11T01:54:00</Requested>
-    <Scheduled xsi:nil="true" />
-    <PickedUp xsi:nil="true" />
-    <Delivered xsi:nil="true" />
-    <runNumber>0</runNumber>
-  </Parcel>
-</ArrayOfParcel>
+<ArrayOfStation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Station>
+    <id>21013</id>
+    <name>sta9</name>
+    <Location>
+      <longitude>34.33538677372755</longitude>
+      <latitude>31.818090442483356</latitude>
+    </Location>
+    <ChargeSlots>8</ChargeSlots>
+  </Station>
+  <Station>
+    <id>60430</id>
+    <name>sta4</name>
+    <Location>
+      <longitude>34.01194078010132</longitude>
+      <latitude>31.856920044336896</latitude>
+    </Location>
+    <ChargeSlots>6</ChargeSlots>
+  </Station>
+  <Station>
+    <id>35115</id>
+    <name>sta2</name>
+    <Location>
+      <longitude>34.207924928612975</longitude>
+      <latitude>31.566711259804066</latitude>
+    </Location>
+    <ChargeSlots>7</ChargeSlots>
+  </Station>
+  <Station>
+    <id>92390</id>
+    <name>sta2</name>
+    <Location>
+      <longitude>34.67635423302481</longitude>
+      <latitude>31.13422083255566</latitude>
+    </Location>
+    <ChargeSlots>7</ChargeSlots>
+  </Station>
+  <Station>
+    <id>93037</id>
+    <name>sta7</name>
+    <Location>
+      <longitude>34.76435197646001</longitude>
+      <latitude>31.31704933583599</latitude>
+    </Location>
+    <ChargeSlots>7</ChargeSlots>
+  </Station>
+  <Station>
+    <id>71114</id>
+    <name>sta2</name>
+    <Location>
+      <longitude>34.50983908935908</longitude>
+      <latitude>31.139765293868148</latitude>
+    </Location>
+    <ChargeSlots>8</ChargeSlots>
+  </Station>
+  <Station>
+    <id>96228</id>
+    <name>sta5</name>
+    <Location>
+      <longitude>34.45305705417556</longitude>
+      <latitude>31.922020221092748</latitude>
+    </Location>
+    <ChargeSlots>5</ChargeSlots>
+  </Station>
+  <Station>
+    <id>22761</id>
+    <name>sta5</name>
+    <Location>
+      <longitude>34.333737766059926</longitude>
+      <latitude>31.787083384481765</latitude>
+    </Location>
+    <ChargeSlots>6</ChargeSlots>
+  </Station>
+  <Station>
+    <id>54082</id>
+    <name>sta5</name>
+    <Location>
+      <longitude>34.405933024550755</longitude>
+      <latitude>31.856518009145056</latitude>
+    </Location>
+    <ChargeSlots>7</ChargeSlots>
+  </Station>
+  <Station>
+    <id>89243</id>
+    <name>sta1</name>
+    <Location>
+      <longitude>34.318924223687</longitude>
+      <latitude>31.283822646962395</latitude>
+    </Location>
+    <ChargeSlots>5</ChargeSlots>
+  </Station>
+  <Station>
+    <id>64344</id>
+    <name>sta5</name>
+    <Location>
+      <longitude>34.55898920100135</longitude>
+      <latitude>31.593417970739964</latitude>
+    </Location>
+    <ChargeSlots>9</ChargeSlots>
+  </Station>
+  <Station>
+    <id>41406</id>
+    <name>sta9</name>
+    <Location>
+      <longitude>34.55786771958594</longitude>
+      <latitude>31.646373139995323</latitude>
+    </Location>
+    <ChargeSlots>5</ChargeSlots>
+  </Station>
+  <Station>
+    <id>57903</id>
+    <name>sta1</name>
+    <Location>
+      <longitude>34.2381888931795</longitude>
+      <latitude>31.578086150613654</latitude>
+    </Location>
+    <ChargeSlots>6</ChargeSlots>
+  </Station>
+  <Station>
+    <id>21727</id>
+    <name>sta1</name>
+    <Location>
+      <longitude>34.817333574787405</longitude>
+      <latitude>31.132310675984392</latitude>
+    </Location>
+    <ChargeSlots>6</ChargeSlots>
+  </Station>
+  <Station>
+    <id>26167</id>
+    <name>sta6</name>
+    <Location>
+      <longitude>34.44293458175051</longitude>
+      <latitude>31.76780105604222</latitude>
+    </Location>
+    <ChargeSlots>7</ChargeSlots>
+  </Station>
+</ArrayOfStation>

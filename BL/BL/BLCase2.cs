@@ -219,8 +219,6 @@ namespace BlApi
             }
 
         }
-
-        public void ReleaseDroneFromCharging(int ID, double min)
         public void ReleaseDroneFromCharging(int ID, DateTime updateTime)
         {
             try

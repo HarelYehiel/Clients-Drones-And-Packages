@@ -580,13 +580,13 @@ namespace DalXml
                     XmlSerializer x = new(typeof(List<T>));
                     FileStream file = new(filePath, FileMode.Open);
                     list = (List<T>)x.Deserialize(file);
-                    file.Close();
+                    file.Close();   
                     return list;
                 }
                 else
                     return new List<T>();
             }
-            catch
+            catch(Exception e)
             {
                 return new List<T>();
             }
