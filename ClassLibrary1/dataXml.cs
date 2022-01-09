@@ -48,6 +48,10 @@ namespace DalXml
             List<DroneCharge> droneCharges = new List<DroneCharge>();// = temp.GetListOfDronesInCharging();
             SaveListToXmlSerializer<DroneCharge>(droneCharges, dirPath + dronesChargePath);
 
+            // export the config list to xml file
+            //List<double> config = temp.PowerConsumptionBySkimmer();
+            //SaveListToXmlSerializer<double>(config, dirPath + configDataPath);
+
             // export the DronesCharge list to xml file
             List<Drone> drones = temp.GetListOfDrones().ToList();
             SaveListToXmlSerializer<Drone>(drones, dirPath + dronesPath);

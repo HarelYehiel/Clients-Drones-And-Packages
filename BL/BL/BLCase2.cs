@@ -481,14 +481,14 @@ namespace BlApi
                     {
                         SendingDroneToCharging(12345);
                     }
-                    catch
+                    catch (Exception e)
                     {
                         DelDrone(12345);
                         return true;
                     }
                     // delete this test and return false 
                     DelDrone(12345);
-                    return false;
+                    return false ;
                 }
                 return true;
             }
@@ -547,7 +547,7 @@ namespace BlApi
         }
         public double distance(BO.Location p1, BO.Location p2)
         {
-            return 100000 * Math.Sqrt((Math.Pow(p1.latitude - p2.latitude, 2) + Math.Pow(p1.longitude - p2.longitude, 2)));
+            return 100 * Math.Sqrt((Math.Pow(p1.latitude - p2.latitude, 2) + Math.Pow(p1.longitude - p2.longitude, 2)));
         }
         public double colculateBatteryBO(BO.Location point1, BO.Location point2, int ID)
         {

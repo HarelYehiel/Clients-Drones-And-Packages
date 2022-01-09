@@ -34,7 +34,7 @@ namespace BlApi
            // DalApi.DalObject.DataSource.Initialize();
 
            //inaitilaize the lists by get the values from xml files
-            //dataXml.initilaizeXml(accessDal);     
+            dataXml.initilaizeXml(accessDal);     
 
             BO.DroneToList droneToListBO;
             IEnumerable<DO.Drone> tempList = accessDal.GetListOfDrones();
