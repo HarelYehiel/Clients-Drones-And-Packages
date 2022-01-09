@@ -8,7 +8,7 @@
             public double distancePointToPoint(Location p)
             {
                 //the distance is view by centimeter
-                return Math.Sqrt((Math.Pow(p.latitude - latitude, 2) + Math.Pow(p.longitude - longitude, 2)))*10000;
+                return Math.Sqrt((Math.Pow(p.latitude - latitude, 2) + Math.Pow(p.longitude - longitude, 2)))*100;
             }
             public double longitude { get; set; }
             public double latitude { get; set; }

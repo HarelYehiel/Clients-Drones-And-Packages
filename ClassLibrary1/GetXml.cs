@@ -16,7 +16,7 @@ namespace DalXml
         internal static GetXml Instance { get { return instance; } }
 
         string dirPath = @"..\..\..\..\DalXML\";
-        string configDataPath = @"dronesXml.xml";
+        string configDataPath = @"configXml.xml";
         string stationsPath = @"stationsXml.xml";
         string customersPath = @"customersXml.xml";
         string parcelsPath = @"parcelsXml.xml";

@@ -23,7 +23,7 @@ namespace PL
             List <DroneToList> droneToList = new List<DroneToList>();
             droneToList = bl.GetTheListOfDrones().ToList();
 
-            for (int i = 0; i < 30; i++)
+            for (int i = 0; i < 3; i++)
            {
                 try
                 {
@@ -63,7 +63,7 @@ namespace PL
             if (TitleBox.Content is "Manager - Login")
             {
 
-                if ((txtUsername.Text == "Yoni" || txtUsername.Text == "Harel" || txtUsername.Text == "h") && (txtPassword.Password == "123456" || txtPassword.Password == "h"))
+                if ((txtUsername.Text == "Yoni" || txtUsername.Text == "Harel" || txtUsername.Text == "q") && (txtPassword.Password == "123456" || txtPassword.Password == "q"))
                 {
                     Login.Visibility = Visibility.Hidden;
                     droneListButton.Visibility = Visibility.Visible;

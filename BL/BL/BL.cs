@@ -15,7 +15,7 @@ namespace BlApi
     {
         static readonly BL instance = new BL();
         internal static BL Instance { get { return instance; } }
-        IDal accessDal = DalApi.DalFactory.GetDal("DalXml");
+        IDal accessDal = DalApi.DalFactory.GetDal("DalObject");
         //IDal accessDalXml = DalApi.DalFactory.GetDal("DalXml");
         List<DroneToList> ListDroneToList = new List<DroneToList>();
         private BL()
@@ -24,7 +24,7 @@ namespace BlApi
         }
         public void SimulatorStart(int droneId, Func<bool> f1, Action action)
         {
-            BlApi.Simulator simu = new Simulator(Instance, droneId, f1 );
+           new Simulator(Instance, droneId, f1, action );
         }
 
         public void InitializeAndUpdateTheListsInIBL()

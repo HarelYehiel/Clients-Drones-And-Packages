@@ -163,7 +163,7 @@ namespace BlApi
                             }
                         }
 
-                       
+
                     }
                     else
                         throw new BO.MyExeption_BO("He does not have enough battery to get to the station");
@@ -178,6 +178,42 @@ namespace BlApi
             }
 
         }
+        public void UpdateBatteryInReelTime(int idDrone, double distance)
+        {
+
+            BO.DroneToList droneToList_BO = GetDroneToListBO(idDrone);
+            List<double> configStatus = accessDal.PowerConsumptionBySkimmer();
+
+            switch (droneToList_BO.weight)
+            {
+                case BO.EnumBO.WeightCategories.Light:
+                    droneToList_BO.Battery -= distance / configStatus[1];
+                    break;
+                case BO.EnumBO.WeightCategories.Medium:
+                    droneToList_BO.Battery -= distance / configStatus[2];
+
+                    break;
+                case BO.EnumBO.WeightCategories.Heavy:
+                    droneToList_BO.Battery -= distance / configStatus[3];
+
+                    break;
+
+            }
+
+            if (droneToList_BO.Battery < 0) droneToList_BO.Battery = 0;
+
+            for (int i = 0; i < ListDroneToList.Count; i++)
+            {
+                if (ListDroneToList[i].uniqueID == idDrone)
+                {
+                    ListDroneToList[i] = droneToList_BO;
+                    break;
+                }
+            }
+
+        }
+
+        public void ReleaseDroneFromCharging(int ID, double min)
         public void ReleaseDroneFromCharging(int ID, DateTime updateTime)
         {
             try
@@ -251,7 +287,7 @@ namespace BlApi
                     foreach (var parcel in newList.ConvertAll(convertToParcelNotList))
                         if ((int)parcel.weight <= (int)drone.MaxWeight)
                         {
-                            //newList now have all the aviable and unScheluled drones by priority order 
+                            //newList now have all the aviable and unScheluled parcels by priority order 
                             flag = serchForRelevantParcel(parcel, drone, droneBo, droneId);
                             if (!flag)
                             {
@@ -311,9 +347,9 @@ namespace BlApi
 
                                 //update changes at DataSource
                                 //if (parcelFromUser == 0)
-                                //    parcel = accessIdal.GetParcel(parcelFromUser);
+                                //    parcel = accessDal.GetParcel(parcelFromUser);
                                 //else
-                                    parcel = accessDal.GetParcel(parcels[i].uniqueID);
+                                parcel = accessDal.GetParcel(parcels[i].uniqueID);
                                 parcel.PickedUp = DateTime.Now;
                                 accessDal.updateParcel(parcel);
 
@@ -510,31 +546,31 @@ namespace BlApi
             double distance = point1.distancePointToPoint(point2);
             if (drone.weight == BO.EnumBO.WeightCategories.Light)
             {
-                //all 1500 meters is minus 1% battery
+                //all 10 KM is minus 1% battery
                 minus = distance / configStatus[1];
             }
             if (drone.weight == BO.EnumBO.WeightCategories.Medium)
             {
-                //all 1000 meters is minus 1% battery
+                //all 8 KM is minus 1% battery
                 minus = distance / configStatus[2];
             }
             if (drone.weight == BO.EnumBO.WeightCategories.Heavy)
             {
-                //All 850 meters is minus 1% battery
+                //All 5 KM is minus 1% battery
                 minus = distance / configStatus[3];
             }
             return minus;
         }
-        public void updateParcel(int parcelID, int choise) 
+        public void updateParcel(int parcelID, int choise)
         {
             // In the object "ParcelToList" no have drone Id paraneter, so we take it from DO.Parcel
             DO.Parcel parcel1 = accessDal.GetParcel(parcelID);
-            if(choise == 1)
-            // After that we have droneID update collection parcel by this drone 
+            if (choise == 1)
+                // After that we have droneID update collection parcel by this drone 
                 CollectionOfPackageByDrone(parcel1.DroneId);
             if (choise == 2)
                 DeliveryOfPackageByDrone(parcel1.DroneId);
-        } 
+        }
     }
 
 }
