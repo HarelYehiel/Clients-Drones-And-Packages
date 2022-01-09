@@ -29,7 +29,10 @@ using System.Threading.Tasks;
             public void InputTheCustomer(Customer cust);
 
             public void InputTheDrone(Drone dro);
-            public IEnumerable<Station> GetListOfStations();
+
+
+
+        public IEnumerable<Station> GetListOfStations();
 
             public IEnumerable<Customer> GetListOfCustmers();
 
@@ -56,7 +59,15 @@ using System.Threading.Tasks;
 
             public string MinimumFromStation(double minDistance, Point p);
         public void DelParcel(int ID);
+        public void DelDrone(int ID);
+
         public void updateParcel(DO.Parcel parcel);
+        public void updateDrone(DO.Drone drone);
+        public void updateStation(DO.Station station);
+        public void updateCustomer(DO.Customer customer);
+        public void updateDroneToCharge(DO.DroneCharge droneCharge);
+        public void updateRelaseDroneFromCharge(int droneId, double longi, double lati, double min);
+
 
         }
 

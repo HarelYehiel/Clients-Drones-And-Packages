@@ -29,7 +29,7 @@ namespace BlApi
         public void RemoveAllSkimmersFromTheStation(int ID);
 
         public void SendingDroneToCharging(int ID);
-        public void ReleaseDroneFromCharging(int ID, double min);
+        public void ReleaseDroneFromCharging(int ID, DateTime Now);
         public void AssignPackageToDrone(int droneId);
         public void CollectionOfPackageByDrone(int droneId);
         public void DeliveryOfPackageByDrone(int droneId);
@@ -69,6 +69,8 @@ namespace BlApi
         public void InitializeAndUpdateTheListsInIBL();
         public void DelParcel(int ID);
         public void SimulatorStart(int droneId, Func<bool> f1, Action action);
+        public void DelDrone(int ID);
+        public void Simulator(int droneId, Func<bool> f1, Action action);
 
     }
 }

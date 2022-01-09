@@ -416,6 +416,7 @@ namespace DalApi
                 }
 
             }
+            #region update methodes
             public void updateParcel(DO.Parcel parcel)
             {
                 for (int i = 0; i < DataSource.parcels.Count; i++)
@@ -426,6 +427,71 @@ namespace DalApi
                     }
                 }
             }
+            public void updateDrone(DO.Drone drone)
+            {
+                for (int i = 0; i < DataSource.drones.Count; i++)
+                {
+                    if (DataSource.drones[i].Id == drone.Id)
+                    {
+                        DataSource.drones[i] = drone;
+                    }
+                }
+            }
+            public void updateStation(DO.Station station)
+            {
+                for (int i = 0; i < DataSource.stations.Count; i++)
+                {
+                    if (DataSource.stations[i].id == station.id)
+                    {
+                        DataSource.stations[i] = station;
+                    }
+                }
+            }
+            public void updateCustomer(DO.Customer customer)
+            {
+                for (int i = 0; i < DataSource.customers.Count; i++)
+                {
+                    if (DataSource.customers[i].Id == customer.Id)
+                    {
+                        DataSource.customers[i] = customer;
+                    }
+                }
+            }
+            public void updateDroneToCharge(DroneCharge droneCharge)
+            {
+                InputTheDroneCharge(droneCharge);
+            }
+            public void updateRelaseDroneFromCharge(int droneId, double longi, double lati, double min)
+            {
+                DO.Point stationLocation = new DO.Point();
+                stationLocation.latitude = lati;
+                stationLocation.longitude = longi;
+                for (int i = 0; i < DataSource.drones.Count; i++)
+                {
+                    if (DataSource.drones[i].Id == droneId)
+                    {
+                        DO.Drone drone = GetDrone(droneId);
+                        drone.droneStatus = DO.Enum.DroneStatus.Avilble;
+                        DataSource.drones[i] = drone;
+                    }
+                }
+                for (int i = 0; i < DataSource.stations.Count; i++)
+                {
+                    if (DataSource.stations[i].Location.latitude == stationLocation.latitude && DataSource.stations[i].Location.longitude == stationLocation.longitude)
+                    {
+                        DO.Station station = DataSource.stations[i];
+                        station.ChargeSlots++;
+                        DataSource.stations[i] = station;
+                    }
+                }
+                for (int i = 0; i < DataSource.dronesCharge.Count; i++)
+                {
+                    if (DataSource.dronesCharge[i].DroneId == droneId)
+                        DataSource.dronesCharge.RemoveAt(i);
+
+                }
+            }
+            #endregion
         }
     }
 

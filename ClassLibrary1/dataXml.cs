@@ -1,4 +1,4 @@
-﻿    using System;
+﻿using System;
 using System.Collections.Generic;
 using DO;
 using System.Linq;
@@ -44,51 +44,45 @@ namespace DalXml
 
             #region sreilaize xml
             // export the DronesCharge list to xml file
-            try
-            {
-                List<DroneCharge> droneCharges = new List<DroneCharge>();// = temp.GetListOfDronesInCharging();
-                XmlSerializer DroneChargeToXml = new XmlSerializer(typeof(List<DroneCharge>));
-                FileStream DroneChargeFile = new FileStream(dirPath + dronesChargePath, FileMode.Create);
-                DroneChargeToXml.Serialize(DroneChargeFile, droneCharges);
-                DroneChargeFile.Close();
-            }
-            catch 
-            {
-                int a;
-            }
+
+            List<DroneCharge> droneCharges = new List<DroneCharge>();// = temp.GetListOfDronesInCharging();
+            SaveListToXmlSerializer<DroneCharge>(droneCharges, dirPath + dronesChargePath);
 
             // export the DronesCharge list to xml file
             List<Drone> drones = temp.GetListOfDrones().ToList();
-            XmlSerializer DronesToXml = new XmlSerializer(typeof(List<Drone>));
-            FileStream DronesFile = new FileStream(dirPath + dronesPath, FileMode.Create);
-            DronesToXml.Serialize(DronesFile, drones);
-            DronesFile.Close();
+            SaveListToXmlSerializer<Drone>(drones, dirPath + dronesPath);
+
 
             // export the parcels list to xml file
             List<Parcel> parcels = temp.GetListOfParcels().ToList();
-            XmlSerializer parcelsToXml = new XmlSerializer(typeof(List<Parcel>));
-            FileStream parfile = new FileStream(dirPath + parcelsPath, FileMode.Create);
-            parcelsToXml.Serialize(parfile, parcels);
-            parfile.Close();
+            SaveListToXmlSerializer<Parcel>(parcels, dirPath + parcelsPath);
 
 
             // export the customers list to xml file
-
             List<Customer> customers = temp.GetListOfCustmers().ToList();
-            XmlSerializer customersToXml = new XmlSerializer(typeof(List<Customer>));
-            FileStream custfile = new FileStream(dirPath + customersPath, FileMode.Create);
-            customersToXml.Serialize(custfile, customers);
-            custfile.Close();
+            SaveListToXmlSerializer<Customer>(customers, dirPath + customersPath);
 
             // export the stations list to xml file
 
-            List<Station> stations   = temp.GetListOfStations().ToList();
-            XmlSerializer stationsToXml = new XmlSerializer(typeof(List<Station>));
-            FileStream stafile = new FileStream(dirPath + stationsPath, FileMode.Create);
-            stationsToXml.Serialize(stafile, stations);
-            stafile.Close();
+            List<Station> stations = temp.GetListOfStations().ToList();
+            SaveListToXmlSerializer<Station>(stations, dirPath + stationsPath);
 
-            #endregion
+        }
+                    #endregion
+public static void SaveListToXmlSerializer<T>(List<T> list, string filePath)
+        {
+            try
+            {
+                FileStream file = new(filePath, FileMode.Create);
+                XmlSerializer x = new(list.GetType());
+                x.Serialize(file, list);
+                file.Close();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("The export To Xml file failed");
+            }
         }
     }
+
 }
