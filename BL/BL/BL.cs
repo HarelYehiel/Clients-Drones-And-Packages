@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-    using DO;
-    using BO;
+using DO;
+using BO;
 using DalXml;
 using BlApi;
 
@@ -16,7 +16,7 @@ namespace BlApi
         static readonly BL instance = new BL();
         internal static BL Instance { get { return instance; } }
         //IDal accessDal = DalApi.DalFactory.GetDal("DalObject");
-        IDal accessDal = DalApi.DalFactory.GetDal("DalXml");
+        IDal accessDal = DalApi.DalFactory.GetDal("DalObject");
         List<DroneToList> ListDroneToList = new List<DroneToList>();
         private BL()
         {
@@ -24,17 +24,17 @@ namespace BlApi
         }
         public void SimulatorStart(int droneId, Func<bool> f1, Action action)
         {
-           new Simulator(Instance, droneId, f1, action, accessDal);
+            new Simulator(Instance, droneId, f1, action, accessDal);
         }
 
         public void InitializeAndUpdateTheListsInIBL()
         // Do initialize if data sourse and update the list listDrons of IBL.
         {
 
-           // DalApi.DalObject.DataSource.Initialize();
+            //DalApi.DalObject.DataSource.Initialize();
 
-           //inaitilaize the lists by get the values from xml files
-            //dataXml.initilaizeXml(accessDal);     
+            //inaitilaize the lists by get the values from xml files
+            //dataXml.initilaizeXml(accessDal);
 
             BO.DroneToList droneToListBO;
             IEnumerable<DO.Drone> tempList = accessDal.GetListOfDrones();
@@ -46,7 +46,7 @@ namespace BlApi
 
                 droneToListBO.uniqueID = drone.Id;
                 droneToListBO.Model = drone.Model;
-                droneToListBO.Battery = 100; //rand.Next(20, 80);
+                droneToListBO.Battery = rand.Next(20, 30);
                 droneToListBO.weight = (BO.EnumBO.WeightCategories)drone.MaxWeight;
                 droneToListBO.status = (BO.EnumBO.DroneStatus)drone.droneStatus;
 
@@ -58,7 +58,7 @@ namespace BlApi
 
                 ListDroneToList.Add(droneToListBO);
 
-            
+
             }
 
         }

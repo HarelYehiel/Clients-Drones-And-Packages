@@ -1,138 +1,138 @@
 <?xml version="1.0"?>
 <ArrayOfStation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Station>
-    <id>92703</id>
-    <name>sta7</name>
+    <id>20033</id>
+    <name>sta2</name>
     <Location>
-      <longitude>34.10231864038032</longitude>
-      <latitude>31.605921191911175</latitude>
+      <longitude>34.607614085361185</longitude>
+      <latitude>31.006468390117618</latitude>
     </Location>
-    <ChargeSlots>6</ChargeSlots>
+    <ChargeSlots>5</ChargeSlots>
   </Station>
   <Station>
-    <id>70072</id>
-    <name>sta6</name>
+    <id>52183</id>
+    <name>sta2</name>
     <Location>
-      <longitude>34.13126940612275</longitude>
-      <latitude>31.40253089061125</latitude>
+      <longitude>34.90203626123352</longitude>
+      <latitude>31.237217827810543</latitude>
     </Location>
-    <ChargeSlots>6</ChargeSlots>
+    <ChargeSlots>5</ChargeSlots>
   </Station>
   <Station>
-    <id>71816</id>
-    <name>sta5</name>
-    <Location>
-      <longitude>34.0366346086546</longitude>
-      <latitude>31.53300781526277</latitude>
-    </Location>
-    <ChargeSlots>9</ChargeSlots>
-  </Station>
-  <Station>
-    <id>69456</id>
+    <id>81776</id>
     <name>sta4</name>
     <Location>
-      <longitude>34.73544839338187</longitude>
-      <latitude>31.279484835117817</latitude>
+      <longitude>34.62655265379071</longitude>
+      <latitude>31.236918315401727</latitude>
     </Location>
-    <ChargeSlots>6</ChargeSlots>
+    <ChargeSlots>5</ChargeSlots>
   </Station>
   <Station>
-    <id>91427</id>
-    <name>sta7</name>
+    <id>37648</id>
+    <name>sta4</name>
     <Location>
-      <longitude>34.26953689254333</longitude>
-      <latitude>31.902348331595935</latitude>
+      <longitude>34.3424295188591</longitude>
+      <latitude>31.78974772141769</latitude>
     </Location>
     <ChargeSlots>7</ChargeSlots>
   </Station>
   <Station>
-    <id>11117</id>
-    <name>sta8</name>
-    <Location>
-      <longitude>34.96400338875316</longitude>
-      <latitude>31.649419633974052</latitude>
-    </Location>
-    <ChargeSlots>9</ChargeSlots>
-  </Station>
-  <Station>
-    <id>63895</id>
+    <id>18233</id>
     <name>sta6</name>
     <Location>
-      <longitude>34.08038388615492</longitude>
-      <latitude>31.68388629876258</latitude>
+      <longitude>34.060671934886216</longitude>
+      <latitude>31.217986147020937</latitude>
     </Location>
-    <ChargeSlots>9</ChargeSlots>
+    <ChargeSlots>7</ChargeSlots>
   </Station>
   <Station>
-    <id>39662</id>
-    <name>sta1</name>
+    <id>10364</id>
+    <name>sta8</name>
     <Location>
-      <longitude>34.64117866924087</longitude>
-      <latitude>31.8458020965782</latitude>
+      <longitude>34.62555909325628</longitude>
+      <latitude>31.791865002267</latitude>
     </Location>
     <ChargeSlots>5</ChargeSlots>
   </Station>
   <Station>
-    <id>92824</id>
-    <name>sta6</name>
+    <id>32194</id>
+    <name>sta2</name>
     <Location>
-      <longitude>34.20494215991578</longitude>
-      <latitude>31.919147143102784</latitude>
+      <longitude>34.660405976539664</longitude>
+      <latitude>31.623319678764474</latitude>
     </Location>
     <ChargeSlots>5</ChargeSlots>
   </Station>
   <Station>
-    <id>81119</id>
-    <name>sta8</name>
+    <id>33570</id>
+    <name>sta3</name>
     <Location>
-      <longitude>34.9975762562815</longitude>
-      <latitude>31.99418793106181</latitude>
+      <longitude>34.2169742692341</longitude>
+      <latitude>31.928041205707956</latitude>
     </Location>
-    <ChargeSlots>9</ChargeSlots>
+    <ChargeSlots>5</ChargeSlots>
   </Station>
   <Station>
-    <id>42937</id>
-    <name>sta1</name>
+    <id>89219</id>
+    <name>sta2</name>
     <Location>
-      <longitude>34.751178388367954</longitude>
-      <latitude>31.158548007793048</latitude>
+      <longitude>34.211057101008976</longitude>
+      <latitude>31.28531066062176</latitude>
     </Location>
-    <ChargeSlots>8</ChargeSlots>
+    <ChargeSlots>7</ChargeSlots>
   </Station>
   <Station>
-    <id>62651</id>
-    <name>sta9</name>
-    <Location>
-      <longitude>34.69506868240194</longitude>
-      <latitude>31.509331627986082</latitude>
-    </Location>
-    <ChargeSlots>8</ChargeSlots>
-  </Station>
-  <Station>
-    <id>78537</id>
-    <name>sta6</name>
-    <Location>
-      <longitude>34.71106277439327</longitude>
-      <latitude>31.650365602062255</latitude>
-    </Location>
-    <ChargeSlots>1</ChargeSlots>
-  </Station>
-  <Station>
-    <id>27209</id>
+    <id>70067</id>
     <name>sta7</name>
     <Location>
-      <longitude>34.12174830824218</longitude>
-      <latitude>31.694512512858264</latitude>
+      <longitude>34.36134638886961</longitude>
+      <latitude>31.72053291402782</latitude>
+    </Location>
+    <ChargeSlots>5</ChargeSlots>
+  </Station>
+  <Station>
+    <id>67972</id>
+    <name>sta2</name>
+    <Location>
+      <longitude>34.992793987967445</longitude>
+      <latitude>31.09239750452917</latitude>
+    </Location>
+    <ChargeSlots>7</ChargeSlots>
+  </Station>
+  <Station>
+    <id>98479</id>
+    <name>sta3</name>
+    <Location>
+      <longitude>34.993763673582</longitude>
+      <latitude>31.933418146769245</latitude>
     </Location>
     <ChargeSlots>3</ChargeSlots>
   </Station>
   <Station>
-    <id>48105</id>
+    <id>57736</id>
+    <name>sta1</name>
+    <Location>
+      <longitude>34.676458076888906</longitude>
+      <latitude>31.550344909797584</latitude>
+    </Location>
+    <ChargeSlots>4</ChargeSlots>
+  </Station>
+  <Station>
+    <id>62631</id>
     <name>sta7</name>
     <Location>
-      <longitude>34.16229751061755</longitude>
-      <latitude>31.23014350572142</latitude>
+      <longitude>34.48706657788114</longitude>
+      <latitude>31.018493849327086</latitude>
     </Location>
     <ChargeSlots>5</ChargeSlots>
+  </Station>
+  <Station>
+    <id>67686</id>
+    <name>sta9</name>
+    <Location>
+      <longitude>34.81405729512407</longitude>
+      <latitude>31.366612867622923</latitude>
+    </Location>
+    <ChargeSlots>1</ChargeSlots>
   </Station>
 </ArrayOfStation>

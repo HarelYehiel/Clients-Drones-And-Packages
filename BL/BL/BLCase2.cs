@@ -108,6 +108,24 @@ namespace BlApi
             }
 
         }
+        BO.Location ReturnLoctionOfCloslyStation(BO.Location location1)
+        {
+            ///----------find the most close station---------
+            List<BO.station> stations = GetAllStaionsBy(s => s.ChargeSlots > 0).ToList().ConvertAll(convertToStationNotList);
+            BO.Location point2 = new BO.Location();
+            point2 = stations[0].location;
+            double min = location1.distancePointToPoint(point2);
+            foreach (var station in stations)
+            {
+                double dis = location1.distancePointToPoint(station.location);
+                if (dis < min)
+                {
+                    point2 = station.location;
+                }
+            }
+
+            return point2;
+        }
         public void SendingDroneToCharging(int ID)
         {
             try
@@ -117,38 +135,27 @@ namespace BlApi
                 //-----check drone status, only if he is free check the next condition-----
                 if (drone.droneStatus == DO.Enum.DroneStatus.Avilble)
                 {
-
-                    ///----------find the most close station---------
-                    List<BO.station> stations = GetAllStaionsBy(s => s.ChargeSlots > 0).ToList().ConvertAll(convertToStationNotList);
-                    BO.Location point1, point2 = new BO.Location();
-                    point1 = droneToListBo.location;
-                    point2 = stations[0].location;
-                    double min = point1.distancePointToPoint(point2);
-                    foreach (var station in stations)
-                    {
-                        double dis = point1.distancePointToPoint(station.location);
-                        if (dis < min)
-                        {
-                            point2 = station.location;
-                        }
-                    }
+                    BO.Location mostCloseStation = ReturnLoctionOfCloslyStation(droneToListBo.location);
                     //--------if drone's battary can survive up to the station-------------
-                    if (droneToListBo.Battery - colculateBatteryBO(point1, point2, ID) > 0)
+                    if (droneToListBo.Battery - colculateBatteryBO(droneToListBo.location, mostCloseStation, ID) > 0)
                     {
                         //update drone data in BO
-                        droneToListBo.Battery -= colculateBatteryBO(point1, point2, ID);
-                        droneToListBo.location = point2;
+                        droneToListBo.Battery -= colculateBatteryBO(droneToListBo.location, mostCloseStation, ID);
+                        droneToListBo.location = mostCloseStation;
                         droneToListBo.status = BO.EnumBO.DroneStatus.Baintenance;
                         for (int i = 0; i < ListDroneToList.Count; i++)
                         {
                             if (ListDroneToList[i].uniqueID == droneToListBo.uniqueID)
+                            {
                                 ListDroneToList[i] = droneToListBo;
+                                break;
+                            }
                         }
 
                         //update the change at the station
-                        foreach (var station in stations)
+                        foreach (var station in GetAllStaionsBy(s => s.ChargeSlots > 0).ToList().ConvertAll(convertToStationNotList))
                         {
-                            if (station.location == point2)
+                            if (station.location.latitude == mostCloseStation.latitude && station.location.longitude == mostCloseStation.longitude)
                             {
                                 station.availableChargingStations--;
                                 //update station data in DataSource
@@ -161,6 +168,7 @@ namespace BlApi
                                     startCharge = DateTime.Now,
                                 };
                                 accessDal.InputTheDroneCharge(droneCharge);
+                                break;
                             }
                         }
 
@@ -176,47 +184,6 @@ namespace BlApi
             {
 
                 throw new BO.MyExeption_BO("Exception from function 'SendingDroneToCharging", e);
-            }
-
-        }
-        public void UpdateBatteryInReelTime(int idDrone, double distance,
-            char AddOrSubtractToBattery /*'-' or '+'*/)
-        {
-
-            BO.DroneToList droneToList_BO = GetDroneToListBO(idDrone);
-            List<double> configStatus = accessDal.PowerConsumptionBySkimmer();
-
-            if (AddOrSubtractToBattery == '-')
-                switch (droneToList_BO.weight)
-                {
-                    case BO.EnumBO.WeightCategories.Light:
-                        droneToList_BO.Battery -= distance / configStatus[1];
-                        break;
-                    case BO.EnumBO.WeightCategories.Medium:
-                        droneToList_BO.Battery -= distance / configStatus[2];
-
-                        break;
-                    case BO.EnumBO.WeightCategories.Heavy:
-                        droneToList_BO.Battery -= distance / configStatus[3];
-
-                        break;
-
-                }
-            else if (AddOrSubtractToBattery == '-')
-            {
-                droneToList_BO.Battery += configStatus[4];
-            }
-
-            if (droneToList_BO.Battery < 0) droneToList_BO.Battery = 0;
-            if (droneToList_BO.Battery > 100) droneToList_BO.Battery = 100;
-
-            for (int i = 0; i < ListDroneToList.Count; i++)
-            {
-                if (ListDroneToList[i].uniqueID == idDrone)
-                {
-                    ListDroneToList[i] = droneToList_BO;
-                    break;
-                }
             }
 
         }
@@ -341,7 +308,7 @@ namespace BlApi
                     List<BO.Parcel> parcels = DisplaysTheListOfParcels().ToList().ConvertAll(convertToParcelNotList);
                     for (int i = 0; i < parcels.Count; i++)
                     {
-                        if (parcels[i].droneInParcel.uniqueID == ID)
+                        if (parcels[i].droneInParcel != null && parcels[i].droneInParcel.uniqueID == ID)
                         {
                             //if the parcel not picked up yet the PickUp time will be defult
                             if (parcels[i].pickedUp == null)
@@ -437,6 +404,58 @@ namespace BlApi
             }
 
         }
+        public void UpdateBatteryInReelTime(int idDrone, double distance,
+    char AddOrSubtractToBattery /*'-' or '+'*/)
+        {
+
+            BO.DroneToList droneToList_BO = GetDroneToListBO(idDrone);
+            List<double> configStatus = accessDal.PowerConsumptionBySkimmer();
+
+            if (AddOrSubtractToBattery == '-')
+                switch (droneToList_BO.weight)
+                {
+                    case BO.EnumBO.WeightCategories.Light:
+                        droneToList_BO.Battery -= distance / configStatus[1];
+                        break;
+                    case BO.EnumBO.WeightCategories.Medium:
+                        droneToList_BO.Battery -= distance / configStatus[2];
+
+                        break;
+                    case BO.EnumBO.WeightCategories.Heavy:
+                        droneToList_BO.Battery -= distance / configStatus[3];
+
+                        break;
+
+                }
+            else if (AddOrSubtractToBattery == '+')
+            {
+                droneToList_BO.Battery += configStatus[4];
+            }
+
+            if (droneToList_BO.Battery < 0) droneToList_BO.Battery = 0;
+            if (droneToList_BO.Battery > 100) droneToList_BO.Battery = 100;
+
+            for (int i = 0; i < ListDroneToList.Count; i++)
+            {
+                if (ListDroneToList[i].uniqueID == idDrone)
+                {
+                    ListDroneToList[i] = droneToList_BO;
+                    break;
+                }
+            }
+
+        }
+        public void updateBatteryBySimultor(int droneId, double updateBattery)
+        {
+            for (int i = 0; i < ListDroneToList.Count; i++)
+            {
+                if (ListDroneToList[i].uniqueID == droneId)
+                {
+                    ListDroneToList[i].Battery = updateBattery;
+                    break;
+                }
+            }
+        }
         private BO.DroneToList GetDroneToListBO(int id)
         {
             for (int i = 0; i < ListDroneToList.Count; i++)
@@ -459,36 +478,17 @@ namespace BlApi
                 //get the location of the parcel tgrget
                 target = GetCustomer(parcel.customerInParcel_Target.uniqueID);
                 point3 = target.location;
+                double d = -colculateBatteryBO(point1, point2, droneId) - colculateBatteryBO(point1, point3, droneId)
+                    - colculateBatteryBO(point3, ReturnLoctionOfCloslyStation(point3), droneId);
                 //check if drone have enough battery to get up to the sender and than go up to target with the parcel
-                if (droneBo.Battery - colculateBatteryBO(point1, point2, droneId) - colculateBatteryBO(point1, point3, droneId) > 0)
+                double f = droneBo.Battery + d;
+                if (f > 0)
                 {
-                    //we found a parcel! return false for
-                    List<BO.StationToTheList> test = GetListOfBaseStations().ToList();
-                    AddingDrone(12345, "check", 0, test[0].uniqueID);
-                    for (int i = 0; i < ListDroneToList.Count; i++)
-                    {
-                        if (ListDroneToList[i].uniqueID == 12345)
-                        {
-                            ListDroneToList[i].location = point3;
-                            ListDroneToList[i].Battery = droneBo.Battery - colculateBatteryBO(point1, point2, droneId) - colculateBatteryBO(point1, point3, droneId);
-                            break;
-                        }
-                    }
-                    // we crate test drone in the location of the target, and try to send him to charge at station,
-                    // if its will succseed return false, else delete this test and return true 
-                    try
-                    {
-                        SendingDroneToCharging(12345);
-                    }
-                    catch
-                    {
-                        DelDrone(12345);
-                        return true;
-                    }
-                    // delete this test and return false 
-                    DelDrone(12345);
+                    //we found a parcel! return false for searching.
+
                     return false;
                 }
+
                 return true;
             }
             catch (Exception e)
@@ -546,7 +546,7 @@ namespace BlApi
         }
         public double distance(BO.Location p1, BO.Location p2)
         {
-            return 100000 * Math.Sqrt((Math.Pow(p1.latitude - p2.latitude, 2) + Math.Pow(p1.longitude - p2.longitude, 2)));
+            return 100 * Math.Sqrt((Math.Pow(p1.latitude - p2.latitude, 2) + Math.Pow(p1.longitude - p2.longitude, 2)));
         }
         public double colculateBatteryBO(BO.Location point1, BO.Location point2, int ID)
         {

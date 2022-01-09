@@ -157,7 +157,7 @@ namespace BlApi
                         BO.Location l = new BO.Location();
                         l.latitude = customer_DO.location.latitude;
                         l.longitude = customer_DO.location.longitude;
-                        parcelByTransfer.collectionLocation = l;
+                        parcelByTransfer.collectLocation = l;
 
                         customer_DO = accessDal.GetCustomer(item.TargetId);
                         l = new BO.Location();
@@ -169,7 +169,7 @@ namespace BlApi
                         parcelByTransfer.theTarget = GetCustomerInParcel(item.TargetId);
 
                         // Transport distance from sender to target.
-                        parcelByTransfer.transportDistance = parcelByTransfer.collectionLocation.distancePointToPoint(parcelByTransfer.destinationLocation);
+                        parcelByTransfer.transportDistance = parcelByTransfer.collectLocation.distancePointToPoint(parcelByTransfer.destinationLocation);
 
 
                         // Is wait for collection ?

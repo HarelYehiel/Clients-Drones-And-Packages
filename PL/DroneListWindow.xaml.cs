@@ -335,7 +335,7 @@ namespace PL
             {
 
                 if (DronesListView.ItemsSource != null)
-                    new DroneWindow(bl, DronesListView.SelectedItem as BO.DroneToList).ShowDialog();
+                    new DroneWindow(bl, DronesListView.SelectedItem as BO.DroneToList).Show();
 
                 DronesListView.SelectedItem = null;
                 EnableFiltersWithConditions();
@@ -359,7 +359,7 @@ namespace PL
                 if (DronesListView.ItemsSource != null)
                 {
                     ParcelToList parcelToList = bl.GetParcelToTheList(IDPacel);
-                    new ParcelWindow(bl, parcelToList).ShowDialog();
+                    new ParcelWindow(bl, parcelToList).Show();
                 }
                 DronesListView.SelectedItem = null;
                 EnableFiltersWithConditions();

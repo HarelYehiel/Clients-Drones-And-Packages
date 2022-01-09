@@ -17,7 +17,7 @@ using System.Threading.Tasks;
             public BO.CustomerInParcel theSander { get; set; }
             public BO.CustomerInParcel theTarget { get; set; }
 
-            public Location collectionLocation { get; set; }
+            public Location collectLocation { get; set; }
             public Location destinationLocation { get; set; }
             public double transportDistance { get; set; }
 
@@ -27,7 +27,7 @@ using System.Threading.Tasks;
                     $"weight: {Enum.GetName(typeof(EnumBO.WeightCategories), weight)}," +
                     $" priority: {Enum.GetName(typeof(EnumBO.Priorities), priority)}" +
                     $" is wait for collection  = parcelStatus\n" +
-                    $"collection location = {collectionLocation.ToString()}, destination location = {destinationLocation.ToString()}" +
+                    $"collection location = {collectLocation.ToString()}, destination location = {destinationLocation.ToString()}" +
                     $" transport distance = {transportDistance}";
             }
 
