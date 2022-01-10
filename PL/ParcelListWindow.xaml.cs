@@ -1,11 +1,13 @@
 ﻿using BO;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.ComponentModel;
+
 
 
 namespace PL
@@ -16,6 +18,7 @@ namespace PL
     public partial class ParclListWindow : Window
     {
         BlApi.IBL bl;
+        BackgroundWorker worker;
         public ParclListWindow(BlApi.IBL bl1)
         {
             bl = bl1;
@@ -24,6 +27,25 @@ namespace PL
             CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelListView.ItemsSource);
             view.Filter = UserFilter;
             openOptions.Visibility = Visibility.Hidden;
+
+            worker = new BackgroundWorker();
+            worker.DoWork += Worker_DoWork;
+            worker.RunWorkerAsync();
+        }
+        void updateTheViewListDronesInRealTime()
+            // Update the list view.
+        {
+            IEnumerable<ParcelToList> parcelToLists;
+            lock (bl) { parcelToLists = bl.DisplaysTheListOfParcels(); }
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelListView.ItemsSource);
+
+        }
+
+        private void Worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            Action theUpdateView = updateTheViewListDronesInRealTime;
+            ParcelListView.Dispatcher.BeginInvoke(theUpdateView);
+            Thread.Sleep(1000);
         }
 
         private void AddNewParcel(object sender, RoutedEventArgs e)
@@ -179,8 +201,8 @@ namespace PL
                 case 1://Sender
 
                     IEnumerable<IGrouping<string, ParcelToList>> tsSender = from item in bl.DisplaysTheListOfParcels()
-                                                                              group item by item.namrSender into gs
-                                                                              select gs;
+                                                                            group item by item.namrSender into gs
+                                                                            select gs;
 
                     l = new List<ParcelToList>();
                     foreach (var group1 in tsSender)
@@ -195,8 +217,8 @@ namespace PL
 
                 case 2: // Target
                     IEnumerable<IGrouping<string, ParcelToList>> tsTarget = from item in bl.DisplaysTheListOfParcels()
-                                                                                group item by item.nameTarget into gs
-                                                                                        select gs;
+                                                                            group item by item.nameTarget into gs
+                                                                            select gs;
 
                     l = new List<ParcelToList>();
                     foreach (var group1 in tsTarget)
@@ -223,11 +245,11 @@ namespace PL
                     }
                     ParcelListView.ItemsSource = l;
                     break;
-                    
-                    case 4: // Weight
+
+                case 4: // Weight
                     IEnumerable<IGrouping<EnumBO.WeightCategories, ParcelToList>> tsWeight = from item in bl.DisplaysTheListOfParcels()
-                                                                                          group item by item.weight into gs
-                                                                                          select gs;
+                                                                                             group item by item.weight into gs
+                                                                                             select gs;
                     l = new List<ParcelToList>();
                     foreach (var group1 in tsWeight)
                     {
@@ -239,7 +261,7 @@ namespace PL
                     ParcelListView.ItemsSource = l;
                     break;
 
-                    case 5: //Situation
+                case 5: //Situation
                     IEnumerable<IGrouping<EnumBO.Situations, ParcelToList>> tsSituation = from item in bl.DisplaysTheListOfParcels()
                                                                                           group item by item.parcelsituation into gs
                                                                                           select gs;
@@ -267,5 +289,5 @@ namespace PL
             openOptions.Visibility = Visibility.Hidden;
         }
     }
-    
-}   
+
+}

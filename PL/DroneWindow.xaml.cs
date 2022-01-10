@@ -92,8 +92,16 @@ namespace PL
             // Details Battery
             BatteryLabel.Visibility = Visibility.Visible;
             BatteryTextBox.Visibility = Visibility.Visible;
-            BatteryTextBox.Text = droneToList.Battery.ToString();
+            BatteryTextBox.Text = Math.Ceiling(droneToList.Battery).ToString();
             BatteryTextBox.IsEnabled = false;
+
+            // Details Loction
+            LoctionLabel.Visibility = Visibility.Visible;
+            LoctionTextBox.Visibility = Visibility.Visible;
+            LoctionTextBox.Text = droneToList.location.ToString();
+            LoctionTextBox.IsEnabled = false;
+
+
 
             // Details package Delivered
             packageDeliveredLabel.Visibility = Visibility.Visible;
@@ -112,15 +120,15 @@ namespace PL
             DroneButton.Content = "Update";
             title.Content = "Update Drone";
         }
-        void d(double droneBattery, EnumBO.DroneStatus droneStatus)
+        void updateTheViewDroneInRealTime(double droneBattery, EnumBO.DroneStatus droneStatus,Location location)
         {
-           
-                BatteryTextBox.Text = droneBattery.ToString();
-                statusTextBox.Text = droneStatus.ToString();
-            
+            //location
+            BatteryTextBox.Text = Math.Ceiling(droneBattery).ToString();
+            statusTextBox.Text = droneStatus.ToString();
+
         }
 
-        delegate void asd(double droneBattery, EnumBO.DroneStatus droneStatus);
+        //delegate void asd(double droneBattery, EnumBO.DroneStatus droneStatus);
         private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
 
@@ -128,9 +136,9 @@ namespace PL
             {
                 Drone drone;
                 lock (bl) { drone = bl.GetDrone(Convert.ToInt32(IDTextBox.Text)); }
-                Action<double, EnumBO.DroneStatus> asd1 = d;
+                Action<double, EnumBO.DroneStatus, Location> theUpdateView = updateTheViewDroneInRealTime;
                 // Dispatcher to main thread to update the window drone.
-                BatteryTextBox.Dispatcher.BeginInvoke(asd1, drone.Battery, drone.Status);
+                BatteryTextBox.Dispatcher.BeginInvoke(theUpdateView, drone.Battery, drone.Status, drone.location);
                 Thread.Sleep(200);
             }
 
@@ -146,7 +154,7 @@ namespace PL
             Func<bool> func = StopSimulator;
             Action action = () => { worker.ReportProgress(1); };
             int idDrone = this.Dispatcher.Invoke<int>(() => { return Convert.ToInt32(IDTextBox.Text); });
-            bl.SimulatorStart(idDrone, func, action);
+            lock (bl) { bl.SimulatorStart(idDrone, func, action); }
         }
 
         bool isNumber(string s)
@@ -315,7 +323,7 @@ namespace PL
 
             ModelTextBox.Text = droneToList.Model;
             statusTextBox.Text = ((EnumBO.DroneStatus)droneToList.status).ToString();
-            BatteryTextBox.Text = droneToList.Battery.ToString();
+            BatteryTextBox.Text = Math.Ceiling(droneToList.Battery).ToString();
             packageDeliveredTextBox.Text = droneToList.packageDelivered.ToString();
 
         }
@@ -421,7 +429,7 @@ namespace PL
         private void sendToCharge_click(object sender, RoutedEventArgs e)
         {
             bl.SendingDroneToCharging(Convert.ToInt32(IDTextBox.Text));
-            MessageBox.Show("The drone is in Charging!","Information",MessageBoxButton.OK,MessageBoxImage.Information);
+            MessageBox.Show("The drone is in Charging!", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
             openOptions.Visibility = Visibility.Hidden;
         }
 

@@ -11,7 +11,7 @@ namespace BlApi
     {
         BO.DroneInPackage GetDroneInPackage(int id)
         {
-            
+
             BO.DroneInPackage droneInPackageBO = new BO.DroneInPackage();
 
             foreach (BO.DroneToList item in ListDroneToList)
@@ -138,7 +138,7 @@ namespace BlApi
             }
 
         }
-        BO.ParcelByTransfer getParcelByTransfer(int id)
+        BO.ParcelByTransfer getParcelByTransfer(int idParcel, Location locationDrone)
         {
 
             try
@@ -147,12 +147,12 @@ namespace BlApi
 
                 foreach (var item in accessDal.GetListOfParcels())
                 {
-                    if (item.Id == id)
+                    if (item.Id == idParcel)
                     {
                         parcelByTransfer.uniqueID = item.Id;
                         parcelByTransfer.priority = (BO.EnumBO.Priorities)item.priority;
                         parcelByTransfer.weight = (BO.EnumBO.WeightCategories)item.weight;
-                        
+
                         DO.Customer customer_DO = accessDal.GetCustomer(item.SenderId);
                         BO.Location l = new BO.Location();
                         l.latitude = customer_DO.location.latitude;
@@ -169,14 +169,22 @@ namespace BlApi
                         parcelByTransfer.theTarget = GetCustomerInParcel(item.TargetId);
 
                         // Transport distance from sender to target.
-                        parcelByTransfer.transportDistance = parcelByTransfer.collectLocation.distancePointToPoint(parcelByTransfer.destinationLocation);
+                        if (item.PickedUp != null)  // The parcel PickedUp
+                        {
+                            parcelByTransfer.transportDistance = parcelByTransfer.collectLocation.
+                                distancePointToPoint(parcelByTransfer.destinationLocation);
 
-
-                        // Is wait for collection ?
-                        if (accessDal.GetParcel(id).PickedUp != null) // The parcel PickedUp
                             parcelByTransfer.isWaitForCollection = false; // The parcel don't wait to PickedUp, it in transfer
-                        else
+                        }
+
+                        // Transport distance from drone to sender.
+                        else if (item.Scheduled != null) // The parcel wait to PickedUp
+                        {
+                            parcelByTransfer.transportDistance = locationDrone.
+                                distancePointToPoint(parcelByTransfer.collectLocation);
+
                             parcelByTransfer.isWaitForCollection = true; // The parcel wait to PickedUp
+                        }
 
                         return parcelByTransfer;
                     }
@@ -207,7 +215,7 @@ namespace BlApi
 
 
                     if (droneBO.Status == BO.EnumBO.DroneStatus.Delivery)
-                        droneBO.parcelByTransfer = getParcelByTransfer(item.packageDelivered);
+                        droneBO.parcelByTransfer = getParcelByTransfer(item.packageDelivered, item.location);
 
 
                     return droneBO;
@@ -230,8 +238,8 @@ namespace BlApi
                 customerBO.phone = customerDO.phone;
 
                 BO.Location location = new BO.Location();
-                location.latitude =  customerDO.location.latitude;
-                location.longitude =  customerDO.location.longitude;
+                location.latitude = customerDO.location.latitude;
+                location.longitude = customerDO.location.longitude;
                 customerBO.location = location;
 
                 customerBO.fromTheCustomer = new List<BO.parcelAtCustomer>();
@@ -278,7 +286,7 @@ namespace BlApi
                 parcelBO.requested = parcelDO.Requested;
                 parcelBO.scheduled = parcelDO.Scheduled;
                 parcelBO.delivered = parcelDO.Delivered;
-                
+
                 return parcelBO;
 
             }
@@ -293,11 +301,11 @@ namespace BlApi
         {
             try
             {
-               BO.DroneInCharging droneCharge = new BO.DroneInCharging();
+                BO.DroneInCharging droneCharge = new BO.DroneInCharging();
                 List<DO.DroneCharge> droneCharges = accessDal.GetListOfDroneCharge().ToList();
                 for (int i = 0; i < droneCharges.Count(); i++)
                 {
-                    if(droneCharges[i].DroneId == ID)
+                    if (droneCharges[i].DroneId == ID)
                     {
                         droneCharge.startCharge = droneCharges[i].startCharge;
                         droneCharge.uniqueID = droneCharges[i].DroneId;
@@ -329,7 +337,7 @@ namespace BlApi
 
             throw MyExeption_BO.There_is_no_variable_with_this_ID;
         }
-         public BO.DroneToList GetDroneToTheList(int ID)
+        public BO.DroneToList GetDroneToTheList(int ID)
         {
             List<DroneToList> stationsToTheLists = GetAllDronesBy(d => d.uniqueID == ID).ToList();
             if (stationsToTheLists.Count == 1)

@@ -59,6 +59,9 @@
                 <Label x:Name="BatteryLabel" Foreground="White" Visibility="Collapsed" Content="Battery" FontWeight="ExtraBlack" Height="27" Width="228"/>
                 <TextBox  x:Name ="BatteryTextBox" IsEnabled="False" Visibility="Collapsed" Background="#545d6a" Foreground="White" Text="" TextWrapping="Wrap" Width="222" Height="26"/>
 
+                <Label x:Name="LoctionLabel" Foreground="White" Visibility="Collapsed" Content="Location" FontWeight="ExtraBlack" Height="27" Width="228"/>
+                <TextBox  x:Name ="LoctionTextBox" IsEnabled="False" Visibility="Collapsed" Background="#545d6a" Foreground="White" Text="" TextWrapping="Wrap" Width="222" Height="26"/>
+
                 <Label x:Name="packageDeliveredLabel" Foreground="White" Visibility="Collapsed" Content="packageDelivered" FontWeight="ExtraBlack" Height="27" Width="228"/>
                 <TextBox  x:Name ="packageDeliveredTextBox" IsEnabled="False" Visibility="Collapsed" Background="#545d6a" Foreground="White" Text="" TextWrapping="Wrap" Width="222" Height="26"/>
 

@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BO;
+using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using BO;
+
 
 
 namespace PL
@@ -23,6 +16,8 @@ namespace PL
     {
         BlApi.IBL bl;
         BO.ParcelToList parcel = new BO.ParcelToList();
+        BackgroundWorker worker;
+
         public ParcelWindow(BlApi.IBL bl1, BO.ParcelToList Parcel1)
         {
             bl = bl1;
@@ -47,6 +42,8 @@ namespace PL
                 OptinalCustomer.Visibility = Visibility.Hidden;
                 LabelCustomers.Visibility = Visibility.Hidden;
                 UpdateBorder.Visibility = Visibility.Hidden;
+
+                worker.DoWork += Worker_DoWork;
             }
             else
             {
@@ -66,6 +63,17 @@ namespace PL
                 UpdateBorder.Visibility = Visibility.Hidden;
             }
         }
+        void updateViewParecel()
+        {
+            lock (bl) { parcel = bl.GetParcelToTheList(Convert.ToInt32(txtId.Text)); }
+            
+        }
+        private void Worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            Action action = updateViewParecel;
+            txtId.Dispatcher.BeginInvoke(action);
+        }
+
         public ParcelWindow(BlApi.IBL bl1)
         {
             bl = bl1;
