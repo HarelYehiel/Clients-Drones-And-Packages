@@ -128,7 +128,7 @@ namespace PL
             try
             {
                 Customer customer;
-                customer = bl.GetCustomer(id);
+                lock (bl) { customer = bl.GetCustomer(id); }
                 if (customer.uniqueID == id) return true; // Exist drine with this id.
                 return false;
             }
@@ -203,7 +203,7 @@ namespace PL
                     // If all proper add th customer.
                     if (isAllProper)
                     {
-                        bl.AbsorptionNewCustomer(ID, txtName.Text, txtPhone.Text, lati, longi);
+                        lock (bl) { bl.AbsorptionNewCustomer(ID, txtName.Text, txtPhone.Text, lati, longi); }
                         MessageBox.Show("The customer added", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
                         
                     }
@@ -213,7 +213,7 @@ namespace PL
             if(Add.Content is "Update")
             {
                 int ID = Convert.ToInt32(txtId.Text);
-                bl.UpdateCustomerData( ID, txtName.Text, txtPhone.Text);
+                lock (bl) { bl.UpdateCustomerData(ID, txtName.Text, txtPhone.Text); }
                 UpdateBorder.Visibility = Visibility.Visible;
             }
 
