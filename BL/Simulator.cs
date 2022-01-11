@@ -15,17 +15,18 @@ namespace BlApi
         double HowMuchTimeMissingToBatteryFull = 0;
         Drone drone;
         Action action;
+        Func<bool> func;
 
-        public Simulator(BlApi.BL bl1, int droneId, Func<bool> func, Action action1)
+        public Simulator(BlApi.BL bl1, int droneId, Func<bool> func1, Action action1)
         {
 
-
+            
             try
             {
+                func = func1;
                 action = action1;
                 bl = bl1;
                 stopwatch = new Stopwatch();
-                stopwatch.Start();
                 lock (bl) { drone = bl.GetDrone(droneId); }
 
                 while (func())
@@ -78,7 +79,7 @@ namespace BlApi
 
                                     HowMuchTimeMissingToBatteryFull = Math.Ceiling((100 - drone.Battery) / configStatus[4]);
                                     updateInRealTime(droneId, HowMuchTimeMissingToBatteryFull, '+', 0);
-
+                                    bl.ReleaseDroneFromCharging(droneId,DateTime.Now);
                                 }
                                 break;
 
@@ -151,7 +152,7 @@ namespace BlApi
         // Send the drone to charging.
         // If don't have place, try all one second.
         {
-            while (true)
+            while (func())
             {
                 try
                 {
@@ -197,7 +198,7 @@ namespace BlApi
 
             if (AddOrSubtractToBattery == '-')
             {
-                for (int i = 1; i <= Math.Ceiling(HowMantTimes); i++)
+                for (int i = 1; i <= Math.Ceiling(HowMantTimes) && func(); i++)
                 {
                     try
                     {
@@ -218,7 +219,7 @@ namespace BlApi
             }
             else if (AddOrSubtractToBattery == '+') 
             {
-                for (int i = 1; i <= Math.Ceiling(HowMantTimes); i++)
+                for (int i = 1;  i <= Math.Ceiling(HowMantTimes) && func(); i++)
                 {
                     lock (bl) { bl.UpdateBatteryInReelTime(droneId, 0, AddOrSubtractToBattery); }
                     action();

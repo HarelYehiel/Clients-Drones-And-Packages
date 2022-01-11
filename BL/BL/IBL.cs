@@ -41,6 +41,7 @@ namespace BlApi
         public BO.station getBaseStation(int ID);
         public BO.StationToTheList GetStationToTheList(int ID);
         public BO.ParcelToList GetParcelToTheList(int ID);
+        public BO.CustomerToList GetCustomerToTheList(int ID);
         public BO.DroneToList GetDroneToTheList(int ID);
         public BO.Drone GetDrone(int ID);
         public BO.Customer GetCustomer(int ID);

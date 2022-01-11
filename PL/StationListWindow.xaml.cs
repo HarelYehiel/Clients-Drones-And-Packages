@@ -6,6 +6,16 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Linq;
+using BO;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Threading;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Interop;
 
 namespace PL
 {
@@ -16,6 +26,8 @@ namespace PL
     {
         BlApi.IBL bl;
         List<StationToTheList> stationsToTheLists;
+        BackgroundWorker worker;
+
 
         // When true allows the 'filters' function to be activated, otherwise there is no access.
         //We usually use this when initializing or resetting the TextBox.
@@ -38,8 +50,29 @@ namespace PL
             InitializeComponent();
             TurnOnFunctionFilters = true;
 
+            worker = new BackgroundWorker();
+            worker.DoWork += Worker_DoWork;
+            worker.RunWorkerAsync();
+
             // Filll the list view.
             StationListView.ItemsSource = stationsToTheLists;
+        }
+        void updateTheViewListStationsInRealTime()
+        {
+
+            EnableFiltersWithConditions();
+        }
+        private void Worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            while (true)
+            {
+                Action theUpdateView = updateTheViewListStationsInRealTime;
+                // Dispatcher to main thread to update the window drone.
+                StationListView.Dispatcher.BeginInvoke(theUpdateView);
+                Thread.Sleep(200);
+            }
+
+
         }
         private void CancelButtonX(object sender, RoutedEventArgs e)
         {

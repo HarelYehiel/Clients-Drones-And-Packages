@@ -32,7 +32,7 @@ namespace PL
             worker.DoWork += Worker_DoWork;
             worker.RunWorkerAsync();
         }
-        void updateTheViewListDronesInRealTime()
+        void updateTheViewListParcelsInRealTime()
         // Update the list view.
         {
             IEnumerable<ParcelToList> parcelToLists;
@@ -43,9 +43,13 @@ namespace PL
 
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            Action theUpdateView = updateTheViewListDronesInRealTime;
-            ParcelListView.Dispatcher.BeginInvoke(theUpdateView);
-            Thread.Sleep(1000);
+            while (true)
+            {
+                Action theUpdateView = updateTheViewListParcelsInRealTime;
+                ParcelListView.Dispatcher.BeginInvoke(theUpdateView);
+                Thread.Sleep(200);
+            }
+
         }
 
         private void AddNewParcel(object sender, RoutedEventArgs e)

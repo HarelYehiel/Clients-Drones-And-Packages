@@ -122,7 +122,7 @@ namespace PL
         }
         void updateTheViewDroneInRealTime(double droneBattery, EnumBO.DroneStatus droneStatus,Location location)
         {
-            //location
+            LoctionTextBox.Text = location.ToString();
             BatteryTextBox.Text = Math.Ceiling(droneBattery).ToString();
             statusTextBox.Text = droneStatus.ToString();
 
@@ -138,7 +138,7 @@ namespace PL
                 lock (bl) { drone = bl.GetDrone(Convert.ToInt32(IDTextBox.Text)); }
                 Action<double, EnumBO.DroneStatus, Location> theUpdateView = updateTheViewDroneInRealTime;
                 // Dispatcher to main thread to update the window drone.
-                BatteryTextBox.Dispatcher.BeginInvoke(theUpdateView, drone.Battery, drone.Status, drone.location);
+                BatteryTextBox.Dispatcher.Invoke(theUpdateView, drone.Battery, drone.Status, drone.location);
                 Thread.Sleep(200);
             }
 
@@ -150,7 +150,6 @@ namespace PL
         }
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
-
             Func<bool> func = StopSimulator;
             Action action = () => { worker.ReportProgress(1); };
             int idDrone = this.Dispatcher.Invoke<int>(() => { return Convert.ToInt32(IDTextBox.Text); });
@@ -367,12 +366,18 @@ namespace PL
             }
 
         }
-        private void Close(object sender, RoutedEventArgs e)
-        {
-
-        }
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
+
+            // We in view drone.
+            if (Simulator.Visibility == Visibility.Visible)
+            {
+                worker.CancelAsync();
+
+                Thread.Sleep(400);
+
+            }
+            
             this.Close();
 
         }
@@ -456,12 +461,9 @@ namespace PL
 
             if (startOrStopSimulter)
             {
-                BatteryTextBox.IsEnabled = true;
-                statusTextBox.IsEnabled = true;
-
-                Simulator.IsEnabled = true;
                 Simulator.Content = "Stop Simulator";
                 Simulator.Background = Brushes.Red;
+                DroneButton.IsEnabled = false;
 
                 startOrStopSimulter = false; //start simultor, next click on the button is  stop the simulator.
                 worker.RunWorkerAsync();
@@ -471,9 +473,14 @@ namespace PL
                 startOrStopSimulter = true;//Stop simultor, next click on the button is start the simulator.
                 Simulator.Content = "Start Simulator";
                 Simulator.Background = Brushes.Green;
-                BatteryTextBox.IsEnabled = false;
-                statusTextBox.IsEnabled = false;
+
                 worker.CancelAsync();
+
+                Thread.Sleep(400);
+
+                DroneButton.IsEnabled = true;
+
+
             }
 
         }

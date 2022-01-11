@@ -39,7 +39,7 @@
                 <Separator></Separator>
                 <Label Name ="LabelID" Content="ID" Foreground="White"/>
                 <TextBox Name="txtId" Background="#545d6a" Foreground="White" FontSize="18"/>
-                <Label Content="Sender name" Foreground="White"/>
+                <Label Content="Name" Foreground="White"/>
                 <TextBox Name="txtName" Background="#545d6a" Foreground="White" FontSize="18" >
                     <TextBox.Style>
                         <Style TargetType="TextBox">

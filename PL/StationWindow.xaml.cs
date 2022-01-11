@@ -1,11 +1,10 @@
 ﻿using BO;
 using System;
-using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Interop;
-
 
 namespace PL
 {
@@ -16,6 +15,7 @@ namespace PL
     {
 
         BlApi.IBL bl;
+        StationToTheList stationToTheList;
 
         private const int GWL_STYLE = -16;
         private const int WS_SYSMENU = 0x80000;
@@ -32,13 +32,31 @@ namespace PL
 
 
         }
-        public StationWindow(BlApi.IBL bl1, StationToTheList stationToTheList)
+        void updateTheViewStationInRealTime()
+        {
+            lock (bl) { stationToTheList = bl.GetStationToTheList(stationToTheList.uniqueID); }
+            LatitudeTextBox.Text = stationToTheList.unAvailableChargingStations.ToString();
+            ChargeSlotsTextBox.Text = stationToTheList.availableChargingStations.ToString();
+        }
+        private void Worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            while (true)
+            {
+                Action theUpdateView = updateTheViewStationInRealTime;
+                // Dispatcher to main thread to update the window drone.
+                IDTextBlock.Dispatcher.BeginInvoke(theUpdateView);
+                Thread.Sleep(200);
+            }
+
+
+        }
+        public StationWindow(BlApi.IBL bl1, StationToTheList stationToTheList1)
         // View station
         {
             bl = bl1;
-
+            stationToTheList = stationToTheList1;
             InitializeComponent();
-            ChangeNamesAndTitlesAccordingToStationPresentation(stationToTheList);
+            ChangeNamesAndTitlesAccordingToStationPresentation(stationToTheList1);
         }
 
         void ChangeNamesAndTitlesAccordingToStationPresentation(StationToTheList stationToTheList)

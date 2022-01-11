@@ -6,7 +6,13 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Windows.Data;
-
+using System.ComponentModel;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Threading;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Interop;
 
 namespace PL
 {
@@ -17,6 +23,7 @@ namespace PL
     {
         BlApi.IBL bl;
         List<CustomerToList> customersToTheLists;
+        BackgroundWorker worker;
 
         // When true allows the 'filters' function to be activated, otherwise there is no access.
         //We usually use this when initializing or resetting the TextBox.
@@ -41,8 +48,30 @@ namespace PL
             TurnOnFunctionFilters = true;
             openOptions.Visibility = Visibility.Hidden;
 
+            worker = new BackgroundWorker();
+            worker.DoWork += Worker_DoWork;
+            worker.RunWorkerAsync();
+
             CustomersListView.ItemsSource = customersToTheLists;
         }
+        void updateTheViewListCustomersInRealTime()
+        {
+
+            EnableFiltersWithConditions();
+        }
+        private void Worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            while (true)
+            {
+                Action theUpdateView = updateTheViewListCustomersInRealTime;
+                // Dispatcher to main thread to update the window drone.
+                CustomersListView.Dispatcher.BeginInvoke(theUpdateView);
+                Thread.Sleep(200);
+            }
+
+
+        }
+
 
         private void CustomersListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -156,11 +185,14 @@ namespace PL
                 FilterPhoneTextBox.Visibility = Visibility.Hidden;
             }
         }
-
-        private void AnyFilterTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        void EnableFiltersWithConditions()
         {
             if (TurnOnFunctionFilters)
                 Filters();
+        }
+        private void AnyFilterTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            EnableFiltersWithConditions();
         }
         bool isNumber(string s)
         {

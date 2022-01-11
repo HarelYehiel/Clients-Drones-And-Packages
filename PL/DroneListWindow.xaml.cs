@@ -18,6 +18,7 @@ namespace PL
     {
         BlApi.IBL bl;
         List<DroneToList> dronesToTheLists;
+        DroneToList droneToListChoose;
         BackgroundWorker worker;
 
 
@@ -43,13 +44,26 @@ namespace PL
 
             worker = new BackgroundWorker();
             worker.DoWork += Worker_DoWork;
+            worker.RunWorkerAsync();
 
             DronesListView.ItemsSource = dronesToTheLists;
         }
+        void updateTheViewListDronesInRealTime()
+        {
+
+            EnableFiltersWithConditions();
+            Thread.Sleep(500);
+        }
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            EnableFiltersWithConditions();
-            Thread.Sleep(1000);
+            while (!worker.CancellationPending)
+            {
+                Action theUpdateView = updateTheViewListDronesInRealTime;
+                // Dispatcher to main thread to update the window drone.
+              //  DronesListView.Dispatcher.Invoke(theUpdateView);
+                Thread.Sleep(500);
+            }
+
 
         }
         private void StatusDroneWeight(object sender, SelectionChangedEventArgs e)
@@ -72,7 +86,7 @@ namespace PL
         private void ClearFilter(object sender, RoutedEventArgs e)
         {
 
-            lock (bl) { DronesListView.ItemsSource = bl.GetTheListOfDrones();}
+            lock (bl) { DronesListView.ItemsSource = bl.GetTheListOfDrones(); }
 
             HideAndReseteAllTextBox();
         }
@@ -87,7 +101,11 @@ namespace PL
         //}
         private void DronesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            HideOrVisibleDronesListViewAndOpenOptionsTheOpposite();
+            droneToListChoose = DronesListView.SelectedItem as BO.DroneToList;
+
+
+            openOptions.Visibility = Visibility.Visible;
+           // HideOrVisibleDronesListViewAndOpenOptionsTheOpposite();
         }
 
         private void AddingNewDrone(object sender, RoutedEventArgs e)
@@ -99,6 +117,9 @@ namespace PL
         }
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
+            worker.WorkerSupportsCancellation = true;
+            worker.CancelAsync();
+
             this.Close();
         }
 
@@ -335,7 +356,7 @@ namespace PL
             {
 
                 if (DronesListView.ItemsSource != null)
-                    new DroneWindow(bl, DronesListView.SelectedItem as BO.DroneToList).Show();
+                    new DroneWindow(bl, droneToListChoose).Show();
 
                 DronesListView.SelectedItem = null;
                 EnableFiltersWithConditions();
@@ -352,7 +373,7 @@ namespace PL
             try
             {
 
-                int IDPacel = (DronesListView.SelectedItem as BO.DroneToList).packageDelivered;
+                int IDPacel = droneToListChoose.packageDelivered;
                 if (IDPacel == 0)
                     throw new MyExeption_BO("check if the drone associated to parcel");
 
@@ -377,41 +398,41 @@ namespace PL
 
         private void CancelOpenBarButton_Click(object sender, RoutedEventArgs e)
         {
-            DronesListView.SelectedItem = null;
+            openOptions.Visibility = Visibility.Hidden;
         }
-        void HideOrVisibleDronesListViewAndOpenOptionsTheOpposite()
-        // Hide oe visible all button on DronesListView and DronesListView,
-        // DronesListView The Opposite.
-        {
-            if (DronesListView.Visibility == Visibility.Visible)
-            {
-                openOptions.Visibility = Visibility.Visible;
+        //void HideOrVisibleDronesListViewAndOpenOptionsTheOpposite()
+        //// Hide oe visible all button on DronesListView and DronesListView,
+        //// DronesListView The Opposite.
+        //{
+        //    if (DronesListView.Visibility == Visibility.Visible)
+        //    {
+        //        openOptions.Visibility = Visibility.Visible;
 
-                DronesListView.Visibility = Visibility.Hidden;
-                SearchIDButton.Visibility = Visibility.Hidden;
-                SearchModelButton.Visibility = Visibility.Hidden;
-                SearchBattryButton.Visibility = Visibility.Hidden;
-                SearchLocationButton.Visibility = Visibility.Hidden;
-                SearchParcelButton.Visibility = Visibility.Hidden;
-                SearchStatusButton.Visibility = Visibility.Hidden;
-                SearchWeightButton.Visibility = Visibility.Hidden;
+        //        DronesListView.Visibility = Visibility.Hidden;
+        //        SearchIDButton.Visibility = Visibility.Hidden;
+        //        SearchModelButton.Visibility = Visibility.Hidden;
+        //        SearchBattryButton.Visibility = Visibility.Hidden;
+        //        SearchLocationButton.Visibility = Visibility.Hidden;
+        //        SearchParcelButton.Visibility = Visibility.Hidden;
+        //        SearchStatusButton.Visibility = Visibility.Hidden;
+        //        SearchWeightButton.Visibility = Visibility.Hidden;
 
-            }
-            else
-            {
-                openOptions.Visibility = Visibility.Hidden;
+        //    }
+        //    else
+        //    {
+        //        openOptions.Visibility = Visibility.Hidden;
 
-                DronesListView.Visibility = Visibility.Visible;
-                SearchIDButton.Visibility = Visibility.Visible;
-                SearchModelButton.Visibility = Visibility.Visible;
-                SearchBattryButton.Visibility = Visibility.Visible;
-                SearchLocationButton.Visibility = Visibility.Visible;
-                SearchParcelButton.Visibility = Visibility.Visible;
-                SearchStatusButton.Visibility = Visibility.Visible;
-                SearchWeightButton.Visibility = Visibility.Visible;
-            }
+        //        DronesListView.Visibility = Visibility.Visible;
+        //        SearchIDButton.Visibility = Visibility.Visible;
+        //        SearchModelButton.Visibility = Visibility.Visible;
+        //        SearchBattryButton.Visibility = Visibility.Visible;
+        //        SearchLocationButton.Visibility = Visibility.Visible;
+        //        SearchParcelButton.Visibility = Visibility.Visible;
+        //        SearchStatusButton.Visibility = Visibility.Visible;
+        //        SearchWeightButton.Visibility = Visibility.Visible;
+        //    }
 
-        }
+        //}
 
         private void ComboBox_Initialized(object sender, EventArgs e)
         {
@@ -461,7 +482,7 @@ namespace PL
                                    select gs;
                     }
 
-                   l = new List<DroneToList>();
+                    l = new List<DroneToList>();
                     foreach (var group1 in tsweight)
                     {
                         foreach (DroneToList item in group1)

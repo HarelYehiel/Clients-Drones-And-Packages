@@ -75,10 +75,14 @@ namespace PL
         }
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            Action action = updateViewParecel;
-            txtId.Dispatcher.BeginInvoke(action);
+            while (true)
+            {
+                Action action = updateViewParecel;
+                txtId.Dispatcher.BeginInvoke(action);
 
-            Thread.Sleep(1000);
+                Thread.Sleep(200);
+            }
+
 
         }
 

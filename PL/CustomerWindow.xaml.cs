@@ -7,6 +7,16 @@ using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Data;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Threading;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Interop;
+
 
 
 
@@ -19,6 +29,8 @@ namespace PL
     {
         BlApi.IBL bl;
         CustomerToList customerToList;
+        BackgroundWorker worker;
+
         private const int GWL_STYLE = -16;
         private const int WS_SYSMENU = 0x80000;
         [DllImport("user32.dll", SetLastError = true)]
@@ -58,14 +70,44 @@ namespace PL
             txtPhone.Text = customerToList.phone;
             txtPhone.Background = new SolidColorBrush(Colors.White);
             txtPhone.Foreground = new SolidColorBrush(Colors.Red);
+
+            // take 'Latitude' for information 'packagesHeReceived'.
             labelLati.Content = "Quantity of parcels shipped";
             Latitude.Text = customerToList.packagesHeReceived.ToString();
             Latitude.IsEnabled = false;
+
+            //take 'Longitude' for information  'packagesOnTheWayToTheCustomer'.
             labelLongi.Content = "Quantity of parcels on the way";
             Longitude.Text = customerToList.packagesOnTheWayToTheCustomer.ToString();
             Longitude.IsEnabled = false;
+
             Add.Content = "Update";
+
+            worker = new BackgroundWorker();
+            worker.DoWork += Worker_DoWork;
+            worker.RunWorkerAsync();
         }
+        void updateTheViewListDronesInRealTime()
+        {
+            lock (bl) { customerToList = bl.GetCustomerToTheList(customerToList.uniqueID); }
+
+            // take 'Latitude' for information 'packagesHeReceived'.
+            Latitude.Text = customerToList.packagesHeReceived.ToString();
+
+            //take 'Longitude' for information  'packagesOnTheWayToTheCustomer'.
+            Longitude.Text = customerToList.packagesOnTheWayToTheCustomer.ToString();
+        }
+        private void Worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            while (true)
+            {
+                Action theUpdateView = updateTheViewListDronesInRealTime;
+                // Dispatcher to main thread to update the window drone.
+                IDTextBlock.Dispatcher.BeginInvoke(theUpdateView);
+                Thread.Sleep(200);
+            }
+        }
+
         private void CancelButtonX(object sender, RoutedEventArgs e)
         {
             var hwnd = new WindowInteropHelper(this).Handle;

@@ -5,6 +5,15 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.InteropServices;
+using System.Threading;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Interop;
+using System.Windows.Media;
 
 namespace PL
 {
@@ -13,20 +22,9 @@ namespace PL
     /// </summary>
     public partial class DroneInChargingWindow : Window
     {
-        public DroneInChargingWindow(BlApi.IBL bL1, int StationID1)
-        {
-            bl = bL1;
-            StationID = StationID1;
-            RunDronesInCharging = new List<DroneInCharging>();
+        BackgroundWorker worker;
 
-            lock (bl) { RunDronesInCharging.AddRange(bl.GetAllDronesInCharging(C => C.staitionId == StationID)); }
 
-            TurnOnFunctionFilters = false;
-            InitializeComponent();
-            TurnOnFunctionFilters = true;
-
-            DronesInChargingListView.ItemsSource = RunDronesInCharging;
-        }
 
         BlApi.IBL bl;
 
@@ -46,6 +44,39 @@ namespace PL
         [DllImport("user32.dll")]
         private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
+        public DroneInChargingWindow(BlApi.IBL bL1, int StationID1)
+        {
+            bl = bL1;
+            StationID = StationID1;
+            RunDronesInCharging = new List<DroneInCharging>();
+
+            lock (bl) { RunDronesInCharging.AddRange(bl.GetAllDronesInCharging(C => C.staitionId == StationID)); }
+
+            TurnOnFunctionFilters = false;
+            InitializeComponent();
+            TurnOnFunctionFilters = true;
+
+            worker = new BackgroundWorker();
+            worker.DoWork += Worker_DoWork;
+            worker.RunWorkerAsync();
+
+            DronesInChargingListView.ItemsSource = RunDronesInCharging;
+        }
+        void updateViewDronesInCharging()
+        {
+            Filters();
+           // lock (bl) { DronesInChargingListView.ItemsSource = (bl.GetAllDronesInCharging(C => C.staitionId == StationID)); }
+        }
+        private void Worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            while (!worker.CancellationPending)
+            {
+                Action action = updateViewDronesInCharging;
+                DronesInChargingListView.Dispatcher.BeginInvoke(action);
+
+                Thread.Sleep(200);
+            }
+        }
         private void StatusDroneWeight(object sender, SelectionChangedEventArgs e)
         {
             Filters();
@@ -68,6 +99,7 @@ namespace PL
         }
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
+            worker.CancelAsync();
             this.Close();
         }
 

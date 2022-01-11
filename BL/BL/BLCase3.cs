@@ -331,17 +331,25 @@ namespace BlApi
         }
         public BO.ParcelToList GetParcelToTheList(int ID)
         {
-            List<ParcelToList> stationsToTheLists = GetAllParcelsBy(p => p.Id == ID).ToList();
-            if (stationsToTheLists.Count == 1)
-                return stationsToTheLists[0];
+            List<ParcelToList> parcelsToTheLists = GetAllParcelsBy(p => p.Id == ID).ToList();
+            if (parcelsToTheLists.Count == 1)
+                return parcelsToTheLists[0];
 
             throw MyExeption_BO.There_is_no_variable_with_this_ID;
         }
         public BO.DroneToList GetDroneToTheList(int ID)
         {
-            List<DroneToList> stationsToTheLists = GetAllDronesBy(d => d.uniqueID == ID).ToList();
-            if (stationsToTheLists.Count == 1)
-                return stationsToTheLists[0];
+            List<DroneToList> dronesToTheLists = GetAllDronesBy(d => d.uniqueID == ID).ToList();
+            if (dronesToTheLists.Count == 1)
+                return dronesToTheLists[0];
+
+            throw MyExeption_BO.There_is_no_variable_with_this_ID;
+        }
+        public BO.CustomerToList GetCustomerToTheList(int ID)
+        {
+            List<CustomerToList> customersToTheLists = GetAllCustomersBy(c => c.Id == ID).ToList();
+            if (customersToTheLists.Count == 1)
+                return customersToTheLists[0];
 
             throw MyExeption_BO.There_is_no_variable_with_this_ID;
         }
