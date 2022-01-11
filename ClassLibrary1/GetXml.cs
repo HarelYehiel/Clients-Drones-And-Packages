@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using System.Xml.Serialization;
+using System.Runtime.CompilerServices;
 using DO;
 
 namespace DalXml
@@ -23,7 +24,7 @@ namespace DalXml
         string dronesPath = @"dronesXml.xml";
         string dronesChargePath = @"droneChargesXml.xml";
 
-        public List<double> PowerConsumptionBySkimmer()
+        [MethodImpl(MethodImplOptions.Synchronized)] public List<double> PowerConsumptionBySkimmer()
         {
 
             FileStream stream = File.OpenRead(dirPath + configDataPath);
@@ -33,13 +34,13 @@ namespace DalXml
             return dou;
 
         }
-        public void AddParcel(Parcel par)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void AddParcel(Parcel par)
 
         {
             par.runNumber++;
         }
         #region get personal item
-        public Station GetStation(int stationId)
+        [MethodImpl(MethodImplOptions.Synchronized)] public Station GetStation(int stationId)
         // Return the station with stationId
         {
             FileStream stream = File.OpenRead(dirPath + stationsPath);
@@ -60,7 +61,7 @@ namespace DalXml
 
 
 
-        public Drone GetDrone(int droneId)
+        [MethodImpl(MethodImplOptions.Synchronized)] public Drone GetDrone(int droneId)
 
         {
             FileStream stream = File.OpenRead(dirPath + dronesPath);
@@ -98,7 +99,7 @@ namespace DalXml
         }
 
 
-        public Customer GetCustomer(int CustomerId)
+        [MethodImpl(MethodImplOptions.Synchronized)] public Customer GetCustomer(int CustomerId)
 
         {
             FileStream stream = File.OpenRead(dirPath + customersPath);
@@ -113,7 +114,7 @@ namespace DalXml
             }
             throw new myExceptionDO("Exception from function GetCustomer", myExceptionDO.There_is_no_variable_with_this_ID);
         }
-        public Parcel GetParcel(int ParcelId)
+        [MethodImpl(MethodImplOptions.Synchronized)] public Parcel GetParcel(int ParcelId)
 
         // Return the parcel with parcelId
         {
@@ -132,7 +133,7 @@ namespace DalXml
         }
         #endregion
         #region delete personal item
-        public void DelParcel(int ID)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void DelParcel(int ID)
         {
             Parcel parcel = GetParcel(ID);
             if (parcel.Requested != null) //if the parcel is exist
@@ -146,17 +147,17 @@ namespace DalXml
 
         }
 
-        public void DelStation(int ID)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void DelStation(int ID)
         {
             throw new Exception();
         }
 
-        public void DelCustomer(int ID)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void DelCustomer(int ID)
         {
             throw new Exception();
         }
 
-        public void DelDrone(int ID)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void DelDrone(int ID)
         {
             try
             {
@@ -173,32 +174,32 @@ namespace DalXml
         }
         #endregion
         #region add item to xml file
-        public void InputTheStation(Station station)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void InputTheStation(Station station)
         {
             List<Station> tempList = GetListOfStations().ToList();
             tempList.Add(station);
             SaveListToXmlSerializer<Station>(tempList, dirPath + stationsPath);
         }
-        public void InputTheDroneCharge(DroneCharge droneCharge)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void InputTheDroneCharge(DroneCharge droneCharge)
         {
             List<DroneCharge> tempList = GetListOfDronesInCharging().ToList();
             tempList.Add(droneCharge);
             SaveListToXmlSerializer<DroneCharge>(tempList, dirPath + dronesChargePath);
         }
-        public void InputTheParcel(Parcel par)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void InputTheParcel(Parcel par)
         {
             List<Parcel> tempList = GetListOfParcels().ToList();
             tempList.Add(par);
             SaveListToXmlSerializer<Parcel>(tempList, dirPath + parcelsPath);
         }
-        public void InputTheCustomer(Customer cust)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void InputTheCustomer(Customer cust)
         {
 
             List<Customer> templist = GetListOfCustmers().ToList();
             templist.Add(cust);
             SaveListToXmlSerializer<Customer>(templist, dirPath + customersPath);
         }
-        public void InputTheDrone(Drone drone)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void InputTheDrone(Drone drone)
         {
             //XDocument dronesFile = new XDocument(dirPath + dronesPath);
             //dronesFile.Add(drone);
@@ -209,42 +210,42 @@ namespace DalXml
         }
         #endregion
         #region get list of items
-        public IEnumerable<DroneCharge> GetListOfDroneCharge()
+        [MethodImpl(MethodImplOptions.Synchronized)] public IEnumerable<DroneCharge> GetListOfDroneCharge()
         {
             return LoadListFromXmlSerializer<DroneCharge>(dirPath + dronesChargePath);
         }
 
-        public IEnumerable<Station> GetListOfStations()
+        [MethodImpl(MethodImplOptions.Synchronized)] public IEnumerable<Station> GetListOfStations()
         //return all the station from DataSource.stations
 
         {
             return LoadListFromXmlSerializer<Station>(dirPath + stationsPath);
         }
 
-        public IEnumerable<Customer> GetListOfCustmers()
+        [MethodImpl(MethodImplOptions.Synchronized)] public IEnumerable<Customer> GetListOfCustmers()
         //return all the customer from DataSource.customers
         {
             return LoadListFromXmlSerializer<Customer>(dirPath + customersPath);
         }
-        public IEnumerable<DroneCharge> GetListOfDronesInCharging()
+        [MethodImpl(MethodImplOptions.Synchronized)] public IEnumerable<DroneCharge> GetListOfDronesInCharging()
         {
             return LoadListFromXmlSerializer<DroneCharge>(dirPath + dronesChargePath);
         }
 
-        public IEnumerable<Parcel> GetListOfParcels()
+        [MethodImpl(MethodImplOptions.Synchronized)] public IEnumerable<Parcel> GetListOfParcels()
         //print all the Parcel from DataSource.parcels
 
         {
             return LoadListFromXmlSerializer<Parcel>(dirPath + parcelsPath);
         }
-        public IEnumerable<Drone> GetListOfDrones()
+        [MethodImpl(MethodImplOptions.Synchronized)] public IEnumerable<Drone> GetListOfDrones()
         //print all the Drone from DataSource.drones
         {
             return LoadListFromXmlSerializer<Drone>(dirPath + dronesPath);
 
         }
         #region specific filter of list
-        public IEnumerable<Parcel> DisplaysParcelsDontHaveDrone()
+        [MethodImpl(MethodImplOptions.Synchronized)] public IEnumerable<Parcel> DisplaysParcelsDontHaveDrone()
 
         // Print the details of all the parcels don't have An associated skimmer (Selected_drone == 0).
         {
@@ -267,7 +268,7 @@ namespace DalXml
         #endregion
         #endregion
         #region implementaion of intarface IDal
-        public IEnumerable<Station> AvailableChargingStations()
+        [MethodImpl(MethodImplOptions.Synchronized)] public IEnumerable<Station> AvailableChargingStations()
 
         //Print the all stations that have DroneCharge available
         {
@@ -287,7 +288,7 @@ namespace DalXml
 
             }
         }
-        public string MinimumFromCustomer(double minDistance, Point p)
+        [MethodImpl(MethodImplOptions.Synchronized)] public string MinimumFromCustomer(double minDistance, Point p)
 
         {
             try
@@ -311,7 +312,7 @@ namespace DalXml
                 throw new myExceptionDO("Exception from function MinimumFromCustomer", myExceptionDO.Dont_have_any_customer_in_the_list);
             }
         }
-        public string MinimumFromStation(double minDistance, Point p)
+        [MethodImpl(MethodImplOptions.Synchronized)] public string MinimumFromStation(double minDistance, Point p)
         {
             try
             {
@@ -337,7 +338,7 @@ namespace DalXml
         }
         #endregion
         #region update methods
-        public void AffiliationDroneToParcel(int parcelID, int droneID)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void AffiliationDroneToParcel(int parcelID, int droneID)
         {
             if (GetListOfParcels().Count() == 0)
                 throw new myExceptionDO("Exception from function AffiliationDroneToParcel", myExceptionDO.Dont_have_any_parcel_in_the_list);
@@ -360,7 +361,7 @@ namespace DalXml
                 throw new myExceptionDO("Exception from function AffiliationDroneToParcel", myExceptionDO.There_is_no_variable_with_this_ID);
             }
         }
-        public void PickUp(int parcelId)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void PickUp(int parcelId)
         {
             if (GetListOfParcels().Count() == 0)
                 throw new myExceptionDO("Exception from function pickUp", myExceptionDO.Dont_have_any_parcel_in_the_list);
@@ -384,7 +385,7 @@ namespace DalXml
                 throw new myExceptionDO("Exception from function pickUp", myExceptionDO.There_is_no_variable_with_this_ID); ;
             }
         }
-        public void Delivered(int parcelID)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void Delivered(int parcelID)
         {
             if (GetListOfParcels().Count() == 0)
                 throw new myExceptionDO("Exception from function delivered", myExceptionDO.Dont_have_any_parcel_in_the_list);
@@ -408,7 +409,7 @@ namespace DalXml
                 throw new myExceptionDO("Exception from function delivered", myExceptionDO.There_is_no_variable_with_this_ID);
             }
         }
-        public void SetFreeStation(int droneId)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void SetFreeStation(int droneId)
         {
             if (GetListOfStations().Count() == 0)
                 throw new myExceptionDO("Exception from function setFreeStation", myExceptionDO.Dont_have_any_station_in_the_list);
@@ -441,7 +442,7 @@ namespace DalXml
                 throw new myExceptionDO("Exception from function setFreeStation", myExceptionDO.We_ge_to_the_end_of_list_and_dont_find_the_drone);
             }
         }
-        public void DroneToCharge(int droneId, int stationId)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void DroneToCharge(int droneId, int stationId)
         {
             if (GetListOfStations().Count() == 0)
                 throw new myExceptionDO("Exception from function droneToCharge", myExceptionDO.Dont_have_any_station_in_the_list);
@@ -474,7 +475,7 @@ namespace DalXml
             }
 
         }
-        public void updateParcel(Parcel updatedParcel)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void updateParcel(Parcel updatedParcel)
         {
             // get the new update station, remove the older and save the new
             List<Parcel> parcels = GetListOfParcels().ToList();
@@ -484,7 +485,7 @@ namespace DalXml
             SaveListToXmlSerializer<Parcel>(parcels, dirPath + parcelsPath);
 
         }
-        public void updateStation(Station updatedStation)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void updateStation(Station updatedStation)
         {
             // get the new update station, remove the older and save the new
             List<Station> stations = GetListOfStations().ToList();
@@ -493,7 +494,7 @@ namespace DalXml
             stations.Add(updatedStation);
             SaveListToXmlSerializer<Station>(stations, dirPath + stationsPath);
         }
-        public void updateDroneToCharge(DroneCharge droneCharge)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void updateDroneToCharge(DroneCharge droneCharge)
         {
             //if the drone is not exist add him
             List<DroneCharge> droneCharges = GetListOfDroneCharge().ToList();
@@ -510,7 +511,7 @@ namespace DalXml
                 droneCharges.Add(droneCharge);
             SaveListToXmlSerializer<DroneCharge>(droneCharges, dirPath + dronesChargePath);
         }
-        public void updateDrone(DO.Drone drone)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void updateDrone(DO.Drone drone)
         {
             // get the new update drone, remove the older and save the new
             List<Drone> drones = GetListOfDrones().ToList();
@@ -519,7 +520,7 @@ namespace DalXml
             drones.Add(drone);
             SaveListToXmlSerializer<Drone>(drones, dirPath + dronesPath);
         }
-        public void updateCustomer(DO.Customer customer)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void updateCustomer(DO.Customer customer)
         {
             // get the new update customer, remove the older and save the new
             List<Customer> customers = GetListOfCustmers().ToList();
@@ -528,7 +529,7 @@ namespace DalXml
             customers.Add(customer);
             SaveListToXmlSerializer<Customer>(customers, dirPath + customersPath);
         }
-        public void updateRelaseDroneFromCharge(int droneId, double longi, double lati, double min)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void updateRelaseDroneFromCharge(int droneId, double longi, double lati, double min)
         {
             //   DO.Point stationLocation = new DO.Point({ latitude = lati, longitude = longi, });
 

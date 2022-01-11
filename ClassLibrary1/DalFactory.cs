@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using DalApi.DalObject;
 using DO;
+using System.Runtime.CompilerServices;
+
 
 namespace DalApi
 {

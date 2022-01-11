@@ -1,42 +1,49 @@
-﻿using BO;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Threading;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using BO;
+using System.Runtime.InteropServices;
+using System.Threading;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+
 using System.Windows.Interop;
+
 
 namespace PL
 {
     /// <summary>
-    /// Interaction logic for DroneListWindow.xaml
+    /// Interaction logic for DronePage.xaml
     /// </summary>
-    public partial class DroneListWindow : Window
+    public partial class DronePage : Page
     {
+
         BlApi.IBL bl;
         List<DroneToList> dronesToTheLists;
-        DroneToList droneToListChoose;
         BackgroundWorker worker;
+        bool TurnOnFunctionFilters;
+
 
 
         // When true allows the 'filters' function to be activated, otherwise there is no access.
         //We usually use this when initializing or resetting the TextBox.
-        bool TurnOnFunctionFilters;
 
-        private const int GWL_STYLE = -16;
-        private const int WS_SYSMENU = 0x80000;
-        [DllImport("user32.dll", SetLastError = true)]
-        private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
-        [DllImport("user32.dll")]
-        private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
-        public DroneListWindow(BlApi.IBL bL1)
+        public DronePage(BlApi.IBL bL1)
         {
             bl = bL1;
             dronesToTheLists = new List<DroneToList>();
-            lock (bl) { dronesToTheLists.AddRange(bl.GetTheListOfDrones()); }
+            dronesToTheLists.AddRange(bl.GetTheListOfDrones());
 
             TurnOnFunctionFilters = false;
             InitializeComponent();
@@ -44,26 +51,13 @@ namespace PL
 
             worker = new BackgroundWorker();
             worker.DoWork += Worker_DoWork;
-            worker.RunWorkerAsync();
 
             DronesListView.ItemsSource = dronesToTheLists;
         }
-        void updateTheViewListDronesInRealTime()
-        {
-
-            EnableFiltersWithConditions();
-            Thread.Sleep(500);
-        }
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            while (!worker.CancellationPending)
-            {
-                Action theUpdateView = updateTheViewListDronesInRealTime;
-                // Dispatcher to main thread to update the window drone.
-              //  DronesListView.Dispatcher.Invoke(theUpdateView);
-                Thread.Sleep(500);
-            }
-
+            EnableFiltersWithConditions();
+            Thread.Sleep(1000);
 
         }
         private void StatusDroneWeight(object sender, SelectionChangedEventArgs e)
@@ -86,7 +80,7 @@ namespace PL
         private void ClearFilter(object sender, RoutedEventArgs e)
         {
 
-            lock (bl) { DronesListView.ItemsSource = bl.GetTheListOfDrones(); }
+            DronesListView.ItemsSource = bl.GetTheListOfDrones();
 
             HideAndReseteAllTextBox();
         }
@@ -101,11 +95,7 @@ namespace PL
         //}
         private void DronesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            droneToListChoose = DronesListView.SelectedItem as BO.DroneToList;
-
-
-            openOptions.Visibility = Visibility.Visible;
-           // HideOrVisibleDronesListViewAndOpenOptionsTheOpposite();
+            HideOrVisibleDronesListViewAndOpenOptionsTheOpposite();
         }
 
         private void AddingNewDrone(object sender, RoutedEventArgs e)
@@ -117,16 +107,14 @@ namespace PL
         }
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
-            worker.WorkerSupportsCancellation = true;
-            worker.CancelAsync();
+            //this.Close();
+            this.Visibility = Visibility.Hidden;
 
-            this.Close();
         }
 
         private void cancelButtonX(object sender, RoutedEventArgs e)
         {
-            var hwnd = new WindowInteropHelper(this).Handle;
-            SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_SYSMENU);
+            
         }
         bool isNumber(string s)
         {
@@ -356,7 +344,7 @@ namespace PL
             {
 
                 if (DronesListView.ItemsSource != null)
-                    new DroneWindow(bl, droneToListChoose).Show();
+                    new DroneWindow(bl, DronesListView.SelectedItem as BO.DroneToList).Show();
 
                 DronesListView.SelectedItem = null;
                 EnableFiltersWithConditions();
@@ -373,14 +361,13 @@ namespace PL
             try
             {
 
-                int IDPacel = droneToListChoose.packageDelivered;
+                int IDPacel = (DronesListView.SelectedItem as BO.DroneToList).packageDelivered;
                 if (IDPacel == 0)
                     throw new MyExeption_BO("check if the drone associated to parcel");
 
                 if (DronesListView.ItemsSource != null)
                 {
-                    ParcelToList parcelToList;
-                    lock (bl) { parcelToList = bl.GetParcelToTheList(IDPacel); }
+                    ParcelToList parcelToList = bl.GetParcelToTheList(IDPacel);
                     new ParcelWindow(bl, parcelToList).Show();
                 }
                 DronesListView.SelectedItem = null;
@@ -398,41 +385,41 @@ namespace PL
 
         private void CancelOpenBarButton_Click(object sender, RoutedEventArgs e)
         {
-            openOptions.Visibility = Visibility.Hidden;
+            DronesListView.SelectedItem = null;
         }
-        //void HideOrVisibleDronesListViewAndOpenOptionsTheOpposite()
-        //// Hide oe visible all button on DronesListView and DronesListView,
-        //// DronesListView The Opposite.
-        //{
-        //    if (DronesListView.Visibility == Visibility.Visible)
-        //    {
-        //        openOptions.Visibility = Visibility.Visible;
+        void HideOrVisibleDronesListViewAndOpenOptionsTheOpposite()
+        // Hide oe visible all button on DronesListView and DronesListView,
+        // DronesListView The Opposite.
+        {
+            if (DronesListView.Visibility == Visibility.Visible)
+            {
+                openOptions.Visibility = Visibility.Visible;
 
-        //        DronesListView.Visibility = Visibility.Hidden;
-        //        SearchIDButton.Visibility = Visibility.Hidden;
-        //        SearchModelButton.Visibility = Visibility.Hidden;
-        //        SearchBattryButton.Visibility = Visibility.Hidden;
-        //        SearchLocationButton.Visibility = Visibility.Hidden;
-        //        SearchParcelButton.Visibility = Visibility.Hidden;
-        //        SearchStatusButton.Visibility = Visibility.Hidden;
-        //        SearchWeightButton.Visibility = Visibility.Hidden;
+                DronesListView.Visibility = Visibility.Hidden;
+                SearchIDButton.Visibility = Visibility.Hidden;
+                SearchModelButton.Visibility = Visibility.Hidden;
+                SearchBattryButton.Visibility = Visibility.Hidden;
+                SearchLocationButton.Visibility = Visibility.Hidden;
+                SearchParcelButton.Visibility = Visibility.Hidden;
+                SearchStatusButton.Visibility = Visibility.Hidden;
+                SearchWeightButton.Visibility = Visibility.Hidden;
 
-        //    }
-        //    else
-        //    {
-        //        openOptions.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                openOptions.Visibility = Visibility.Hidden;
 
-        //        DronesListView.Visibility = Visibility.Visible;
-        //        SearchIDButton.Visibility = Visibility.Visible;
-        //        SearchModelButton.Visibility = Visibility.Visible;
-        //        SearchBattryButton.Visibility = Visibility.Visible;
-        //        SearchLocationButton.Visibility = Visibility.Visible;
-        //        SearchParcelButton.Visibility = Visibility.Visible;
-        //        SearchStatusButton.Visibility = Visibility.Visible;
-        //        SearchWeightButton.Visibility = Visibility.Visible;
-        //    }
+                DronesListView.Visibility = Visibility.Visible;
+                SearchIDButton.Visibility = Visibility.Visible;
+                SearchModelButton.Visibility = Visibility.Visible;
+                SearchBattryButton.Visibility = Visibility.Visible;
+                SearchLocationButton.Visibility = Visibility.Visible;
+                SearchParcelButton.Visibility = Visibility.Visible;
+                SearchStatusButton.Visibility = Visibility.Visible;
+                SearchWeightButton.Visibility = Visibility.Visible;
+            }
 
-        //}
+        }
 
         private void ComboBox_Initialized(object sender, EventArgs e)
         {
@@ -454,13 +441,9 @@ namespace PL
 
                 case 1:
 
-                    IEnumerable<IGrouping<string, DroneToList>> tsModel;
-                    lock (bl)
-                    {
-                        tsModel = from item in bl.GetTheListOfDrones()
-                                  group item by item.Model into gs
-                                  select gs;
-                    }
+                    IEnumerable<IGrouping<string, DroneToList>> tsModel = from item in bl.GetTheListOfDrones()
+                                                                          group item by item.Model into gs
+                                                                          select gs;
 
                     l = new List<DroneToList>();
                     foreach (var group1 in tsModel)
@@ -474,13 +457,9 @@ namespace PL
                     break;
 
                 case 2:
-                    IEnumerable<IGrouping<EnumBO.WeightCategories, DroneToList>> tsweight;
-                    lock (bl)
-                    {
-                        tsweight = from item in bl.GetTheListOfDrones()
-                                   group item by item.weight into gs
-                                   select gs;
-                    }
+                    IEnumerable<IGrouping<EnumBO.WeightCategories, DroneToList>> tsweight = from item in bl.GetTheListOfDrones()
+                                                                                            group item by item.weight into gs
+                                                                                            select gs;
 
                     l = new List<DroneToList>();
                     foreach (var group1 in tsweight)
@@ -493,14 +472,9 @@ namespace PL
                     DronesListView.ItemsSource = l;
                     break;
                 case 3:
-                    IEnumerable<IGrouping<EnumBO.DroneStatus, DroneToList>> tsStatus;
-                    lock (bl)
-                    {
-                        tsStatus = from item in bl.GetTheListOfDrones()
-                                   group item by item.status into gs
-                                   select gs;
-                    }
-
+                    IEnumerable<IGrouping<EnumBO.DroneStatus, DroneToList>> tsStatus = from item in bl.GetTheListOfDrones()
+                                                                                       group item by item.status into gs
+                                                                                       select gs;
                     l = new List<DroneToList>();
                     foreach (var group1 in tsStatus)
                     {
@@ -516,4 +490,5 @@ namespace PL
         }
     }
 }
+
 

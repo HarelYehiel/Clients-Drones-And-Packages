@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using BO;
@@ -94,7 +95,7 @@ namespace BlApi
             }
             throw new BO.MyExeption_BO("Exception from function 'getbatteryStatus'", BO.MyExeption_BO.There_is_no_variable_with_this_ID);
         }
-        public BO.station getBaseStation(int id)
+        [MethodImpl(MethodImplOptions.Synchronized)] public BO.station getBaseStation(int id)
         {
             try
             {
@@ -198,7 +199,7 @@ namespace BlApi
             }
 
         }
-        public BO.Drone GetDrone(int id)
+        [MethodImpl(MethodImplOptions.Synchronized)] public BO.Drone GetDrone(int id)
         {
             foreach (BO.DroneToList item in ListDroneToList)
             {
@@ -224,7 +225,7 @@ namespace BlApi
 
             throw new BO.MyExeption_BO("Exception from function 'drone_view'", BO.MyExeption_BO.There_is_no_variable_with_this_ID);
         }
-        public BO.Customer GetCustomer(int id)
+        [MethodImpl(MethodImplOptions.Synchronized)] public BO.Customer GetCustomer(int id)
         {
             try
             {
@@ -266,7 +267,7 @@ namespace BlApi
             }
 
         }
-        public BO.Parcel GetParcel(int id)
+        [MethodImpl(MethodImplOptions.Synchronized)] public BO.Parcel GetParcel(int id)
         {
             try
             {
@@ -297,7 +298,7 @@ namespace BlApi
             }
 
         }
-        public BO.DroneInCharging GetDroneInCharging(int ID)
+        [MethodImpl(MethodImplOptions.Synchronized)] public BO.DroneInCharging GetDroneInCharging(int ID)
         {
             try
             {
@@ -321,7 +322,7 @@ namespace BlApi
                 throw new BO.MyExeption_BO("Exception from function 'GetDroneInCharging'", e);
             }
         }
-        public BO.StationToTheList GetStationToTheList(int ID)
+        [MethodImpl(MethodImplOptions.Synchronized)] public BO.StationToTheList GetStationToTheList(int ID)
         {
             List<StationToTheList> stationsToTheLists = GetAllStaionsBy(s => s.id == ID).ToList();
             if (stationsToTheLists.Count == 1)
@@ -329,7 +330,7 @@ namespace BlApi
 
             throw MyExeption_BO.There_is_no_variable_with_this_ID;
         }
-        public BO.ParcelToList GetParcelToTheList(int ID)
+        [MethodImpl(MethodImplOptions.Synchronized)] public BO.ParcelToList GetParcelToTheList(int ID)
         {
             List<ParcelToList> parcelsToTheLists = GetAllParcelsBy(p => p.Id == ID).ToList();
             if (parcelsToTheLists.Count == 1)
@@ -337,7 +338,7 @@ namespace BlApi
 
             throw MyExeption_BO.There_is_no_variable_with_this_ID;
         }
-        public BO.DroneToList GetDroneToTheList(int ID)
+        [MethodImpl(MethodImplOptions.Synchronized)] public BO.DroneToList GetDroneToTheList(int ID)
         {
             List<DroneToList> dronesToTheLists = GetAllDronesBy(d => d.uniqueID == ID).ToList();
             if (dronesToTheLists.Count == 1)

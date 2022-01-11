@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using DO;
@@ -11,15 +12,15 @@ namespace BlApi
     {
         // DalApi.DalObject.UpdateClass updateDataSourceFun = new DalApi.DalObject.UpdateClass();
 
-        public delegate bool Predicate<in T>(T obj);
-        public delegate BO.Parcel Converter<in ParcelToList, out Parcel>(BO.ParcelToList input);
+         private delegate bool Predicate<in T>(T obj);
+         private delegate BO.Parcel Converter<in ParcelToList, out Parcel>(BO.ParcelToList input);
 
 
-        public static bool findEmergency(Parcel parcel) { return (parcel.Scheduled == null && parcel.priority == DO.Enum.Priorities.Emergency); }
-        public static bool findFast(Parcel parcel) { return (parcel.Scheduled == null && parcel.priority == DO.Enum.Priorities.Fast); }
-        public static bool findNormal(Parcel parcel) { return (parcel.Scheduled == null && parcel.priority == DO.Enum.Priorities.Normal); }
+        private static bool findEmergency(Parcel parcel) { return (parcel.Scheduled == null && parcel.priority == DO.Enum.Priorities.Emergency); }
+        private static bool findFast(Parcel parcel) { return (parcel.Scheduled == null && parcel.priority == DO.Enum.Priorities.Fast); }
+        private static bool findNormal(Parcel parcel) { return (parcel.Scheduled == null && parcel.priority == DO.Enum.Priorities.Normal); }
 
-        public void UpdateDroneData(int ID, string newModel)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void UpdateDroneData(int ID, string newModel)
         {
             try
             {
@@ -45,7 +46,7 @@ namespace BlApi
             }
 
         }
-        public void UpdateStationData(int ID, string name, int numSlots)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void UpdateStationData(int ID, string name, int numSlots)
         {
             try
             {
@@ -73,7 +74,7 @@ namespace BlApi
             }
 
         }
-        public void RemoveAllSkimmersFromTheStation(int ID)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void RemoveAllSkimmersFromTheStation(int ID)
         {
             List<BO.DroneInCharging> droneInChargings = new List<BO.DroneInCharging>();
             droneInChargings = GetAllDronesInCharging(d => d.staitionId == ID).ToList();
@@ -90,7 +91,7 @@ namespace BlApi
                 ReleaseDroneFromCharging(item.uniqueID, dateTime);
             }
         }
-        public void UpdateCustomerData(int ID, string name, string phoneNumber)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void UpdateCustomerData(int ID, string name, string phoneNumber)
         {
             try
             {
@@ -126,7 +127,7 @@ namespace BlApi
 
             return point2;
         }
-        public void SendingDroneToCharging(int ID)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void SendingDroneToCharging(int ID)
         {
             try
             {
@@ -187,7 +188,7 @@ namespace BlApi
             }
 
         }
-        public void ReleaseDroneFromCharging(int ID, DateTime updateTime)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void ReleaseDroneFromCharging(int ID, DateTime updateTime)
         {
             try
             {
@@ -241,7 +242,7 @@ namespace BlApi
             }
 
         }
-        public void AssignPackageToDrone(int droneId)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void AssignPackageToDrone(int droneId)
         {
             try
             {
@@ -296,7 +297,7 @@ namespace BlApi
             }
 
         }
-        public void CollectionOfPackageByDrone(int ID)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void CollectionOfPackageByDrone(int ID)
         {
             try
             {
@@ -349,7 +350,7 @@ namespace BlApi
             }
 
         }
-        public void DeliveryOfPackageByDrone(int ID)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void DeliveryOfPackageByDrone(int ID)
         {
             try
             {
@@ -403,7 +404,7 @@ namespace BlApi
             }
 
         }
-        public void UpdateBatteryInReelTime(int idDrone, double distance,
+        [MethodImpl(MethodImplOptions.Synchronized)] public void UpdateBatteryInReelTime(int idDrone, double distance,
     char AddOrSubtractToBattery /*'-' or '+'*/)
         {
 
@@ -444,7 +445,7 @@ namespace BlApi
             }
 
         }
-        public void updateBatteryBySimultor(int droneId, double updateBattery)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void updateBatteryBySimultor(int droneId, double updateBattery)
         {
             for (int i = 0; i < ListDroneToList.Count; i++)
             {
@@ -543,11 +544,11 @@ namespace BlApi
             });
             return parcel;
         }
-        public double distance(BO.Location p1, BO.Location p2)
+        [MethodImpl(MethodImplOptions.Synchronized)] public double distance(BO.Location p1, BO.Location p2)
         {
             return 100 * Math.Sqrt((Math.Pow(p1.latitude - p2.latitude, 2) + Math.Pow(p1.longitude - p2.longitude, 2)));
         }
-        public double colculateBatteryBO(BO.Location point1, BO.Location point2, int ID)
+        [MethodImpl(MethodImplOptions.Synchronized)] public double colculateBatteryBO(BO.Location point1, BO.Location point2, int ID)
         {
             BO.Drone drone = GetDrone(ID);
             double minus = 0;
@@ -570,7 +571,7 @@ namespace BlApi
             }
             return minus;
         }
-        public void updateParcel(int parcelID, int choise)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void updateParcel(int parcelID, int choise)
         {
             // In the object "ParcelToList" no have drone Id paraneter, so we take it from DO.Parcel
             DO.Parcel parcel1 = accessDal.GetParcel(parcelID);

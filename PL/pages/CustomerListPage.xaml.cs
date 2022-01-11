@@ -1,46 +1,36 @@
-﻿using BO;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Interop;
-using System.Windows.Data;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Threading;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Interop;
+using BO;
+using System.Windows.Data;
+using System.Runtime.CompilerServices;
 
-namespace PL
+namespace PL.pages
 {
     /// <summary>
-    /// Interaction logic for CustomerListWindow.xaml
+    /// Interaction logic for CustomerListPage.xaml
     /// </summary>
-    public partial class CustomerListWindow : Window
+    public partial class CustomerListPage : Page
     {
+
         BlApi.IBL bl;
         List<CustomerToList> customersToTheLists;
-        BackgroundWorker worker;
 
         // When true allows the 'filters' function to be activated, otherwise there is no access.
         //We usually use this when initializing or resetting the TextBox.
         bool TurnOnFunctionFilters;
 
-        private const int GWL_STYLE = -16;
-        private const int WS_SYSMENU = 0x80000;
-        [DllImport("user32.dll", SetLastError = true)]
-        private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
-        [DllImport("user32.dll")]
-        private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+     
 
-        public CustomerListWindow( BlApi.IBL bL1)
+        public CustomerListPage(BlApi.IBL bL1)
         {
             bl = bL1;
             customersToTheLists = new List<CustomerToList>();
-            lock (bl) { customersToTheLists.AddRange(bl.GetListOfCustomers()); }
+            customersToTheLists.AddRange(bl.GetListOfCustomers());
 
 
             TurnOnFunctionFilters = false;
@@ -48,30 +38,8 @@ namespace PL
             TurnOnFunctionFilters = true;
             openOptions.Visibility = Visibility.Hidden;
 
-            worker = new BackgroundWorker();
-            worker.DoWork += Worker_DoWork;
-            worker.RunWorkerAsync();
-
             CustomersListView.ItemsSource = customersToTheLists;
         }
-        void updateTheViewListCustomersInRealTime()
-        {
-
-            EnableFiltersWithConditions();
-        }
-        private void Worker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            while (true)
-            {
-                Action theUpdateView = updateTheViewListCustomersInRealTime;
-                // Dispatcher to main thread to update the window drone.
-                CustomersListView.Dispatcher.BeginInvoke(theUpdateView);
-                Thread.Sleep(200);
-            }
-
-
-        }
-
 
         private void CustomersListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -92,8 +60,6 @@ namespace PL
         }
         private void CancelButtonX(object sender, RoutedEventArgs e)
         {
-            var hwnd = new WindowInteropHelper(this).Handle;
-            SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_SYSMENU);
         }
         private void AddingNewCustomer(object sender, RoutedEventArgs e)
         {
@@ -102,11 +68,12 @@ namespace PL
 
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            //this.Close();
+            this.Visibility = Visibility.Hidden;
         }
         private void ClearFilter(object sender, RoutedEventArgs e)
         {
-            lock (bl) { CustomersListView.ItemsSource = bl.GetListOfCustomers(); }
+            CustomersListView.ItemsSource = bl.GetListOfCustomers();
             HideAndReseteAllTextBox();
         }
 
@@ -185,14 +152,11 @@ namespace PL
                 FilterPhoneTextBox.Visibility = Visibility.Hidden;
             }
         }
-        void EnableFiltersWithConditions()
+
+        private void AnyFilterTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (TurnOnFunctionFilters)
                 Filters();
-        }
-        private void AnyFilterTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            EnableFiltersWithConditions();
         }
         bool isNumber(string s)
         {
@@ -243,7 +207,7 @@ namespace PL
             {
                 CustomersListView.ItemsSource = null;
                 customersToTheLists.Clear();
-                lock (bl) { customersToTheLists.AddRange(bl.GetListOfCustomers()); }
+                customersToTheLists.AddRange(bl.GetListOfCustomers());
 
                 if (isNumber(FilterIDTextBox.Text)) // Filter ID
                 {
@@ -275,19 +239,19 @@ namespace PL
                     customersToTheLists = customersToTheLists.FindAll
                         (s => s.packagesSentAndNotDelivered.ToString().Contains(SentAndNotDelivered));
                 }
-                 if (isNumber(FilterReceiveTextBox.Text)) // Filter Receive
+                if (isNumber(FilterReceiveTextBox.Text)) // Filter Receive
                 {
                     string Receive = FilterReceiveTextBox.Text;
                     customersToTheLists = customersToTheLists.FindAll
                         (s => s.packagesHeReceived.ToString().Contains(Receive));
                 }
-                 if (isNumber(FilterOTWTextBox.Text)) // Filter On The Way
+                if (isNumber(FilterOTWTextBox.Text)) // Filter On The Way
                 {
                     string OnTheWay = FilterOTWTextBox.Text;
                     customersToTheLists = customersToTheLists.FindAll
                         (s => s.packagesOnTheWayToTheCustomer.ToString().Contains(OnTheWay));
                 }
-            
+
                 CustomersListView.ItemsSource = customersToTheLists;
             }
             catch (Exception)
