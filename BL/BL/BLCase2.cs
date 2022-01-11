@@ -243,7 +243,6 @@ namespace BlApi
         }
         public void AssignPackageToDrone(int droneId)
         {
-
             try
             {
                 //get the data of the specific drone from DAL(data source)
@@ -265,7 +264,7 @@ namespace BlApi
                         if ((int)parcel.weight <= (int)drone.MaxWeight)
                         {
                             //newList now have all the aviable and unScheluled parcels by priority order 
-                            flag = serchForRelevantParcel(parcel, drone, droneBo, droneId);
+                            flag = serchForRelevantParcel(parcel, droneBo);
                             if (!flag)
                             {
                                 parcelDO = accessDal.GetParcel(parcel.uniqueID);
@@ -464,7 +463,7 @@ namespace BlApi
             }
             throw new BO.MyExeption_BO("Exception from function 'GetDroneBO", BO.MyExeption_BO.There_is_no_variable_with_this_ID);
         }
-        bool serchForRelevantParcel(BO.Parcel parcel, Drone drone, BO.DroneToList droneBo, int droneId)
+        bool serchForRelevantParcel(BO.Parcel parcel, BO.DroneToList droneBo)
         {
             try
             {
@@ -478,8 +477,8 @@ namespace BlApi
                 //get the location of the parcel tgrget
                 target = GetCustomer(parcel.customerInParcel_Target.uniqueID);
                 point3 = target.location;
-                double d = -colculateBatteryBO(point1, point2, droneId) - colculateBatteryBO(point1, point3, droneId)
-                    - colculateBatteryBO(point3, ReturnLoctionOfCloslyStation(point3), droneId);
+                double d = -colculateBatteryBO(point1, point2, droneBo.uniqueID) - colculateBatteryBO(point1, point3, droneBo.uniqueID)
+                    - colculateBatteryBO(point3, ReturnLoctionOfCloslyStation(point3), droneBo.uniqueID);
                 //check if drone have enough battery to get up to the sender and than go up to target with the parcel
                 double f = droneBo.Battery + d;
                 if (f > 0)

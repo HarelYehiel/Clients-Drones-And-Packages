@@ -14,10 +14,9 @@ namespace BlApi
         BlApi.BL bl;
         double HowMuchTimeMissingToBatteryFull = 0;
         Drone drone;
-        DO.IDal accessDal;
         Action action;
 
-        public Simulator(BlApi.BL bl1, int droneId, Func<bool> func, Action action1, DO.IDal accessDal1)
+        public Simulator(BlApi.BL bl1, int droneId, Func<bool> func, Action action1)
         {
 
 
@@ -28,7 +27,6 @@ namespace BlApi
                 stopwatch = new Stopwatch();
                 stopwatch.Start();
                 lock (bl) { drone = bl.GetDrone(droneId); }
-                accessDal = accessDal1;
 
                 while (func())
                 {
@@ -42,7 +40,7 @@ namespace BlApi
                                     bl.AssignPackageToDrone(droneId);
                                     drone = bl.GetDrone(droneId);
                                 }
-
+                                
                             }
                             catch (Exception e)
                             {
@@ -75,7 +73,8 @@ namespace BlApi
                                     stopwatch.Start(); // Counting charging time.
                                                        //How much time is missing until the battery is full.
 
-                                    List<double> configStatus = accessDal.PowerConsumptionBySkimmer();
+                                    List<double> configStatus;
+                                    lock (bl) lock (bl.accessDal) { configStatus = bl.accessDal.PowerConsumptionBySkimmer(); }
 
                                     HowMuchTimeMissingToBatteryFull = Math.Ceiling((100 - drone.Battery) / configStatus[4]);
                                     updateInRealTime(droneId, HowMuchTimeMissingToBatteryFull, '+', 0);
@@ -163,7 +162,7 @@ namespace BlApi
 
                     drone.Status = EnumBO.DroneStatus.Baintenance;
                     List<double> configStatus;
-                    lock (accessDal) { configStatus = accessDal.PowerConsumptionBySkimmer(); }
+                    lock(bl) lock (bl.accessDal) { configStatus = bl.accessDal.PowerConsumptionBySkimmer(); }
 
                     HowMuchTimeMissingToBatteryFull = Math.Ceiling((100 - droneBattery) / configStatus[4]);
                     updateInRealTime(droneId, HowMuchTimeMissingToBatteryFull, '+', 0);
@@ -217,9 +216,9 @@ namespace BlApi
 
                 }
             }
-            else if (AddOrSubtractToBattery == '+')
+            else if (AddOrSubtractToBattery == '+') 
             {
-                for (int i = 0; i < Math.Ceiling(HowMantTimes); i++)
+                for (int i = 1; i <= Math.Ceiling(HowMantTimes); i++)
                 {
                     lock (bl) { bl.UpdateBatteryInReelTime(droneId, 0, AddOrSubtractToBattery); }
                     action();

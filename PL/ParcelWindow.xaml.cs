@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BO;
+using System;
+using System.ComponentModel;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using BO;
-
 
 namespace PL
 {
@@ -23,6 +15,8 @@ namespace PL
     {
         BlApi.IBL bl;
         BO.ParcelToList parcel = new BO.ParcelToList();
+        BackgroundWorker worker;
+
         public ParcelWindow(BlApi.IBL bl1, BO.ParcelToList Parcel1)
         {
             bl = bl1;
@@ -33,6 +27,7 @@ namespace PL
             txtTarget.IsEnabled = false;
             comboWeight.IsEnabled = false;
             comboPriority.IsEnabled = false;
+            comboStatus.IsEnabled = false;
 
 
             if (Parcel1 != null)
@@ -43,10 +38,16 @@ namespace PL
                 txtTarget.Text = Parcel1.nameTarget;
                 comboWeight.SelectedIndex = (int)Parcel1.weight;
                 comboPriority.SelectedIndex = (int)Parcel1.priority;
+                StatusLabel.Visibility = Visibility.Visible;
+                comboStatus.Visibility = Visibility.Visible;
+                comboStatus.SelectedIndex = (int)Parcel1.parcelsituation; //Situations
                 Add.Content = "Update";
                 OptinalCustomer.Visibility = Visibility.Hidden;
                 LabelCustomers.Visibility = Visibility.Hidden;
                 UpdateBorder.Visibility = Visibility.Hidden;
+
+                worker = new BackgroundWorker();
+                worker.DoWork += Worker_DoWork;
             }
             else
             {
@@ -66,6 +67,21 @@ namespace PL
                 UpdateBorder.Visibility = Visibility.Hidden;
             }
         }
+        void updateViewParecel()
+        {
+            lock (bl) { parcel = bl.GetParcelToTheList(Convert.ToInt32(txtId.Text)); }
+
+            comboStatus.SelectedIndex = (int)parcel.parcelsituation; //Situations
+        }
+        private void Worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            Action action = updateViewParecel;
+            txtId.Dispatcher.BeginInvoke(action);
+
+            Thread.Sleep(1000);
+
+        }
+
         public ParcelWindow(BlApi.IBL bl1)
         {
             bl = bl1;
@@ -100,7 +116,7 @@ namespace PL
                     int ID = Convert.ToInt32(txtId.Text);
                     int SenderId = Convert.ToInt32(txtSender.Text);
                     int TargetId = Convert.ToInt32(txtTarget.Text);
-                    bl.ReceiptOfPackageForDelivery(ID, SenderId, TargetId, comboWeight.SelectedIndex, comboPriority.SelectedIndex);
+                    lock (bl) { bl.ReceiptOfPackageForDelivery(ID, SenderId, TargetId, comboWeight.SelectedIndex, comboPriority.SelectedIndex); }
                     this.Close();
                 }
                 else if (Add.Content.ToString() == "Update")
@@ -127,7 +143,7 @@ namespace PL
             {
                 LabelCustomers.Visibility = Visibility.Visible;
                 OptinalCustomer.Visibility = Visibility.Visible;
-                OptinalCustomer.ItemsSource = bl.GetListOfCustomers();
+                lock (bl) { OptinalCustomer.ItemsSource = bl.GetListOfCustomers(); }
             }
         }
 
@@ -137,7 +153,7 @@ namespace PL
             {
                 LabelCustomers.Visibility = Visibility.Visible;
                 OptinalCustomer.Visibility = Visibility.Visible;
-                OptinalCustomer.ItemsSource = bl.GetListOfCustomers();
+                lock (bl) { OptinalCustomer.ItemsSource = bl.GetListOfCustomers(); }
             }
         }
 
@@ -174,7 +190,7 @@ namespace PL
             try
             {
                 parcel.parcelsituation = BO.EnumBO.Situations.collected;
-                bl.updateParcel(parcel.uniqueID, 1);
+                lock (bl) { bl.updateParcel(parcel.uniqueID, 1); }
                 Close();
             }
             catch (Exception)
@@ -189,7 +205,7 @@ namespace PL
             try
             {
                 parcel.parcelsituation = BO.EnumBO.Situations.provided;
-                bl.updateParcel(parcel.uniqueID, 2);
+                lock (bl) { bl.updateParcel(parcel.uniqueID, 2); }
                 Close();
             }
             catch (Exception)
@@ -208,14 +224,20 @@ namespace PL
             comboPriority.ItemsSource = Enum.GetValues(typeof(BO.EnumBO.Priorities));
 
         }
+        private void comboStatus_Initialized(object sender, EventArgs e)
+        {
+            comboStatus.ItemsSource = Enum.GetValues(typeof(BO.EnumBO.Situations));
+        }
 
         private void deleteParcel_Click(object sender, RoutedEventArgs e)
         {
             if (parcel.parcelsituation != EnumBO.Situations.associated || parcel.parcelsituation != EnumBO.Situations.collected)
-                bl.DelParcel(parcel.uniqueID);
+                lock (bl) { bl.DelParcel(parcel.uniqueID); }
             else
                 MessageBox.Show("This parcel is in delivering! you cant cancel now", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             this.Close();
         }
+
+
     }
 }

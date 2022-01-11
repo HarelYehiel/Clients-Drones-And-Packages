@@ -40,6 +40,8 @@
                         </Style>
                     </TextBox.Style>
                 </TextBox>
+                <Label Name="StatusLabel" Visibility="Collapsed" Content="Status" Foreground="White"/>
+                <ComboBox Name="comboStatus" Background="#545d6a" Visibility="Collapsed" Foreground="Black" FontSize="18" SelectionChanged="comboWeight_SelectionChanged" Initialized="comboStatus_Initialized"/>
                 <Label Content="Weight" Foreground="White"/>
                 <ComboBox Name="comboWeight" Background="#545d6a" Foreground="Black" FontSize="18" SelectionChanged="comboWeight_SelectionChanged" Initialized="comboWeight_Initialized"/>
                 <Label Content="Priority" Foreground="White"/>

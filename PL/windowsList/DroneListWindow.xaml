@@ -57,7 +57,7 @@
                         <GridViewColumn Header="Weight" Width="100" DisplayMemberBinding="{Binding weight}" />
                         <GridViewColumn Header="Status" Width="100" DisplayMemberBinding="{Binding status}" />
                         <GridViewColumn Header="Battery" Width="100" DisplayMemberBinding="{Binding Battery}" />
-                        <GridViewColumn Header="Location" Width="300" DisplayMemberBinding="{Binding location}" />
+                        <GridViewColumn Header="Location" Width="200" DisplayMemberBinding="{Binding location}" />
                         <GridViewColumn Header="Parcel" Width="100" DisplayMemberBinding="{Binding packageDelivered }" />
                     </GridView>
                 </ListView.View>

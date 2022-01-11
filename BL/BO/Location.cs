@@ -15,7 +15,7 @@ namespace BO
 
         public override string ToString()
         {
-            return $"{longitude}/{latitude}";
+            return $"{Math.Round( longitude,4)}/{Math.Round(latitude,4)}";
         }
     }
 }

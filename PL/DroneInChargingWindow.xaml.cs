@@ -19,7 +19,7 @@ namespace PL
             StationID = StationID1;
             RunDronesInCharging = new List<DroneInCharging>();
 
-            RunDronesInCharging.AddRange(bl.GetAllDronesInCharging(C => C.staitionId == StationID));
+            lock (bl) { RunDronesInCharging.AddRange(bl.GetAllDronesInCharging(C => C.staitionId == StationID)); }
 
             TurnOnFunctionFilters = false;
             InitializeComponent();
@@ -29,7 +29,7 @@ namespace PL
         }
 
         BlApi.IBL bl;
-        
+
         // Work with this list
         List<DroneInCharging> RunDronesInCharging;
 
@@ -45,7 +45,7 @@ namespace PL
         private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
         [DllImport("user32.dll")]
         private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
-       
+
         private void StatusDroneWeight(object sender, SelectionChangedEventArgs e)
         {
             Filters();
@@ -133,7 +133,7 @@ namespace PL
             {
                 DronesInChargingListView.ItemsSource = null;
                 RunDronesInCharging.Clear();
-                RunDronesInCharging.AddRange(bl.GetAllDronesInCharging(C => C.staitionId == StationID));
+                lock (bl) { RunDronesInCharging.AddRange(bl.GetAllDronesInCharging(C => C.staitionId == StationID)); }
 
                 if (isNumber(FilterIDTextBox.Text)) // Filter ID
                 {
@@ -147,7 +147,7 @@ namespace PL
                     RunDronesInCharging = RunDronesInCharging.FindAll
                         (s => s.batteryStatus.ToString().Contains(Battery));
                 }
-              
+
                 DronesInChargingListView.ItemsSource = RunDronesInCharging;
             }
             catch (Exception)
@@ -198,7 +198,7 @@ namespace PL
                 int IDDrone = (DronesInChargingListView.SelectedItem as DroneInCharging).uniqueID;
 
                 if (DronesInChargingListView.ItemsSource != null)
-                    bl.ReleaseDroneFromCharging(IDDrone , DateTime.Now);
+                    lock (bl) { bl.ReleaseDroneFromCharging(IDDrone, DateTime.Now); }
 
                 DronesInChargingListView.SelectedItem = null;
                 EnableFiltersWithConditions();
@@ -221,7 +221,8 @@ namespace PL
 
                 if (DronesInChargingListView.ItemsSource != null)
                 {
-                    ParcelToList parcelToList = bl.GetParcelToTheList(IDPacel);
+                    ParcelToList parcelToList;
+                    lock (bl) { parcelToList = bl.GetParcelToTheList(IDPacel); }
                     new ParcelWindow(bl, parcelToList).ShowDialog();
                 }
                 DronesInChargingListView.SelectedItem = null;

@@ -117,7 +117,7 @@ namespace PL
                     // If all proper add th customer.
                     if (isAllProper)
                     {
-                        bl.AddingBaseStation(IdStation, Name, Latitude, Longitude, ChargeSlots);
+                        lock (bl) { bl.AddingBaseStation(IdStation, Name, Latitude, Longitude, ChargeSlots); }
                         MessageBox.Show("The station added", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                 }
@@ -136,12 +136,12 @@ namespace PL
                     ChargeSlotsTextBlock.Visibility = Visibility.Visible;
                 else
                 {
-                    bl.UpdateStationData(Convert.ToInt32(IDTextBox.Text), NameTextBox.Text, Convert.ToInt32(ChargeSlotsTextBox.Text));
+                    lock (bl) { bl.UpdateStationData(Convert.ToInt32(IDTextBox.Text), NameTextBox.Text, Convert.ToInt32(ChargeSlotsTextBox.Text)); }
                     MessageBox.Show("The station update.", "Information", MessageBoxButton.OKCancel, MessageBoxImage.Information);
                     StationToTheList stationToTheList = new StationToTheList();
 
                     // Update the data of view station.
-                    stationToTheList = bl.GetStationToTheList(Convert.ToInt32(IDTextBox.Text));
+                    lock (bl) { stationToTheList = bl.GetStationToTheList(Convert.ToInt32(IDTextBox.Text)); }
                     NameTextBox.Text = stationToTheList.name;
                     ChargeSlotsTextBox.Text = stationToTheList.availableChargingStations.ToString();
 
@@ -220,8 +220,11 @@ namespace PL
         {
             try
             {
-                if (bl.getBaseStation(id).uniqueID == id) return true; // Exist staion with this id.
-                return false;
+                lock (bl)
+                {
+                    if (bl.getBaseStation(id).uniqueID == id) return true; // Exist staion with this id.
+                    return false;
+                }
             }
             catch (Exception)
             {
@@ -238,10 +241,11 @@ namespace PL
                     return;
 
                 if (IsInt(IDTextBox.Text))
-                    bl.RemoveAllSkimmersFromTheStation(Convert.ToInt32(IDTextBox.Text));
+                    lock (bl) { bl.RemoveAllSkimmersFromTheStation(Convert.ToInt32(IDTextBox.Text)); }
 
                 MessageBox.Show("All the skimmers out of charge at this station", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                BO.StationToTheList stationToTheList = bl.GetStationToTheList(Convert.ToInt32(IDTextBox.Text));
+                BO.StationToTheList stationToTheList;
+                lock (bl) { stationToTheList = bl.GetStationToTheList(Convert.ToInt32(IDTextBox.Text)); }
                 ChargeSlotsTextBox.Text = stationToTheList.availableChargingStations.ToString();
                 LatitudeTextBox.Text = stationToTheList.unAvailableChargingStations.ToString();
 

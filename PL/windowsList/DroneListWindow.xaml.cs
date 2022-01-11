@@ -35,7 +35,7 @@ namespace PL
         {
             bl = bL1;
             dronesToTheLists = new List<DroneToList>();
-            dronesToTheLists.AddRange(bl.GetTheListOfDrones());
+            lock (bl) { dronesToTheLists.AddRange(bl.GetTheListOfDrones()); }
 
             TurnOnFunctionFilters = false;
             InitializeComponent();
@@ -72,7 +72,7 @@ namespace PL
         private void ClearFilter(object sender, RoutedEventArgs e)
         {
 
-            DronesListView.ItemsSource = bl.GetTheListOfDrones();
+            lock (bl) { DronesListView.ItemsSource = bl.GetTheListOfDrones();}
 
             HideAndReseteAllTextBox();
         }
@@ -358,7 +358,8 @@ namespace PL
 
                 if (DronesListView.ItemsSource != null)
                 {
-                    ParcelToList parcelToList = bl.GetParcelToTheList(IDPacel);
+                    ParcelToList parcelToList;
+                    lock (bl) { parcelToList = bl.GetParcelToTheList(IDPacel); }
                     new ParcelWindow(bl, parcelToList).Show();
                 }
                 DronesListView.SelectedItem = null;
@@ -432,9 +433,13 @@ namespace PL
 
                 case 1:
 
-                    IEnumerable<IGrouping<string, DroneToList>> tsModel = from item in bl.GetTheListOfDrones()
-                                                                          group item by item.Model into gs
-                                                                          select gs;
+                    IEnumerable<IGrouping<string, DroneToList>> tsModel;
+                    lock (bl)
+                    {
+                        tsModel = from item in bl.GetTheListOfDrones()
+                                  group item by item.Model into gs
+                                  select gs;
+                    }
 
                     l = new List<DroneToList>();
                     foreach (var group1 in tsModel)
@@ -448,9 +453,13 @@ namespace PL
                     break;
 
                 case 2:
-                    IEnumerable<IGrouping<EnumBO.WeightCategories, DroneToList>> tsweight = from item in bl.GetTheListOfDrones()
-                                                                                            group item by item.weight into gs
-                                                                                            select gs;
+                    IEnumerable<IGrouping<EnumBO.WeightCategories, DroneToList>> tsweight;
+                    lock (bl)
+                    {
+                        tsweight = from item in bl.GetTheListOfDrones()
+                                   group item by item.weight into gs
+                                   select gs;
+                    }
 
                    l = new List<DroneToList>();
                     foreach (var group1 in tsweight)
@@ -463,9 +472,14 @@ namespace PL
                     DronesListView.ItemsSource = l;
                     break;
                 case 3:
-                    IEnumerable<IGrouping<EnumBO.DroneStatus, DroneToList>> tsStatus = from item in bl.GetTheListOfDrones()
-                                                                                       group item by item.status into gs
-                                                                                       select gs;
+                    IEnumerable<IGrouping<EnumBO.DroneStatus, DroneToList>> tsStatus;
+                    lock (bl)
+                    {
+                        tsStatus = from item in bl.GetTheListOfDrones()
+                                   group item by item.status into gs
+                                   select gs;
+                    }
+
                     l = new List<DroneToList>();
                     foreach (var group1 in tsStatus)
                     {
