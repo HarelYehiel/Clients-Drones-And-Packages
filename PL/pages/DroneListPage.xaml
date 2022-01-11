@@ -1,0 +1,140 @@
+﻿<Page x:Class="PL.DronePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:PL"
+      mc:Ignorable="d" 
+      d:DesignHeight="640" d:DesignWidth="800"
+      Title="DronePage">
+
+    <Grid Name="MainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="75"/>
+            <RowDefinition Height="375"/>
+        </Grid.RowDefinitions>
+        <Grid Name="UpGrid" Height="auto" Grid.Row="0" Width="auto" Background="#274472
+">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="38*"/>
+                <ColumnDefinition Width="127*"/>
+            </Grid.ColumnDefinitions >
+            <Button Content="Clear filter" FontWeight = "DemiBold" HorizontalAlignment="Left" Margin="29,13,0,42" Width="120" Click="ClearFilter" Background="#C3E0E5" BorderBrush = "White">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="8"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button Content="Add new Drone" FontWeight = "DemiBold" HorizontalAlignment="Left" VerticalAlignment="Center" Click="AddingNewDrone" Margin="47,0,0,0" Background="#C3E0E5" BorderBrush = "White" Height="27" Width="124" Grid.Column="2" >
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="12"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button Content="Close" Grid.Column="4" Margin="36,21,58,28" Click="CloseWindow" />
+            <Button Content="Refresh" FontWeight = "DemiBold" HorizontalAlignment="Left" Margin="30,43,0,0" VerticalAlignment="Top" Width="120" Background="#C3E0E5" BorderBrush = "White" Click="Refresh_Click">
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="8"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <ComboBox Name="GroupByComboBox" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Width="120" Margin="0,37,0,0" Initialized="ComboBox_Initialized" SelectionChanged="ComboBox_SelectionChanged"/>
+            <Label Content="Group By:" Background="BlanchedAlmond" Grid.Column="1" HorizontalAlignment="Center" Margin="0,1,0,0" VerticalAlignment="Top"/>
+        </Grid>
+        <Grid Margin="10,40,-6,44" Grid.RowSpan="2">
+
+            <ListView x:Name="DronesListView" SelectionChanged="DronesListView_SelectionChanged" Margin="-9,60,5,-256" Background ="#5885AF" d:ItemsSource="{d:SampleData}" FontWeight="Bold" BorderBrush="#FF868C97" Foreground="White" FontFamily="Segoe UI" FontStyle="Normal" >
+
+                <ListView.View>
+                    <GridView >
+                        <GridViewColumn Header="Drone ID" Width="100" DisplayMemberBinding="{Binding uniqueID}"/>
+                        <GridViewColumn Header="Model" Width="100" DisplayMemberBinding="{Binding Model}" />
+                        <GridViewColumn Header="Weight" Width="100" DisplayMemberBinding="{Binding weight}" />
+                        <GridViewColumn Header="Status" Width="100" DisplayMemberBinding="{Binding status}" />
+                        <GridViewColumn Header="Battery" Width="100" DisplayMemberBinding="{Binding Battery}" />
+                        <GridViewColumn Header="Location" Width="300" DisplayMemberBinding="{Binding location}" />
+                        <GridViewColumn Header="Parcel" Width="100" DisplayMemberBinding="{Binding packageDelivered }" />
+                    </GridView>
+                </ListView.View>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListViewItem}">
+                        <Setter Property="Background" Value="#FFCDD7D9"/>
+                        <Setter Property="BorderBrush" Value="#274472" />
+                        <Setter Property="Foreground" Value="#274472" />
+                        <Setter Property="BorderThickness" Value="2" />
+                        <Setter Property="HorizontalContentAlignment" Value="Center" />
+                    </Style>
+                </ListView.ItemContainerStyle>
+
+
+            </ListView>
+
+            <Button x:Name="SearchIDButton" Content="s" HorizontalAlignment="Left" Margin="-4,62,0,0" VerticalAlignment="Top" Width="20" Click="SearchIDButton_Click" Height="20"/>
+            <Button x:Name="SearchModelButton" Content="s" HorizontalAlignment="Left" Margin="99,62,0,0" VerticalAlignment="Top" Width="20" Click="SearchModelButton_Click" Height="20"/>
+            <Button x:Name="SearchBattryButton" Content="s" Margin="393,62,0,0" VerticalAlignment="Top" Click="SearchBattryButton_Click" Height="20" HorizontalAlignment="Left" Width="19"/>
+            <Button x:Name="SearchLocationButton" Content="s" HorizontalAlignment="Left" Margin="505,62,0,0" VerticalAlignment="Top" Width="20" Click="SearchLocationButton_Click" Height="20" />
+            <Button x:Name="SearchParcelButton" Content="s" HorizontalAlignment="Left" Margin="798,62,0,0" VerticalAlignment="Top" Width="20" Click="SearchParcelButton_Click" Height="20" />
+            <Button x:Name="SearchStatusButton" Content="s" Margin="297,62,0,283" Visibility="Visible" HorizontalAlignment="Left" Width="19" Click="SearchStatusButton_Click" />
+            <Button x:Name="SearchWeightButton" Content="s" HorizontalAlignment="Left" Margin="197,62,0,0" VerticalAlignment="Top" Width="20" Click="SearchWeightButton_Click" Height="20">
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}"/>
+                </Button.Resources>
+            </Button>
+
+            <TextBox x:Name="FilterIDTextBox" HorizontalAlignment="Left" Margin="25,42,0,0" Text="Search" Visibility="Hidden" TextWrapping="Wrap" VerticalAlignment="Top" Width="51" TextChanged="AnyFilterTextBox_TextChanged" Height="18"/>
+            <TextBox x:Name="FilterModelTextBox" Margin="125,42,0,0" Text="Search" Visibility="Hidden" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="AnyFilterTextBox_TextChanged" Height="18" HorizontalAlignment="Left" Width="47"/>
+            <TextBox x:Name="FilterBatteryTextBox"  HorizontalAlignment="Left" Margin="49,44,0,0" Text="Search" Visibility="Hidden" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" TextChanged="AnyFilterTextBox_TextChanged" Height="18" Grid.Column="2"/>
+            <TextBox x:Name="FilterLocationTextBox"  HorizontalAlignment="Left" Margin="160,40,0,0" Text="Search" Visibility="Hidden" TextWrapping="Wrap" VerticalAlignment="Top" Width="96" TextChanged="AnyFilterTextBox_TextChanged" Height="20" Grid.Column="2"/>
+            <TextBox x:Name="FilterParcelTextBox"  HorizontalAlignment="Left" Margin="29,42,0,0" Text="Search" Visibility="Hidden" TextWrapping="Wrap" VerticalAlignment="Top" Width="50" TextChanged="AnyFilterTextBox_TextChanged" Height="18" Grid.Column="4"/>
+            <ComboBox x:Name="StatusCombo" IsReadOnly="True" IsEditable ="true" Text="Choose status"  HorizontalAlignment="Left" Margin="313,42,0,0" Visibility="Hidden" VerticalAlignment="Top" SelectionChanged="StatusDroneSituation" Initialized="StatusCombo_Initialized" FontSize="9" Width="83" Height="18" Grid.ColumnSpan="3"/>
+            <ComboBox x:Name="WieghtCombo" IsEditable ="true" IsReadOnly="True" Text="Choose wieght"  SelectionChanged="StatusDroneWeight" Visibility="Hidden" Initialized="WieghtCombo_Initialized" Margin="207,42,0,305" FontSize="9" HorizontalAlignment="Left" Width="87"/>
+        </Grid>
+        <Border Name ="openOptions" Visibility="Hidden" BorderThickness="1" Grid.Row="1" Margin="196,41,372,44"
+             Background="#2e3137" CornerRadius="20" >
+            <StackPanel Margin="20">
+                <Label Name="TitleOptions" Content="Open Bar" Foreground="White" FontSize="25" HorizontalAlignment="Center"/>
+                <Separator></Separator>
+                <Label></Label>
+
+                <Label></Label>
+
+
+                <Label></Label>
+                <Button Name="ViewDroneButton" Content="View Drone" FontWeight = "DemiBold" Background="#545d6a" Foreground="White" Height="34" Width="206" Click="ViewDroneButton_Click" >
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="8"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+                <Label></Label>
+                <Button Name="ViewParcelDeliveredButton" Content="View Package Delivered" FontWeight = "DemiBold" Background="#545d6a" Foreground="White" Height="34" Width="206" Click="ViewParcelDeliveredButton_Click" >
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="8"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+                <Label></Label>
+                <Button x:Name="CancelOpenBarButton" Content="Cancel" FontWeight = "DemiBold" Background="#545d6a" Foreground="White" Height="34" Width="206" Click="CancelOpenBarButton_Click" >
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="8"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+
+
+
+            </StackPanel>
+        </Border>
+
+    </Grid>
+
+</Page>

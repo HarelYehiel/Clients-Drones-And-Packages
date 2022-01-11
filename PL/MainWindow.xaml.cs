@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media.Imaging;
 using BO;
+using PL.pages;
 
 
 namespace PL
@@ -15,10 +16,10 @@ namespace PL
     public partial class MainWindow : Window
     {
         BlApi.IBL bl;
+        private object content;
         public MainWindow()
         {
             bl = BlApi.BlFactory.GetBl();
-
 
             List <DroneToList> droneToList = new List<DroneToList>();
             droneToList = bl.GetTheListOfDrones().ToList();
@@ -41,6 +42,7 @@ namespace PL
             ImageBrush image = new ImageBrush();
             image.ImageSource = new BitmapImage(new Uri("MainBackground.jpeg", UriKind.Relative));
             InitializeComponent();
+            content = Content;
             CustomerListButton.Visibility = Visibility.Hidden;
             StationListButton.Visibility = Visibility.Hidden;
             droneListButton.Visibility = Visibility.Hidden;
@@ -51,11 +53,13 @@ namespace PL
 
         private void ClickToShowDroneList(object sender, RoutedEventArgs e)
         {
-            new DroneListWindow(bl).Show();
+            MainFrame.Content = new DronePage(bl);
+          //  new DroneListWindow(bl).Show();
         }
         private void ClickToShowCustomerList(object sender, RoutedEventArgs e)
         {
-            new CustomerListWindow(bl).Show();
+            //new CustomerListWindow(bl).Show();
+            MainFrame.Content = new CustomerListPage(bl);
         }
 
         private void enter_Click(object sender, RoutedEventArgs e)
@@ -106,12 +110,13 @@ namespace PL
 
         private void ClickToShowParcelList(object sender, RoutedEventArgs e)
         {
-            new ParclListWindow(bl).Show();
+            // new ParclListWindow(bl).Show();
+            MainFrame.Content = new ParcelListPage(bl);
         }
         private void ClickToShowStatoinList(object sender, RoutedEventArgs e)
         {
-            new StationListWindow(bl).Show();
-
+            //   new StationListWindow(bl).Show();
+            MainFrame.Content = new StationListPage(bl);
         }
         private void situationLogin_Click(object sender, RoutedEventArgs e)
         {
@@ -166,6 +171,11 @@ namespace PL
             StationListButton.Visibility = Visibility.Hidden;
             txtPassword.Password = "";
             txtUsername.Text = "";
+        }
+
+        private void MainFrame_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
+        {
+
         }
     }
 }

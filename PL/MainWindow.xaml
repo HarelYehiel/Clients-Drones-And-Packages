@@ -7,12 +7,11 @@
         mc:Ignorable="d"
         Icon = "/MainIcon.jpeg"
         Title="MainWindow" Height="640" Width="800" Background="#04c582">
-
     <Grid Name="MainGrid">
         <Grid.Background>
             <ImageBrush ImageSource="/MainBackground.jpeg"></ImageBrush>
         </Grid.Background>
-        <Grid Name="Login" Grid.ColumnSpan="4" Margin="0,0,19,415" Grid.RowSpan="3" RenderTransformOrigin="0.5,0.5">
+        <Grid Name="Login" Grid.ColumnSpan="4" Margin="0,0,19,-14" Grid.RowSpan="3" RenderTransformOrigin="0.5,0.5">
             <Grid.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -21,7 +20,7 @@
                     <TranslateTransform/>
                 </TransformGroup>
             </Grid.RenderTransform>
-            <Border Background="#2e3137" CornerRadius="20" Margin="215,102,200,-355">
+            <Border Background="#2e3137" CornerRadius="20" Margin="215,102,200,100">
                 <StackPanel Margin="20">
                     <Label Name="TitleBox" Content="Manager - Login" Foreground="White" FontSize="25" HorizontalAlignment="Center"/>
                     <Separator></Separator>
@@ -75,6 +74,7 @@
                 </Style>
             </Button.Resources>
         </Button>
+        <Frame x:Name="MainFrame" Grid.ColumnSpan="4" Grid.RowSpan="3" NavigationUIVisibility="Hidden"/>
         <Grid.RowDefinitions>
             <RowDefinition Height="69*"/>
             <RowDefinition Height="14*"/>
