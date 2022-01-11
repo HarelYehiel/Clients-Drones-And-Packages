@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DO;
+using System.Runtime.CompilerServices;
+
 
 namespace DalApi
 {
@@ -16,7 +18,7 @@ namespace DalApi
             // make the access to DalObject by singelton way
             static readonly DalObject instance = new DalObject();
             internal static DalObject Instance{ get{ return instance; } }
-            public List<double> PowerConsumptionBySkimmer()
+            [MethodImpl(MethodImplOptions.Synchronized)] public List<double> PowerConsumptionBySkimmer()
             {
                 List<double> dou = new List<double>();
 
@@ -33,13 +35,13 @@ namespace DalApi
             {
                 DataSource.Initialize();
             }
-            public void AddParcel(Parcel par)
+            [MethodImpl(MethodImplOptions.Synchronized)] public void AddParcel(Parcel par)
 
             {
                 par.runNumber++;
             }
 
-            public Station GetStation(int stationId)
+            [MethodImpl(MethodImplOptions.Synchronized)] public Station GetStation(int stationId)
             // Return the station with stationId
             {
                // IEnumerable<station> stations  = DataSource.stations;
@@ -50,7 +52,7 @@ namespace DalApi
                 }
                 throw new myExceptionDO("Exception from function GetStation", myExceptionDO.There_is_no_variable_with_this_ID);
             }
-            public Drone GetDrone(int droneId)
+            [MethodImpl(MethodImplOptions.Synchronized)] public Drone GetDrone(int droneId)
 
             {
                 foreach(Drone drone in DataSource.drones)
@@ -61,7 +63,7 @@ namespace DalApi
                 throw new myExceptionDO("Exception from function GetDrone", myExceptionDO.There_is_no_variable_with_this_ID);
             }
 
-            public Customer GetCustomer(int CustomerId)
+            [MethodImpl(MethodImplOptions.Synchronized)] public Customer GetCustomer(int CustomerId)
 
             {
                 foreach (Customer customer in DataSource.customers)
@@ -73,7 +75,7 @@ namespace DalApi
 
             }
 
-            public Parcel GetParcel(int ParcelId)
+            [MethodImpl(MethodImplOptions.Synchronized)] public Parcel GetParcel(int ParcelId)
 
             // Return the parcel with parcelId
             {
@@ -85,7 +87,7 @@ namespace DalApi
                 }
                 throw new myExceptionDO("Exception from function GetParcel", myExceptionDO.There_is_no_variable_with_this_ID);
             }
-            public void DelParcel(int ID) 
+            [MethodImpl(MethodImplOptions.Synchronized)] public void DelParcel(int ID) 
             {
                 Parcel parcelToRemove = new Parcel();
             foreach(var par in DataSource.parcels)
@@ -98,7 +100,7 @@ namespace DalApi
 
             }
 
-            public void DelStation(int ID)
+            [MethodImpl(MethodImplOptions.Synchronized)] public void DelStation(int ID)
             {
             foreach(var station in DataSource.stations)
                 {
@@ -107,7 +109,7 @@ namespace DalApi
                 }
             }
 
-            public void DelCustomer(int ID) 
+            [MethodImpl(MethodImplOptions.Synchronized)] public void DelCustomer(int ID) 
             {
             foreach(var customer in DataSource.customers)
                 {
@@ -116,7 +118,7 @@ namespace DalApi
                 }
             }
 
-            public void DelDrone(int ID)
+            [MethodImpl(MethodImplOptions.Synchronized)] public void DelDrone(int ID)
             {
             foreach(var drone in DataSource.drones)
                 {
@@ -124,29 +126,29 @@ namespace DalApi
                         DataSource.drones.Remove(drone);
                 }
             }
-            public void InputTheStation(Station station)
+            [MethodImpl(MethodImplOptions.Synchronized)] public void InputTheStation(Station station)
             {
                 DataSource.stations.Add(station);
             }
-            public void InputTheDroneCharge(DroneCharge droneCharge)
+            [MethodImpl(MethodImplOptions.Synchronized)] public void InputTheDroneCharge(DroneCharge droneCharge)
             {
                     DataSource.dronesCharge.Add(droneCharge);
             }
-            public void InputTheParcel(Parcel par)
+            [MethodImpl(MethodImplOptions.Synchronized)] public void InputTheParcel(Parcel par)
             {
                 DataSource.parcels.Add(par);
                 AddParcel(par);//update the run-number serial
             }
-            public void InputTheCustomer(Customer cust)
+            [MethodImpl(MethodImplOptions.Synchronized)] public void InputTheCustomer(Customer cust)
             {
                 DataSource.customers.Add(cust);
             }
-            public void InputTheDrone(Drone drone)
+            [MethodImpl(MethodImplOptions.Synchronized)] public void InputTheDrone(Drone drone)
             {             
                 DataSource.drones.Add(drone);
             }
 
-            public IEnumerable<DroneCharge> GetListOfDroneCharge()
+            [MethodImpl(MethodImplOptions.Synchronized)] public IEnumerable<DroneCharge> GetListOfDroneCharge()
             {
                 List<DroneCharge> droneCharges = new List<DroneCharge>();
                 
@@ -157,7 +159,7 @@ namespace DalApi
                 return droneCharges;
             }
 
-            public IEnumerable<Station> GetListOfStations()
+            [MethodImpl(MethodImplOptions.Synchronized)] public IEnumerable<Station> GetListOfStations()
             //return all the station from DataSource.stations
 
             {
@@ -170,7 +172,7 @@ namespace DalApi
                 return stations;
             }
 
-            public IEnumerable<Customer> GetListOfCustmers()
+            [MethodImpl(MethodImplOptions.Synchronized)] public IEnumerable<Customer> GetListOfCustmers()
             //return all the customer from DataSource.customers
             {
                 if (DataSource.parcels.Count == 0)
@@ -181,7 +183,7 @@ namespace DalApi
                     customers.Add(customer);
                 return customers;
             }
-            public IEnumerable<DroneCharge> GetListOfDronesInCharging()
+            [MethodImpl(MethodImplOptions.Synchronized)] public IEnumerable<DroneCharge> GetListOfDronesInCharging()
             {
                 if (DataSource.dronesCharge.Count == 0)
                     throw new myExceptionDO("Don't have drones in charging", myExceptionDO.Dont_have_any_parcel_in_the_list);
@@ -194,7 +196,7 @@ namespace DalApi
                 return Drones;
             }
 
-            public IEnumerable<Parcel> GetListOfParcels()
+            [MethodImpl(MethodImplOptions.Synchronized)] public IEnumerable<Parcel> GetListOfParcels()
             //print all the Parcel from DataSource.parcels
 
             {
@@ -208,7 +210,7 @@ namespace DalApi
                 }
                 return parcels;
             }
-            public IEnumerable<Drone> GetListOfDrones()
+            [MethodImpl(MethodImplOptions.Synchronized)] public IEnumerable<Drone> GetListOfDrones()
             //print all the Drone from DataSource.drones
             {
                 if (DataSource.drones.Count == 0)
@@ -221,7 +223,7 @@ namespace DalApi
                 }
                 return drones;
             }
-            public IEnumerable<Parcel> DisplaysParcelsDontHaveDrone()
+            [MethodImpl(MethodImplOptions.Synchronized)] public IEnumerable<Parcel> DisplaysParcelsDontHaveDrone()
 
             // Print the details of all the parcels don't have An associated skimmer (Selected_drone == 0).
             {
@@ -237,7 +239,7 @@ namespace DalApi
                 return par;
             }
 
-            public IEnumerable<Station> AvailableChargingStations()
+            [MethodImpl(MethodImplOptions.Synchronized)] public IEnumerable<Station> AvailableChargingStations()
 
             //Print the all stations that have DroneCharge available
             {
@@ -253,7 +255,7 @@ namespace DalApi
                 }
                 return stat;
             }
-            public string MinimumFromCustomer(double minDistance, Point p)
+            [MethodImpl(MethodImplOptions.Synchronized)] public string MinimumFromCustomer(double minDistance, Point p)
 
             {
                 if(DataSource.customers.Count == 0)
@@ -272,7 +274,7 @@ namespace DalApi
                 return ("The minimum distancefrom the point is: " + minDistance +
                    "\nThe id of customer is: " + DataSource.customers[saveTheI].Id);
             }
-            public string MinimumFromStation(double minDistance, Point p){
+            [MethodImpl(MethodImplOptions.Synchronized)] public string MinimumFromStation(double minDistance, Point p){
                 
                   if(DataSource.customers.Count == 0) 
                     throw new myExceptionDO("Exception from function MinimumFromStation", myExceptionDO.Dont_have_any_station_in_the_list);
@@ -292,7 +294,7 @@ namespace DalApi
                     "\nThe id of station is: " + DataSource.stations[saveTheI].id);
 
             }
-            public void AffiliationDroneToParcel(int parcelID, int droneID)
+            [MethodImpl(MethodImplOptions.Synchronized)] public void AffiliationDroneToParcel(int parcelID, int droneID)
             {
                 if (DataSource.parcels.Count == 0)
                     throw new myExceptionDO("Exception from function AffiliationDroneToParcel", myExceptionDO.Dont_have_any_parcel_in_the_list);
@@ -311,7 +313,7 @@ namespace DalApi
 
                 throw new myExceptionDO("Exception from function AffiliationDroneToParcel", myExceptionDO.There_is_no_variable_with_this_ID);
             }
-            public void PickUp(int parcelId)
+            [MethodImpl(MethodImplOptions.Synchronized)] public void PickUp(int parcelId)
             {
                 if (DataSource.parcels.Count == 0)
                     throw new myExceptionDO("Exception from function pickUp", myExceptionDO.Dont_have_any_parcel_in_the_list);
@@ -330,7 +332,7 @@ namespace DalApi
 
                 throw new myExceptionDO("Exception from function pickUp", myExceptionDO.There_is_no_variable_with_this_ID);;
             }
-            public void Delivered(int deliId)
+            [MethodImpl(MethodImplOptions.Synchronized)] public void Delivered(int deliId)
             {
                 if (DataSource.parcels.Count == 0)
                     throw new myExceptionDO("Exception from function delivered", myExceptionDO.Dont_have_any_parcel_in_the_list);
@@ -350,7 +352,7 @@ namespace DalApi
                 throw new myExceptionDO("Exception from function delivered", myExceptionDO.There_is_no_variable_with_this_ID);
 
             }
-            public void SetFreeStation(int droneId)
+            [MethodImpl(MethodImplOptions.Synchronized)] public void SetFreeStation(int droneId)
             {
                 if (DataSource.stations.Count == 0)
                     throw new myExceptionDO("Exception from function setFreeStation", myExceptionDO.Dont_have_any_station_in_the_list);
@@ -383,7 +385,7 @@ namespace DalApi
                            throw new myExceptionDO("Exception from function setFreeStation", myExceptionDO.We_ge_to_the_end_of_list_and_dont_find_the_drone);
                 }
             }
-            public void DroneToCharge(int droneId, int stationId)
+            [MethodImpl(MethodImplOptions.Synchronized)] public void DroneToCharge(int droneId, int stationId)
             {
                 if (DataSource.stations.Count == 0)
                     throw new myExceptionDO("Exception from function droneToCharge", myExceptionDO.Dont_have_any_station_in_the_list);
@@ -417,7 +419,7 @@ namespace DalApi
 
             }
             #region update methodes
-            public void updateParcel(DO.Parcel parcel)
+            [MethodImpl(MethodImplOptions.Synchronized)] public void updateParcel(DO.Parcel parcel)
             {
                 for (int i = 0; i < DataSource.parcels.Count; i++)
                 {
@@ -427,7 +429,7 @@ namespace DalApi
                     }
                 }
             }
-            public void updateDrone(DO.Drone drone)
+            [MethodImpl(MethodImplOptions.Synchronized)] public void updateDrone(DO.Drone drone)
             {
                 for (int i = 0; i < DataSource.drones.Count; i++)
                 {
@@ -437,7 +439,7 @@ namespace DalApi
                     }
                 }
             }
-            public void updateStation(DO.Station station)
+            [MethodImpl(MethodImplOptions.Synchronized)] public void updateStation(DO.Station station)
             {
                 for (int i = 0; i < DataSource.stations.Count; i++)
                 {
@@ -447,7 +449,7 @@ namespace DalApi
                     }
                 }
             }
-            public void updateCustomer(DO.Customer customer)
+            [MethodImpl(MethodImplOptions.Synchronized)] public void updateCustomer(DO.Customer customer)
             {
                 for (int i = 0; i < DataSource.customers.Count; i++)
                 {
@@ -457,11 +459,11 @@ namespace DalApi
                     }
                 }
             }
-            public void updateDroneToCharge(DroneCharge droneCharge)
+            [MethodImpl(MethodImplOptions.Synchronized)] public void updateDroneToCharge(DroneCharge droneCharge)
             {
                 InputTheDroneCharge(droneCharge);
             }
-            public void updateRelaseDroneFromCharge(int droneId, double longi, double lati, double min)
+            [MethodImpl(MethodImplOptions.Synchronized)] public void updateRelaseDroneFromCharge(int droneId, double longi, double lati, double min)
             {
                 DO.Point stationLocation = new DO.Point();
                 stationLocation.latitude = lati;

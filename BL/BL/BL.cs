@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DO;
 using BO;
+using System.Runtime.CompilerServices;
 using DalXml;
 using BlApi;
 
@@ -22,12 +23,12 @@ namespace BlApi
         {
             InitializeAndUpdateTheListsInIBL();
         }
-        public void SimulatorStart(int droneId, Func<bool> f1, Action action)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void SimulatorStart(int droneId, Func<bool> f1, Action action)
         {
             new Simulator(Instance, droneId, f1, action);
         }
 
-        public void InitializeAndUpdateTheListsInIBL()
+        [MethodImpl(MethodImplOptions.Synchronized)] public void InitializeAndUpdateTheListsInIBL()
         // Do initialize if data sourse and update the list listDrons of IBL.
         {
 
@@ -62,7 +63,7 @@ namespace BlApi
             }
 
         }
-        public bool IsDigitsOnly(string str)
+        [MethodImpl(MethodImplOptions.Synchronized)] public bool IsDigitsOnly(string str)
         {
             if (str == "") return false;
 
@@ -75,7 +76,7 @@ namespace BlApi
             return true;
         }
 
-        public void InsertOptions() //case 1
+        [MethodImpl(MethodImplOptions.Synchronized)] public void InsertOptions() //case 1
         {
             Console.WriteLine("press 0 to back ");
             Console.WriteLine("press 1 to add a new drone-staition");
@@ -86,7 +87,7 @@ namespace BlApi
         }
 
 
-        public void UpdateOptions() //case 2
+        [MethodImpl(MethodImplOptions.Synchronized)] public void UpdateOptions() //case 2
         {
             Console.WriteLine("Choose one of the following:");
             Console.WriteLine("press 0 to back ");
@@ -99,7 +100,7 @@ namespace BlApi
             Console.WriteLine("press 7 to update picked up parcel by drone");
             Console.WriteLine("press 8 to update delivered parcel by drone");
         }
-        public void EntityDisplayOptions() //case 3
+        [MethodImpl(MethodImplOptions.Synchronized)] public void EntityDisplayOptions() //case 3
         {
             Console.WriteLine("press 0 to back ");
             Console.WriteLine("press 1 to Station View");
@@ -108,7 +109,7 @@ namespace BlApi
             Console.WriteLine("press 4 to parcel View ");
         }
 
-        public void ListViewOptions()//case 4
+        [MethodImpl(MethodImplOptions.Synchronized)] public void ListViewOptions()//case 4
         {
             Console.WriteLine("press 0 to back.");
             Console.WriteLine("press 1 to displays a list of base stations.");
@@ -119,11 +120,11 @@ namespace BlApi
             Console.WriteLine("press 6 to base stations with available charging stations.\n");
         }
         //***********new cases for PL*************
-        public void DelParcel(int ID)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void DelParcel(int ID)
         {
             accessDal.DelParcel(ID);
         }
-        public void DelDrone(int ID)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void DelDrone(int ID)
         {
             accessDal.DelDrone(ID);
         }

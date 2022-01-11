@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Media.Imaging;
 using BO;
 using PL.pages;
+using System.Runtime.CompilerServices;
 
 
 namespace PL
@@ -50,7 +51,7 @@ namespace PL
             Login.Visibility = Visibility.Visible;
 
         }
-
+        
         private void ClickToShowDroneList(object sender, RoutedEventArgs e)
         {
             MainFrame.Content = new DronePage(bl);
@@ -61,6 +62,7 @@ namespace PL
             //new CustomerListWindow(bl).Show();
             MainFrame.Content = new CustomerListPage(bl);
         }
+     
 
         private void enter_Click(object sender, RoutedEventArgs e)
         {

@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using BO;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace PL
 {

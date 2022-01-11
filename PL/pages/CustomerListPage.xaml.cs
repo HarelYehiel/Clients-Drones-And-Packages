@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using BO;
 using System.Windows.Data;
+using System.Runtime.CompilerServices;
 
 namespace PL.pages
 {

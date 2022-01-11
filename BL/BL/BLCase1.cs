@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 using DO;
 
 namespace BlApi
 {
     public partial class BL : IBL
     {
-        //public delegate BO.DroneToList Converter<in IDAL.DO.Drone, out BO.DroneToList>(IDAL.DO.Drone input);
-        public void AddingBaseStation(int ID,string name,double Latitude,double Longitude, int numSlots)
+        //[MethodImpl(MethodImplOptions.Synchronized)] public delegate BO.DroneToList Converter<in IDAL.DO.Drone, out BO.DroneToList>(IDAL.DO.Drone input);
+        [MethodImpl(MethodImplOptions.Synchronized)] public void AddingBaseStation(int ID,string name,double Latitude,double Longitude, int numSlots)
         {
           /*  BO.station station = new BO.station();
             station.uniqueID = ID; // update the Data source
@@ -31,7 +32,7 @@ namespace BlApi
             accessDal.InputTheStation(station1);
         } 
 
-        public void AddingDrone(int ID,string model,int maxWeight,int staId)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void AddingDrone(int ID,string model,int maxWeight,int staId)
         {
             Station sta = new Station();
             sta = accessDal.GetStation(staId);
@@ -59,7 +60,7 @@ namespace BlApi
             this.ListDroneToList.Add(drone);
 
         }
-        public void AbsorptionNewCustomer(int ID, string nameCu, string phoneNumber, double Latitude, double Longitude)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void AbsorptionNewCustomer(int ID, string nameCu, string phoneNumber, double Latitude, double Longitude)
         {
             /*BO.Customer customer = new BO.Customer();
             customer.uniqueID = ID;
@@ -80,7 +81,7 @@ namespace BlApi
             customer1.location = point;
             accessDal.InputTheCustomer(customer1);
         }
-        public void ReceiptOfPackageForDelivery(int parcelID, int senderName, int targetName, int maxWeight, int prioerity)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void ReceiptOfPackageForDelivery(int parcelID, int senderName, int targetName, int maxWeight, int prioerity)
         {
            /* BO.Parcel parcel = new BO.Parcel();
             parcel.customerInDelivery_Sender.name = senderName;
@@ -106,7 +107,7 @@ namespace BlApi
             accessDal.InputTheParcel(parcel1);
         }
 
-        public void Simulator(int droneId, Func<bool> f1, Action action)
+        [MethodImpl(MethodImplOptions.Synchronized)] public void Simulator(int droneId, Func<bool> f1, Action action)
         {
             throw new NotImplementedException();
         }

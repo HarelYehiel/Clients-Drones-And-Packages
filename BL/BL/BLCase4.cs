@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 
 namespace BlApi
@@ -18,7 +19,7 @@ namespace BlApi
         }
 
         // Return list of entity_BO ('entity' to list).
-        public IEnumerable<StationToTheList> GetListOfBaseStations()
+        [MethodImpl(MethodImplOptions.Synchronized)] public IEnumerable<StationToTheList> GetListOfBaseStations()
         {
             List<BO.StationToTheList> stations = GetAllStaionsBy(p => true).ToList();
 
@@ -27,11 +28,11 @@ namespace BlApi
 
             return stations;
         }
-        public IEnumerable<DroneToList> GetTheListOfDrones()
+        [MethodImpl(MethodImplOptions.Synchronized)] public IEnumerable<DroneToList> GetTheListOfDrones()
         {
             return ListDroneToList;
         }
-        public IEnumerable<CustomerToList> GetListOfCustomers()
+        [MethodImpl(MethodImplOptions.Synchronized)] public IEnumerable<CustomerToList> GetListOfCustomers()
         {
 
             List<BO.CustomerToList> customersToList = GetAllCustomersBy(p => true).ToList();
@@ -42,7 +43,7 @@ namespace BlApi
             return customersToList;
 
         }
-        public IEnumerable<ParcelToList> DisplaysTheListOfParcels()
+        [MethodImpl(MethodImplOptions.Synchronized)] public IEnumerable<ParcelToList> DisplaysTheListOfParcels()
         {
             List<BO.ParcelToList> customersToList = GetAllParcelsBy(p => true).ToList();
 
@@ -54,7 +55,7 @@ namespace BlApi
 
 
         // Filter functions of list with entity_DO and return list with entity_BO (after the filter).
-        public IEnumerable<ParcelToList> GetAllParcelsBy(System.Predicate<DO.Parcel> filter)
+        [MethodImpl(MethodImplOptions.Synchronized)] public IEnumerable<ParcelToList> GetAllParcelsBy(System.Predicate<DO.Parcel> filter)
         {
             List<ParcelToList> parcelsToLists = new List<ParcelToList>();
 
@@ -65,7 +66,7 @@ namespace BlApi
 
             return parcelsToLists;
         }
-        public IEnumerable<StationToTheList> GetAllStaionsBy(System.Predicate<DO.Station> filter)
+        [MethodImpl(MethodImplOptions.Synchronized)] public IEnumerable<StationToTheList> GetAllStaionsBy(System.Predicate<DO.Station> filter)
         {
             List<StationToTheList> StationsToTheList = new List<StationToTheList>();
 
@@ -78,7 +79,7 @@ namespace BlApi
             return StationsToTheList;
         }
       
-        public IEnumerable<CustomerToList> GetAllCustomersBy(System.Predicate<DO.Customer> filter)
+        [MethodImpl(MethodImplOptions.Synchronized)] public IEnumerable<CustomerToList> GetAllCustomersBy(System.Predicate<DO.Customer> filter)
         {
             List<CustomerToList> customersToList = new List<CustomerToList>();
 
@@ -89,7 +90,7 @@ namespace BlApi
 
             return customersToList;
         }
-        public IEnumerable<DroneInCharging> GetAllDronesInCharging(System.Predicate<DO.DroneCharge> filter)
+        [MethodImpl(MethodImplOptions.Synchronized)] public IEnumerable<DroneInCharging> GetAllDronesInCharging(System.Predicate<DO.DroneCharge> filter)
         {
             List<DroneInCharging> DronesToList = new List<DroneInCharging>();
 
@@ -98,7 +99,7 @@ namespace BlApi
 
             return DronesToList;
         }
-        public IEnumerable<DroneToList> GetAllDronesBy(System.Predicate<BO.DroneToList> filter)
+        [MethodImpl(MethodImplOptions.Synchronized)] public IEnumerable<DroneToList> GetAllDronesBy(System.Predicate<BO.DroneToList> filter)
         {
             try
             {

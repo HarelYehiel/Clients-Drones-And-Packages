@@ -2,6 +2,8 @@
 using DalApi.DalObject;
 using DO;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+
 namespace ConsoleUI
 {
     using System;
