@@ -20,15 +20,15 @@ namespace BlApi
         public Simulator(BlApi.BL bl1, int droneId, Func<bool> func1, Action action1)
         {
 
-            
+
             try
             {
                 func = func1;
                 action = action1;
                 bl = bl1;
                 stopwatch = new Stopwatch();
-                lock (bl) { drone = bl.GetDrone(droneId); }
-
+                drone = bl.GetDrone(droneId); 
+                action();
                 while (func())
                 {
                     switch (drone.Status)
@@ -39,16 +39,18 @@ namespace BlApi
                                 lock (bl)
                                 {
                                     bl.AssignPackageToDrone(droneId);
-                                    drone = bl.GetDrone(droneId);
                                 }
-                                
+                                action();
+                                drone = bl.GetDrone(droneId);
+
+
                             }
                             catch (Exception e)
                             {
                                 if (drone.Battery <= 30 || e.ToString().Contains("This drone can't take any parecl"))
                                 {
                                     sendToCharging(droneId, drone.Battery);
-
+                                    action();
                                 }
                                 else
                                     Thread.Sleep(1000); // Wait for new parcel.
@@ -67,6 +69,7 @@ namespace BlApi
                                     drone.Status = EnumBO.DroneStatus.Avilble;
                                     drone.Battery = 100;
                                     Thread.Sleep(1000); // Wait one minute for the good feeling :-) .
+                                    action();
                                 }
                                 // Arrived that drone was charging.
                                 else
@@ -75,11 +78,13 @@ namespace BlApi
                                                        //How much time is missing until the battery is full.
 
                                     List<double> configStatus;
-                                    lock (bl) lock (bl.accessDal) { configStatus = bl.accessDal.PowerConsumptionBySkimmer(); }
+                                    configStatus = bl.accessDal.PowerConsumptionBySkimmer();
 
                                     HowMuchTimeMissingToBatteryFull = Math.Ceiling((100 - drone.Battery) / configStatus[4]);
                                     updateInRealTime(droneId, HowMuchTimeMissingToBatteryFull, '+', 0);
-                                    bl.ReleaseDroneFromCharging(droneId,DateTime.Now);
+                                    action();
+                                    bl.ReleaseDroneFromCharging(droneId, DateTime.Now);
+                                    action();
                                 }
                                 break;
 
@@ -94,12 +99,12 @@ namespace BlApi
                             {
                                 double tempbattery;
                                 Parcel parcel;
-                                lock (bl) { parcel = bl.GetParcel(drone.parcelByTransfer.uniqueID); }
+                                parcel = bl.GetParcel(drone.parcelByTransfer.uniqueID);
 
                                 // Check if drone arrived to simulator in delivery pick up. 
                                 if (parcel.pickedUp == null) // Pick up ?
                                 {
-                                    lock (bl) { tempbattery = bl.GetDrone(droneId).Battery; }// Save the real battery
+                                    tempbattery = bl.GetDrone(droneId).Battery; // Save the real battery
 
                                     // Update the details of drone in real time from drone's location to destination's Location.
                                     startUpdateInRealTime(droneId,
@@ -112,10 +117,11 @@ namespace BlApi
                                         bl.updateBatteryBySimultor(droneId, tempbattery);
 
                                         bl.CollectionOfPackageByDrone(droneId);
+                                        action();
                                     }
                                 }
 
-                                lock (bl) { tempbattery = bl.GetDrone(droneId).Battery; } // Save the real battery
+                                tempbattery = bl.GetDrone(droneId).Battery;  // Save the real battery
 
                                 // Update the details of drone in real time from collection's Location to destination's Location.
                                 startUpdateInRealTime(droneId,
@@ -127,8 +133,11 @@ namespace BlApi
                                     bl.updateBatteryBySimultor(droneId, tempbattery);
 
                                     bl.DeliveryOfPackageByDrone(droneId);
-                                    drone = bl.GetDrone(droneId);
+
                                 }
+                                action();
+                                drone = bl.GetDrone(droneId);
+
                             }
                             catch (Exception)
                             {
@@ -140,6 +149,7 @@ namespace BlApi
                             break;
 
                     }
+                    action();
                 }
             }
             catch (Exception)
@@ -163,7 +173,7 @@ namespace BlApi
 
                     drone.Status = EnumBO.DroneStatus.Baintenance;
                     List<double> configStatus;
-                    lock(bl) lock (bl.accessDal) { configStatus = bl.accessDal.PowerConsumptionBySkimmer(); }
+                    configStatus = bl.accessDal.PowerConsumptionBySkimmer(); 
 
                     HowMuchTimeMissingToBatteryFull = Math.Ceiling((100 - droneBattery) / configStatus[4]);
                     updateInRealTime(droneId, HowMuchTimeMissingToBatteryFull, '+', 0);
@@ -183,7 +193,7 @@ namespace BlApi
         {
             // Dictance from the client oe station.
             double distance;
-            lock (bl) { distance = location1.distancePointToPoint(location2); }
+            distance = location1.distancePointToPoint(location2); 
 
             // How long to arrive to collect/ delivered parcel or arrive to station. (in second)
             double HowLongToArrive = distance / speedDrone;
@@ -217,9 +227,9 @@ namespace BlApi
 
                 }
             }
-            else if (AddOrSubtractToBattery == '+') 
+            else if (AddOrSubtractToBattery == '+')
             {
-                for (int i = 1;  i <= Math.Ceiling(HowMantTimes) && func(); i++)
+                for (int i = 1; i <= Math.Ceiling(HowMantTimes) && func(); i++)
                 {
                     lock (bl) { bl.UpdateBatteryInReelTime(droneId, 0, AddOrSubtractToBattery); }
                     action();

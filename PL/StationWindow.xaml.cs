@@ -35,7 +35,7 @@ namespace PL
         }
         void updateTheViewStationInRealTime()
         {
-            lock (bl) { stationToTheList = bl.GetStationToTheList(stationToTheList.uniqueID); }
+             stationToTheList = bl.GetStationToTheList(stationToTheList.uniqueID); 
             LatitudeTextBox.Text = stationToTheList.unAvailableChargingStations.ToString();
             ChargeSlotsTextBox.Text = stationToTheList.availableChargingStations.ToString();
         }
@@ -136,7 +136,7 @@ namespace PL
                     // If all proper add th customer.
                     if (isAllProper)
                     {
-                        lock (bl) { bl.AddingBaseStation(IdStation, Name, Latitude, Longitude, ChargeSlots); }
+                         bl.AddingBaseStation(IdStation, Name, Latitude, Longitude, ChargeSlots); 
                         MessageBox.Show("The station added", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                 }
@@ -155,12 +155,12 @@ namespace PL
                     ChargeSlotsTextBlock.Visibility = Visibility.Visible;
                 else
                 {
-                    lock (bl) { bl.UpdateStationData(Convert.ToInt32(IDTextBox.Text), NameTextBox.Text, Convert.ToInt32(ChargeSlotsTextBox.Text)); }
+                     bl.UpdateStationData(Convert.ToInt32(IDTextBox.Text), NameTextBox.Text, Convert.ToInt32(ChargeSlotsTextBox.Text));
                     MessageBox.Show("The station update.", "Information", MessageBoxButton.OKCancel, MessageBoxImage.Information);
                     StationToTheList stationToTheList = new StationToTheList();
 
                     // Update the data of view station.
-                    lock (bl) { stationToTheList = bl.GetStationToTheList(Convert.ToInt32(IDTextBox.Text)); }
+                    stationToTheList = bl.GetStationToTheList(Convert.ToInt32(IDTextBox.Text)); 
                     NameTextBox.Text = stationToTheList.name;
                     ChargeSlotsTextBox.Text = stationToTheList.availableChargingStations.ToString();
 
@@ -239,11 +239,10 @@ namespace PL
         {
             try
             {
-                lock (bl)
-                {
+               
                     if (bl.getBaseStation(id).uniqueID == id) return true; // Exist staion with this id.
                     return false;
-                }
+                
             }
             catch (Exception)
             {
@@ -260,11 +259,11 @@ namespace PL
                     return;
 
                 if (IsInt(IDTextBox.Text))
-                    lock (bl) { bl.RemoveAllSkimmersFromTheStation(Convert.ToInt32(IDTextBox.Text)); }
+                     bl.RemoveAllSkimmersFromTheStation(Convert.ToInt32(IDTextBox.Text)); 
 
                 MessageBox.Show("All the skimmers out of charge at this station", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
                 BO.StationToTheList stationToTheList;
-                lock (bl) { stationToTheList = bl.GetStationToTheList(Convert.ToInt32(IDTextBox.Text)); }
+                stationToTheList = bl.GetStationToTheList(Convert.ToInt32(IDTextBox.Text)); 
                 ChargeSlotsTextBox.Text = stationToTheList.availableChargingStations.ToString();
                 LatitudeTextBox.Text = stationToTheList.unAvailableChargingStations.ToString();
 

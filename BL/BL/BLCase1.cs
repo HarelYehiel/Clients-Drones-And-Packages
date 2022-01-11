@@ -32,7 +32,7 @@ namespace BlApi
             accessDal.InputTheStation(station1);
         } 
 
-        [MethodImpl(MethodImplOptions.Synchronized)] public void AddingDrone(int ID,string model,int maxWeight,int staId)
+        [MethodImpl(MethodImplOptions.Synchronized)]public void AddingDrone(int ID,string model,int maxWeight,int staId)
         {
             Station sta = new Station();
             sta = accessDal.GetStation(staId);

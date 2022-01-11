@@ -54,8 +54,8 @@ namespace PL
         
         private void ClickToShowDroneList(object sender, RoutedEventArgs e)
         {
-            MainFrame.Content = new DronePage(bl);
-          //  new DroneListWindow(bl).Show();
+           // MainFrame.Content = new DronePage(bl);
+           new DroneListWindow(bl).Show();
         }
         private void ClickToShowCustomerList(object sender, RoutedEventArgs e)
         {

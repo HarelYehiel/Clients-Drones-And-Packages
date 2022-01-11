@@ -90,7 +90,7 @@ namespace PL
         }
         void updateTheViewListDronesInRealTime()
         {
-            lock (bl) { customerToList = bl.GetCustomerToTheList(customerToList.uniqueID); }
+             customerToList = bl.GetCustomerToTheList(customerToList.uniqueID); 
 
             // take 'Latitude' for information 'packagesHeReceived'.
             Latitude.Text = customerToList.packagesHeReceived.ToString();
@@ -171,7 +171,7 @@ namespace PL
             try
             {
                 Customer customer;
-                lock (bl) { customer = bl.GetCustomer(id); }
+                 customer = bl.GetCustomer(id); 
                 if (customer.uniqueID == id) return true; // Exist drine with this id.
                 return false;
             }
@@ -256,7 +256,7 @@ namespace PL
             if(Add.Content is "Update")
             {
                 int ID = Convert.ToInt32(txtId.Text);
-                lock (bl) { bl.UpdateCustomerData(ID, txtName.Text, txtPhone.Text); }
+                lock (bl){ bl.UpdateCustomerData(ID, txtName.Text, txtPhone.Text); }
                 UpdateBorder.Visibility = Visibility.Visible;
             }
 

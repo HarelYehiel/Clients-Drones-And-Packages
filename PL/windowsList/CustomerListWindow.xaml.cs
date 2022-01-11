@@ -42,7 +42,7 @@ namespace PL
         {
             bl = bL1;
             customersToTheLists = new List<CustomerToList>();
-            lock (bl) { customersToTheLists.AddRange(bl.GetListOfCustomers()); }
+             customersToTheLists.AddRange(bl.GetListOfCustomers()); 
 
 
             TurnOnFunctionFilters = false;
@@ -108,7 +108,7 @@ namespace PL
         }
         private void ClearFilter(object sender, RoutedEventArgs e)
         {
-            lock (bl) { CustomersListView.ItemsSource = bl.GetListOfCustomers(); }
+             CustomersListView.ItemsSource = bl.GetListOfCustomers(); 
             HideAndReseteAllTextBox();
         }
 
@@ -245,7 +245,7 @@ namespace PL
             {
                 CustomersListView.ItemsSource = null;
                 customersToTheLists.Clear();
-                lock (bl) { customersToTheLists.AddRange(bl.GetListOfCustomers()); }
+                 customersToTheLists.AddRange(bl.GetListOfCustomers()); 
 
                 if (isNumber(FilterIDTextBox.Text)) // Filter ID
                 {

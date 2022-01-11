@@ -51,7 +51,7 @@ namespace PL
             StationID = StationID1;
             RunDronesInCharging = new List<DroneInCharging>();
 
-            lock (bl) { RunDronesInCharging.AddRange(bl.GetAllDronesInCharging(C => C.staitionId == StationID)); }
+            RunDronesInCharging.AddRange(bl.GetAllDronesInCharging(C => C.staitionId == StationID)); 
 
             TurnOnFunctionFilters = false;
             InitializeComponent();
@@ -66,7 +66,7 @@ namespace PL
         void updateViewDronesInCharging()
         {
             Filters();
-           // lock (bl) { DronesInChargingListView.ItemsSource = (bl.GetAllDronesInCharging(C => C.staitionId == StationID)); }
+           //  DronesInChargingListView.ItemsSource = (bl.GetAllDronesInCharging(C => C.staitionId == StationID)); 
         }
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -166,7 +166,7 @@ namespace PL
             {
                 DronesInChargingListView.ItemsSource = null;
                 RunDronesInCharging.Clear();
-                lock (bl) { RunDronesInCharging.AddRange(bl.GetAllDronesInCharging(C => C.staitionId == StationID)); }
+                RunDronesInCharging.AddRange(bl.GetAllDronesInCharging(C => C.staitionId == StationID)); 
 
                 if (isNumber(FilterIDTextBox.Text)) // Filter ID
                 {
@@ -231,7 +231,7 @@ namespace PL
                 int IDDrone = (DronesInChargingListView.SelectedItem as DroneInCharging).uniqueID;
 
                 if (DronesInChargingListView.ItemsSource != null)
-                    lock (bl) { bl.ReleaseDroneFromCharging(IDDrone, DateTime.Now); }
+                    bl.ReleaseDroneFromCharging(IDDrone, DateTime.Now); 
 
                 DronesInChargingListView.SelectedItem = null;
                 EnableFiltersWithConditions();
@@ -255,7 +255,7 @@ namespace PL
                 if (DronesInChargingListView.ItemsSource != null)
                 {
                     ParcelToList parcelToList;
-                    lock (bl) { parcelToList = bl.GetParcelToTheList(IDPacel); }
+                     parcelToList = bl.GetParcelToTheList(IDPacel); 
                     new ParcelWindow(bl, parcelToList).ShowDialog();
                 }
                 DronesInChargingListView.SelectedItem = null;

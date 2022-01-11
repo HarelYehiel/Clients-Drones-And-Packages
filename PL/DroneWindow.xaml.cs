@@ -8,7 +8,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Windows.Media;
-v
 
 
 namespace PL
@@ -121,7 +120,7 @@ namespace PL
             DroneButton.Content = "Update";
             title.Content = "Update Drone";
         }
-        void updateTheViewDroneInRealTime(double droneBattery, EnumBO.DroneStatus droneStatus,Location location)
+        void updateTheViewDroneInRealTime(double droneBattery, EnumBO.DroneStatus droneStatus, Location location)
         {
             LoctionTextBox.Text = location.ToString();
             BatteryTextBox.Text = Math.Ceiling(droneBattery).ToString();
@@ -133,15 +132,14 @@ namespace PL
         private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
 
-            lock (bl)
-            {
+           
                 Drone drone;
-                lock (bl) { drone = bl.GetDrone(Convert.ToInt32(IDTextBox.Text)); }
+                drone = bl.GetDrone(Convert.ToInt32(IDTextBox.Text));
                 Action<double, EnumBO.DroneStatus, Location> theUpdateView = updateTheViewDroneInRealTime;
                 // Dispatcher to main thread to update the window drone.
                 BatteryTextBox.Dispatcher.Invoke(theUpdateView, drone.Battery, drone.Status, drone.location);
                 Thread.Sleep(200);
-            }
+            
 
         }
         bool StopSimulator()
@@ -153,8 +151,9 @@ namespace PL
         {
             Func<bool> func = StopSimulator;
             Action action = () => { worker.ReportProgress(1); };
+            action();
             int idDrone = this.Dispatcher.Invoke<int>(() => { return Convert.ToInt32(IDTextBox.Text); });
-            lock (bl) { bl.SimulatorStart(idDrone, func, action); }
+            bl.SimulatorStart(idDrone, func, action);
         }
 
         bool isNumber(string s)
@@ -378,7 +377,7 @@ namespace PL
                 Thread.Sleep(400);
 
             }
-            
+
             this.Close();
 
         }
@@ -464,7 +463,11 @@ namespace PL
             {
                 Simulator.Content = "Stop Simulator";
                 Simulator.Background = Brushes.Red;
+
                 DroneButton.IsEnabled = false;
+                //BatteryTextBox.IsEnabled = true;
+                //statusTextBox.IsEnabled = true;
+                //LoctionTextBox.IsEnabled = true;
 
                 startOrStopSimulter = false; //start simultor, next click on the button is  stop the simulator.
                 worker.RunWorkerAsync();
@@ -480,7 +483,9 @@ namespace PL
                 Thread.Sleep(400);
 
                 DroneButton.IsEnabled = true;
-
+                //BatteryTextBox.IsEnabled = false;
+                //statusTextBox.IsEnabled = false;
+                //LoctionTextBox.IsEnabled = false;
 
             }
 

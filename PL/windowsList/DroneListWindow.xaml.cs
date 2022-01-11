@@ -37,15 +37,15 @@ namespace PL
         {
             bl = bL1;
             dronesToTheLists = new List<DroneToList>();
-            lock (bl) { dronesToTheLists.AddRange(bl.GetTheListOfDrones()); }
+             dronesToTheLists.AddRange(bl.GetTheListOfDrones()); 
 
             TurnOnFunctionFilters = false;
             InitializeComponent();
             TurnOnFunctionFilters = true;
 
-            worker = new BackgroundWorker();
-            worker.DoWork += Worker_DoWork;
-            worker.RunWorkerAsync();
+            //worker = new BackgroundWorker();
+            //worker.DoWork += Worker_DoWork;
+         //   worker.RunWorkerAsync();
 
             DronesListView.ItemsSource = dronesToTheLists;
         }
@@ -61,7 +61,7 @@ namespace PL
             {
                 Action theUpdateView = updateTheViewListDronesInRealTime;
                 // Dispatcher to main thread to update the window drone.
-              //  DronesListView.Dispatcher.Invoke(theUpdateView);
+              // DronesListView.Dispatcher.Invoke(theUpdateView);
                 Thread.Sleep(500);
             }
 
@@ -87,7 +87,7 @@ namespace PL
         private void ClearFilter(object sender, RoutedEventArgs e)
         {
 
-            lock (bl) { DronesListView.ItemsSource = bl.GetTheListOfDrones(); }
+             DronesListView.ItemsSource = bl.GetTheListOfDrones(); 
 
             HideAndReseteAllTextBox();
         }
@@ -200,7 +200,7 @@ namespace PL
             {
                 DronesListView.ItemsSource = null;
                 dronesToTheLists.Clear();
-                lock (bl) { dronesToTheLists.AddRange(bl.GetTheListOfDrones()); }
+                dronesToTheLists.AddRange(bl.GetTheListOfDrones()); 
 
                 if (isNumber(FilterIDTextBox.Text)) // Filter ID
                 {
@@ -381,7 +381,7 @@ namespace PL
                 if (DronesListView.ItemsSource != null)
                 {
                     ParcelToList parcelToList;
-                    lock (bl) { parcelToList = bl.GetParcelToTheList(IDPacel); }
+                     parcelToList = bl.GetParcelToTheList(IDPacel); 
                     new ParcelWindow(bl, parcelToList).Show();
                 }
                 DronesListView.SelectedItem = null;

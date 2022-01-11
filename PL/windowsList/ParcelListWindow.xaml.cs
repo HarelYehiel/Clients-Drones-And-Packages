@@ -24,7 +24,7 @@ namespace PL
         {
             bl = bl1;
             InitializeComponent();
-            lock (bl) { ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels(); }
+             ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels(); 
             CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelListView.ItemsSource);
             view.Filter = UserFilter;
             openOptions.Visibility = Visibility.Hidden;
@@ -37,7 +37,7 @@ namespace PL
         // Update the list view.
         {
             IEnumerable<ParcelToList> parcelToLists;
-            lock (bl) { parcelToLists = bl.DisplaysTheListOfParcels(); }
+            parcelToLists = bl.DisplaysTheListOfParcels(); 
             CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelListView.ItemsSource);
 
         }
@@ -56,14 +56,14 @@ namespace PL
         private void AddNewParcel(object sender, RoutedEventArgs e)
         {
             new ParcelWindow(bl).ShowDialog();
-            lock (bl) { ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels(); }
+           ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels(); 
             //CollectionViewSource.GetDefaultView(ParcelListView).Refresh();
 
         }
 
         private void ClearFilter(object sender, RoutedEventArgs e)
         {
-            lock (bl) { ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels(); }
+           ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels(); 
 
         }
 
@@ -150,7 +150,7 @@ namespace PL
         {
             BO.ParcelToList parcel = ParcelListView.SelectedItem as BO.ParcelToList;
             List<BO.CustomerToList> lst;
-            lock (bl) { lst = bl.GetAllCustomersBy(C => C.name == parcel.namrSender).ToList(); }
+           lst = bl.GetAllCustomersBy(C => C.name == parcel.namrSender).ToList(); 
             new CustomerWindow(bl, lst[0]).ShowDialog();
             openOptions.Visibility = Visibility.Hidden;
             Close();
@@ -160,7 +160,7 @@ namespace PL
         {
             BO.ParcelToList parcel = ParcelListView.SelectedItem as BO.ParcelToList;
             List<BO.CustomerToList> lst;
-            lock (bl) { lst = bl.GetAllCustomersBy(C => C.name == parcel.nameTarget).ToList(); }
+           lst = bl.GetAllCustomersBy(C => C.name == parcel.nameTarget).ToList(); 
             new CustomerWindow(bl, lst[0]).ShowDialog();
             openOptions.Visibility = Visibility.Hidden;
             Close();
@@ -172,12 +172,12 @@ namespace PL
             try
             {
                 BO.Parcel temp;
-                lock (bl) { temp = bl.GetParcel(parcel.uniqueID); }
+               temp = bl.GetParcel(parcel.uniqueID); 
                 if (temp.droneInParcel == null)
                     throw new Exception();
 
                 List<BO.DroneToList> lst;
-                lock (bl) { lst = bl.GetAllDronesBy(D => D.uniqueID == temp.droneInParcel.uniqueID).ToList(); }
+               lst = bl.GetAllDronesBy(D => D.uniqueID == temp.droneInParcel.uniqueID).ToList(); 
                 new DroneWindow(bl, lst[0]).ShowDialog();
                 openOptions.Visibility = Visibility.Hidden;
                 Close();
