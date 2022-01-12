@@ -15,41 +15,48 @@ using System.Threading;
 namespace PL
 {
     /// <summary>
-    /// Interaction logic for ParcelsPage.xaml
+    /// This class is responsible for all the view of the parcels in list 
     /// </summary>
     public partial class ParcelListPage : Page
     {
         BlApi.IBL bl;
         BackgroundWorker worker;
+        ParcelToList ParcelToListChoose;
+
         public ParcelListPage(BlApi.IBL bl1)
         {
+            // constructor
             bl = bl1;
             InitializeComponent();
             ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels();
+            // use CollectionView method - update to the list and save it to "view", for us to filter by the function
             CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelListView.ItemsSource);
             view.Filter = UserFilter;
             openOptions.Visibility = Visibility.Hidden;
 
+            // crate background worker for stay update all the time
             worker = new BackgroundWorker();
             worker.DoWork += Worker_DoWork;
+            worker.WorkerSupportsCancellation = true;
             worker.RunWorkerAsync();
         }
         void updateTheViewListParcelsInRealTime()
         // Update the list view.
         {
-            IEnumerable<ParcelToList> parcelToLists;
-            parcelToLists = bl.DisplaysTheListOfParcels();
+
+            ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels();
             CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelListView.ItemsSource);
+            view.Filter = UserFilter;
 
         }
 
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            while (true)
+            while (!worker.CancellationPending)
             {
                 Action theUpdateView = updateTheViewListParcelsInRealTime;
                 ParcelListView.Dispatcher.BeginInvoke(theUpdateView);
-                Thread.Sleep(200);
+                Thread.Sleep(1000);
             }
 
         }
@@ -58,7 +65,6 @@ namespace PL
         {
             new ParcelWindow(bl).ShowDialog();
             ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels();
-            //CollectionViewSource.GetDefaultView(ParcelListView).Refresh();
 
         }
 
@@ -71,30 +77,16 @@ namespace PL
 
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
+            worker.CancelAsync();
             this.Visibility = Visibility.Hidden;
         }
         private void ParcelListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (e.OriginalSource is GridViewColumnHeader)
-            {
-                GridViewColumn clickedColumn = (e.OriginalSource as GridViewColumnHeader).Column;
-                if (clickedColumn.Header.ToString() == "Sender")
-                {
-                    CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelListView.ItemsSource);
-                    view.SortDescriptions.Add(new SortDescription("Sender", ListSortDirection.Ascending));
-                }
-                if (clickedColumn.Header.ToString() == "Target")
-                {
-                    CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelListView.ItemsSource);
-                    view.SortDescriptions.Add(new SortDescription("Target", ListSortDirection.Ascending));
-                }
+            if (ParcelListView.SelectedItem != null)
+                ParcelToListChoose = ParcelListView.SelectedItem as ParcelToList;
 
-            }
-            else
-            {
-                openOptions.Visibility = Visibility.Visible;
-                //ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels();
-            }
+            openOptions.Visibility = Visibility.Visible;
+
         }
         private void AddFilter(object sender, RoutedEventArgs e)
         {
@@ -107,6 +99,7 @@ namespace PL
         }
         private bool UserFilter(object item)
         {
+            // this function is responsible for the filter of the list in real time
             if (String.IsNullOrEmpty(txtFilter.Text))
                 return true;
             else if (filterCombo.SelectedIndex == 0) //Parcl ID
@@ -126,6 +119,7 @@ namespace PL
         }
         private void txtFilter_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
+            //get the updated list by refresh all the time
             CollectionViewSource.GetDefaultView(ParcelListView.ItemsSource).Refresh();
         }
         private void filterCombo_Initialized(object sender, EventArgs e)
@@ -142,37 +136,31 @@ namespace PL
 
         private void OpenParcelView_Click(object sender, RoutedEventArgs e)
         {
-            BO.ParcelToList parcel = ParcelListView.SelectedItem as BO.ParcelToList;
-            new ParcelWindow(bl, parcel).ShowDialog();
+            new ParcelWindow(bl, ParcelToListChoose).ShowDialog();
             openOptions.Visibility = Visibility.Hidden;
         }
 
         private void OpenSenderView_Click(object sender, RoutedEventArgs e)
         {
-            BO.ParcelToList parcel = ParcelListView.SelectedItem as BO.ParcelToList;
-            List<BO.CustomerToList> lst;
-            lst = bl.GetAllCustomersBy(C => C.name == parcel.namrSender).ToList();
+            List<BO.CustomerToList> lst = bl.GetAllCustomersBy(C => C.name == ParcelToListChoose.namrSender).ToList();
             new CustomerWindow(bl, lst[0]).ShowDialog();
             openOptions.Visibility = Visibility.Hidden;
-            
         }
 
         private void OpenTargetView_Click(object sender, RoutedEventArgs e)
         {
-            BO.ParcelToList parcel = ParcelListView.SelectedItem as BO.ParcelToList;
             List<BO.CustomerToList> lst;
-            lst = bl.GetAllCustomersBy(C => C.name == parcel.nameTarget).ToList();
+            lst = bl.GetAllCustomersBy(C => C.name == ParcelToListChoose.nameTarget).ToList();
             new CustomerWindow(bl, lst[0]).ShowDialog();
             openOptions.Visibility = Visibility.Hidden;
         }
 
         private void OpenDroneView_Click(object sender, RoutedEventArgs e)
         {
-            BO.ParcelToList parcel = ParcelListView.SelectedItem as BO.ParcelToList;
             try
             {
                 BO.Parcel temp;
-                temp = bl.GetParcel(parcel.uniqueID);
+                temp = bl.GetParcel(ParcelToListChoose.uniqueID);
                 if (temp.droneInParcel == null)
                     throw new Exception();
 
@@ -183,7 +171,7 @@ namespace PL
             }
             catch (Exception)
             {
-                MessageBox.Show("this parcel not assign yet to drone", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("This parcel not assign yet to drone", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         private void ComboBox_Initialized(object sender, EventArgs e)

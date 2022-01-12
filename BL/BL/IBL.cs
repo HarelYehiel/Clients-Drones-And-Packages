@@ -15,8 +15,8 @@ namespace BlApi
         /* In function Insert_options*/
         public void AddingBaseStation(int ID, string name, double Latitude, double Longitude, int numSlots);
         public void AddingDrone(int ID, string model, int maxWeight, int staId);
-        public void AbsorptionNewCustomer(int ID, string nameCu, string phoneNumber, double Latitude, double Longitude);
-        public void ReceiptOfPackageForDelivery(int parcelID, int senderName, int targetName, int maxWeight, int prioerity);
+        public void AddingCustomer(int ID, string nameCu, string phoneNumber, double Latitude, double Longitude);
+        public void AddingParcel(int parcelID, int senderName, int targetName, int maxWeight, int prioerity);
 
         /* Until here */
 

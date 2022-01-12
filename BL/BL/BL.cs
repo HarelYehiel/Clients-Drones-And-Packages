@@ -14,6 +14,9 @@ namespace BlApi
 
     public partial class BL : IBL
     {
+        /// <summary>
+        /// This partial class is responsible for all the initalize, and format testing
+        /// </summary>
         static readonly BL instance = new BL();
         internal static BL Instance { get { return instance; } }
         //IDal accessDal = DalApi.DalFactory.GetDal("DalObject");
@@ -28,7 +31,8 @@ namespace BlApi
             new Simulator(Instance, droneId, f1, action);
         }
 
-        [MethodImpl(MethodImplOptions.Synchronized)] public void InitializeAndUpdateTheListsInIBL()
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public void InitializeAndUpdateTheListsInIBL()
         // Do initialize if data sourse and update the list listDrons of IBL.
         {
 

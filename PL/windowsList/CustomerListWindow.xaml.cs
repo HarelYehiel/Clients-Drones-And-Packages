@@ -85,7 +85,7 @@ namespace PL
 
             openOptions.Visibility = Visibility.Visible;
 
-            CollectionViewSource.GetDefaultView(CustomersListView.ItemsSource).Refresh();
+            //CollectionViewSource.GetDefaultView(CustomersListView.ItemsSource).Refresh();
 
             //CustomersListView.ItemsSource = null;
             //CustomersListView.ItemsSource = bl.GetListOfCustomers();

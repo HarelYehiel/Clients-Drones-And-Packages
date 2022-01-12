@@ -1,182 +1,92 @@
 <?xml version="1.0"?>
 <ArrayOfDrone xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Drone>
-    <Id>62994</Id>
-    <Model>dro4</Model>
-    <MaxWeight>Medium</MaxWeight>
-    <droneStatus>Avilble</droneStatus>
-  </Drone>
-  <Drone>
-    <Id>28302</Id>
-    <Model>dro5</Model>
-    <MaxWeight>Light</MaxWeight>
-    <droneStatus>Avilble</droneStatus>
-  </Drone>
-  <Drone>
-    <Id>33784</Id>
-    <Model>dro8</Model>
-    <MaxWeight>Light</MaxWeight>
-    <droneStatus>Avilble</droneStatus>
-  </Drone>
-  <Drone>
-    <Id>59897</Id>
+    <Id>28094</Id>
     <Model>dro4</Model>
     <MaxWeight>Light</MaxWeight>
     <droneStatus>Avilble</droneStatus>
   </Drone>
   <Drone>
-    <Id>46422</Id>
-    <Model>dro5</Model>
-    <MaxWeight>Light</MaxWeight>
-    <droneStatus>Avilble</droneStatus>
-  </Drone>
-  <Drone>
-    <Id>22483</Id>
-    <Model>dro2</Model>
-    <MaxWeight>Light</MaxWeight>
-    <droneStatus>Avilble</droneStatus>
-  </Drone>
-  <Drone>
-    <Id>86756</Id>
-    <Model>dro2</Model>
-    <MaxWeight>Light</MaxWeight>
-    <droneStatus>Avilble</droneStatus>
-  </Drone>
-  <Drone>
-    <Id>55576</Id>
-    <Model>dro6</Model>
-    <MaxWeight>Light</MaxWeight>
-    <droneStatus>Avilble</droneStatus>
-  </Drone>
-  <Drone>
-    <Id>46758</Id>
-    <Model>dro3</Model>
-    <MaxWeight>Light</MaxWeight>
-    <droneStatus>Avilble</droneStatus>
-  </Drone>
-  <Drone>
-    <Id>88575</Id>
+    <Id>28329</Id>
     <Model>dro7</Model>
     <MaxWeight>Light</MaxWeight>
     <droneStatus>Avilble</droneStatus>
   </Drone>
   <Drone>
-    <Id>24139</Id>
+    <Id>78533</Id>
     <Model>dro6</Model>
     <MaxWeight>Medium</MaxWeight>
     <droneStatus>Avilble</droneStatus>
   </Drone>
   <Drone>
-    <Id>31876</Id>
-    <Model>dro1</Model>
-    <MaxWeight>Medium</MaxWeight>
-    <droneStatus>Avilble</droneStatus>
-  </Drone>
-  <Drone>
-    <Id>86398</Id>
-    <Model>dro3</Model>
-    <MaxWeight>Medium</MaxWeight>
-    <droneStatus>Avilble</droneStatus>
-  </Drone>
-  <Drone>
-    <Id>65947</Id>
-    <Model>dro9</Model>
-    <MaxWeight>Light</MaxWeight>
-    <droneStatus>Avilble</droneStatus>
-  </Drone>
-  <Drone>
-    <Id>49522</Id>
-    <Model>dro8</Model>
-    <MaxWeight>Medium</MaxWeight>
-    <droneStatus>Avilble</droneStatus>
-  </Drone>
-  <Drone>
-    <Id>97481</Id>
-    <Model>dro8</Model>
-    <MaxWeight>Light</MaxWeight>
-    <droneStatus>Avilble</droneStatus>
-  </Drone>
-  <Drone>
-    <Id>62866</Id>
-    <Model>dro7</Model>
-    <MaxWeight>Medium</MaxWeight>
-    <droneStatus>Avilble</droneStatus>
-  </Drone>
-  <Drone>
-    <Id>10266</Id>
-    <Model>dro8</Model>
-    <MaxWeight>Medium</MaxWeight>
-    <droneStatus>Avilble</droneStatus>
-  </Drone>
-  <Drone>
-    <Id>51297</Id>
-    <Model>dro4</Model>
-    <MaxWeight>Light</MaxWeight>
-    <droneStatus>Avilble</droneStatus>
-  </Drone>
-  <Drone>
-    <Id>25386</Id>
-    <Model>dro8</Model>
-    <MaxWeight>Light</MaxWeight>
-    <droneStatus>Avilble</droneStatus>
-  </Drone>
-  <Drone>
-    <Id>32016</Id>
-    <Model>dro5</Model>
-    <MaxWeight>Medium</MaxWeight>
-    <droneStatus>Avilble</droneStatus>
-  </Drone>
-  <Drone>
-    <Id>95425</Id>
+    <Id>48648</Id>
     <Model>dro2</Model>
+    <MaxWeight>Medium</MaxWeight>
+    <droneStatus>Avilble</droneStatus>
+  </Drone>
+  <Drone>
+    <Id>23017</Id>
+    <Model>dro6</Model>
     <MaxWeight>Light</MaxWeight>
     <droneStatus>Avilble</droneStatus>
   </Drone>
   <Drone>
-    <Id>39761</Id>
-    <Model>dro7</Model>
-    <MaxWeight>Medium</MaxWeight>
-    <droneStatus>Avilble</droneStatus>
-  </Drone>
-  <Drone>
-    <Id>18054</Id>
-    <Model>dro9</Model>
-    <MaxWeight>Medium</MaxWeight>
-    <droneStatus>Avilble</droneStatus>
-  </Drone>
-  <Drone>
-    <Id>74171</Id>
-    <Model>dro5</Model>
-    <MaxWeight>Medium</MaxWeight>
-    <droneStatus>Avilble</droneStatus>
-  </Drone>
-  <Drone>
-    <Id>30666</Id>
+    <Id>80058</Id>
     <Model>dro1</Model>
     <MaxWeight>Medium</MaxWeight>
     <droneStatus>Avilble</droneStatus>
   </Drone>
   <Drone>
-    <Id>31014</Id>
-    <Model>dro4</Model>
-    <MaxWeight>Medium</MaxWeight>
-    <droneStatus>Delivery</droneStatus>
-  </Drone>
-  <Drone>
-    <Id>37533</Id>
+    <Id>67264</Id>
     <Model>dro9</Model>
-    <MaxWeight>Medium</MaxWeight>
-    <droneStatus>Delivery</droneStatus>
-  </Drone>
-  <Drone>
-    <Id>47276</Id>
-    <Model>dro7</Model>
     <MaxWeight>Medium</MaxWeight>
     <droneStatus>Avilble</droneStatus>
   </Drone>
   <Drone>
-    <Id>51047</Id>
+    <Id>25204</Id>
+    <Model>dro5</Model>
+    <MaxWeight>Light</MaxWeight>
+    <droneStatus>Avilble</droneStatus>
+  </Drone>
+  <Drone>
+    <Id>98705</Id>
+    <Model>dro1</Model>
+    <MaxWeight>Medium</MaxWeight>
+    <droneStatus>Avilble</droneStatus>
+  </Drone>
+  <Drone>
+    <Id>86809</Id>
+    <Model>dro8</Model>
+    <MaxWeight>Light</MaxWeight>
+    <droneStatus>Avilble</droneStatus>
+  </Drone>
+  <Drone>
+    <Id>70929</Id>
     <Model>dro9</Model>
+    <MaxWeight>Light</MaxWeight>
+    <droneStatus>Avilble</droneStatus>
+  </Drone>
+  <Drone>
+    <Id>47650</Id>
+    <Model>dro1</Model>
+    <MaxWeight>Light</MaxWeight>
+    <droneStatus>Avilble</droneStatus>
+  </Drone>
+  <Drone>
+    <Id>52119</Id>
+    <Model>dro4</Model>
+    <MaxWeight>Medium</MaxWeight>
+    <droneStatus>Avilble</droneStatus>
+  </Drone>
+  <Drone>
+    <Id>48003</Id>
+    <Model>dro3</Model>
+    <MaxWeight>Light</MaxWeight>
+    <droneStatus>Avilble</droneStatus>
+  </Drone>
+  <Drone>
+    <Id>54756</Id>
+    <Model>dro6</Model>
     <MaxWeight>Medium</MaxWeight>
     <droneStatus>Avilble</droneStatus>
   </Drone>

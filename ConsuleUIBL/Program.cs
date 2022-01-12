@@ -92,7 +92,7 @@ namespace ConsuleUIBL
                                         Console.WriteLine("enter customer location:");
                                         Latitude = Convert.ToDouble(Console.ReadLine());
                                         Longitude = Convert.ToDouble(Console.ReadLine());
-                                        temp.AbsorptionNewCustomer(ID, nameCu, phoneNumber, Latitude, Longitude);
+                                        temp.AddingCustomer(ID, nameCu, phoneNumber, Latitude, Longitude);
                                         break;
 
                                     case 4:
@@ -106,7 +106,7 @@ namespace ConsuleUIBL
                                         maxWeight = giveNumberRang();
                                         Console.WriteLine("enter prioerity: \n 0 = Normal, 1 = Fast, 2 = Emergency");
                                         int prioerity = giveNumberRang();
-                                        temp.ReceiptOfPackageForDelivery(parcelID,senderID, targetID, maxWeight, prioerity);
+                                        temp.AddingParcel(parcelID,senderID, targetID, maxWeight, prioerity);
                                         break;
                                 }
                                 break;

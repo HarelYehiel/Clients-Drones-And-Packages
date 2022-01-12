@@ -54,7 +54,7 @@ namespace PL
         
         private void ClickToShowDroneList(object sender, RoutedEventArgs e)
         {
-            MainFrame.Content = new DronePage(bl);
+           MainFrame.Content = new DronePage(bl);
            //new DroneListWindow(bl).Show();
         }
         private void ClickToShowCustomerList(object sender, RoutedEventArgs e)
@@ -112,8 +112,8 @@ namespace PL
 
         private void ClickToShowParcelList(object sender, RoutedEventArgs e)
         {
-             new ParclListWindow(bl).Show();
-           // MainFrame.Content = new ParcelListPage(bl);
+            // new ParclListWindow(bl).Show();
+            MainFrame.Content = new ParcelListPage(bl);
         }
         private void ClickToShowStatoinList(object sender, RoutedEventArgs e)
         {

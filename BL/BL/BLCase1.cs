@@ -10,16 +10,15 @@ namespace BlApi
 {
     public partial class BL : IBL
     {
-        //[MethodImpl(MethodImplOptions.Synchronized)] public delegate BO.DroneToList Converter<in IDAL.DO.Drone, out BO.DroneToList>(IDAL.DO.Drone input);
-        [MethodImpl(MethodImplOptions.Synchronized)] public void AddingBaseStation(int ID,string name,double Latitude,double Longitude, int numSlots)
+        /// <summary>
+        /// this partial class is responsibole of all the object's input to data, there are differece function for all kind of 
+        /// object to be more clear and orderly
+        /// </summary>
+     
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public void AddingBaseStation(int ID,string name,double Latitude,double Longitude, int numSlots)
         {
-          /*  BO.station station = new BO.station();
-            station.uniqueID = ID; // update the Data source
-            station.name = name;
-            station.location.latitude = Latitude;
-            station.location.longitude = Longitude;
-            station.availableChargingStations = numSlots;
-          */
+         
             Station station1 = new Station();
             station1.id = ID; // update the drones list at BL
             station1.name = name;
@@ -32,7 +31,8 @@ namespace BlApi
             accessDal.InputTheStation(station1);
         } 
 
-        [MethodImpl(MethodImplOptions.Synchronized)]public void AddingDrone(int ID,string model,int maxWeight,int staId)
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public void AddingDrone(int ID,string model,int maxWeight,int staId)
         {
             Station sta = new Station();
             sta = accessDal.GetStation(staId);
@@ -60,15 +60,9 @@ namespace BlApi
             this.ListDroneToList.Add(drone);
 
         }
-        [MethodImpl(MethodImplOptions.Synchronized)] public void AbsorptionNewCustomer(int ID, string nameCu, string phoneNumber, double Latitude, double Longitude)
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public void AddingCustomer(int ID, string nameCu, string phoneNumber, double Latitude, double Longitude)
         {
-            /*BO.Customer customer = new BO.Customer();
-            customer.uniqueID = ID;
-            customer.name = nameCu;
-            customer.phone = phoneNumber;
-            customer.location.latitude = Latitude;
-            customer.location.longitude = Longitude0;*/
-    
 
             Customer customer1 = new Customer();
 
@@ -81,16 +75,10 @@ namespace BlApi
             customer1.location = point;
             accessDal.InputTheCustomer(customer1);
         }
-        [MethodImpl(MethodImplOptions.Synchronized)] public void ReceiptOfPackageForDelivery(int parcelID, int senderName, int targetName, int maxWeight, int prioerity)
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public void AddingParcel(int parcelID, int senderName, int targetName, int maxWeight, int prioerity)
         {
-           /* BO.Parcel parcel = new BO.Parcel();
-            parcel.customerInDelivery_Sender.name = senderName;
-            parcel.customerInDelivery_Target.name = targetName;
-            parcel.weight = (BO.Enum_BO.WeightCategories)maxWeight;
-            parcel.priority = (BO.Enum_BO.Priorities)prioerity;
-            parcel.requested = DateTime.Now;
-            parcel.droneInParcel.uniqueID = 0;
-            */
+
             Parcel parcel1 = new Parcel();
             parcel1.Id = parcelID;
             parcel1.SenderId = senderName;
@@ -107,9 +95,5 @@ namespace BlApi
             accessDal.InputTheParcel(parcel1);
         }
 
-        [MethodImpl(MethodImplOptions.Synchronized)] public void Simulator(int droneId, Func<bool> f1, Action action)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

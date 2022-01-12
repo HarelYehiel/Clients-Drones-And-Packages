@@ -53,62 +53,32 @@ namespace PL
             worker.DoWork += Worker_DoWork;
             worker.WorkerSupportsCancellation = true;
             worker.RunWorkerAsync();
+
             DronesListView.ItemsSource = dronesToTheLists;
         }
         void updateTheViewListDronesInRealTime()
         {
 
             EnableFiltersWithConditions();
-            Thread.Sleep(500);
         }
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
             while (!worker.CancellationPending)
             {
                 Action theUpdateView = updateTheViewListDronesInRealTime;
-                // Dispatcher to main thread to update the window drone.
-                // DronesListView.Dispatcher.Invoke(theUpdateView);
+                //Dispatcher to main thread to update the window drone.
+                DronesListView.Dispatcher.Invoke(theUpdateView);
                 Thread.Sleep(500);
             }
 
 
         }
-        private void StatusDroneWeight(object sender, SelectionChangedEventArgs e)
-        {
-            EnableFiltersWithConditions();
-        }
-        private void StatusDroneSituation(object sender, SelectionChangedEventArgs e)
-        {
-            EnableFiltersWithConditions();
 
-        }
-        private void WieghtCombo_Initialized(object sender, EventArgs e)
-        {
-            WieghtCombo.ItemsSource = Enum.GetValues(typeof(EnumBO.WeightCategories));
-        }
-        private void StatusCombo_Initialized(object sender, EventArgs e)
-        {
-            StatusCombo.ItemsSource = Enum.GetValues(typeof(EnumBO.DroneStatus));
-        }
-        private void ClearFilter(object sender, RoutedEventArgs e)
-        {
 
-            DronesListView.ItemsSource = bl.GetTheListOfDrones();
-
-            HideAndReseteAllTextBox();
-        }
-        //private void AllFilters(object sender, RoutedEventArgs e)
-        //{
-        //    if (StatusCombo.SelectedIndex == -1 || WieghtCombo.SelectedIndex == -1)
-        //        MessageBox.Show("One of the filters was not selected", "Error", MessageBoxButton.OK);
-        //    else if (StatusCombo.SelectedItem != Enum.GetValues(typeof(EnumBO.Situations)) && WieghtCombo.SelectedItem != Enum.GetValues(typeof(EnumBO.WeightCategories)))
-        //        DronesListView.ItemsSource = bl.GetAllDronesBy
-        //            (D => D.status == (EnumBO.DroneStatus)StatusCombo.SelectedItem
-        //            && D.weight == (EnumBO.WeightCategories)WieghtCombo.SelectedItem);
-        //
         private void DronesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            droneToListChoose = DronesListView.SelectedItem as BO.DroneToList;
+            if (DronesListView.SelectedItem != null)
+                droneToListChoose = DronesListView.SelectedItem as BO.DroneToList;
 
 
             openOptions.Visibility = Visibility.Visible;
@@ -124,14 +94,14 @@ namespace PL
         }
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
-            //worker.WorkerSupportsCancellation = true;
-            //worker.CancelAsync();
+            worker.CancelAsync();
 
             this.Visibility = Visibility.Hidden;
         }
 
         private void cancelButtonX(object sender, RoutedEventArgs e)
         {
+        
         }
         bool isNumber(string s)
         {
@@ -169,6 +139,38 @@ namespace PL
 
             return true;
         }
+
+        #region Initializ.
+
+        private void WieghtCombo_Initialized(object sender, EventArgs e)
+        {
+            WieghtCombo.ItemsSource = Enum.GetValues(typeof(EnumBO.WeightCategories));
+        }
+        private void StatusCombo_Initialized(object sender, EventArgs e)
+        {
+            StatusCombo.ItemsSource = Enum.GetValues(typeof(EnumBO.DroneStatus));
+        }
+
+        #endregion
+
+        #region All filters
+        private void StatusDroneWeight(object sender, SelectionChangedEventArgs e)
+        {
+            EnableFiltersWithConditions();
+        }
+        private void StatusDroneSituation(object sender, SelectionChangedEventArgs e)
+        {
+            EnableFiltersWithConditions();
+
+        }
+        private void ClearFilter(object sender, RoutedEventArgs e)
+        {
+
+            DronesListView.ItemsSource = bl.GetTheListOfDrones();
+
+            HideAndReseteAllTextBox();
+        }
+
         private void HideAndReseteAllTextBox()
         {
             TurnOnFunctionFilters = false;
@@ -345,7 +347,9 @@ namespace PL
             }
 
         }
+        #endregion
 
+        #region
         private void Refresh_Click(object sender, RoutedEventArgs e)
         {
             EnableFiltersWithConditions();
@@ -355,6 +359,11 @@ namespace PL
             if (TurnOnFunctionFilters)
                 Filters();
         }
+
+        #endregion
+
+
+        #region OpenBar Buttons
         private void ViewDroneButton_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -365,6 +374,7 @@ namespace PL
 
                 DronesListView.SelectedItem = null;
                 EnableFiltersWithConditions();
+                
             }
             catch (Exception)
             {
@@ -395,8 +405,7 @@ namespace PL
             {
                 if (ex.Message == "check if the drone associated to parcel")
                     MessageBox.Show("Don't have this parcel, check if the drone associated to parcel.", "Eroor", MessageBoxButton.OK, MessageBoxImage.Error);
-                else
-                    DronesListView.SelectedItem = null;
+
             }
 
         }
@@ -405,40 +414,9 @@ namespace PL
         {
             openOptions.Visibility = Visibility.Hidden;
         }
-        //void HideOrVisibleDronesListViewAndOpenOptionsTheOpposite()
-        //// Hide oe visible all button on DronesListView and DronesListView,
-        //// DronesListView The Opposite.
-        //{
-        //    if (DronesListView.Visibility == Visibility.Visible)
-        //    {
-        //        openOptions.Visibility = Visibility.Visible;
+        #endregion
 
-        //        DronesListView.Visibility = Visibility.Hidden;
-        //        SearchIDButton.Visibility = Visibility.Hidden;
-        //        SearchModelButton.Visibility = Visibility.Hidden;
-        //        SearchBattryButton.Visibility = Visibility.Hidden;
-        //        SearchLocationButton.Visibility = Visibility.Hidden;
-        //        SearchParcelButton.Visibility = Visibility.Hidden;
-        //        SearchStatusButton.Visibility = Visibility.Hidden;
-        //        SearchWeightButton.Visibility = Visibility.Hidden;
-
-        //    }
-        //    else
-        //    {
-        //        openOptions.Visibility = Visibility.Hidden;
-
-        //        DronesListView.Visibility = Visibility.Visible;
-        //        SearchIDButton.Visibility = Visibility.Visible;
-        //        SearchModelButton.Visibility = Visibility.Visible;
-        //        SearchBattryButton.Visibility = Visibility.Visible;
-        //        SearchLocationButton.Visibility = Visibility.Visible;
-        //        SearchParcelButton.Visibility = Visibility.Visible;
-        //        SearchStatusButton.Visibility = Visibility.Visible;
-        //        SearchWeightButton.Visibility = Visibility.Visible;
-        //    }
-
-        //}
-
+        #region CombBoxes
         private void ComboBox_Initialized(object sender, EventArgs e)
         {
             List<string> l = new List<string>() {
@@ -519,6 +497,7 @@ namespace PL
 
             }
         }
+        #endregion
 
     }
 }

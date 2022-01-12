@@ -1,93 +1,93 @@
 <?xml version="1.0"?>
 <ArrayOfCustomer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Customer>
-    <Id>93892</Id>
-    <name>cust72</name>
-    <phone>0590354432</phone>
+    <Id>53984</Id>
+    <name>cust93</name>
+    <phone>0592113312</phone>
     <location>
-      <longitude>34.29574937294039</longitude>
-      <latitude>31.73195929393729</latitude>
+      <longitude>34.541990433606315</longitude>
+      <latitude>31.956259909531223</latitude>
     </location>
   </Customer>
   <Customer>
-    <Id>78427</Id>
-    <name>cust18</name>
-    <phone>0586216415</phone>
+    <Id>48700</Id>
+    <name>cust60</name>
+    <phone>0567633617</phone>
     <location>
-      <longitude>34.673544105455996</longitude>
-      <latitude>31.472519139047954</latitude>
+      <longitude>34.63611506094975</longitude>
+      <latitude>31.937777948071144</latitude>
     </location>
   </Customer>
   <Customer>
-    <Id>66725</Id>
-    <name>cust73</name>
-    <phone>0545666277</phone>
+    <Id>35901</Id>
+    <name>cust23</name>
+    <phone>0524611248</phone>
     <location>
-      <longitude>34.135570770658354</longitude>
-      <latitude>31.116728471180764</latitude>
+      <longitude>34.07664750892513</longitude>
+      <latitude>31.802861770523183</latitude>
     </location>
   </Customer>
   <Customer>
-    <Id>33469</Id>
+    <Id>38677</Id>
     <name>cust11</name>
-    <phone>0586485636</phone>
+    <phone>0583968933</phone>
     <location>
-      <longitude>34.293847261133536</longitude>
-      <latitude>31.415640081472528</latitude>
+      <longitude>34.51018137089451</longitude>
+      <latitude>31.681353049204382</latitude>
     </location>
   </Customer>
   <Customer>
-    <Id>51116</Id>
-    <name>cust33</name>
-    <phone>0580918665</phone>
+    <Id>34009</Id>
+    <name>cust63</name>
+    <phone>0586882943</phone>
     <location>
-      <longitude>34.70511048785649</longitude>
-      <latitude>31.257286228359344</latitude>
+      <longitude>34.91043884349542</longitude>
+      <latitude>31.634517193136045</latitude>
     </location>
   </Customer>
   <Customer>
-    <Id>52258</Id>
-    <name>cust91</name>
-    <phone>0510682892</phone>
+    <Id>59018</Id>
+    <name>cust70</name>
+    <phone>0583443197</phone>
     <location>
-      <longitude>34.488405322883466</longitude>
-      <latitude>31.219273577546364</latitude>
+      <longitude>34.36664384154912</longitude>
+      <latitude>31.89436158346681</latitude>
     </location>
   </Customer>
   <Customer>
-    <Id>61832</Id>
-    <name>cust52</name>
-    <phone>0558801326</phone>
+    <Id>82992</Id>
+    <name>cust31</name>
+    <phone>0559849707</phone>
     <location>
-      <longitude>34.227344967996395</longitude>
-      <latitude>31.547291326591417</latitude>
+      <longitude>34.68992034098596</longitude>
+      <latitude>31.34534980046812</latitude>
     </location>
   </Customer>
   <Customer>
-    <Id>66531</Id>
-    <name>cust94</name>
-    <phone>0542017685</phone>
+    <Id>67711</Id>
+    <name>cust29</name>
+    <phone>0590821638</phone>
     <location>
-      <longitude>34.50809618528378</longitude>
-      <latitude>31.693234686596895</latitude>
+      <longitude>34.92998344727325</longitude>
+      <latitude>31.239044777228983</latitude>
     </location>
   </Customer>
   <Customer>
-    <Id>40931</Id>
-    <name>cust22</name>
-    <phone>0543780915</phone>
+    <Id>26852</Id>
+    <name>cust21</name>
+    <phone>0564714265</phone>
     <location>
-      <longitude>34.939029321511754</longitude>
-      <latitude>31.44381229832946</latitude>
+      <longitude>34.07234191851334</longitude>
+      <latitude>31.871720762397963</latitude>
     </location>
   </Customer>
   <Customer>
-    <Id>42342</Id>
-    <name>cust54</name>
-    <phone>0572084000</phone>
+    <Id>45071</Id>
+    <name>cust19</name>
+    <phone>0541342320</phone>
     <location>
-      <longitude>34.35114455844795</longitude>
-      <latitude>31.775019947334666</latitude>
+      <longitude>34.85261727909214</longitude>
+      <latitude>31.96736663485289</latitude>
     </location>
   </Customer>
 </ArrayOfCustomer>
