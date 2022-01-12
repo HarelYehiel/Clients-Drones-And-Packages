@@ -1,19 +1,11 @@
 ﻿using BO;
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Interop;
-using System.Windows.Data;
 using System.ComponentModel;
-using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Interop;
-using System.Runtime.CompilerServices;
+using System.Windows.Data;
 
 namespace PL.pages
 {
@@ -51,6 +43,11 @@ namespace PL.pages
 
             CustomersListView.ItemsSource = customersToTheLists;
         }
+
+        /// <summary>
+        /// update the viewListCustomers in real time.
+        /// When the drone run in simultor we can see the change.
+        /// </summary>
         void updateTheViewListCustomersInRealTime()
         {
 
@@ -61,7 +58,8 @@ namespace PL.pages
             while (true)
             {
                 Action theUpdateView = updateTheViewListCustomersInRealTime;
-                // Dispatcher to main thread to update the window drone.
+
+                // Dispatcher to main-thread to update the window drone.
                 CustomersListView.Dispatcher.BeginInvoke(theUpdateView);
                 Thread.Sleep(200);
             }
@@ -73,18 +71,12 @@ namespace PL.pages
         private void CustomersListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
-            if (CustomersListView.ItemsSource != null)
-            {
-                openOptions.Visibility = Visibility.Visible;
-                //new CustomerWindow(bl, CustomersListView.SelectedItem as CustomerToList).ShowDialog();
-            }
-            else
-                openOptions.Visibility = Visibility.Hidden;
+            if (CustomersListView.SelectedItem != null)
+                customerToListChoose = CustomersListView.SelectedItem as BO.CustomerToList;
+
+            openOptions.Visibility = Visibility.Visible;
 
             CollectionViewSource.GetDefaultView(CustomersListView.ItemsSource).Refresh();
-
-            //CustomersListView.ItemsSource = null;
-            //CustomersListView.ItemsSource = bl.GetListOfCustomers();
 
         }
         private void CancelButtonX(object sender, RoutedEventArgs e)

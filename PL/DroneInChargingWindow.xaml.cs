@@ -1,20 +1,12 @@
 ﻿using BO;
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Interop;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
-using System.Windows.Media;
-using System.Runtime.CompilerServices;
 
 namespace PL
 {
@@ -66,7 +58,6 @@ namespace PL
         void updateViewDronesInCharging()
         {
             Filters();
-           //  DronesInChargingListView.ItemsSource = (bl.GetAllDronesInCharging(C => C.staitionId == StationID)); 
         }
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -145,6 +136,8 @@ namespace PL
 
             return true;
         }
+
+
         private void HideAndReseteAllTextBox()
         {
             TurnOnFunctionFilters = false;
@@ -157,7 +150,6 @@ namespace PL
 
             TurnOnFunctionFilters = true;
         }
-
         private void Filters()
         // Search by all filter togther.
         {
@@ -243,6 +235,7 @@ namespace PL
 
         }
 
+
         private void ViewParcelDeliveredButton_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -270,7 +263,6 @@ namespace PL
             }
 
         }
-
         private void CancelOpenBarButton_Click(object sender, RoutedEventArgs e)
         {
             DronesInChargingListView.SelectedItem = null;

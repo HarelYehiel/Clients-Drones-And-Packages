@@ -8,7 +8,6 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
-using System.Runtime.CompilerServices;
 
 namespace PL
 {
@@ -46,10 +45,15 @@ namespace PL
             worker = new BackgroundWorker();
             worker.DoWork += Worker_DoWork;
             worker.WorkerSupportsCancellation = true;
-             worker.RunWorkerAsync();
+            worker.RunWorkerAsync();
 
             DronesListView.ItemsSource = dronesToTheLists;
         }
+
+        /// <summary>
+        /// update the viewListDrones in real time.
+        /// When the drone run in simultor we can sea the change.
+        /// </summary>
         void updateTheViewListDronesInRealTime()
         {
 
@@ -60,15 +64,11 @@ namespace PL
             while (!worker.CancellationPending)
             {
                 Action theUpdateView = updateTheViewListDronesInRealTime;
-                //Dispatcher to main thread to update the window drone.
+                //Dispatcher to main-thread to update the window drone.
                 DronesListView.Dispatcher.Invoke(theUpdateView);
                 Thread.Sleep(500);
             }
-
-
         }
-
-
         private void DronesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (DronesListView.SelectedItem != null)
@@ -81,7 +81,6 @@ namespace PL
 
         private void AddingNewDrone(object sender, RoutedEventArgs e)
         {
-            DronesListView.ItemsSource = null; // Reset the list drone.
             new DroneWindow(bl).ShowDialog();
 
             EnableFiltersWithConditions();
@@ -94,11 +93,13 @@ namespace PL
         }
 
         private void cancelButtonX(object sender, RoutedEventArgs e)
+        // Canael the button X.
         {
             var hwnd = new WindowInteropHelper(this).Handle;
             SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_SYSMENU);
         }
         bool isNumber(string s)
+        // return true if is number, else false.
         {
             if (s.Length == 0) return false;
             for (int i = 0; i < s.Length; i++)
@@ -112,6 +113,7 @@ namespace PL
             return true;
         }
         bool IsDouble(string s)
+        // return true if is double, else false.
         {
             bool HaveOnePointInTheNumber = true;
 
@@ -149,6 +151,21 @@ namespace PL
         #endregion
 
         #region All filters
+        private void Refresh_Click(object sender, RoutedEventArgs e)
+        // Refreah the listView.
+        {
+            EnableFiltersWithConditions();
+        }
+
+        /// <summary>
+        /// If TurnOnFunctionFilters = true search with the filters
+        /// else don't do nathing.
+        /// </summary>
+        void EnableFiltersWithConditions()
+        {
+            if (TurnOnFunctionFilters)
+                Filters();
+        }
         private void StatusDroneWeight(object sender, SelectionChangedEventArgs e)
         {
             EnableFiltersWithConditions();
@@ -166,7 +183,12 @@ namespace PL
             HideAndReseteAllTextBox();
         }
 
+        /// <summary>
+        /// Hide And Resete All TextBox.
+        /// All textBox = "search".
+        /// </summary>
         private void HideAndReseteAllTextBox()
+
         {
             TurnOnFunctionFilters = false;
 
@@ -326,6 +348,9 @@ namespace PL
             }
         }
 
+        /// <summary>
+        /// All the text box for search grt to hare if did change in the tex.
+        /// </summary>
         private void AnyFilterTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             EnableFiltersWithConditions();
@@ -343,20 +368,6 @@ namespace PL
 
         }
         #endregion
-
-        #region
-        private void Refresh_Click(object sender, RoutedEventArgs e)
-        {
-            EnableFiltersWithConditions();
-        }
-        void EnableFiltersWithConditions()
-        {
-            if (TurnOnFunctionFilters)
-                Filters();
-        }
-
-        #endregion
-
 
         #region OpenBar Buttons
         private void ViewDroneButton_Click(object sender, RoutedEventArgs e)
@@ -392,6 +403,7 @@ namespace PL
                     parcelToList = bl.GetParcelToTheList(IDPacel);
                     new ParcelWindow(bl, parcelToList).Show();
                 }
+
                 DronesListView.SelectedItem = null;
                 EnableFiltersWithConditions();
             }
@@ -399,7 +411,7 @@ namespace PL
             {
                 if (ex.Message == "check if the drone associated to parcel")
                     MessageBox.Show("Don't have this parcel, check if the drone associated to parcel.", "Eroor", MessageBoxButton.OK, MessageBoxImage.Error);
-             
+
             }
 
         }
@@ -429,15 +441,12 @@ namespace PL
             switch (GroupByComboBox.SelectedIndex)
             {
 
-                case 1:
+                case 1: //"Model"
 
-                    IEnumerable<IGrouping<string, DroneToList>> tsModel;
-                    lock (bl)
-                    {
-                        tsModel = from item in bl.GetTheListOfDrones()
-                                  group item by item.Model into gs
-                                  select gs;
-                    }
+                    IEnumerable<IGrouping<string, DroneToList>> tsModel = from item in bl.GetTheListOfDrones()
+                                                                          group item by item.Model into gs
+                                                                          select gs;
+
 
                     l = new List<DroneToList>();
                     foreach (var group1 in tsModel)
@@ -450,14 +459,13 @@ namespace PL
                     DronesListView.ItemsSource = l;
                     break;
 
-                case 2:
+                case 2: // "Weight"
                     IEnumerable<IGrouping<EnumBO.WeightCategories, DroneToList>> tsweight;
-                    lock (bl)
-                    {
-                        tsweight = from item in bl.GetTheListOfDrones()
-                                   group item by item.weight into gs
-                                   select gs;
-                    }
+
+                    tsweight = from item in bl.GetTheListOfDrones()
+                               group item by item.weight into gs
+                               select gs;
+
 
                     l = new List<DroneToList>();
                     foreach (var group1 in tsweight)
@@ -469,14 +477,13 @@ namespace PL
                     }
                     DronesListView.ItemsSource = l;
                     break;
-                case 3:
+                case 3: // "Status"
                     IEnumerable<IGrouping<EnumBO.DroneStatus, DroneToList>> tsStatus;
-                    lock (bl)
-                    {
-                        tsStatus = from item in bl.GetTheListOfDrones()
-                                   group item by item.status into gs
-                                   select gs;
-                    }
+
+                    tsStatus = from item in bl.GetTheListOfDrones()
+                               group item by item.status into gs
+                               select gs;
+
 
                     l = new List<DroneToList>();
                     foreach (var group1 in tsStatus)
