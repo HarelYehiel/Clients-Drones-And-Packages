@@ -21,7 +21,7 @@ namespace PL
 
         BlApi.IBL bl;
         DateTime? dateTime;
-        BackgroundWorker worker1;
+        BackgroundWorker worker;
         bool startOrStopSimulter = true; // click on the button to start the simulator.
 
 
@@ -48,6 +48,8 @@ namespace PL
         public DroneWindow(BlApi.IBL bl1, DroneToList droneToList1)
         // Constructor for view drone and allow do actions.
         {
+            if (droneToList1 == null) throw new Exception("Don't have value in droneToList1");
+
             bl = bl1;
             InitializeComponent();
 
@@ -56,75 +58,81 @@ namespace PL
         }
         void PrepareTheToolsForDroneDisplay(DroneToList droneToList)
         {
-            FunctionConbo.SelectedIndex = 0; // Select Function
+            try
+            {
+                FunctionConbo.SelectedIndex = 0; // Select Function
 
-            // Details ID
-            IDTextBlock.Visibility = Visibility.Collapsed;
-            IDTextBox.IsEnabled = false;
-            IDTextBox.Text = droneToList.uniqueID.ToString();
+                // Details ID
+                IDTextBlock.Visibility = Visibility.Collapsed;
+                IDTextBox.IsEnabled = false;
+                IDTextBox.Text = droneToList.uniqueID.ToString();
 
-            // Details Model
-            ModelTextBlock.Visibility = Visibility.Collapsed;
-            ModelTextBox.Text = droneToList.Model;
+                // Details Model
+                ModelTextBlock.Visibility = Visibility.Collapsed;
+                ModelTextBox.Text = droneToList.Model;
 
-            // Details Wieght For View
-            WieghtForViewDroneIDLabel.Visibility = Visibility.Visible;
-            WieghtForViewDroneIDTextBox.Visibility = Visibility.Visible;
-            WieghtForViewDroneIDTextBox.Text = ((EnumBO.WeightCategories)droneToList.weight).ToString();
-            WieghtForViewDroneIDTextBox.IsEnabled = false;
+                // Details Wieght For View
+                WieghtForViewDroneIDLabel.Visibility = Visibility.Visible;
+                WieghtForViewDroneIDTextBox.Visibility = Visibility.Visible;
+                WieghtForViewDroneIDTextBox.Text = ((EnumBO.WeightCategories)droneToList.weight).ToString();
+                WieghtForViewDroneIDTextBox.IsEnabled = false;
 
-            // Details  Wieght - not need
-            WieghtTextBlock.Visibility = Visibility.Collapsed;
-            WieghtDroneLabel.Visibility = Visibility.Collapsed;
-            WieghtCombo.Visibility = Visibility.Collapsed;
+                // Details  Wieght - not need
+                WieghtTextBlock.Visibility = Visibility.Collapsed;
+                WieghtDroneLabel.Visibility = Visibility.Collapsed;
+                WieghtCombo.Visibility = Visibility.Collapsed;
 
-            // Details station ID - not need
-            StationIDLabel.Visibility = Visibility.Collapsed;
-            StationTextBlock.Visibility = Visibility.Collapsed;
-            StationIDTextBox.Visibility = Visibility.Collapsed;
+                // Details station ID - not need
+                StationIDLabel.Visibility = Visibility.Collapsed;
+                StationTextBlock.Visibility = Visibility.Collapsed;
+                StationIDTextBox.Visibility = Visibility.Collapsed;
 
-            // Details status
-            statusDroneLabel.Visibility = Visibility.Visible;
-            statusTextBox.Visibility = Visibility.Visible;
-            statusTextBox.Text = ((EnumBO.DroneStatus)droneToList.status).ToString();
-            statusTextBox.IsEnabled = false;
+                // Details status
+                statusDroneLabel.Visibility = Visibility.Visible;
+                statusTextBox.Visibility = Visibility.Visible;
+                statusTextBox.Text = ((EnumBO.DroneStatus)droneToList.status).ToString();
+                statusTextBox.IsEnabled = false;
 
-            // Details Battery
-            BatteryLabel.Visibility = Visibility.Visible;
-            BatteryTextBox.Visibility = Visibility.Visible;
-            BatteryTextBox.Text = Math.Ceiling(droneToList.Battery).ToString();
-            BatteryTextBox.IsEnabled = false;
+                // Details Battery
+                BatteryLabel.Visibility = Visibility.Visible;
+                BatteryTextBox.Visibility = Visibility.Visible;
+                BatteryTextBox.Text = Math.Ceiling(droneToList.Battery).ToString();
+                BatteryTextBox.IsEnabled = false;
 
-            // Details Loction
-            LoctionLabel.Visibility = Visibility.Visible;
-            LoctionTextBox.Visibility = Visibility.Visible;
-            LoctionTextBox.Text = droneToList.location.ToString();
-            LoctionTextBox.IsEnabled = false;
+                // Details Loction
+                LoctionLabel.Visibility = Visibility.Visible;
+                LoctionTextBox.Visibility = Visibility.Visible;
+                LoctionTextBox.Text = droneToList.location.ToString();
+                LoctionTextBox.IsEnabled = false;
 
+                // Details package Delivered
+                packageDeliveredLabel.Visibility = Visibility.Visible;
+                packageDeliveredTextBox.Visibility = Visibility.Visible;
+                packageDeliveredTextBox.Text = droneToList.packageDelivered.ToString();
+                statusTextBox.IsEnabled = false;
 
+                Simulator.Visibility = Visibility.Visible;
 
-            // Details package Delivered
-            packageDeliveredLabel.Visibility = Visibility.Visible;
-            packageDeliveredTextBox.Visibility = Visibility.Visible;
-            packageDeliveredTextBox.Text = droneToList.packageDelivered.ToString();
-            statusTextBox.IsEnabled = false;
+                worker = new BackgroundWorker();
+                worker.DoWork += Worker_DoWork;
+                worker.ProgressChanged += Worker_ProgressChanged;
+                worker.WorkerReportsProgress = true;
+                worker.WorkerSupportsCancellation = true;
 
-            Simulator.Visibility = Visibility.Visible;
+                DroneButton.Content = "Update";
+                title.Content = "Update Drone";
+            }
+            catch (Exception)
+            {
+            }
 
-            worker1 = new BackgroundWorker();
-            worker1.DoWork += Worker_DoWork;
-            worker1.ProgressChanged += Worker_ProgressChanged;
-            worker1.WorkerReportsProgress = true;
-            worker1.WorkerSupportsCancellation = true;
-
-            DroneButton.Content = "Update";
-            title.Content = "Update Drone";
         }
-        void updateTheViewDroneInRealTime(double droneBattery, EnumBO.DroneStatus droneStatus, Location location)
+        void updateTheViewDroneInRealTime(double droneBattery, EnumBO.DroneStatus droneStatus, Location location, int ParcelID)
         {
             LoctionTextBox.Text = location.ToString();
             BatteryTextBox.Text = Math.Ceiling(droneBattery).ToString();
             statusTextBox.Text = droneStatus.ToString();
+            packageDeliveredTextBox.Text = ParcelID.ToString();
 
         }
         private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -133,37 +141,25 @@ namespace PL
 
             Drone drone;
             drone = bl.GetDrone(this.Dispatcher.Invoke<int>(() => { return Convert.ToInt32(IDTextBox.Text); }));
-            Action<double, EnumBO.DroneStatus, Location> theUpdateView = updateTheViewDroneInRealTime;
+            Action<double, EnumBO.DroneStatus, Location, int> theUpdateView = updateTheViewDroneInRealTime;
+
             // Dispatcher to main thread to update the window drone.
-            BatteryTextBox.Dispatcher.Invoke(theUpdateView, drone.Battery, drone.Status, drone.location);
+            if (drone.parcelByTransfer != null)// If have parcel By Transfer.
+                BatteryTextBox.Dispatcher.Invoke(theUpdateView, drone.Battery, drone.Status, drone.location, drone.parcelByTransfer.uniqueID);
+            else // If don't have parcel By Transfer.
+                BatteryTextBox.Dispatcher.Invoke(theUpdateView, drone.Battery, drone.Status, drone.location, 0);
 
 
         }
         bool StopSimulator()
         {
             // return true if some where launch the activate the function worker.CancelAsync 
-            return !worker1.CancellationPending;
-        }
-        void f()
-        {
-            try
-            {
-                Drone drone = bl.GetDrone(this.Dispatcher.Invoke<int>(() => { return Convert.ToInt32(IDTextBox.Text); }));
-                Action<double, EnumBO.DroneStatus, Location> theUpdateView = updateTheViewDroneInRealTime;
-                // Dispatcher to main thread to update the window drone.
-                BatteryTextBox.Dispatcher.Invoke(theUpdateView, drone.Battery, drone.Status, drone.location);
-            }
-            catch (Exception e)
-            {
-
-            }
-
-
+            return !worker.CancellationPending;
         }
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
             Func<bool> func = StopSimulator;
-            Action action = () => { /*f();*/ worker1.ReportProgress(0); };
+            Action action = () => { worker.ReportProgress(0); };
             int idDrone = this.Dispatcher.Invoke<int>(() => { return Convert.ToInt32(IDTextBox.Text); });
             bl.SimulatorStart(idDrone, func, action);
         }
@@ -384,7 +380,7 @@ namespace PL
             // We in view drone.
             if (Simulator.Visibility == Visibility.Visible)
             {
-                worker1.CancelAsync();
+                worker.CancelAsync();
 
                 Thread.Sleep(400);
 
@@ -476,13 +472,13 @@ namespace PL
                 Simulator.Content = "Stop Simulator";
                 Simulator.Background = Brushes.Red;
 
-                //  DroneButton.IsEnabled = false;
+                DroneButton.IsEnabled = false;
                 //BatteryTextBox.IsEnabled = true;
                 //statusTextBox.IsEnabled = true;
                 //LoctionTextBox.IsEnabled = true;
 
                 startOrStopSimulter = false; //start simultor, next click on the button is  stop the simulator.
-                worker1.RunWorkerAsync();
+                worker.RunWorkerAsync();
             }
             else
             {
@@ -490,11 +486,11 @@ namespace PL
                 Simulator.Content = "Start Simulator";
                 Simulator.Background = Brushes.Green;
 
-                worker1.CancelAsync();
+                worker.CancelAsync();
 
                 Thread.Sleep(400);
 
-                // DroneButton.IsEnabled = true;
+                DroneButton.IsEnabled = true;
                 //BatteryTextBox.IsEnabled = false;
                 //statusTextBox.IsEnabled = false;
                 //LoctionTextBox.IsEnabled = false;

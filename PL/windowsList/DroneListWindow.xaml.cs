@@ -37,15 +37,16 @@ namespace PL
         {
             bl = bL1;
             dronesToTheLists = new List<DroneToList>();
-             dronesToTheLists.AddRange(bl.GetTheListOfDrones()); 
+            dronesToTheLists.AddRange(bl.GetTheListOfDrones());
 
             TurnOnFunctionFilters = false;
             InitializeComponent();
             TurnOnFunctionFilters = true;
 
-            //worker = new BackgroundWorker();
-            //worker.DoWork += Worker_DoWork;
-         //   worker.RunWorkerAsync();
+            worker = new BackgroundWorker();
+            worker.DoWork += Worker_DoWork;
+            worker.WorkerSupportsCancellation = true;
+             worker.RunWorkerAsync();
 
             DronesListView.ItemsSource = dronesToTheLists;
         }
@@ -53,60 +54,29 @@ namespace PL
         {
 
             EnableFiltersWithConditions();
-            Thread.Sleep(500);
         }
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
             while (!worker.CancellationPending)
             {
                 Action theUpdateView = updateTheViewListDronesInRealTime;
-                // Dispatcher to main thread to update the window drone.
-              // DronesListView.Dispatcher.Invoke(theUpdateView);
+                //Dispatcher to main thread to update the window drone.
+                DronesListView.Dispatcher.Invoke(theUpdateView);
                 Thread.Sleep(500);
             }
 
 
         }
-        private void StatusDroneWeight(object sender, SelectionChangedEventArgs e)
-        {
-            EnableFiltersWithConditions();
-        }
-        private void StatusDroneSituation(object sender, SelectionChangedEventArgs e)
-        {
-            EnableFiltersWithConditions();
 
-        }
-        private void WieghtCombo_Initialized(object sender, EventArgs e)
-        {
-            WieghtCombo.ItemsSource = Enum.GetValues(typeof(EnumBO.WeightCategories));
-        }
-        private void StatusCombo_Initialized(object sender, EventArgs e)
-        {
-            StatusCombo.ItemsSource = Enum.GetValues(typeof(EnumBO.DroneStatus));
-        }
-        private void ClearFilter(object sender, RoutedEventArgs e)
-        {
 
-             DronesListView.ItemsSource = bl.GetTheListOfDrones(); 
-
-            HideAndReseteAllTextBox();
-        }
-        //private void AllFilters(object sender, RoutedEventArgs e)
-        //{
-        //    if (StatusCombo.SelectedIndex == -1 || WieghtCombo.SelectedIndex == -1)
-        //        MessageBox.Show("One of the filters was not selected", "Error", MessageBoxButton.OK);
-        //    else if (StatusCombo.SelectedItem != Enum.GetValues(typeof(EnumBO.Situations)) && WieghtCombo.SelectedItem != Enum.GetValues(typeof(EnumBO.WeightCategories)))
-        //        DronesListView.ItemsSource = bl.GetAllDronesBy
-        //            (D => D.status == (EnumBO.DroneStatus)StatusCombo.SelectedItem
-        //            && D.weight == (EnumBO.WeightCategories)WieghtCombo.SelectedItem);
-        //}
         private void DronesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            droneToListChoose = DronesListView.SelectedItem as BO.DroneToList;
+            if (DronesListView.SelectedItem != null)
+                droneToListChoose = DronesListView.SelectedItem as BO.DroneToList;
 
 
             openOptions.Visibility = Visibility.Visible;
-           // HideOrVisibleDronesListViewAndOpenOptionsTheOpposite();
+            // HideOrVisibleDronesListViewAndOpenOptionsTheOpposite();
         }
 
         private void AddingNewDrone(object sender, RoutedEventArgs e)
@@ -118,8 +88,7 @@ namespace PL
         }
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
-            //worker.WorkerSupportsCancellation = true;
-            //worker.CancelAsync();
+            worker.CancelAsync();
 
             this.Close();
         }
@@ -165,6 +134,38 @@ namespace PL
 
             return true;
         }
+
+        #region Initializ.
+
+        private void WieghtCombo_Initialized(object sender, EventArgs e)
+        {
+            WieghtCombo.ItemsSource = Enum.GetValues(typeof(EnumBO.WeightCategories));
+        }
+        private void StatusCombo_Initialized(object sender, EventArgs e)
+        {
+            StatusCombo.ItemsSource = Enum.GetValues(typeof(EnumBO.DroneStatus));
+        }
+
+        #endregion
+
+        #region All filters
+        private void StatusDroneWeight(object sender, SelectionChangedEventArgs e)
+        {
+            EnableFiltersWithConditions();
+        }
+        private void StatusDroneSituation(object sender, SelectionChangedEventArgs e)
+        {
+            EnableFiltersWithConditions();
+
+        }
+        private void ClearFilter(object sender, RoutedEventArgs e)
+        {
+
+            DronesListView.ItemsSource = bl.GetTheListOfDrones();
+
+            HideAndReseteAllTextBox();
+        }
+
         private void HideAndReseteAllTextBox()
         {
             TurnOnFunctionFilters = false;
@@ -200,7 +201,7 @@ namespace PL
             {
                 DronesListView.ItemsSource = null;
                 dronesToTheLists.Clear();
-                dronesToTheLists.AddRange(bl.GetTheListOfDrones()); 
+                dronesToTheLists.AddRange(bl.GetTheListOfDrones());
 
                 if (isNumber(FilterIDTextBox.Text)) // Filter ID
                 {
@@ -341,7 +342,9 @@ namespace PL
             }
 
         }
+        #endregion
 
+        #region
         private void Refresh_Click(object sender, RoutedEventArgs e)
         {
             EnableFiltersWithConditions();
@@ -351,6 +354,11 @@ namespace PL
             if (TurnOnFunctionFilters)
                 Filters();
         }
+
+        #endregion
+
+
+        #region OpenBar Buttons
         private void ViewDroneButton_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -381,7 +389,7 @@ namespace PL
                 if (DronesListView.ItemsSource != null)
                 {
                     ParcelToList parcelToList;
-                     parcelToList = bl.GetParcelToTheList(IDPacel); 
+                    parcelToList = bl.GetParcelToTheList(IDPacel);
                     new ParcelWindow(bl, parcelToList).Show();
                 }
                 DronesListView.SelectedItem = null;
@@ -434,7 +442,9 @@ namespace PL
         //    }
 
         //}
+        #endregion
 
+        #region CombBoxes
         private void ComboBox_Initialized(object sender, EventArgs e)
         {
             List<string> l = new List<string>() {
@@ -515,6 +525,8 @@ namespace PL
 
             }
         }
+        #endregion
+
     }
 }
 
