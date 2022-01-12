@@ -51,10 +51,16 @@ namespace PL
 
             worker = new BackgroundWorker();
             worker.DoWork += Worker_DoWork;
+            worker.WorkerSupportsCancellation = true;
             worker.RunWorkerAsync();
 
             DronesInChargingListView.ItemsSource = RunDronesInCharging;
         }
+
+        /// <summary>
+        /// update the viewListStations in real time.
+        /// When the drone run in simultor we can sea the change.
+        /// </summary>
         void updateViewDronesInCharging()
         {
             Filters();
@@ -66,25 +72,10 @@ namespace PL
                 Action action = updateViewDronesInCharging;
                 DronesInChargingListView.Dispatcher.BeginInvoke(action);
 
-                Thread.Sleep(200);
+                Thread.Sleep(500);
             }
         }
-        private void StatusDroneWeight(object sender, SelectionChangedEventArgs e)
-        {
-            Filters();
-        }
-        private void StatusDroneSituation(object sender, SelectionChangedEventArgs e)
-        {
-            Filters();
-
-        }
-        private void ClearFilter(object sender, RoutedEventArgs e)
-        {
-
-            DronesInChargingListView.ItemsSource = RunDronesInCharging;
-
-            HideAndReseteAllTextBox();
-        }
+       
         private void DronesInChargingListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             HideOrVisibleDronesListViewAndOpenOptionsTheOpposite();
@@ -94,7 +85,6 @@ namespace PL
             worker.CancelAsync();
             this.Close();
         }
-
         private void cancelButtonX(object sender, RoutedEventArgs e)
         {
             var hwnd = new WindowInteropHelper(this).Handle;
@@ -137,7 +127,28 @@ namespace PL
             return true;
         }
 
+        #region
+        private void StatusDroneWeight(object sender, SelectionChangedEventArgs e)
+        {
+            Filters();
+        }
+        private void StatusDroneSituation(object sender, SelectionChangedEventArgs e)
+        {
+            Filters();
 
+        }
+        private void ClearFilter(object sender, RoutedEventArgs e)
+        {
+
+            DronesInChargingListView.ItemsSource = RunDronesInCharging;
+
+            HideAndReseteAllTextBox();
+        }
+
+        /// <summary>
+        /// Hide And Resete All TextBox.
+        /// All textBox = "search".
+        /// </summary>
         private void HideAndReseteAllTextBox()
         {
             TurnOnFunctionFilters = false;
@@ -211,11 +222,18 @@ namespace PL
             TurnOnFunctionFilters = true;
             EnableFiltersWithConditions();
         }
+
+        /// <summary>
+        /// If TurnOnFunctionFilters = true so search with the filters
+        /// else don't do nathing.
+        /// </summary>
         void EnableFiltersWithConditions()
         {
             if (TurnOnFunctionFilters)
                 Filters();
         }
+        #endregion
+
         private void RemoveFromCharging_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -234,8 +252,6 @@ namespace PL
             }
 
         }
-
-
         private void ViewParcelDeliveredButton_Click(object sender, RoutedEventArgs e)
         {
             try

@@ -57,6 +57,7 @@ namespace PL
 
         }
         void PrepareTheToolsForDroneDisplay(DroneToList droneToList)
+        // Prepare The Tools For Drone Display
         {
             try
             {
@@ -127,6 +128,11 @@ namespace PL
             }
 
         }
+
+        /// <summary>
+        /// update the drone in real time.
+        /// When the drone run in simultor we can sea the change.
+        /// </summary>
         void updateTheViewDroneInRealTime(double droneBattery, EnumBO.DroneStatus droneStatus, Location location, int ParcelID)
         {
             LoctionTextBox.Text = location.ToString();
@@ -258,15 +264,13 @@ namespace PL
             }
 
         }
-
-        private void ActionOfDrone(object sender, RoutedEventArgs e)
+       private void ActionOfDrone(object sender, RoutedEventArgs e)
         {
             if (DroneButton.Content.ToString() == "Add Drone")
                 AddDrone(sender, e);
             else if (DroneButton.Content.ToString() == "Update")
             {
                 openOptions.Visibility = Visibility.Visible;
-                //    UpdateDrone(sender, e);
             }
         }
         private void Okay(object sender, RoutedEventArgs e)
@@ -392,7 +396,6 @@ namespace PL
         private void WieghtCombo_Initialized(object sender, EventArgs e)
         {
             WieghtCombo.ItemsSource = Enum.GetValues(typeof(EnumBO.WeightCategories));
-
         }
         private void CancelButtonX(object sender, RoutedEventArgs e)
         {
@@ -401,6 +404,7 @@ namespace PL
         }
 
         bool existThisIdDrone(int id)
+        // if exist This Id-Drone return true, esle false.
         {
             try
             {
@@ -415,6 +419,7 @@ namespace PL
             }
         }
         bool existThisIdStation(int id)
+        // if exist This Id-station return true, esle false.
         {
             try
             {
@@ -427,6 +432,7 @@ namespace PL
             }
         }
         void hideAndReseteAllTextBlocks()
+            // Hide all text - blocks
         {
             IDTextBlock.Visibility = Visibility.Collapsed;
             ModelTextBlock.Visibility = Visibility.Collapsed;
@@ -438,7 +444,6 @@ namespace PL
         {
             dateTime = CharginDroneDatePicker.SelectedDate;
         }
-
         private void sendToCharge_click(object sender, RoutedEventArgs e)
         {
             bl.SendingDroneToCharging(Convert.ToInt32(IDTextBox.Text));
@@ -467,7 +472,7 @@ namespace PL
         private void Simulator_Click(object sender, RoutedEventArgs e)
         {
 
-            if (startOrStopSimulter)
+            if (startOrStopSimulter) // start simulator
             {
                 Simulator.Content = "Stop Simulator";
                 Simulator.Background = Brushes.Red;
@@ -480,7 +485,7 @@ namespace PL
                 startOrStopSimulter = false; //start simultor, next click on the button is  stop the simulator.
                 worker.RunWorkerAsync();
             }
-            else
+            else // stop simulator
             {
                 startOrStopSimulter = true;//Stop simultor, next click on the button is start the simulator.
                 Simulator.Content = "Start Simulator";

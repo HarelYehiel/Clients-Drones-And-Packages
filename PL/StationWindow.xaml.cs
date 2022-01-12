@@ -18,6 +18,7 @@ namespace PL
         BlApi.IBL bl;
         StationToTheList stationToTheList;
 
+
         private const int GWL_STYLE = -16;
         private const int WS_SYSMENU = 0x80000;
         [DllImport("user32.dll", SetLastError = true)]
@@ -30,24 +31,6 @@ namespace PL
             bl = bl1;
 
             InitializeComponent();
-
-
-        }
-        void updateTheViewStationInRealTime()
-        {
-             stationToTheList = bl.GetStationToTheList(stationToTheList.uniqueID); 
-            LatitudeTextBox.Text = stationToTheList.unAvailableChargingStations.ToString();
-            ChargeSlotsTextBox.Text = stationToTheList.availableChargingStations.ToString();
-        }
-        private void Worker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            while (true)
-            {
-                Action theUpdateView = updateTheViewStationInRealTime;
-                // Dispatcher to main thread to update the window drone.
-                IDTextBlock.Dispatcher.BeginInvoke(theUpdateView);
-                Thread.Sleep(200);
-            }
 
 
         }
@@ -148,6 +131,7 @@ namespace PL
 
         }
         void update()
+        // Update the details of station.
         {
             try
             {
@@ -181,6 +165,7 @@ namespace PL
             SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_SYSMENU);
         }
         void hideAllRemarks()
+            // Hide al text-Block.
         {
             IDTextBlock.Visibility = Visibility.Collapsed;
             NameTextBlock.Visibility = Visibility.Collapsed;
@@ -189,6 +174,7 @@ namespace PL
             LongitudeTextBlock.Visibility = Visibility.Collapsed;
         }
         bool IsInt(string s)
+            // If is int (number) return true, else false.
         {
             if (s.Length == 0) return false;
             for (int i = 0; i < s.Length; i++)
@@ -202,6 +188,7 @@ namespace PL
             return true;
         }
         bool IsDouble(string s)
+        // If is Double return true, else false.
         {
             bool HaveOnePointInTheNumber = true;
 
@@ -236,6 +223,7 @@ namespace PL
             }
         }
         bool existThisIdStation(int id)
+        // if exist This Id-Station return true, else false.
         {
             try
             {
@@ -280,6 +268,7 @@ namespace PL
             this.Close();
         }
         private void ViewAllSkimmersFromTheCharge_Click(object sender, RoutedEventArgs e)
+        // View All Skimmers From The Charging in this station.
         {
             try
             {

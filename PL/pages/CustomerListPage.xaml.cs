@@ -18,6 +18,7 @@ namespace PL.pages
         BlApi.IBL bl;
         List<CustomerToList> customersToTheLists;
         BackgroundWorker worker;
+        CustomerToList customerToListChoose;
 
 
         // When true allows the 'filters' function to be activated, otherwise there is no access.
@@ -39,6 +40,7 @@ namespace PL.pages
 
             worker = new BackgroundWorker();
             worker.DoWork += Worker_DoWork;
+            worker.WorkerSupportsCancellation = true;
             worker.RunWorkerAsync();
 
             CustomersListView.ItemsSource = customersToTheLists;
@@ -73,7 +75,7 @@ namespace PL.pages
 
             if (CustomersListView.SelectedItem != null)
                 customerToListChoose = CustomersListView.SelectedItem as BO.CustomerToList;
-
+            
             openOptions.Visibility = Visibility.Visible;
 
             CollectionViewSource.GetDefaultView(CustomersListView.ItemsSource).Refresh();

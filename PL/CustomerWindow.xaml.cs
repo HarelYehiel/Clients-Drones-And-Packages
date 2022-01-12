@@ -1,22 +1,12 @@
 ﻿using BO;
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Interop;
-using System.Windows.Media;
-using System.Windows.Data;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Interop;
-using System.Runtime.CompilerServices;
+using System.Windows.Media;
 
 
 
@@ -30,7 +20,6 @@ namespace PL
     {
         BlApi.IBL bl;
         CustomerToList customerToList;
-        BackgroundWorker worker;
 
         private const int GWL_STYLE = -16;
         private const int WS_SYSMENU = 0x80000;
@@ -84,29 +73,6 @@ namespace PL
 
             Add.Content = "Update";
 
-            worker = new BackgroundWorker();
-            worker.DoWork += Worker_DoWork;
-            worker.RunWorkerAsync();
-        }
-        void updateTheViewListDronesInRealTime()
-        {
-             customerToList = bl.GetCustomerToTheList(customerToList.uniqueID); 
-
-            // take 'Latitude' for information 'packagesHeReceived'.
-            Latitude.Text = customerToList.packagesHeReceived.ToString();
-
-            //take 'Longitude' for information  'packagesOnTheWayToTheCustomer'.
-            Longitude.Text = customerToList.packagesOnTheWayToTheCustomer.ToString();
-        }
-        private void Worker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            while (true)
-            {
-                Action theUpdateView = updateTheViewListDronesInRealTime;
-                // Dispatcher to main thread to update the window drone.
-                IDTextBlock.Dispatcher.BeginInvoke(theUpdateView);
-                Thread.Sleep(200);
-            }
         }
 
         private void CancelButtonX(object sender, RoutedEventArgs e)

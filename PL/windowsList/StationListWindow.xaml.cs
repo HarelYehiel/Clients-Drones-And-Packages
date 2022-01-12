@@ -244,7 +244,7 @@ namespace PL
         /// If TurnOnFunctionFilters = true so search with the filters
         /// else don't do nathing.
         /// </summary>
-        void EnableFiltersWithConditions()
+            void EnableFiltersWithConditions()
         {
             if (TurnOnFunctionFilters)
                 Filters();
