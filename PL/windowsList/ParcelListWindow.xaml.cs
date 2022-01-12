@@ -7,7 +7,6 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Runtime.CompilerServices;
 
 
 
@@ -25,7 +24,7 @@ namespace PL
         {
             bl = bl1;
             InitializeComponent();
-            ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels();
+            ParcelListView.ItemsSource = bl.GetTheListOfParcels();
             CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelListView.ItemsSource);
             view.Filter = UserFilter;
             openOptions.Visibility = Visibility.Hidden;
@@ -35,11 +34,17 @@ namespace PL
             worker.WorkerSupportsCancellation = true;
             worker.RunWorkerAsync();
         }
+
+        /// <summary>
+        /// update the viewListParcels in real time.
+        /// When the drone run in simultor we can see the change.
+        /// </summary>
+
         void updateTheViewListParcelsInRealTime()
         // Update the list view.
         {
 
-            ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels();
+            ParcelListView.ItemsSource = bl.GetTheListOfParcels();
             CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelListView.ItemsSource);
             view.Filter = UserFilter;
 
@@ -59,14 +64,14 @@ namespace PL
         private void AddNewParcel(object sender, RoutedEventArgs e)
         {
             new ParcelWindow(bl).ShowDialog();
-            ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels();
+            ParcelListView.ItemsSource = bl.GetTheListOfParcels();
             //CollectionViewSource.GetDefaultView(ParcelListView).Refresh();
 
         }
 
         private void ClearFilter(object sender, RoutedEventArgs e)
         {
-            ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels();
+            ParcelListView.ItemsSource = bl.GetTheListOfParcels();
 
         }
 
@@ -196,7 +201,7 @@ namespace PL
                     IEnumerable<IGrouping<string, ParcelToList>> tsSender;
                     lock (bl)
                     {
-                        tsSender = from item in bl.DisplaysTheListOfParcels()
+                        tsSender = from item in bl.GetTheListOfParcels()
                                    group item by item.namrSender into gs
                                    select gs;
                     }
@@ -216,7 +221,7 @@ namespace PL
                     IEnumerable<IGrouping<string, ParcelToList>> tsTarget;
                     lock (bl)
                     {
-                        tsTarget = from item in bl.DisplaysTheListOfParcels()
+                        tsTarget = from item in bl.GetTheListOfParcels()
                                    group item by item.nameTarget into gs
                                    select gs;
                     }
@@ -236,7 +241,7 @@ namespace PL
                     IEnumerable<IGrouping<EnumBO.Priorities, ParcelToList>> tsPrioritiy;
                     lock (bl)
                     {
-                        tsPrioritiy = from item in bl.DisplaysTheListOfParcels()
+                        tsPrioritiy = from item in bl.GetTheListOfParcels()
                                       group item by item.priority into gs
                                       select gs;
                     }
@@ -256,7 +261,7 @@ namespace PL
                     IEnumerable<IGrouping<EnumBO.WeightCategories, ParcelToList>> tsWeight;
                     lock (bl)
                     {
-                        tsWeight = from item in bl.DisplaysTheListOfParcels()
+                        tsWeight = from item in bl.GetTheListOfParcels()
                                    group item by item.weight into gs
                                    select gs;
                     }
@@ -277,7 +282,7 @@ namespace PL
 
                     lock (bl)
                     {
-                        tsSituation = from item in bl.DisplaysTheListOfParcels()
+                        tsSituation = from item in bl.GetTheListOfParcels()
                                       group item by item.parcelsituation into gs
                                       select gs;
                     }

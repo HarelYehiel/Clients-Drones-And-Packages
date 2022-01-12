@@ -50,6 +50,11 @@ namespace PL
             // Filll the list view.
             StationListView.ItemsSource = stationsToTheLists;
         }
+
+        /// <summary>
+        /// update the viewListStations in real time.
+        /// When the drone run in simultor we can sea the change.
+        /// </summary>
         void updateTheViewListStationsInRealTime()
         {
 
@@ -68,15 +73,48 @@ namespace PL
 
         }
         private void CancelButtonX(object sender, RoutedEventArgs e)
+            // Canael the button X.
         {
             var hwnd = new WindowInteropHelper(this).Handle;
             SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) & ~WS_SYSMENU);
         }
+        private void CloseWindow(object sender, RoutedEventArgs e)
+        {
+            worker.CancelAsync();
+            this.Close();
+        }
+        private void StationsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (StationListView.SelectedItem != null)
+                new StationWindow(bl, (StationToTheList)e.AddedItems[0]).Show();
+
+        }
+        bool isNumber(string s)
+        // return true if is number, else false.
+        {
+            if (s.Length == 0) return false;
+            for (int i = 0; i < s.Length; i++)
+            {
+                if ((int)s[i] >= (int)'0' && (int)s[i] <= (int)'9')
+                    continue;
+
+                return false;
+            }
+
+            return true;
+        }
+
+        #region Filters
 
         private void ClearFilter(object sender, RoutedEventArgs e)
         {
             clearAndResetFilter();
         }
+
+        /// <summary>
+        /// Hide And Resete All TextBox.
+        /// All textBox = "search".
+        /// </summary>
         private void HideAndReseteAllTextBox()
         {
             TurnOnFunctionFilters = false;
@@ -93,33 +131,8 @@ namespace PL
             FilterUnavailableChargingTextBox.Visibility = Visibility.Hidden;
             TurnOnFunctionFilters = true;
         }
-        private void CloseWindow(object sender, RoutedEventArgs e)
-        {
-            worker.CancelAsync();
-            this.Close();
-        }
-
-        private void StationsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (StationListView.SelectedItem != null)
-                new StationWindow(bl, (StationToTheList)e.AddedItems[0]).Show();
-
-        }
-        bool isNumber(string s)
-        {
-            if (s.Length == 0) return false;
-            for (int i = 0; i < s.Length; i++)
-            {
-                if ((int)s[i] >= (int)'0' && (int)s[i] <= (int)'9')
-                    continue;
-
-                return false;
-            }
-
-            return true;
-        }
         private void Filters()
-         // Search by all filter togther.
+        // Search by all filter togther.
         {
 
             try
@@ -149,7 +162,7 @@ namespace PL
                         (s => s.availableChargingStations.ToString().Contains(AvailableCharging));
                 }
                 if (isNumber(FilterUnavailableChargingTextBox.Text))
-                    // Filter unavailableCharging
+                // Filter unavailableCharging
                 {
                     string UnavailableCharging = FilterUnavailableChargingTextBox.Text;
                     stationsToTheLists = stationsToTheLists.FindAll
@@ -174,9 +187,14 @@ namespace PL
                 FilterIDTextBox.Visibility = Visibility.Hidden;
             }
         }
-        public delegate bool Predicate<station>(station station);
-        public bool MyFunc1(station station) { return station.availableChargingStations > 0; }
 
+
+        // public delegate bool Predicate<station>(station station);
+        // public bool MyFunc1(station station) { return station.availableChargingStations > 0; }
+
+        /// <summary>
+        /// All the text box for search grt to hare if did change in the tex.
+        /// </summary>
         private void FilterIDTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             EnableFiltersWithConditions();
@@ -193,7 +211,7 @@ namespace PL
                 FilterNameTextBox.Visibility = Visibility.Hidden;
             }
         }
-        private void SearchavailableChargingButton_Click(object sender, RoutedEventArgs e)
+        private void SearchavAilableChargingButton_Click(object sender, RoutedEventArgs e)
         {
             if (FilterAvailableChargingTextBox.Visibility == Visibility.Hidden)
                 FilterAvailableChargingTextBox.Visibility = Visibility.Visible;
@@ -221,21 +239,29 @@ namespace PL
             EnableFiltersWithConditions();
 
         }
+
+        /// <summary>
+        /// If TurnOnFunctionFilters = true so search with the filters
+        /// else don't do nathing.
+        /// </summary>
         void EnableFiltersWithConditions()
         {
             if (TurnOnFunctionFilters)
                 Filters();
         }
         private void Refresh_Click(object sender, RoutedEventArgs e)
+        // Refresh the listView.
         {
             EnableFiltersWithConditions();
         }
 
         private void AvailableChargingStations_Click(object sender, RoutedEventArgs e)
+        // Get to StationListView the all station with available charging.
         {
             HideAndReseteAllTextBox();
             StationListView.ItemsSource = bl.GetAllStaionsBy(s => s.ChargeSlots > 0);
         }
+        #endregion 
 
         private void AddingNewStation(object sender, RoutedEventArgs e)
         {
@@ -257,17 +283,18 @@ namespace PL
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        // Grouping by name /  Available Charging / Unavailable Charging.
         {
             List<StationToTheList> l;
 
             switch (GroupByComboBox.SelectedIndex)
             {
 
-                case 1:
+                case 1: // "name"
 
                     IEnumerable<IGrouping<string, StationToTheList>> tsName = from item in bl.GetListOfBaseStations()
-                                                                          group item by item.name into gs
-                                                                          select gs;
+                                                                              group item by item.name into gs
+                                                                              select gs;
 
                     l = new List<StationToTheList>();
                     foreach (var group1 in tsName)
@@ -280,10 +307,10 @@ namespace PL
                     StationListView.ItemsSource = l;
                     break;
 
-                case 2:
+                case 2: //"Available Charging",
                     IEnumerable<IGrouping<int, StationToTheList>> tsAvailableCharging = from item in bl.GetListOfBaseStations()
-                                                                                            group item by item.availableChargingStations into gs
-                                                                                            select gs;
+                                                                                        group item by item.availableChargingStations into gs
+                                                                                        select gs;
 
                     l = new List<StationToTheList>();
                     foreach (var group1 in tsAvailableCharging)
@@ -295,10 +322,10 @@ namespace PL
                     }
                     StationListView.ItemsSource = l;
                     break;
-                case 3:
+                case 3: // "Unavailable Charging"
                     IEnumerable<IGrouping<int, StationToTheList>> tsUnavailableCharging = from item in bl.GetListOfBaseStations()
-                                                                                       group item by item.unAvailableChargingStations into gs
-                                                                                       select gs;
+                                                                                          group item by item.unAvailableChargingStations into gs
+                                                                                          select gs;
                     l = new List<StationToTheList>();
                     foreach (var group1 in tsUnavailableCharging)
                     {

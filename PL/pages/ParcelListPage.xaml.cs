@@ -70,7 +70,7 @@ namespace PL
 
         private void ClearFilter(object sender, RoutedEventArgs e)
         {
-            ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels();
+            ParcelListView.ItemsSource = bl.GetTheListOfParcels();
 
         }
 
@@ -199,7 +199,7 @@ namespace PL
                     IEnumerable<IGrouping<string, ParcelToList>> tsSender;
                     lock (bl)
                     {
-                        tsSender = from item in bl.DisplaysTheListOfParcels()
+                        tsSender = from item in bl.GetTheListOfParcels()
                                    group item by item.namrSender into gs
                                    select gs;
                     }
@@ -219,7 +219,7 @@ namespace PL
                     IEnumerable<IGrouping<string, ParcelToList>> tsTarget;
                     lock (bl)
                     {
-                        tsTarget = from item in bl.DisplaysTheListOfParcels()
+                        tsTarget = from item in bl.GetTheListOfParcels()
                                    group item by item.nameTarget into gs
                                    select gs;
                     }
@@ -239,7 +239,7 @@ namespace PL
                     IEnumerable<IGrouping<EnumBO.Priorities, ParcelToList>> tsPrioritiy;
                     lock (bl)
                     {
-                        tsPrioritiy = from item in bl.DisplaysTheListOfParcels()
+                        tsPrioritiy = from item in bl.GetTheListOfParcels()
                                       group item by item.priority into gs
                                       select gs;
                     }
@@ -259,7 +259,7 @@ namespace PL
                     IEnumerable<IGrouping<EnumBO.WeightCategories, ParcelToList>> tsWeight;
                     lock (bl)
                     {
-                        tsWeight = from item in bl.DisplaysTheListOfParcels()
+                        tsWeight = from item in bl.GetTheListOfParcels()
                                    group item by item.weight into gs
                                    select gs;
                     }
@@ -280,7 +280,7 @@ namespace PL
 
                     lock (bl)
                     {
-                        tsSituation = from item in bl.DisplaysTheListOfParcels()
+                        tsSituation = from item in bl.GetTheListOfParcels()
                                       group item by item.parcelsituation into gs
                                       select gs;
                     }

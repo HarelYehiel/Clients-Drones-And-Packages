@@ -73,7 +73,7 @@
 
         <Button x:Name="SearchIDButton" Content="s" HorizontalAlignment="Left" Margin="3,34,0,0" Grid.Row="1" VerticalAlignment="Top" Width="20" Click="SearchIDButton_Click" Height="20"/>
         <Button x:Name="SearchNameButton" Content="s" HorizontalAlignment="Left" Margin="105,33,0,0" Grid.Row="1" VerticalAlignment="Top" Width="20" Click="SearchNameButton_Click" Height="20" />
-        <Button x:Name="SearchAvailableChargingButton" Content="s" HorizontalAlignment="Left" Margin="203,34,0,0" Grid.Row="1" VerticalAlignment="Top" Width="20" Click="SearchavailableChargingButton_Click" Height="20"/>
+        <Button x:Name="SearchAvailableChargingButton" Content="s" HorizontalAlignment="Left" Margin="203,34,0,0" Grid.Row="1" VerticalAlignment="Top" Width="20" Click="SearchavAilableChargingButton_Click" Height="20"/>
         <Button x:Name="SearchUnavailableChargingButton" Content="s" Margin="0,32,162,0" Grid.Row="1" VerticalAlignment="Top" Click="SearchUnavailableChargingButton_Click" Height="20" HorizontalAlignment="Right" Width="20"/>
         <TextBox x:Name="FilterIDTextBox" HorizontalAlignment="Left" Margin="23,13,0,0"  Visibility="Hidden" TextWrapping="Wrap" VerticalAlignment="Top" Width="51" TextChanged="FilterIDTextBox_TextChanged" Height="18" Grid.Row="1"/>
         <TextBox x:Name="FilterNameTextBox"  HorizontalAlignment="Left" Margin="124,13,0,0"  Visibility="Hidden" TextWrapping="Wrap" VerticalAlignment="Top" Width="51" TextChanged="FilterIDTextBox_TextChanged" Height="18" Grid.Row="1" />

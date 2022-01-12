@@ -10,7 +10,10 @@ namespace BlApi
 {
     public partial class BL : IBL
     {
-        BO.DroneInPackage GetDroneInPackage(int id)
+       
+   
+        #region Help functions
+         BO.DroneInPackage GetDroneInPackage(int id)
         {
 
             BO.DroneInPackage droneInPackageBO = new BO.DroneInPackage();
@@ -51,11 +54,14 @@ namespace BlApi
             }
 
         }
-        BO.parcelAtCustomer GetParcelAtCustomer(int id_parcel, int id_customer)
-        // 'id': the id of parcel
-        // 'id_customer': the id of customer that open this function.
-        // If 'id_customer' = parcel.SenderId, so the id of 'customerInDelivery' is parcel.TargetId.
-        // If 'id_customer' = parcel.TargetId, so the id of 'customerInDelivery' is parcel.SenderId.
+
+        /// <summary>
+        /// 'id_parcel': the id of parcel
+        /// 'id_customer': the id of customer that open this function.
+        /// If 'id_customer' = parcel.SenderId, so the id of 'customerInDelivery' is parcel.TargetId.
+        /// If 'id_customer' = parcel.TargetId, so the id of 'customerInDelivery' is parcel.SenderId.
+        /// </summary>
+        BO.parcelAtCustomer GetParcelAtCustomer(int id_parcel, int id_customer)        
         {
             try
             {
@@ -94,50 +100,6 @@ namespace BlApi
                 if (item.uniqueID == id) return item.Battery;
             }
             throw new BO.MyExeption_BO("Exception from function 'getbatteryStatus'", BO.MyExeption_BO.There_is_no_variable_with_this_ID);
-        }
-        [MethodImpl(MethodImplOptions.Synchronized)] public BO.station getBaseStation(int id)
-        {
-            try
-            {
-                DO.Station stationDO = new DO.Station();
-                BO.station stationBO = new BO.station();
-
-                stationDO = accessDal.GetStation(id);
-
-                stationBO.uniqueID = stationDO.id;
-                stationBO.name = stationDO.name;
-                stationBO.availableChargingStations = stationDO.ChargeSlots;
-
-                BO.Location location = new BO.Location();
-                location.latitude = stationDO.Location.latitude;
-                location.longitude = stationDO.Location.longitude;
-                stationBO.location = location;
-
-                //The all drones that charging in this station.
-                BO.DroneInCharging droneInCharging_BO = new BO.DroneInCharging();
-                stationBO.dronesInCharging = new List<BO.DroneInCharging>();
-                foreach (DO.DroneCharge item in accessDal.GetListOfDroneCharge()) // IDAL.DalObject.DataSource.dronesCharge
-                {
-                    if (item.DroneId == id)
-                    {
-                        droneInCharging_BO.uniqueID = item.DroneId;
-                        droneInCharging_BO.batteryStatus = GetBatteryStatus(id);
-
-                        stationBO.dronesInCharging.Add(droneInCharging_BO);
-
-                    }
-                }
-
-                return stationBO;
-
-            }
-            catch (Exception e)
-            {
-
-                throw new BO.MyExeption_BO("Exception from function 'getbatteryStatus'", e);
-
-            }
-
         }
         BO.ParcelByTransfer getParcelByTransfer(int idParcel, Location locationDrone)
         {
@@ -196,6 +158,85 @@ namespace BlApi
             {
 
                 throw new BO.MyExeption_BO("Exception from function 'getParcelByTransfer'", e);
+            }
+
+        }
+        [MethodImpl(MethodImplOptions.Synchronized)] public BO.DroneInCharging GetDroneInCharging(int ID)
+        {
+            try
+            {
+                BO.DroneInCharging droneCharge = new BO.DroneInCharging();
+                List<DO.DroneCharge> droneCharges = accessDal.GetListOfDroneCharge().ToList();
+                for (int i = 0; i < droneCharges.Count(); i++)
+                {
+                    if (droneCharges[i].DroneId == ID)
+                    {
+                        droneCharge.startCharge = droneCharges[i].startCharge;
+                        droneCharge.uniqueID = droneCharges[i].DroneId;
+                        droneCharge.batteryStatus = GetBatteryStatus(ID);
+                        return droneCharge;
+                    }
+                }
+                throw new BO.MyExeption_BO("Don't have this drone in the list.");
+            }
+            catch (Exception e)
+            {
+
+                throw new BO.MyExeption_BO("Exception from function 'GetDroneInCharging'", e);
+            }
+        }
+        public BO.CustomerToList GetCustomerToTheList(int ID)
+        {
+            List<CustomerToList> customersToTheLists = GetAllCustomersBy(c => c.Id == ID).ToList();
+            if (customersToTheLists.Count == 1)
+                return customersToTheLists[0];
+
+            throw MyExeption_BO.There_is_no_variable_with_this_ID;
+        }
+        #endregion
+
+        #region Functions Get Entity 
+        [MethodImpl(MethodImplOptions.Synchronized)] public BO.station getBaseStation(int id)
+        {
+            try
+            {
+                DO.Station stationDO = new DO.Station();
+                BO.station stationBO = new BO.station();
+
+                stationDO = accessDal.GetStation(id);
+
+                stationBO.uniqueID = stationDO.id;
+                stationBO.name = stationDO.name;
+                stationBO.availableChargingStations = stationDO.ChargeSlots;
+
+                BO.Location location = new BO.Location();
+                location.latitude = stationDO.Location.latitude;
+                location.longitude = stationDO.Location.longitude;
+                stationBO.location = location;
+
+                //The all drones that charging in this station.
+                BO.DroneInCharging droneInCharging_BO = new BO.DroneInCharging();
+                stationBO.dronesInCharging = new List<BO.DroneInCharging>();
+                foreach (DO.DroneCharge item in accessDal.GetListOfDroneCharge()) // IDAL.DalObject.DataSource.dronesCharge
+                {
+                    if (item.DroneId == id)
+                    {
+                        droneInCharging_BO.uniqueID = item.DroneId;
+                        droneInCharging_BO.batteryStatus = GetBatteryStatus(id);
+
+                        stationBO.dronesInCharging.Add(droneInCharging_BO);
+
+                    }
+                }
+
+                return stationBO;
+
+            }
+            catch (Exception e)
+            {
+
+                throw new BO.MyExeption_BO("Exception from function 'getbatteryStatus'", e);
+
             }
 
         }
@@ -298,30 +339,6 @@ namespace BlApi
             }
 
         }
-        [MethodImpl(MethodImplOptions.Synchronized)] public BO.DroneInCharging GetDroneInCharging(int ID)
-        {
-            try
-            {
-                BO.DroneInCharging droneCharge = new BO.DroneInCharging();
-                List<DO.DroneCharge> droneCharges = accessDal.GetListOfDroneCharge().ToList();
-                for (int i = 0; i < droneCharges.Count(); i++)
-                {
-                    if (droneCharges[i].DroneId == ID)
-                    {
-                        droneCharge.startCharge = droneCharges[i].startCharge;
-                        droneCharge.uniqueID = droneCharges[i].DroneId;
-                        droneCharge.batteryStatus = GetBatteryStatus(ID);
-                        return droneCharge;
-                    }
-                }
-                throw new BO.MyExeption_BO("Don't have this drone in the list.");
-            }
-            catch (Exception e)
-            {
-
-                throw new BO.MyExeption_BO("Exception from function 'GetDroneInCharging'", e);
-            }
-        }
         [MethodImpl(MethodImplOptions.Synchronized)] public BO.StationToTheList GetStationToTheList(int ID)
         {
             List<StationToTheList> stationsToTheLists = GetAllStaionsBy(s => s.id == ID).ToList();
@@ -346,15 +363,7 @@ namespace BlApi
 
             throw MyExeption_BO.There_is_no_variable_with_this_ID;
         }
-        public BO.CustomerToList GetCustomerToTheList(int ID)
-        {
-            List<CustomerToList> customersToTheLists = GetAllCustomersBy(c => c.Id == ID).ToList();
-            if (customersToTheLists.Count == 1)
-                return customersToTheLists[0];
-
-            throw MyExeption_BO.There_is_no_variable_with_this_ID;
-        }
-
+        #endregion
 
     }
 }

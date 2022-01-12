@@ -315,7 +315,7 @@ namespace BlApi
                 Parcel parcel = new Parcel();
                 if (drone.droneStatus == DO.Enum.DroneStatus.Delivery)
                 {
-                    List<BO.Parcel> parcels = DisplaysTheListOfParcels().ToList().ConvertAll(convertToParcelNotList);
+                    List<BO.Parcel> parcels = GetTheListOfParcels().ToList().ConvertAll(convertToParcelNotList);
                     for (int i = 0; i < parcels.Count; i++)
                     {
                         if (parcels[i].droneInParcel != null && parcels[i].droneInParcel.uniqueID == ID)
@@ -369,7 +369,7 @@ namespace BlApi
                 Drone drone = accessDal.GetDrone(ID);
                 if (drone.droneStatus == DO.Enum.DroneStatus.Delivery)
                 {
-                    List<BO.Parcel> parcels = DisplaysTheListOfParcels().ToList().ConvertAll(convertToParcelNotList);//GetAllParcelsBy(p => true).ToList();
+                    List<BO.Parcel> parcels = GetTheListOfParcels().ToList().ConvertAll(convertToParcelNotList);//GetAllParcelsBy(p => true).ToList();
                     for (int i = 0; i < parcels.Count; i++)
                     {
                         if (parcels[i].droneInParcel.uniqueID == ID)

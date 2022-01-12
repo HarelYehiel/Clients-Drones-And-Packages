@@ -1,19 +1,13 @@
 ﻿using BO;
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Interop;
-using System.Windows.Data;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Interop;
-using System.Runtime.CompilerServices;
 
 
 namespace PL
@@ -58,6 +52,11 @@ namespace PL
 
             CustomersListView.ItemsSource = customersToTheLists;
         }
+
+        /// <summary>
+        /// update the viewListCustomers in real time.
+        /// When the drone run in simultor we can sea the change.
+        /// </summary>
         void updateTheViewListCustomersInRealTime()
         {
 
@@ -68,7 +67,8 @@ namespace PL
             while (!worker.CancellationPending)
             {
                 Action theUpdateView = updateTheViewListCustomersInRealTime;
-                // Dispatcher to main thread to update the window drone.
+
+                // Dispatcher to main-thread to update the window drone.
                 CustomersListView.Dispatcher.BeginInvoke(theUpdateView);
                 Thread.Sleep(500);
             }
@@ -87,9 +87,6 @@ namespace PL
 
             //CollectionViewSource.GetDefaultView(CustomersListView.ItemsSource).Refresh();
 
-            //CustomersListView.ItemsSource = null;
-            //CustomersListView.ItemsSource = bl.GetListOfCustomers();
-
         }
         private void CancelButtonX(object sender, RoutedEventArgs e)
         {
@@ -106,6 +103,7 @@ namespace PL
             worker.CancelAsync();
             this.Close();
         }
+        #region Filter and TextBoxes
         private void ClearFilter(object sender, RoutedEventArgs e)
         {
             CustomersListView.ItemsSource = bl.GetListOfCustomers();
@@ -113,6 +111,7 @@ namespace PL
         }
 
         private void SearchSADButton_Click(object sender, RoutedEventArgs e)
+        /// SAD = packages Sent And Delivered
         {
             if (FilterSADTextBox.Visibility == Visibility.Hidden)
                 FilterSADTextBox.Visibility = Visibility.Visible;
@@ -124,6 +123,7 @@ namespace PL
         }
 
         private void SearchSANDButton_Click(object sender, RoutedEventArgs e)
+        /// SAND = packages Sent  And Not Delivered
         {
             if (FilterSANDTextBox.Visibility == Visibility.Hidden)
                 FilterSANDTextBox.Visibility = Visibility.Visible;
@@ -135,6 +135,7 @@ namespace PL
         }
 
         private void SearchReceivedButton_Click(object sender, RoutedEventArgs e)
+        /// Received = packages He (customer) Received.
         {
             if (FilterReceiveTextBox.Visibility == Visibility.Hidden)
                 FilterReceiveTextBox.Visibility = Visibility.Visible;
@@ -146,6 +147,7 @@ namespace PL
         }
 
         private void SearchOTWButton_Click(object sender, RoutedEventArgs e)
+        // OTW = packages On The Way To The Customer
         {
             if (FilterOTWTextBox.Visibility == Visibility.Hidden)
                 FilterOTWTextBox.Visibility = Visibility.Visible;
@@ -187,56 +189,16 @@ namespace PL
                 FilterPhoneTextBox.Visibility = Visibility.Hidden;
             }
         }
+
+        /// <summary>
+        /// If TurnOnFunctionFilters = true search with the filters
+        /// else don't do nathing.
+        /// </summary>
         void EnableFiltersWithConditions()
         {
             if (TurnOnFunctionFilters)
                 Filters();
         }
-        private void AnyFilterTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            EnableFiltersWithConditions();
-        }
-        bool isNumber(string s)
-        {
-            if (s.Length == 0) return false;
-            for (int i = 0; i < s.Length; i++)
-            {
-                if ((int)s[i] >= (int)'0' && (int)s[i] <= (int)'9')
-                    continue;
-
-                return false;
-            }
-
-            return true;
-        }
-        private void HideAndReseteAllTextBox()
-        {
-            TurnOnFunctionFilters = false;
-
-            FilterIDTextBox.Text = "Search";
-            FilterIDTextBox.Visibility = Visibility.Hidden;
-
-            FilterNameTextBox.Text = "Search";
-            FilterNameTextBox.Visibility = Visibility.Hidden;
-
-            FilterPhoneTextBox.Text = "Search";
-            FilterPhoneTextBox.Visibility = Visibility.Hidden;
-
-            FilterSADTextBox.Text = "Search";
-            FilterSADTextBox.Visibility = Visibility.Hidden;
-
-            FilterSANDTextBox.Text = "Search";
-            FilterSANDTextBox.Visibility = Visibility.Hidden;
-
-            FilterReceiveTextBox.Text = "Search";
-            FilterReceiveTextBox.Visibility = Visibility.Hidden;
-
-            FilterOTWTextBox.Text = "Search";
-            FilterOTWTextBox.Visibility = Visibility.Hidden;
-
-            TurnOnFunctionFilters = true;
-        }
-
         private void Filters()
         // Search by all filter togther.
         {
@@ -297,6 +259,64 @@ namespace PL
 
             }
         }
+
+        /// <summary>
+        /// All the text box for search grt to hare if did change in the tex.
+        /// </summary>
+        private void AnyFilterTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            // Start the search with the filters.
+            EnableFiltersWithConditions();
+        }
+       
+          /// <summary>
+        /// Hide And Resete All TextBox.
+        /// All textBox = "search".
+        /// </summary>
+        private void HideAndReseteAllTextBox()
+        {
+            TurnOnFunctionFilters = false;
+
+            FilterIDTextBox.Text = "Search";
+            FilterIDTextBox.Visibility = Visibility.Hidden;
+
+            FilterNameTextBox.Text = "Search";
+            FilterNameTextBox.Visibility = Visibility.Hidden;
+
+            FilterPhoneTextBox.Text = "Search";
+            FilterPhoneTextBox.Visibility = Visibility.Hidden;
+
+            FilterSADTextBox.Text = "Search";
+            FilterSADTextBox.Visibility = Visibility.Hidden;
+
+            FilterSANDTextBox.Text = "Search";
+            FilterSANDTextBox.Visibility = Visibility.Hidden;
+
+            FilterReceiveTextBox.Text = "Search";
+            FilterReceiveTextBox.Visibility = Visibility.Hidden;
+
+            FilterOTWTextBox.Text = "Search";
+            FilterOTWTextBox.Visibility = Visibility.Hidden;
+
+            TurnOnFunctionFilters = true;
+        }
+        
+        #endregion
+
+        bool isNumber(string s)
+            // return true if is number, else false.
+        {
+            if (s.Length == 0) return false;
+            for (int i = 0; i < s.Length; i++)
+            {
+                if ((int)s[i] >= (int)'0' && (int)s[i] <= (int)'9')
+                    continue;
+
+                return false;
+            }
+
+            return true;
+        }     
 
         private void OpenCustomerView_Click(object sender, RoutedEventArgs e)
         {

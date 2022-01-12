@@ -252,7 +252,7 @@ namespace ConsuleUIBL
                                         }
                                         break;
                                     case 4:
-                                        foreach (ParcelToList item in temp.DisplaysTheListOfParcels())
+                                        foreach (ParcelToList item in temp.GetTheListOfParcels())
                                         {
                                             Console.WriteLine(item.ToString());
                                         }
