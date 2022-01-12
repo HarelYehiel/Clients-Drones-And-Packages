@@ -28,7 +28,7 @@ namespace PL
             // constructor
             bl = bl1;
             InitializeComponent();
-            ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels();
+            ParcelListView.ItemsSource = bl.GetTheListOfParcels();
             // use CollectionView method - update to the list and save it to "view", for us to filter by the function
             CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelListView.ItemsSource);
             view.Filter = UserFilter;
@@ -44,7 +44,7 @@ namespace PL
         // Update the list view.
         {
 
-            ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels();
+            ParcelListView.ItemsSource = bl.GetTheListOfParcels();
             CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelListView.ItemsSource);
             view.Filter = UserFilter;
 
@@ -64,7 +64,7 @@ namespace PL
         private void AddNewParcel(object sender, RoutedEventArgs e)
         {
             new ParcelWindow(bl).ShowDialog();
-            ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels();
+            ParcelListView.ItemsSource = bl.GetTheListOfParcels();
 
         }
 

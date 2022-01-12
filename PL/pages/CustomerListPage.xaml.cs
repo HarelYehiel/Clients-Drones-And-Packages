@@ -18,6 +18,8 @@ namespace PL.pages
         BlApi.IBL bl;
         List<CustomerToList> customersToTheLists;
         BackgroundWorker worker;
+        CustomerToList customerToListChoose;
+
 
 
         // When true allows the 'filters' function to be activated, otherwise there is no access.
@@ -99,6 +101,8 @@ namespace PL.pages
 
         private void SearchSADButton_Click(object sender, RoutedEventArgs e)
         {
+            /// SAD = packages Sent And Delivered
+
             if (FilterSADTextBox.Visibility == Visibility.Hidden)
                 FilterSADTextBox.Visibility = Visibility.Visible;
             else
@@ -110,6 +114,8 @@ namespace PL.pages
 
         private void SearchSANDButton_Click(object sender, RoutedEventArgs e)
         {
+            /// SAND = packages Sent  And Not Delivered
+
             if (FilterSANDTextBox.Visibility == Visibility.Hidden)
                 FilterSANDTextBox.Visibility = Visibility.Visible;
             else
@@ -121,6 +127,8 @@ namespace PL.pages
 
         private void SearchReceivedButton_Click(object sender, RoutedEventArgs e)
         {
+            /// Received = packages He (customer) Received.
+
             if (FilterReceiveTextBox.Visibility == Visibility.Hidden)
                 FilterReceiveTextBox.Visibility = Visibility.Visible;
             else
@@ -132,6 +140,8 @@ namespace PL.pages
 
         private void SearchOTWButton_Click(object sender, RoutedEventArgs e)
         {
+            // OTW = packages On The Way To The Customer
+
             if (FilterOTWTextBox.Visibility == Visibility.Hidden)
                 FilterOTWTextBox.Visibility = Visibility.Visible;
             else
@@ -172,6 +182,10 @@ namespace PL.pages
                 FilterPhoneTextBox.Visibility = Visibility.Hidden;
             }
         }
+        /// <summary>
+        /// If TurnOnFunctionFilters = true search with the filters
+        /// else don't do nathing.
+        /// </summary>
         void EnableFiltersWithConditions()
         {
             if (TurnOnFunctionFilters)
