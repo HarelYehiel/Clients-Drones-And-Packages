@@ -118,8 +118,8 @@ namespace PL
         }
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
-            worker.WorkerSupportsCancellation = true;
-            worker.CancelAsync();
+            //worker.WorkerSupportsCancellation = true;
+            //worker.CancelAsync();
 
             this.Close();
         }

@@ -23,7 +23,7 @@ namespace BlApi
         {
             InitializeAndUpdateTheListsInIBL();
         }
-        [MethodImpl(MethodImplOptions.Synchronized)] public void SimulatorStart(int droneId, Func<bool> f1, Action action)
+         public void SimulatorStart(int droneId, Func<bool> f1, Action action)
         {
             new Simulator(Instance, droneId, f1, action);
         }

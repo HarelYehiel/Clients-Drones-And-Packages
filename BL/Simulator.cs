@@ -152,7 +152,7 @@ namespace BlApi
                     action();
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
 
             }
