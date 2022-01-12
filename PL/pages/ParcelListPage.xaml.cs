@@ -9,6 +9,8 @@ using System.Windows.Data;
 using BO;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading;
+
 
 namespace PL
 {
@@ -17,8 +19,8 @@ namespace PL
     /// </summary>
     public partial class ParcelListPage : Page
     {
-
         BlApi.IBL bl;
+        BackgroundWorker worker;
         public ParcelListPage(BlApi.IBL bl1)
         {
             bl = bl1;
@@ -27,6 +29,29 @@ namespace PL
             CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelListView.ItemsSource);
             view.Filter = UserFilter;
             openOptions.Visibility = Visibility.Hidden;
+
+            worker = new BackgroundWorker();
+            worker.DoWork += Worker_DoWork;
+            worker.RunWorkerAsync();
+        }
+        void updateTheViewListParcelsInRealTime()
+        // Update the list view.
+        {
+            IEnumerable<ParcelToList> parcelToLists;
+            parcelToLists = bl.DisplaysTheListOfParcels();
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelListView.ItemsSource);
+
+        }
+
+        private void Worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            while (true)
+            {
+                Action theUpdateView = updateTheViewListParcelsInRealTime;
+                ParcelListView.Dispatcher.BeginInvoke(theUpdateView);
+                Thread.Sleep(200);
+            }
+
         }
 
         private void AddNewParcel(object sender, RoutedEventArgs e)
@@ -46,9 +71,7 @@ namespace PL
 
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
-            //this.Close();
             this.Visibility = Visibility.Hidden;
-
         }
         private void ParcelListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -127,19 +150,20 @@ namespace PL
         private void OpenSenderView_Click(object sender, RoutedEventArgs e)
         {
             BO.ParcelToList parcel = ParcelListView.SelectedItem as BO.ParcelToList;
-            List<BO.CustomerToList> lst = bl.GetAllCustomersBy(C => C.name == parcel.namrSender).ToList();
+            List<BO.CustomerToList> lst;
+            lst = bl.GetAllCustomersBy(C => C.name == parcel.namrSender).ToList();
             new CustomerWindow(bl, lst[0]).ShowDialog();
             openOptions.Visibility = Visibility.Hidden;
-            //Close();
+            
         }
 
         private void OpenTargetView_Click(object sender, RoutedEventArgs e)
         {
             BO.ParcelToList parcel = ParcelListView.SelectedItem as BO.ParcelToList;
-            List<BO.CustomerToList> lst = bl.GetAllCustomersBy(C => C.name == parcel.nameTarget).ToList();
+            List<BO.CustomerToList> lst;
+            lst = bl.GetAllCustomersBy(C => C.name == parcel.nameTarget).ToList();
             new CustomerWindow(bl, lst[0]).ShowDialog();
             openOptions.Visibility = Visibility.Hidden;
-           // Close();
         }
 
         private void OpenDroneView_Click(object sender, RoutedEventArgs e)
@@ -147,14 +171,15 @@ namespace PL
             BO.ParcelToList parcel = ParcelListView.SelectedItem as BO.ParcelToList;
             try
             {
-                BO.Parcel temp = bl.GetParcel(parcel.uniqueID);
+                BO.Parcel temp;
+                temp = bl.GetParcel(parcel.uniqueID);
                 if (temp.droneInParcel == null)
                     throw new Exception();
 
-                List<BO.DroneToList> lst = bl.GetAllDronesBy(D => D.uniqueID == temp.droneInParcel.uniqueID).ToList();
+                List<BO.DroneToList> lst;
+                lst = bl.GetAllDronesBy(D => D.uniqueID == temp.droneInParcel.uniqueID).ToList();
                 new DroneWindow(bl, lst[0]).ShowDialog();
                 openOptions.Visibility = Visibility.Hidden;
-                //Close();
             }
             catch (Exception)
             {
@@ -183,9 +208,13 @@ namespace PL
 
                 case 1://Sender
 
-                    IEnumerable<IGrouping<string, ParcelToList>> tsSender = from item in bl.DisplaysTheListOfParcels()
-                                                                            group item by item.namrSender into gs
-                                                                            select gs;
+                    IEnumerable<IGrouping<string, ParcelToList>> tsSender;
+                    lock (bl)
+                    {
+                        tsSender = from item in bl.DisplaysTheListOfParcels()
+                                   group item by item.namrSender into gs
+                                   select gs;
+                    }
 
                     l = new List<ParcelToList>();
                     foreach (var group1 in tsSender)
@@ -199,9 +228,13 @@ namespace PL
                     break;
 
                 case 2: // Target
-                    IEnumerable<IGrouping<string, ParcelToList>> tsTarget = from item in bl.DisplaysTheListOfParcels()
-                                                                            group item by item.nameTarget into gs
-                                                                            select gs;
+                    IEnumerable<IGrouping<string, ParcelToList>> tsTarget;
+                    lock (bl)
+                    {
+                        tsTarget = from item in bl.DisplaysTheListOfParcels()
+                                   group item by item.nameTarget into gs
+                                   select gs;
+                    }
 
                     l = new List<ParcelToList>();
                     foreach (var group1 in tsTarget)
@@ -215,9 +248,14 @@ namespace PL
                     break;
 
                 case 3: //Prioritiy
-                    IEnumerable<IGrouping<EnumBO.Priorities, ParcelToList>> tsPrioritiy = from item in bl.DisplaysTheListOfParcels()
-                                                                                          group item by item.priority into gs
-                                                                                          select gs;
+                    IEnumerable<IGrouping<EnumBO.Priorities, ParcelToList>> tsPrioritiy;
+                    lock (bl)
+                    {
+                        tsPrioritiy = from item in bl.DisplaysTheListOfParcels()
+                                      group item by item.priority into gs
+                                      select gs;
+                    }
+
                     l = new List<ParcelToList>();
                     foreach (var group1 in tsPrioritiy)
                     {
@@ -230,9 +268,14 @@ namespace PL
                     break;
 
                 case 4: // Weight
-                    IEnumerable<IGrouping<EnumBO.WeightCategories, ParcelToList>> tsWeight = from item in bl.DisplaysTheListOfParcels()
-                                                                                             group item by item.weight into gs
-                                                                                             select gs;
+                    IEnumerable<IGrouping<EnumBO.WeightCategories, ParcelToList>> tsWeight;
+                    lock (bl)
+                    {
+                        tsWeight = from item in bl.DisplaysTheListOfParcels()
+                                   group item by item.weight into gs
+                                   select gs;
+                    }
+
                     l = new List<ParcelToList>();
                     foreach (var group1 in tsWeight)
                     {
@@ -245,9 +288,15 @@ namespace PL
                     break;
 
                 case 5: //Situation
-                    IEnumerable<IGrouping<EnumBO.Situations, ParcelToList>> tsSituation = from item in bl.DisplaysTheListOfParcels()
-                                                                                          group item by item.parcelsituation into gs
-                                                                                          select gs;
+                    IEnumerable<IGrouping<EnumBO.Situations, ParcelToList>> tsSituation;
+
+                    lock (bl)
+                    {
+                        tsSituation = from item in bl.DisplaysTheListOfParcels()
+                                      group item by item.parcelsituation into gs
+                                      select gs;
+                    }
+
                     l = new List<ParcelToList>();
                     foreach (var group1 in tsSituation)
                     {

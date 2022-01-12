@@ -1,12 +1,18 @@
-﻿using System;
+﻿using BO;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
-using BO;
+using System.Windows.Interop;
 using System.Windows.Data;
+using System.ComponentModel;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Threading;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Interop;
 using System.Runtime.CompilerServices;
 
 namespace PL.pages
@@ -19,12 +25,13 @@ namespace PL.pages
 
         BlApi.IBL bl;
         List<CustomerToList> customersToTheLists;
+        BackgroundWorker worker;
+
 
         // When true allows the 'filters' function to be activated, otherwise there is no access.
         //We usually use this when initializing or resetting the TextBox.
         bool TurnOnFunctionFilters;
 
-     
 
         public CustomerListPage(BlApi.IBL bL1)
         {
@@ -38,8 +45,30 @@ namespace PL.pages
             TurnOnFunctionFilters = true;
             openOptions.Visibility = Visibility.Hidden;
 
+            worker = new BackgroundWorker();
+            worker.DoWork += Worker_DoWork;
+            worker.RunWorkerAsync();
+
             CustomersListView.ItemsSource = customersToTheLists;
         }
+        void updateTheViewListCustomersInRealTime()
+        {
+
+            EnableFiltersWithConditions();
+        }
+        private void Worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            while (true)
+            {
+                Action theUpdateView = updateTheViewListCustomersInRealTime;
+                // Dispatcher to main thread to update the window drone.
+                CustomersListView.Dispatcher.BeginInvoke(theUpdateView);
+                Thread.Sleep(200);
+            }
+
+
+        }
+
 
         private void CustomersListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -68,7 +97,6 @@ namespace PL.pages
 
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
-            //this.Close();
             this.Visibility = Visibility.Hidden;
         }
         private void ClearFilter(object sender, RoutedEventArgs e)
@@ -152,11 +180,14 @@ namespace PL.pages
                 FilterPhoneTextBox.Visibility = Visibility.Hidden;
             }
         }
-
-        private void AnyFilterTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        void EnableFiltersWithConditions()
         {
             if (TurnOnFunctionFilters)
                 Filters();
+        }
+        private void AnyFilterTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            EnableFiltersWithConditions();
         }
         bool isNumber(string s)
         {

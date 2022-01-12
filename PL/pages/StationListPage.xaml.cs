@@ -4,6 +4,9 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Runtime.CompilerServices;
+using System.Threading;
+using System.ComponentModel;
+
 
 using BO;
 
@@ -15,8 +18,10 @@ namespace PL.pages
     public partial class StationListPage : Page
     {
 
+
         BlApi.IBL bl;
         List<StationToTheList> stationsToTheLists;
+        BackgroundWorker worker;
 
         // When true allows the 'filters' function to be activated, otherwise there is no access.
         //We usually use this when initializing or resetting the TextBox.
@@ -25,7 +30,7 @@ namespace PL.pages
         public StationListPage(BlApi.IBL bl1)
         {
             bl = bl1;
-            //returnMain = returnMain1;
+
             stationsToTheLists = new List<StationToTheList>();
             stationsToTheLists.AddRange(bl.GetListOfBaseStations());
 
@@ -33,12 +38,33 @@ namespace PL.pages
             InitializeComponent();
             TurnOnFunctionFilters = true;
 
+            worker = new BackgroundWorker();
+            worker.DoWork += Worker_DoWork;
+            worker.RunWorkerAsync();
+
             // Filll the list view.
             StationListView.ItemsSource = stationsToTheLists;
         }
+        void updateTheViewListStationsInRealTime()
+        {
+
+            EnableFiltersWithConditions();
+        }
+        private void Worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            while (true)
+            {
+                Action theUpdateView = updateTheViewListStationsInRealTime;
+                // Dispatcher to main thread to update the window drone.
+                StationListView.Dispatcher.BeginInvoke(theUpdateView);
+                Thread.Sleep(200);
+            }
+
+
+        }
         private void CancelButtonX(object sender, RoutedEventArgs e)
         {
-       //
+            
         }
 
         private void ClearFilter(object sender, RoutedEventArgs e)
@@ -63,11 +89,7 @@ namespace PL.pages
         }
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
-            // this.Close();
-            this.Visibility = Visibility.Collapsed;
-            
-            //this.Content = returnMain.Content;
-            
+            this.Visibility = Visibility.Hidden;
         }
 
         private void StationsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -285,3 +307,4 @@ namespace PL.pages
         }
     }
 }
+
