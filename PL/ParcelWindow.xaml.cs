@@ -121,7 +121,7 @@ namespace PL
                     int ID = Convert.ToInt32(txtId.Text);
                     int SenderId = Convert.ToInt32(txtSender.Text);
                     int TargetId = Convert.ToInt32(txtTarget.Text);
-                     bl.ReceiptOfPackageForDelivery(ID, SenderId, TargetId, comboWeight.SelectedIndex, comboPriority.SelectedIndex); 
+                     bl.AddingParcel(ID, SenderId, TargetId, comboWeight.SelectedIndex, comboPriority.SelectedIndex); 
                     this.Close();
                 }
                 else if (Add.Content.ToString() == "Update")

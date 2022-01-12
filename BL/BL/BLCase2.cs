@@ -10,9 +10,12 @@ namespace BlApi
 {
     public partial class BL : IBL
     {
-        // DalApi.DalObject.UpdateClass updateDataSourceFun = new DalApi.DalObject.UpdateClass();
+        /// <summary>
+        /// This partial class is responsible for all the logical updates and for all the checking of them.
+        /// Any change in any of the entities, of any kind is made in this partial function
+        /// </summary>
 
-         private delegate bool Predicate<in T>(T obj);
+        private delegate bool Predicate<in T>(T obj);
          private delegate BO.Parcel Converter<in ParcelToList, out Parcel>(BO.ParcelToList input);
 
 
@@ -20,8 +23,10 @@ namespace BlApi
         private static bool findFast(Parcel parcel) { return (parcel.Scheduled == null && parcel.priority == DO.Enum.Priorities.Fast); }
         private static bool findNormal(Parcel parcel) { return (parcel.Scheduled == null && parcel.priority == DO.Enum.Priorities.Normal); }
 
-        [MethodImpl(MethodImplOptions.Synchronized)] public void UpdateDroneData(int ID, string newModel)
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public void UpdateDroneData(int ID, string newModel)
         {
+            // the user can update the Model of drone
             try
             {
                 Drone drone = accessDal.GetDrone(ID);
@@ -46,12 +51,14 @@ namespace BlApi
             }
 
         }
-        [MethodImpl(MethodImplOptions.Synchronized)] public void UpdateStationData(int ID, string name, int numSlots)
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public void UpdateStationData(int ID, string name, int numSlots)
         {
+            // the user can update information about base station, the num of slots for charge that have or the name of station
             try
             {
                 if (name == "" && numSlots == 0)
-                    return; // Don't do nathing.
+                    return; // Don't do nothing.
 
                 Station station = accessDal.GetStation(ID);
                 if (name != "")
@@ -74,8 +81,10 @@ namespace BlApi
             }
 
         }
-        [MethodImpl(MethodImplOptions.Synchronized)] public void RemoveAllSkimmersFromTheStation(int ID)
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public void RemoveAllSkimmersFromTheStation(int ID)
         {
+            // in case that user need to free station(for remove or somthing else) he need to release all the drones that in the station
             List<BO.DroneInCharging> droneInChargings = new List<BO.DroneInCharging>();
             droneInChargings = GetAllDronesInCharging(d => d.staitionId == ID).ToList();
 
@@ -91,8 +100,10 @@ namespace BlApi
                 ReleaseDroneFromCharging(item.uniqueID, dateTime);
             }
         }
-        [MethodImpl(MethodImplOptions.Synchronized)] public void UpdateCustomerData(int ID, string name, string phoneNumber)
+        [MethodImpl(MethodImplOptions.Synchronized)] 
+        public void UpdateCustomerData(int ID, string name, string phoneNumber)
         {
+            //The user can update information about customer - name or phone number
             try
             {
                 Customer customer = accessDal.GetCustomer(ID);
@@ -111,7 +122,7 @@ namespace BlApi
         }
         BO.Location ReturnLoctionOfCloslyStation(BO.Location location1)
         {
-            ///----------find the most close station---------
+            // Find the most close station 
             List<BO.station> stations = GetAllStaionsBy(s => s.ChargeSlots > 0).ToList().ConvertAll(convertToStationNotList);
             BO.Location point2 = new BO.Location();
             point2 = stations[0].location;
@@ -127,8 +138,11 @@ namespace BlApi
 
             return point2;
         }
-        [MethodImpl(MethodImplOptions.Synchronized)] public void SendingDroneToCharging(int ID)
+        [MethodImpl(MethodImplOptions.Synchronized)] 
+        public void SendingDroneToCharging(int ID)
         {
+            // If drone have low battery he have to get to base station for get charge, he will look for the most close station and 
+            //check if he have enough battery to go there
             try
             {
                 Drone drone = accessDal.GetDrone(ID);
@@ -188,8 +202,11 @@ namespace BlApi
             }
 
         }
-        [MethodImpl(MethodImplOptions.Synchronized)] public void ReleaseDroneFromCharging(int ID, DateTime updateTime)
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public void ReleaseDroneFromCharging(int ID, DateTime updateTime)
         {
+            // After drone is got charge we need to update that he free now and can make delivery and update that the base station have more 
+            // aviable charge slots 
             try
             {
                 Drone drone = accessDal.GetDrone(ID);
@@ -219,18 +236,6 @@ namespace BlApi
                     BO.Location point = droneBo.location;
                     accessDal.updateRelaseDroneFromCharge(ID, point.longitude, point.latitude, timInCharge);
 
-                    //update all the changes data at the stations list
-                    //Station sta = new Station();
-                    //List<BO.station> stations = GetListOfBaseStations().ToList().ConvertAll(convertToStationNotList);
-                    //foreach (var station in stations)
-                    //{
-                    //    if (station.location == point)
-                    //    {
-                    //        sta.ChargeSlots++;
-                    //        accessDal.updateStation(sta);
-                    //    }
-
-                    //}
                 }
                 else
                     throw new BO.MyExeption_BO("The drone is not maintained at all");
@@ -242,8 +247,11 @@ namespace BlApi
             }
 
         }
-        [MethodImpl(MethodImplOptions.Synchronized)] public void AssignPackageToDrone(int droneId)
+        [MethodImpl(MethodImplOptions.Synchronized)] 
+        public void AssignPackageToDrone(int droneId)
         {
+            // The user (or simulator) can send drone to get parcel only if the drone can do it
+            // if he have enough battery, we search for the most urgent and high weight that drone can take
             try
             {
                 //get the data of the specific drone from DAL(data source)
@@ -297,8 +305,10 @@ namespace BlApi
             }
 
         }
-        [MethodImpl(MethodImplOptions.Synchronized)] public void CollectionOfPackageByDrone(int ID)
+        [MethodImpl(MethodImplOptions.Synchronized)] 
+        public void CollectionOfPackageByDrone(int ID)
         {
+            // Update the system that this parcel is collected
             try
             {
                 Drone drone = accessDal.GetDrone(ID);
@@ -350,8 +360,10 @@ namespace BlApi
             }
 
         }
-        [MethodImpl(MethodImplOptions.Synchronized)] public void DeliveryOfPackageByDrone(int ID)
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public void DeliveryOfPackageByDrone(int ID)
         {
+            // Update the system that this parcel arrived to the destination
             try
             {
                 Drone drone = accessDal.GetDrone(ID);
@@ -404,10 +416,11 @@ namespace BlApi
             }
 
         }
-        [MethodImpl(MethodImplOptions.Synchronized)] public void UpdateBatteryInReelTime(int idDrone, double distance,
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        public void UpdateBatteryInReelTime(int idDrone, double distance,
     char AddOrSubtractToBattery /*'-' or '+'*/)
         {
-
+            // function for real time update at simolator
             BO.DroneToList droneToList_BO = GetDroneToListBO(idDrone);
             List<double> configStatus = accessDal.PowerConsumptionBySkimmer();
 
@@ -445,7 +458,8 @@ namespace BlApi
             }
 
         }
-        [MethodImpl(MethodImplOptions.Synchronized)] public void updateBatteryBySimultor(int droneId, double updateBattery)
+        [MethodImpl(MethodImplOptions.Synchronized)] 
+        public void updateBatteryBySimultor(int droneId, double updateBattery)
         {
             for (int i = 0; i < ListDroneToList.Count; i++)
             {

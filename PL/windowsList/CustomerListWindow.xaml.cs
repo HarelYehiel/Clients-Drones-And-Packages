@@ -85,7 +85,7 @@ namespace PL
 
             openOptions.Visibility = Visibility.Visible;
 
-            CollectionViewSource.GetDefaultView(CustomersListView.ItemsSource).Refresh();
+            //CollectionViewSource.GetDefaultView(CustomersListView.ItemsSource).Refresh();
 
         }
         private void CancelButtonX(object sender, RoutedEventArgs e)

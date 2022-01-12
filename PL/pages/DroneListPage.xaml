@@ -14,7 +14,7 @@
             <RowDefinition Height="375"/>
         </Grid.RowDefinitions>
         <Grid Name="UpGrid" Height="auto" Grid.Row="0" Width="auto" Background="#274472
-">
+" Margin="0,0,0,365" Grid.RowSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200"/>
                 <ColumnDefinition Width="200"/>
@@ -22,7 +22,7 @@
                 <ColumnDefinition Width="38*"/>
                 <ColumnDefinition Width="127*"/>
             </Grid.ColumnDefinitions >
-            <Button Content="Clear filter" FontWeight = "DemiBold" HorizontalAlignment="Left" Margin="29,13,0,42" Width="120" Click="ClearFilter" Background="#C3E0E5" BorderBrush = "White">
+            <Button Content="Clear filter" FontWeight = "DemiBold" HorizontalAlignment="Left" Margin="29,14,0,41" Width="120" Click="ClearFilter" Background="#C3E0E5" BorderBrush = "White">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="8"/>
@@ -37,7 +37,7 @@
                 </Button.Resources>
             </Button>
             <Button Content="Close" Grid.Column="4" Margin="36,21,58,28" Click="CloseWindow" />
-            <Button Content="Refresh" FontWeight = "DemiBold" HorizontalAlignment="Left" Margin="30,43,0,0" VerticalAlignment="Top" Width="120" Background="#C3E0E5" BorderBrush = "White" Click="Refresh_Click">
+            <Button Content="Refresh" FontWeight = "DemiBold" HorizontalAlignment="Left" Margin="29,51,0,0" VerticalAlignment="Top" Width="120" Background="#C3E0E5" BorderBrush = "White" Click="Refresh_Click">
                 <Button.Resources>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius" Value="8"/>
@@ -49,7 +49,7 @@
         </Grid>
         <Grid Margin="10,40,-6,44" Grid.RowSpan="2">
 
-            <ListView x:Name="DronesListView" SelectionChanged="DronesListView_SelectionChanged" Margin="-9,60,5,-256" Background ="#5885AF" d:ItemsSource="{d:SampleData}" FontWeight="Bold" BorderBrush="#FF868C97" Foreground="White" FontFamily="Segoe UI" FontStyle="Normal" >
+            <ListView x:Name="DronesListView" SelectionChanged="DronesListView_SelectionChanged" Margin="-9,43,5,-239" Background ="#5885AF" d:ItemsSource="{d:SampleData}" FontWeight="Bold" BorderBrush="#FF868C97" Foreground="White" FontFamily="Segoe UI" FontStyle="Normal" >
 
                 <ListView.View>
                     <GridView >

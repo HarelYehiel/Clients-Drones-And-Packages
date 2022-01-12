@@ -212,7 +212,7 @@ namespace PL
                     // If all proper add th customer.
                     if (isAllProper)
                     {
-                        lock (bl) { bl.AbsorptionNewCustomer(ID, txtName.Text, txtPhone.Text, lati, longi); }
+                        lock (bl) { bl.AddingCustomer(ID, txtName.Text, txtPhone.Text, lati, longi); }
                         MessageBox.Show("The customer added", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
                         
                     }
