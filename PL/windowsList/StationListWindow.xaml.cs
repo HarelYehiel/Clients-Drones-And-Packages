@@ -1,14 +1,6 @@
 ﻿using BO;
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Interop;
-using System.Linq;
-using BO;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -16,7 +8,6 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
-using System.Runtime.CompilerServices;
 
 namespace PL
 {
@@ -53,6 +44,7 @@ namespace PL
 
             worker = new BackgroundWorker();
             worker.DoWork += Worker_DoWork;
+            worker.WorkerSupportsCancellation = true;
             worker.RunWorkerAsync();
 
             // Filll the list view.
@@ -65,12 +57,12 @@ namespace PL
         }
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            while (true)
+            while (!worker.CancellationPending)
             {
                 Action theUpdateView = updateTheViewListStationsInRealTime;
                 // Dispatcher to main thread to update the window drone.
                 StationListView.Dispatcher.BeginInvoke(theUpdateView);
-                Thread.Sleep(200);
+                Thread.Sleep(500);
             }
 
 
@@ -103,12 +95,13 @@ namespace PL
         }
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
+            worker.CancelAsync();
             this.Close();
         }
 
         private void StationsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (StationListView.ItemsSource != null)
+            if (StationListView.SelectedItem != null)
                 new StationWindow(bl, (StationToTheList)e.AddedItems[0]).Show();
 
         }

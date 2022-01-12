@@ -399,8 +399,7 @@ namespace PL
             {
                 if (ex.Message == "check if the drone associated to parcel")
                     MessageBox.Show("Don't have this parcel, check if the drone associated to parcel.", "Eroor", MessageBoxButton.OK, MessageBoxImage.Error);
-                else
-                    DronesListView.SelectedItem = null;
+             
             }
 
         }
@@ -409,39 +408,6 @@ namespace PL
         {
             openOptions.Visibility = Visibility.Hidden;
         }
-        //void HideOrVisibleDronesListViewAndOpenOptionsTheOpposite()
-        //// Hide oe visible all button on DronesListView and DronesListView,
-        //// DronesListView The Opposite.
-        //{
-        //    if (DronesListView.Visibility == Visibility.Visible)
-        //    {
-        //        openOptions.Visibility = Visibility.Visible;
-
-        //        DronesListView.Visibility = Visibility.Hidden;
-        //        SearchIDButton.Visibility = Visibility.Hidden;
-        //        SearchModelButton.Visibility = Visibility.Hidden;
-        //        SearchBattryButton.Visibility = Visibility.Hidden;
-        //        SearchLocationButton.Visibility = Visibility.Hidden;
-        //        SearchParcelButton.Visibility = Visibility.Hidden;
-        //        SearchStatusButton.Visibility = Visibility.Hidden;
-        //        SearchWeightButton.Visibility = Visibility.Hidden;
-
-        //    }
-        //    else
-        //    {
-        //        openOptions.Visibility = Visibility.Hidden;
-
-        //        DronesListView.Visibility = Visibility.Visible;
-        //        SearchIDButton.Visibility = Visibility.Visible;
-        //        SearchModelButton.Visibility = Visibility.Visible;
-        //        SearchBattryButton.Visibility = Visibility.Visible;
-        //        SearchLocationButton.Visibility = Visibility.Visible;
-        //        SearchParcelButton.Visibility = Visibility.Visible;
-        //        SearchStatusButton.Visibility = Visibility.Visible;
-        //        SearchWeightButton.Visibility = Visibility.Visible;
-        //    }
-
-        //}
         #endregion
 
         #region CombBoxes

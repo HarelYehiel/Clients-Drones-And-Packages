@@ -112,8 +112,8 @@ namespace PL
 
         private void ClickToShowParcelList(object sender, RoutedEventArgs e)
         {
-            // new ParclListWindow(bl).Show();
-            MainFrame.Content = new ParcelListPage(bl);
+             new ParclListWindow(bl).Show();
+           // MainFrame.Content = new ParcelListPage(bl);
         }
         private void ClickToShowStatoinList(object sender, RoutedEventArgs e)
         {

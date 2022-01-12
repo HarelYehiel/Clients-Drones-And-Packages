@@ -33,7 +33,7 @@ namespace DalApi
                 Config.mediumWeight = 8;
                 Config.heavyWeight = 5;
                 Config.droneLoadingRate = (double) 2;//all 1 second is charge the drone at 2%
-                for (int i = 0; i < 30; i++)//create 5 drones with random data
+                for (int i = 0; i < 15; i++)//create 15 drones with random data
                 {
                     Drone drone = new Drone();
                     var rand = new Random();
@@ -44,7 +44,7 @@ namespace DalApi
                     drones.Add(drone);
 
                 }
-                for (int i = 0; i < 15; i++)//create 15 staitons with random data
+                for (int i = 0; i < 5; i++)//create 5 staitons with random data
                 {
                     Station station = new Station();
                     var rand = new Random();
@@ -70,7 +70,7 @@ namespace DalApi
                     customer.location = p;
                     customers.Add(customer);
                 }
-                for (int i = 0; i < 100; i++)//create new 30 parcels with random data
+                for (int i = 0; i < 500; i++)//create new 500 parcels with random data
                 {
                     Parcel parcel = new Parcel();
                     var rand = new Random();

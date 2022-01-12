@@ -20,35 +20,38 @@ namespace PL
     {
         BlApi.IBL bl;
         BackgroundWorker worker;
+        ParcelToList ParcelToListChoose;
         public ParclListWindow(BlApi.IBL bl1)
         {
             bl = bl1;
             InitializeComponent();
-             ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels(); 
+            ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels();
             CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelListView.ItemsSource);
             view.Filter = UserFilter;
             openOptions.Visibility = Visibility.Hidden;
 
             worker = new BackgroundWorker();
             worker.DoWork += Worker_DoWork;
+            worker.WorkerSupportsCancellation = true;
             worker.RunWorkerAsync();
         }
         void updateTheViewListParcelsInRealTime()
         // Update the list view.
         {
-            IEnumerable<ParcelToList> parcelToLists;
-            parcelToLists = bl.DisplaysTheListOfParcels(); 
+
+            ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels();
             CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelListView.ItemsSource);
+            view.Filter = UserFilter;
 
         }
 
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            while (true)
+            while (!worker.CancellationPending)
             {
                 Action theUpdateView = updateTheViewListParcelsInRealTime;
                 ParcelListView.Dispatcher.BeginInvoke(theUpdateView);
-                Thread.Sleep(200);
+                Thread.Sleep(1000);
             }
 
         }
@@ -56,44 +59,30 @@ namespace PL
         private void AddNewParcel(object sender, RoutedEventArgs e)
         {
             new ParcelWindow(bl).ShowDialog();
-           ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels(); 
+            ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels();
             //CollectionViewSource.GetDefaultView(ParcelListView).Refresh();
 
         }
 
         private void ClearFilter(object sender, RoutedEventArgs e)
         {
-           ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels(); 
+            ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels();
 
         }
 
 
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
+            worker.CancelAsync();
             this.Close();
         }
         private void ParcelListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (e.OriginalSource is GridViewColumnHeader)
-            {
-                GridViewColumn clickedColumn = (e.OriginalSource as GridViewColumnHeader).Column;
-                if (clickedColumn.Header.ToString() == "Sender")
-                {
-                    CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelListView.ItemsSource);
-                    view.SortDescriptions.Add(new SortDescription("Sender", ListSortDirection.Ascending));
-                }
-                if (clickedColumn.Header.ToString() == "Target")
-                {
-                    CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(ParcelListView.ItemsSource);
-                    view.SortDescriptions.Add(new SortDescription("Target", ListSortDirection.Ascending));
-                }
+            if (ParcelListView.SelectedItem != null)
+                ParcelToListChoose = ParcelListView.SelectedItem as ParcelToList;
 
-            }
-            else
-            {
-                openOptions.Visibility = Visibility.Visible;
-                //ParcelListView.ItemsSource = bl.DisplaysTheListOfParcels();
-            }
+            openOptions.Visibility = Visibility.Visible;
+
         }
         private void AddFilter(object sender, RoutedEventArgs e)
         {
@@ -141,16 +130,13 @@ namespace PL
 
         private void OpenParcelView_Click(object sender, RoutedEventArgs e)
         {
-            BO.ParcelToList parcel = ParcelListView.SelectedItem as BO.ParcelToList;
-            new ParcelWindow(bl, parcel).ShowDialog();
+            new ParcelWindow(bl, ParcelToListChoose).ShowDialog(); 
             openOptions.Visibility = Visibility.Hidden;
         }
 
         private void OpenSenderView_Click(object sender, RoutedEventArgs e)
         {
-            BO.ParcelToList parcel = ParcelListView.SelectedItem as BO.ParcelToList;
-            List<BO.CustomerToList> lst;
-           lst = bl.GetAllCustomersBy(C => C.name == parcel.namrSender).ToList(); 
+            List<BO.CustomerToList> lst = bl.GetAllCustomersBy(C => C.name == ParcelToListChoose.namrSender).ToList();
             new CustomerWindow(bl, lst[0]).ShowDialog();
             openOptions.Visibility = Visibility.Hidden;
             Close();
@@ -158,9 +144,8 @@ namespace PL
 
         private void OpenTargetView_Click(object sender, RoutedEventArgs e)
         {
-            BO.ParcelToList parcel = ParcelListView.SelectedItem as BO.ParcelToList;
             List<BO.CustomerToList> lst;
-           lst = bl.GetAllCustomersBy(C => C.name == parcel.nameTarget).ToList(); 
+            lst = bl.GetAllCustomersBy(C => C.name == ParcelToListChoose.nameTarget).ToList();
             new CustomerWindow(bl, lst[0]).ShowDialog();
             openOptions.Visibility = Visibility.Hidden;
             Close();
@@ -168,16 +153,15 @@ namespace PL
 
         private void OpenDroneView_Click(object sender, RoutedEventArgs e)
         {
-            BO.ParcelToList parcel = ParcelListView.SelectedItem as BO.ParcelToList;
             try
             {
                 BO.Parcel temp;
-               temp = bl.GetParcel(parcel.uniqueID); 
+                temp = bl.GetParcel(ParcelToListChoose.uniqueID);
                 if (temp.droneInParcel == null)
                     throw new Exception();
 
                 List<BO.DroneToList> lst;
-               lst = bl.GetAllDronesBy(D => D.uniqueID == temp.droneInParcel.uniqueID).ToList(); 
+                lst = bl.GetAllDronesBy(D => D.uniqueID == temp.droneInParcel.uniqueID).ToList();
                 new DroneWindow(bl, lst[0]).ShowDialog();
                 openOptions.Visibility = Visibility.Hidden;
                 Close();
