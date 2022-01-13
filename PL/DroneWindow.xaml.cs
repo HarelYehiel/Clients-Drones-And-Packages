@@ -44,6 +44,8 @@ namespace PL
             OkayButton.Visibility = Visibility.Collapsed;
             Simulator.Visibility = Visibility.Collapsed;
 
+            StationListView.ItemsSource = bl.GetAllStaionsBy(s => s.ChargeSlots > 0);
+
         }
         public DroneWindow(BlApi.IBL bl1, DroneToList droneToList1)
         // Constructor for view drone and allow do actions.
@@ -62,6 +64,8 @@ namespace PL
             try
             {
                 FunctionConbo.SelectedIndex = 0; // Select Function
+
+                StationListView.Visibility = Visibility.Collapsed;
 
                 // Details ID
                 IDTextBlock.Visibility = Visibility.Collapsed;
@@ -264,7 +268,7 @@ namespace PL
             }
 
         }
-       private void ActionOfDrone(object sender, RoutedEventArgs e)
+        private void ActionOfDrone(object sender, RoutedEventArgs e)
         {
             if (DroneButton.Content.ToString() == "Add Drone")
                 AddDrone(sender, e);
@@ -432,7 +436,7 @@ namespace PL
             }
         }
         void hideAndReseteAllTextBlocks()
-            // Hide all text - blocks
+        // Hide all text - blocks
         {
             IDTextBlock.Visibility = Visibility.Collapsed;
             ModelTextBlock.Visibility = Visibility.Collapsed;
@@ -446,27 +450,41 @@ namespace PL
         }
         private void sendToCharge_click(object sender, RoutedEventArgs e)
         {
-            bl.SendingDroneToCharging(Convert.ToInt32(IDTextBox.Text));
-            MessageBox.Show("The drone is in Charging!", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-            openOptions.Visibility = Visibility.Hidden;
+            try
+            {
+                bl.SendingDroneToCharging(Convert.ToInt32(IDTextBox.Text));
+                MessageBox.Show("The drone is in Charging!", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                openOptions.Visibility = Visibility.Collapsed;
+            }
+            catch (Exception)
+            {
+            }
+
         }
 
         private void ReleaseCharge_Click(object sender, RoutedEventArgs e)
         {
             bl.ReleaseDroneFromCharging(Convert.ToInt32(IDTextBox.Text), DateTime.Now);
             MessageBox.Show("The drone  relaese from Charging!", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-            openOptions.Visibility = Visibility.Hidden;
+            openOptions.Visibility = Visibility.Collapsed;
         }
 
         private void AssignParcel_Click(object sender, RoutedEventArgs e)
         {
-            bl.AssignPackageToDrone(Convert.ToInt32(IDTextBox.Text));
+            try
+            {
+                bl.AssignPackageToDrone(Convert.ToInt32(IDTextBox.Text));
+
+            }
+            catch (Exception)
+            {
+            }
 
         }
 
         private void CancelOpenBarButton_Click(object sender, RoutedEventArgs e)
         {
-            openOptions.Visibility = Visibility.Hidden;
+            openOptions.Visibility = Visibility.Collapsed;
         }
 
         private void Simulator_Click(object sender, RoutedEventArgs e)
