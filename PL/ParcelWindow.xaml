@@ -59,7 +59,7 @@
         <TextBox  x:Name ="SaveTheDrineID" Visibility="Hidden" HorizontalAlignment="Left" Margin="644,272,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="86" Height="12" Grid.Row="1"/>
         <Button Content="Close" HorizontalAlignment="Left"  Margin="738,30,0,0" Width="37" VerticalAlignment="Top" Click="CloseWindow" />
         <Label Name ="LabelCustomers" Content="list of optional customers" Background="#FFDDDDDD" BorderBrush="#C3E0E5" HorizontalAlignment="Left" Margin="36,33,0,0" VerticalAlignment="Top" Width="145"/>
-        <ListView Name="OptinalCustomer" Background= "#5885AF" BorderBrush="#C3E0E5" Margin="36,59,609,57" Grid.RowSpan="2" >
+        <ListView Name="OptinalCustomer" Background= "#5885AF" BorderBrush="#C3E0E5" Margin="36,59,609,57" Grid.RowSpan="2" SelectionChanged="OptinalCustomer_SelectionChanged" >
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header=" Name" Width="65" DisplayMemberBinding="{Binding name}"/>

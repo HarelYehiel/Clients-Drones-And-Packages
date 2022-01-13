@@ -87,10 +87,9 @@ namespace BlApi
             parcel1.priority = (DO.Enum.Priorities)prioerity;
             parcel1.Requested = DateTime.Now;
             parcel1.DroneId = 0;
-            DateTime def = new DateTime();
-            parcel1.PickedUp = def;
-            parcel1.Scheduled = def;
-            parcel1.Delivered = def;
+            parcel1.PickedUp = null;
+            parcel1.Scheduled = null;
+            parcel1.Delivered = null;
 
             accessDal.InputTheParcel(parcel1);
         }

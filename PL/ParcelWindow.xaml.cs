@@ -70,7 +70,7 @@ namespace PL
         }
         void updateViewParecel()
         {
-            parcel = bl.GetParcelToTheList(Convert.ToInt32(txtId.Text)); 
+            parcel = bl.GetParcelToTheList(Convert.ToInt32(txtId.Text));
 
             comboStatus.SelectedIndex = (int)parcel.parcelsituation; //Situations
         }
@@ -121,7 +121,7 @@ namespace PL
                     int ID = Convert.ToInt32(txtId.Text);
                     int SenderId = Convert.ToInt32(txtSender.Text);
                     int TargetId = Convert.ToInt32(txtTarget.Text);
-                     bl.AddingParcel(ID, SenderId, TargetId, comboWeight.SelectedIndex, comboPriority.SelectedIndex); 
+                    bl.AddingParcel(ID, SenderId, TargetId, comboWeight.SelectedIndex, comboPriority.SelectedIndex);
                     this.Close();
                 }
                 else if (Add.Content.ToString() == "Update")
@@ -148,7 +148,7 @@ namespace PL
             {
                 LabelCustomers.Visibility = Visibility.Visible;
                 OptinalCustomer.Visibility = Visibility.Visible;
-                 OptinalCustomer.ItemsSource = bl.GetListOfCustomers(); 
+                OptinalCustomer.ItemsSource = bl.GetListOfCustomers();
             }
         }
 
@@ -158,7 +158,7 @@ namespace PL
             {
                 LabelCustomers.Visibility = Visibility.Visible;
                 OptinalCustomer.Visibility = Visibility.Visible;
-                 OptinalCustomer.ItemsSource = bl.GetListOfCustomers(); 
+                OptinalCustomer.ItemsSource = bl.GetListOfCustomers();
             }
         }
 
@@ -195,7 +195,7 @@ namespace PL
             try
             {
                 parcel.parcelsituation = BO.EnumBO.Situations.collected;
-                bl.updateParcel(parcel.uniqueID, 1); 
+                bl.updateParcel(parcel.uniqueID, 1);
                 Close();
             }
             catch (Exception)
@@ -210,7 +210,7 @@ namespace PL
             try
             {
                 parcel.parcelsituation = BO.EnumBO.Situations.provided;
-                bl.updateParcel(parcel.uniqueID, 2); 
+                bl.updateParcel(parcel.uniqueID, 2);
                 Close();
             }
             catch (Exception)
@@ -237,12 +237,28 @@ namespace PL
         private void deleteParcel_Click(object sender, RoutedEventArgs e)
         {
             if (parcel.parcelsituation != EnumBO.Situations.associated || parcel.parcelsituation != EnumBO.Situations.collected)
-                 bl.DelParcel(parcel.uniqueID); 
+                bl.DelParcel(parcel.uniqueID);
             else
                 MessageBox.Show("This parcel is in delivering! you cant cancel now", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             this.Close();
         }
 
+        private void OptinalCustomer_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                if(txtSender.Text != "")
+                txtTarget.Text = (OptinalCustomer.SelectedItem as CustomerToList).uniqueID.ToString();
+                else
+                    txtSender.Text = (OptinalCustomer.SelectedItem as CustomerToList).uniqueID.ToString();
 
+
+            }
+            catch (Exception ex)
+            {
+
+             
+            }
+        }
     }
 }

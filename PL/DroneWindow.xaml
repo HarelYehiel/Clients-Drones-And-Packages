@@ -44,7 +44,7 @@
 
                 <Label x:Name="StationIDLabel" Foreground="White" Content="Station ID" FontWeight="ExtraBlack" Height="27" Width="228"/>
                 <TextBlock x:Name="StationTextBlock" Text="This station not exists." TextWrapping="Wrap" Visibility="Collapsed" Foreground="#FFFF000F" FontSize="14" />
-                <TextBox  x:Name ="StationIDTextBox" Background="#545d6a" Foreground="White" Text="Type ID station from the list above" TextWrapping="Wrap" Width="222" Height="26"/>
+                <TextBox  x:Name ="StationIDTextBox" Background="#545d6a" Foreground="White" Text="Type ID station from the list above" TextWrapping="Wrap" Width="222" Height="26" TextChanged="StationIDTextBox_TextChanged"/>
                 <Label x:Name="WieghtDroneLabel"  Foreground="White" Content="Wieght Drone" FontWeight="ExtraBlack" Height="27" Width="224"/>
 
                 <Label x:Name="WieghtForViewDroneIDLabel" Foreground="White" Content="Wieght Drone" Visibility="Collapsed" FontWeight="ExtraBlack" Height="27" Width="228"/>

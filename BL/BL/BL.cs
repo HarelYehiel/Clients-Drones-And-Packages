@@ -20,7 +20,7 @@ namespace BlApi
         static readonly BL instance = new BL();
         internal static BL Instance { get { return instance; } }
         //IDal accessDal = DalApi.DalFactory.GetDal("DalObject");
-        internal IDal accessDal = DalApi.DalFactory.GetDal("DalObject");
+        internal IDal accessDal = DalApi.DalFactory.GetDal("DalXml");
         List<DroneToList> ListDroneToList = new List<DroneToList>();
         private BL()
         {

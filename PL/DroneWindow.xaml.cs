@@ -22,6 +22,7 @@ namespace PL
         BlApi.IBL bl;
         DateTime? dateTime;
         BackgroundWorker worker;
+        DroneToList droneToList;
         bool startOrStopSimulter = true; // click on the button to start the simulator.
 
 
@@ -54,7 +55,7 @@ namespace PL
 
             bl = bl1;
             InitializeComponent();
-
+            droneToList = droneToList1;
             PrepareTheToolsForDroneDisplay(droneToList1);
 
         }
@@ -148,9 +149,11 @@ namespace PL
         private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
 
-
+            int id = droneToList.uniqueID;
             Drone drone;
-            drone = bl.GetDrone(this.Dispatcher.Invoke<int>(() => { return Convert.ToInt32(IDTextBox.Text); }));
+            //drone = bl.GetDrone(this.Dispatcher.Invoke<int>(() => { return Convert.ToInt32(IDTextBox.Text); }));
+            drone = bl.GetDrone(id);
+
             Action<double, EnumBO.DroneStatus, Location, int> theUpdateView = updateTheViewDroneInRealTime;
 
             // Dispatcher to main thread to update the window drone.
@@ -519,6 +522,11 @@ namespace PL
                 //LoctionTextBox.IsEnabled = false;
 
             }
+
+        }
+
+        private void StationIDTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
 
         }
     }

@@ -12,7 +12,7 @@
             <RowDefinition Height="150*"/>
             <RowDefinition Height="400*"/>
         </Grid.RowDefinitions>
-        <ListView x:Name="CustomersListView"  Grid.Row="0" Background="#5885AF" Margin="27,33,752,77" Grid.RowSpan="2">
+        <ListView x:Name="CustomersListView"  Grid.Row="0" Background="#5885AF" Margin="27,33,752,77" Grid.RowSpan="2" SelectionChanged="CustomersListView_SelectionChanged">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="ID" Width="100" DisplayMemberBinding="{Binding uniqueID}"/>

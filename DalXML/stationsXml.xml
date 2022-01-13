@@ -1,13 +1,22 @@
 <?xml version="1.0"?>
 <ArrayOfStation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Station>
+    <id>77707</id>
+    <name>sta9</name>
+    <Location>
+      <longitude>34.73186684107961</longitude>
+      <latitude>31.952836587071808</latitude>
+    </Location>
+    <ChargeSlots>6</ChargeSlots>
+  </Station>
+  <Station>
     <id>49510</id>
     <name>sta6</name>
     <Location>
       <longitude>34.89229294885522</longitude>
       <latitude>31.00267180753996</latitude>
     </Location>
-    <ChargeSlots>5</ChargeSlots>
+    <ChargeSlots>2</ChargeSlots>
   </Station>
   <Station>
     <id>81594</id>
@@ -15,15 +24,6 @@
     <Location>
       <longitude>34.4685904017969</longitude>
       <latitude>31.226485964016284</latitude>
-    </Location>
-    <ChargeSlots>7</ChargeSlots>
-  </Station>
-  <Station>
-    <id>77707</id>
-    <name>sta9</name>
-    <Location>
-      <longitude>34.73186684107961</longitude>
-      <latitude>31.952836587071808</latitude>
     </Location>
     <ChargeSlots>6</ChargeSlots>
   </Station>
@@ -34,7 +34,7 @@
       <longitude>34.968632308285976</longitude>
       <latitude>31.834773576275804</latitude>
     </Location>
-    <ChargeSlots>7</ChargeSlots>
+    <ChargeSlots>6</ChargeSlots>
   </Station>
   <Station>
     <id>44648</id>
@@ -43,6 +43,6 @@
       <longitude>34.46596443767937</longitude>
       <latitude>31.507988212866703</latitude>
     </Location>
-    <ChargeSlots>6</ChargeSlots>
+    <ChargeSlots>1</ChargeSlots>
   </Station>
 </ArrayOfStation>

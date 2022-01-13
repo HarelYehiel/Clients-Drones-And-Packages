@@ -59,8 +59,8 @@ namespace PL
         }
         private void ClickToShowCustomerList(object sender, RoutedEventArgs e)
         {
-            new CustomerListWindow(bl).Show();
-            //MainFrame.Content = new CustomerListPage(bl);
+            //new CustomerListWindow(bl).Show();
+            MainFrame.Content = new CustomerListPage(bl);
         }
      
 

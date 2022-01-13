@@ -79,7 +79,7 @@ namespace PL.pages
             
             openOptions.Visibility = Visibility.Visible;
 
-            CollectionViewSource.GetDefaultView(CustomersListView.ItemsSource).Refresh();
+       //     CollectionViewSource.GetDefaultView(CustomersListView.ItemsSource).Refresh();
 
         }
         private void CancelButtonX(object sender, RoutedEventArgs e)
@@ -300,7 +300,7 @@ namespace PL.pages
 
         private void OpenCustomerView_Click(object sender, RoutedEventArgs e)
         {
-            BO.CustomerToList customer = CustomersListView.SelectedItem as BO.CustomerToList;
+            BO.CustomerToList customer = customerToListChoose;
             new CustomerWindow(bl, customer).Show();
             openOptions.Visibility = Visibility.Hidden;
             CollectionViewSource.GetDefaultView(CustomersListView.ItemsSource).Refresh();
@@ -309,10 +309,8 @@ namespace PL.pages
 
         private void OpenNewParcelView_Click(object sender, RoutedEventArgs e)
         {
-            BO.CustomerToList customer = CustomersListView.SelectedItem as BO.CustomerToList;
+            BO.CustomerToList customer = customerToListChoose;
             ParcelWindow openNewOrder = new ParcelWindow(bl);
-            openNewOrder.txtId.Text = customer.uniqueID.ToString();
-            openNewOrder.txtId.IsEnabled = false;
             openNewOrder.txtSender.Text = customer.uniqueID.ToString();
             openNewOrder.txtSender.IsEnabled = false;
             openNewOrder.Show();
@@ -323,7 +321,7 @@ namespace PL.pages
 
         private void OpenCustomrsOrderView_Click(object sender, RoutedEventArgs e)
         {
-            BO.CustomerToList customer = CustomersListView.SelectedItem as BO.CustomerToList;
+            BO.CustomerToList customer = customerToListChoose;
             ParclListWindow openMyOrder = new ParclListWindow(bl);
             openMyOrder.txtFilter.Text = customer.name;
             openMyOrder.txtFilter.IsEnabled = false;
@@ -337,7 +335,7 @@ namespace PL.pages
 
         private void MyShipmentView_Click(object sender, RoutedEventArgs e)
         {
-            BO.CustomerToList customer = CustomersListView.SelectedItem as BO.CustomerToList;
+            BO.CustomerToList customer = customerToListChoose;
             ParclListWindow openMyOrder = new ParclListWindow(bl);
             openMyOrder.txtFilter.Text = customer.name;
             openMyOrder.txtFilter.IsEnabled = false;

@@ -252,5 +252,10 @@ namespace PL
             parclListWindow.Show();
             UpdateBorder.Visibility = Visibility.Hidden;
         }
+
+        private void CustomersListView_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }
